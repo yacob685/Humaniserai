@@ -654,7 +654,7 @@ Create 5-10 multiple choice questions with explanations.`,
                 chatContainer.scrollTop = chatContainer.scrollHeight;
                 return messageDiv.querySelector('.streaming-text');
             };
-            const streamText = (element, text, speed = 15) => {
+            const streamText = (element, text, speed = 100) => {
                  return new Promise((resolve) => {
                     let index = 0;
                     const interval = setInterval(() => {
