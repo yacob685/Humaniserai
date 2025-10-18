@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Encoder & Decoder - Web Service Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        textarea {
+            font-family: 'Fira Code', monospace;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">Web Service Hub</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="text-gray-600 hover:text-indigo-600">Home</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="index.html" class="block py-2 text-gray-600 hover:text-indigo-600">Home</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold text-center mb-2">Base64 Encoder & Decoder</h1>
+            <p class="text-center text-gray-500 mb-6">Encode to and decode from Base64 format.</p>
+            
+             <div id="status-message" class="p-3 mb-4 rounded-md text-center font-medium hidden"></div>
+            
+            <div class="space-y-6">
+                <!-- Input -->
+                <div>
+                    <label for="text-input" class="text-lg font-semibold mb-2 block">Text (UTF-8)</label>
+                    <textarea id="text-input" rows="8" class="w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" placeholder="Hello, World!"></textarea>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex items-center justify-center gap-4">
+                     <button id="encode-btn" class="flex-1 bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700">
+                        <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        Encode
+                    </button>
+                     <button id="decode-btn" class="flex-1 bg-gray-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-800">
+                        <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                        Decode
+                    </button>
+                </div>
+
+                <!-- Output -->
+                <div>
+                    <label for="base64-output" class="text-lg font-semibold mb-2 block">Base64</label>
+                    <textarea id="base64-output" rows="8" class="w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" placeholder="SGVsbG8sIFdvcmxkIQ=="></textarea>
+                </div>
+            </div>
+            
+             <!-- Clear Button -->
+            <div class="mt-6">
+                <button id="clear-btn" class="w-full bg-red-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-600">Clear All</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-16">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500">
+            <p>&copy; 2024 Web Service Hub. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const textInput = document.getElementById('text-input');
+        const base64Output = document.getElementById('base64-output');
+        const encodeButton = document.getElementById('encode-btn');
+        const decodeButton = document.getElementById('decode-btn');
+        const clearButton = document.getElementById('clear-btn');
+        const statusMessage = document.getElementById('status-message');
+        
+        function showStatus(message, isError) {
+            statusMessage.textContent = message;
+            statusMessage.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+            statusMessage.classList.add(isError ? 'bg-red-100' : 'bg-green-100', isError ? 'text-red-800' : 'text-green-800');
+            setTimeout(() => statusMessage.classList.add('hidden'), 3000);
+        }
+
+        encodeButton.addEventListener('click', () => {
+            const text = textInput.value;
+            if (text) {
+                try {
+                    base64Output.value = btoa(unescape(encodeURIComponent(text)));
+                } catch(e) {
+                     showStatus('Could not encode text. Invalid characters detected.', true);
+                }
+            }
+        });
+
+        decodeButton.addEventListener('click', () => {
+            const base64 = base64Output.value;
+            if (base64) {
+                try {
+                    textInput.value = decodeURIComponent(escape(atob(base64)));
+                } catch (error) {
+                    showStatus('Invalid Base64 string.', true);
+                }
+            }
+        });
+
+        clearButton.addEventListener('click', () => {
+            textInput.value = '';
+            base64Output.value = '';
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+</html>

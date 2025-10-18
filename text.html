@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Tools - Web Service Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">Web Service Hub</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="text-gray-600 hover:text-indigo-600">Home</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="index.html" class="block py-2 text-gray-600 hover:text-indigo-600">Home</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12 flex justify-center">
+        <div class="w-full max-w-3xl">
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h1 class="text-3xl font-bold text-center mb-2">Text Tools</h1>
+                <p class="text-center text-gray-500 mb-6">Analyze and manipulate your text with ease.</p>
+
+                <!-- Text Area -->
+                <textarea id="text-input" rows="8" class="w-full p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 mb-4" placeholder="Paste your text here..."></textarea>
+
+                <!-- Stats Display -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 text-center">
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <div class="text-sm text-gray-500">Words</div>
+                        <div id="word-count" class="text-2xl font-bold text-indigo-600">0</div>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <div class="text-sm text-gray-500">Characters</div>
+                        <div id="char-count" class="text-2xl font-bold text-indigo-600">0</div>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <div class="text-sm text-gray-500">Sentences</div>
+                        <div id="sentence-count" class="text-2xl font-bold text-indigo-600">0</div>
+                    </div>
+                     <div class="bg-gray-100 p-4 rounded-lg">
+                        <div class="text-sm text-gray-500">Paragraphs</div>
+                        <div id="paragraph-count" class="text-2xl font-bold text-indigo-600">0</div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <button class="case-btn bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-600" data-case="upper">UPPERCASE</button>
+                    <button class="case-btn bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-600" data-case="lower">lowercase</button>
+                    <button class="case-btn bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-600" data-case="title">Title Case</button>
+                    <button class="case-btn bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-600" data-case="sentence">Sentence case</button>
+                    <button id="clear-btn" class="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 col-span-2 sm:col-span-1 lg:col-span-1">Clear Text</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-16">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500">
+            <p>&copy; 2024 Web Service Hub. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const textInput = document.getElementById('text-input');
+        const wordCountEl = document.getElementById('word-count');
+        const charCountEl = document.getElementById('char-count');
+        const sentenceCountEl = document.getElementById('sentence-count');
+        const paragraphCountEl = document.getElementById('paragraph-count');
+        const caseButtons = document.querySelectorAll('.case-btn');
+        const clearButton = document.getElementById('clear-btn');
+
+        function updateStats() {
+            const text = textInput.value;
+            
+            // Character count
+            charCountEl.textContent = text.length;
+
+            // Word count
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            wordCountEl.textContent = words.length;
+
+            // Sentence count
+            const sentences = text.match(/[^.!?]+[.!?]+["]?(\s|$)/g);
+            sentenceCountEl.textContent = sentences ? sentences.length : 0;
+
+            // Paragraph count
+            const paragraphs = text.split(/\n+/).filter(p => p.trim().length > 0);
+            paragraphCountEl.textContent = paragraphs.length;
+        }
+
+        function changeCase(caseType) {
+            let text = textInput.value;
+            switch (caseType) {
+                case 'upper':
+                    text = text.toUpperCase();
+                    break;
+                case 'lower':
+                    text = text.toLowerCase();
+                    break;
+                case 'title':
+                    text = text.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                    break;
+                case 'sentence':
+                    text = text.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
+                    break;
+            }
+            textInput.value = text;
+            updateStats();
+        }
+
+        textInput.addEventListener('input', updateStats);
+        
+        caseButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                changeCase(button.dataset.case);
+            });
+        });
+
+        clearButton.addEventListener('click', () => {
+            textInput.value = '';
+            updateStats();
+        });
+
+        // Initial stats update
+        updateStats();
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+</html>

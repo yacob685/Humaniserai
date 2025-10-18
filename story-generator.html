@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Story Generator - Web Service Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chat-bubble {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+        }
+        .user-bubble {
+            background-color: #3b82f6; /* Blue-500 */
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 2px;
+        }
+        .ai-bubble {
+            background-color: #e5e7eb; /* Gray-200 */
+            color: #1f2937; /* Gray-800 */
+            margin-right: auto;
+            border-bottom-left-radius: 2px;
+        }
+        #protection-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); color: white; display: none;
+            justify-content: center; align-items: center; text-align: center;
+            z-index: 9999; padding: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="protection-overlay">
+        <div>
+            <h2 class="text-3xl font-bold mb-4">Access Denied</h2>
+            <p class="text-lg">For security and ethical reasons, viewing the source code and using developer tools on this page is disabled.</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">Web Service Hub</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="text-gray-600 hover:text-indigo-600">Home</a>
+                <a href="index.html#tools" class="text-gray-600 hover:text-indigo-600">All Tools</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <section class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">AI Story Generator Chatbot</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                Collaborate with the AI to create unique stories, chapter by chapter.
+            </p>
+        </section>
+
+        <div class="bg-white rounded-lg shadow-xl p-4 sm:p-6 max-w-3xl mx-auto flex flex-col h-[70vh]">
+            <!-- Chat Window -->
+            <div id="chat-window" class="flex-grow overflow-y-auto p-4 mb-4 space-y-4 rounded-lg bg-gray-50 border">
+                <!-- Initial AI Message will go here -->
+            </div>
+
+            <!-- Input Form -->
+            <div class="flex space-x-3">
+                <input type="text" id="userInput" placeholder="Tell me what kind of story you want..." class="flex-grow border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <button id="sendButton" class="bg-indigo-600 text-white font-bold px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:bg-indigo-300">
+                    Send
+                </button>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        const chatWindow = document.getElementById('chat-window');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        
+        const apiKey = "AIzaSyBIAAAwdRvVuUMyq2RfLYo2HapOe_25j1c";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        
+        let chatHistory = [];
+
+        // Helper function to display messages
+        function displayMessage(text, sender) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('chat-bubble', sender === 'user' ? 'user-bubble' : 'ai-bubble');
+            bubble.innerHTML = text.replace(/\n/g, '<br>'); // Preserve line breaks
+            chatWindow.appendChild(bubble);
+            chatWindow.scrollTop = chatWindow.scrollHeight; // Auto-scroll to bottom
+        }
+
+        // Helper function for API call (with exponential backoff)
+        async function fetchWithBackoff(url, options, retries = 5) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status === 429) {
+                        // Too Many Requests, wait and retry
+                        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        continue;
+                    }
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response;
+                } catch (error) {
+                    if (i === retries - 1) throw error;
+                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+        }
+
+        async function handleSendMessage() {
+            const userText = userInput.value.trim();
+            if (!userText) return;
+
+            // 1. Display user message
+            displayMessage(userText, 'user');
+            
+            // 2. Add user message to history
+            chatHistory.push({ role: "user", parts: [{ text: userText }] });
+
+            // 3. Prepare UI for AI response
+            sendButton.disabled = true;
+            sendButton.textContent = '...';
+            userInput.value = '';
+            
+            const loadingBubble = document.createElement('div');
+            loadingBubble.classList.add('chat-bubble', 'ai-bubble');
+            loadingBubble.textContent = 'AI is thinking...';
+            loadingBubble.id = 'loading-bubble';
+            chatWindow.appendChild(loadingBubble);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+
+            const systemPrompt = "You are a creative co-writer and storyteller. Your goal is to guide the user in collaboratively creating a short story, chapter by chapter. Always ask a question to prompt the user for the next part of the story or for more details. **Crucially, do not use any markdown formatting like asterisks (*), bolding (**), or lists (-) in your responses. Use conversational, plain text only.**";
+
+            const payload = {
+                contents: chatHistory,
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            try {
+                const response = await fetchWithBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                
+                let aiText = "Sorry, I encountered an issue. Please try again.";
+                if (result.candidates && result.candidates[0] && result.candidates[0].content) {
+                    aiText = result.candidates[0].content.parts[0].text;
+                }
+
+                // 4. Update UI with AI response
+                chatWindow.removeChild(loadingBubble);
+                displayMessage(aiText, 'ai');
+
+                // 5. Add AI response to history
+                chatHistory.push({ role: "model", parts: [{ text: aiText }] });
+
+            } catch (error) {
+                console.error('Error fetching story continuation:', error);
+                loadingBubble.textContent = "Error: Could not connect to AI. See console for details.";
+            } finally {
+                sendButton.disabled = false;
+                sendButton.textContent = 'Send';
+            }
+        }
+
+        // Initial welcome message
+        function showInitialPrompt() {
+            const initialPrompt = "Hello! I'm your AI co-writer. I'm excited to start a story with you! What kind of tale should we weave today? We can start with a simple idea, like a genre, a character, or a setting, and build from there.";
+            
+            displayMessage(initialPrompt, 'ai');
+            chatHistory.push({ role: "model", parts: [{ text: initialPrompt }] });
+        }
+
+        sendButton.addEventListener('click', handleSendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSendMessage();
+            }
+        });
+
+        // Start the chat
+        showInitialPrompt();
+
+        // Protection script
+        const protectionOverlay = document.getElementById('protection-overlay');
+        const showProtection = () => { protectionOverlay.style.display = 'flex'; };
+        document.addEventListener('contextmenu', (e) => { e.preventDefault(); showProtection(); });
+        document.onkeydown = function(e) {
+            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) || (e.ctrlKey && e.key === "U")) {
+                e.preventDefault(); showProtection(); return false;
+            }
+        };
+    </script>
+</body>
+</html>

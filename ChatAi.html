@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini General Chat Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Use Font Awesome for the Send/Loading icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f7f7f8;
+        }
+        
+        .chat-container {
+            flex-grow: 1;
+            padding-bottom: 120px; /* Space for fixed input area */
+            overflow-y: auto;
+        }
+        .input-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #ffffff;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+            padding: 1rem 0;
+            z-index: 10;
+        }
+        
+        /* Custom CSS for the loading spinner animation */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin 1.5s linear infinite;
+        }
+        /* Style for the custom message box */
+        #messageBox {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        #messageBox.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        #cancelButton.hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Main Content Area -->
+    <main class="chat-container">
+        <div class="max-w-4xl mx-auto pt-8 px-4">
+            <h1 class="text-3xl font-bold text-center text-gray-900 mb-8">
+                <i class="fas fa-brain text-indigo-500 mr-2"></i> General AI Chat
+            </h1>
+            
+            <div id="responseHistory" class="space-y-6">
+                <!-- Initial Welcome Message -->
+                <div class="flex">
+                    <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-md">AI</div>
+                    <div class="bg-white p-4 rounded-xl shadow-lg max-w-full md:max-w-3xl border border-gray-100">
+                        <p class="text-gray-700">Hello! I am a general-purpose assistant powered by Gemini. Ask me anything—from current events (I can use Google Search!) to creative writing or complex explanations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Fixed Input Area -->
+    <div class="input-area">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="flex items-end bg-gray-100 border border-gray-300 rounded-2xl p-3 shadow-inner">
+                
+                <textarea id="prompt" rows="1" class="flex-grow bg-transparent resize-none border-none focus:outline-none placeholder-gray-500 text-base py-1 pr-3" placeholder="Ask me anything... (Press Enter to send)" oninput="autoExpand(this)"></textarea>
+                
+                <!-- Send/Cancel Button Group -->
+                <div class="flex space-x-2 ml-2 flex-shrink-0">
+                    <!-- Cancel Button (Hidden by default) -->
+                    <button id="cancelButton" class="hidden bg-red-600 text-white px-3 py-2 rounded-xl text-sm hover:bg-red-700 transition-colors shadow-lg">
+                        Cancel
+                    </button>
+
+                    <!-- Generate Button with Loading Indicator -->
+                    <button id="generateButton" class="bg-indigo-600 text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-indigo-700 transition-colors disabled:bg-indigo-300 shadow-lg" disabled>
+                        <span id="buttonIcon">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
+                        <!-- SVG Spinner - Hidden by default -->
+                        <svg id="loadingSpinner" class="hidden h-5 w-5 text-white animate-spin-slow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Custom Toast Notification / Message Box -->
+    <div id="messageBox" class="fixed bottom-4 right-4 bg-red-600 text-white p-4 rounded-lg shadow-xl z-50 transition-opacity duration-300">
+        <div class="flex items-center justify-between">
+            <span id="messageContent" class="mr-4"></span>
+            <button id="closeMessage" class="font-bold text-lg hover:text-gray-200">&times;</button>
+        </div>
+    </div>
+    
+    <script>
+        const generateButton = document.getElementById('generateButton');
+        const cancelButton = document.getElementById('cancelButton');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const buttonIcon = document.getElementById('buttonIcon');
+        const promptInput = document.getElementById('prompt');
+        const responseHistory = document.getElementById('responseHistory');
+        const messageBox = document.getElementById('messageBox');
+        const messageContent = document.getElementById('messageContent');
+        const closeMessageButton = document.getElementById('closeMessage');
+
+        // State to manage the in-flight request
+        let abortController = null; 
+        
+        // --- API Configuration ---
+        const apiKey = ""; // API Key placeholder for Canvas environment
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        
+        // General-purpose system instruction for a conversational AI
+        const systemInstruction = "You are a friendly, helpful, and knowledgeable general-purpose AI assistant. Provide concise, accurate, and informative responses. You are capable of answering any question and generating any type of text content (stories, explanations, summaries, etc.). Use the Google Search tool for current or factual queries.";
+        
+        // --- Utility Functions ---
+
+        function autoExpand(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+            // Enable button only when there is content
+            generateButton.disabled = textarea.value.trim() === '';
+        }
+
+        function showMessage(message, type = 'error') {
+            messageContent.textContent = message;
+            
+            if (type === 'error') {
+                messageBox.classList.remove('bg-green-600');
+                messageBox.classList.add('bg-red-600');
+            } else if (type === 'success') {
+                messageBox.classList.remove('bg-red-600');
+                messageBox.classList.add('bg-green-600');
+            }
+
+            messageBox.classList.add('show');
+            
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 5000); 
+        }
+
+        closeMessageButton.addEventListener('click', () => {
+            messageBox.classList.remove('show');
+        });
+
+        async function fetchWithBackoff(url, options, retries = 3, delay = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status !== 429) { 
+                        return response;
+                    }
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2; 
+                } catch (error) {
+                    if (error.name === 'AbortError') throw error; 
+
+                    if (i === retries - 1) throw error; 
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                }
+            }
+            throw new Error("Failed to fetch data after multiple retries.");
+        }
+        
+        // --- UI Functions ---
+
+        function createUserMessage(text) {
+            const messageHtml = `
+                <div class="flex justify-end">
+                    <div class="bg-indigo-500 text-white p-4 rounded-xl shadow-md max-w-full md:max-w-3xl">
+                        <p>${text}</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white font-bold ml-4 flex-shrink-0 shadow-md">You</div>
+                </div>
+            `;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = messageHtml;
+            responseHistory.appendChild(tempDiv.firstChild);
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function createAIMessage(text, sources) {
+            const tempDiv = document.createElement('div');
+            tempDiv.className = "flex";
+            
+            let sourceHtml = '';
+            if (sources && sources.length > 0) {
+                const uniqueSources = Array.from(new Map(sources.map(item => [item.uri, item])).values());
+                
+                sourceHtml = `
+                    <div class="mt-3 pt-2 border-t border-gray-200 text-xs text-gray-500">
+                        <p class="font-semibold mb-1">Sources:</p>
+                        <ul class="list-disc list-inside space-y-0.5 ml-2">
+                            ${uniqueSources.map(s => `<li><a href="${s.uri}" target="_blank" class="text-indigo-500 hover:text-indigo-600 truncate">${s.title || s.uri}</a></li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            tempDiv.innerHTML = `
+                <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-md">AI</div>
+                <div class="bg-white p-4 rounded-xl shadow-lg max-w-full md:max-w-3xl border border-gray-100">
+                    <div class="prose max-w-none">${text}</div>
+                    ${sourceHtml}
+                </div>
+            `;
+            responseHistory.appendChild(tempDiv);
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function startLoading() {
+            abortController = new AbortController();
+            generateButton.disabled = true;
+            promptInput.disabled = true;
+            buttonIcon.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+            cancelButton.classList.remove('hidden');
+        }
+
+        function stopLoading() {
+            abortController = null;
+            generateButton.disabled = promptInput.value.trim() === '';
+            promptInput.disabled = false;
+            buttonIcon.classList.remove('hidden');
+            loadingSpinner.classList.add('hidden');
+            cancelButton.classList.add('hidden');
+        }
+        
+        // --- Main Logic ---
+
+        async function generateChat(prompt) {
+            startLoading();
+
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                tools: [{ "google_search": {} }], // Enable real-time Google Search grounding
+                systemInstruction: { parts: [{ text: systemInstruction }] },
+                generationConfig: {
+                    temperature: 0.7, // Conversational and creative tone
+                    maxOutputTokens: 2048, // Quicker responses for chat
+                }
+            };
+
+            try {
+                const response = await fetchWithBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: abortController.signal
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API request failed: Status ${response.status} (${response.statusText})`);
+                }
+                
+                const result = await response.json();
+                
+                const candidate = result.candidates?.[0];
+                const text = candidate?.content?.parts?.[0]?.text;
+
+                if (!text) {
+                    const finishReason = candidate?.finishReason || 'UNKNOWN';
+                    let detail = (finishReason === 'SAFETY') ? 'Content was blocked by safety settings.' : 'The model failed to generate a response.';
+                    throw new Error(`Generation failed: ${detail}`);
+                }
+                
+                // Extract grounding sources
+                let sources = [];
+                const groundingMetadata = candidate.groundingMetadata;
+                if (groundingMetadata && groundingMetadata.groundingAttributions) {
+                    sources = groundingMetadata.groundingAttributions
+                        .map(attribution => ({
+                            uri: attribution.web?.uri,
+                            title: attribution.web?.title,
+                        }))
+                        .filter(source => source.uri);
+                }
+
+                createAIMessage(text, sources);
+
+                promptInput.value = '';
+                autoExpand(promptInput);
+                showMessage("Response received.", 'success');
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    showMessage("Conversation cancelled.", 'error');
+                } else {
+                    console.error('Error generating chat response:', error);
+                    showMessage(`Chat Failed: ${error.message}`, 'error');
+                }
+            } finally {
+                stopLoading();
+            }
+        }
+        
+        // --- Event Listeners ---
+
+        generateButton.addEventListener('click', () => {
+            const prompt = promptInput.value.trim();
+            if (!prompt) return;
+            
+            createUserMessage(prompt);
+            generateChat(prompt);
+        });
+
+        cancelButton.addEventListener('click', () => {
+            if (abortController) {
+                abortController.abort();
+                stopLoading();
+            }
+        });
+
+        promptInput.addEventListener('keydown', (e) => {
+            // Enter key submission (without Shift)
+            if (e.key === 'Enter' && !e.shiftKey && !generateButton.disabled) {
+                e.preventDefault();
+                generateButton.click();
+            }
+        });
+
+        // Initialize button state on load
+        document.addEventListener('DOMContentLoaded', () => {
+            autoExpand(promptInput);
+        });
+    </script>
+</body>
+</html>

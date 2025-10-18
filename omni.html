@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional AI Code Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+       body { 
+    font-family: 'Inter', sans-serif; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #f3f4f6;
+}
+
+/* Navigation Bar Styles */
+header {
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+nav {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a.nav-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #4f46e5;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.code-block { 
+    background-color: #282c34;
+    border-radius: 0.5rem;
+}
+
+.chat-container {
+    flex-grow: 1;
+    padding-bottom: 140px;
+    overflow-y: auto;
+}
+
+.input-area {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    z-index: 10;
+    border-top: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.animate-spin-slow {
+    animation: spin 1.5s linear infinite;
+}
+
+.animate-pulse-slow {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+#messageBox {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+#messageBox.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#result-container {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+#cancelButton.hidden {
+    display: none !important;
+}
+
+.message-bubble {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.typing-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #667eea;
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+.typing-indicator:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.gradient-border {
+    border: 2px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #667eea, #764ba2) border-box;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #764ba2;
+}
+
+.page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.page-title h1 {
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.page-title p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .page-title h1 {
+        font-size: 1.5rem;
+    }
+}
+    </style>
+</head>
+
+    
+<body class="text-gray-800">
+    
+ <header>
+    <nav>
+        <a href="index.html" class="nav-brand">Web Service Hub</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#tools" class="text-gray-600 hover:text-indigo-600">All Tools</a>
+        </div>
+    </nav>
+</header>
+
+<div class="page-header">
+    <div class="max-w-5xl mx-auto px-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-white flex items-center">
+                    <i class="fas fa-code mr-3"></i>
+                    Professional AI Code Generator
+                </h1>
+                <p class="text-sm text-white/90 mt-2">Powered by Gemini 2.5 Flash • Live Streaming • Context-Aware</p>
+            </div>
+            <button id="clearChatButton" class="bg-white/10 hover:bg-white/20 text-white transition-all px-4 py-2 rounded-lg border border-white/20 hover:border-white/30 backdrop-blur-sm" title="Clear Chat">
+                <i class="fas fa-trash-alt mr-2"></i>Clear
+            </button>
+        </div>
+    </div>
+</div>
+    <main class="chat-container">
+        <div class="max-w-5xl mx-auto pt-6 px-4">
+            <div id="responseHistory" class="space-y-4">
+                <div class="flex message-bubble">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="glass-effect p-5 rounded-2xl shadow-lg max-w-full">
+                        <p class="text-gray-800 font-semibold text-lg mb-2">👋 Hello! I'm your professional code assistant.</p>
+                        <p class="text-gray-700 mb-3">I can create production-ready code with <strong>live streaming</strong> and <strong>follow-up edits</strong>. I excel at:</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-700">
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i>Modern web apps with advanced features</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i>Complex algorithms & data structures</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i>Beautiful, responsive UI (Tailwind CSS)</div>
+                            <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i>Full-stack apps with best practices</div>
+                        </div>
+                        <p class="text-gray-700 mt-3"><strong>💡 Pro tip:</strong> After I generate code, say things like "add error handling" or "make it responsive" and I'll update it live!</p>
+                    </div>
+                </div>
+
+<div id="codeOutputSection" class="mt-6">
+    <!-- Code blocks will be dynamically added here -->
+</div>
+                </div>
+        </div>
+    </main>
+    
+    <div class="input-area">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-end gradient-border rounded-2xl p-3 shadow-xl bg-white">
+                <input type="file" id="fileInput" class="hidden" accept="*/*">
+                <button id="attachFileButton" class="text-gray-500 hover:text-indigo-600 transition-colors p-2 rounded-lg mr-2 flex-shrink-0 hover:bg-gray-100" title="Analyze File">
+                    <i class="fas fa-paperclip w-5 h-5"></i>
+                </button>
+
+                <textarea id="prompt" rows="1" class="flex-grow bg-transparent resize-none border-none focus:outline-none placeholder-gray-500 text-base py-2 px-2" placeholder="Describe your code request... (Ctrl+K to focus)" oninput="autoExpand(this)"></textarea>
+                
+                <div class="flex space-x-2 ml-2 flex-shrink-0">
+                    <button id="cancelButton" class="hidden bg-red-600 text-white px-4 py-2 rounded-xl text-sm hover:bg-red-700 transition-colors shadow-lg">
+                        <i class="fas fa-stop mr-1"></i>Cancel
+                    </button>
+
+                    <button id="generateButton" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white w-12 h-12 rounded-xl flex items-center justify-center hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span id="buttonIcon">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
+                        <svg id="loadingSpinner" class="hidden h-5 w-5 text-white animate-spin-slow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="fileStatus" class="text-xs text-white/80 mt-2 pl-1 flex items-center hidden">
+                <i class="fas fa-file-alt mr-2"></i>
+                <span class="truncate max-w-full" id="fileNameDisplay"></span>
+                <button id="clearFileButton" class="ml-2 text-red-400 hover:text-red-300 font-bold text-sm leading-none">&times;</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="messageBox" class="fixed bottom-4 right-4 bg-gradient-to-r from-red-600 to-red-700 text-white p-4 rounded-xl shadow-2xl z-50 transition-opacity duration-300 max-w-md">
+        <div class="flex items-center justify-between">
+            <span id="messageContent" class="mr-4"></span>
+            <button id="closeMessage" class="font-bold text-lg hover:text-gray-200">&times;</button>
+        </div>
+    </div>
+    
+    <script>
+        const generateButton = document.getElementById('generateButton');
+        const cancelButton = document.getElementById('cancelButton');
+        const clearChatButton = document.getElementById('clearChatButton');
+        const buttonIcon = document.getElementById('buttonIcon');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const promptInput = document.getElementById('prompt');
+        const responseHistory = document.getElementById('responseHistory');
+        
+        const attachFileButton = document.getElementById('attachFileButton');
+        const fileInput = document.getElementById('fileInput');
+        const fileStatus = document.getElementById('fileStatus');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const clearFileButton = document.getElementById('clearFileButton');
+        const messageBox = document.getElementById('messageBox');
+        const messageContent = document.getElementById('messageContent');
+        const closeMessageButton = document.getElementById('closeMessage');
+        const codeOutputSection = document.getElementById('codeOutputSection');
+        
+        let currentCodeBlock = null;
+        let currentResultCode = null;
+        let currentCopyButton = null;
+        let currentStreamingIndicator = null;
+        let attachedFileContent = null;
+        let conversationHistory = [];
+        let lastGeneratedCode = "";
+        let abortController = null;
+        
+        // API SETUP - FIXED: Added both streaming and non-streaming URLs
+        const modelName = "gemini-2.5-flash-preview-09-2025";
+        const apiKey = "AIzaSyBIAAAwdRvVuUMyq2RfLYo2HapOe_25j1c"; // WARNING: API key exposed - should be kept secret
+        
+        // Non-streaming URL
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+        
+        // Streaming URL - FIXED: This was missing
+        const streamApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:streamGenerateContent?alt=sse&key=${apiKey}`;
+        
+        const systemInstruction = `You are an elite software engineering AI assistant with decades of equivalent experience across all programming paradigms, languages, and frameworks. Your code is production-ready, professionally architected, and exemplifies industry best practices.
+
+CORE PRINCIPLES:
+1. **Excellence First**: Every piece of code you generate should be something a senior engineer would be proud to deploy. No shortcuts, no placeholders, no "TODO" comments.
+
+2. **Modern & Cutting-Edge**: Always use the latest, most elegant approaches:
+    - React: Hooks, composition patterns, performance optimization
+    - Python: Modern syntax (3.10+), type hints, async/await where beneficial
+    - JavaScript: ES6+, functional programming, clean abstractions
+    - CSS: Tailwind utility classes exclusively for web projects, ensuring full responsiveness.
+
+3. **Complete & Functional**: Generate fully working, ready-to-run code. Include:
+    - All necessary imports and dependencies
+    - Error handling and edge cases
+    - Input validation where appropriate
+    - Clear, helpful comments explaining complex logic
+    - Responsive design (for UI components)
+
+4. **Context-Aware Editing**: When user asks to modify previously generated code:
+    - Reference the existing code provided in the conversation
+    - Make targeted changes while preserving working functionality
+    - Explain what was changed if it's a significant modification
+
+5. **Beautiful & Professional UI** (for web components):
+    - Stunning visual design with Tailwind CSS
+    - Smooth animations and transitions
+    - Excellent UX with intuitive interactions
+    - Full mobile responsiveness
+    - Accessibility considerations (ARIA labels, semantic HTML)
+
+OUTPUT FORMAT:
+- Provide ONLY the raw code in a single code block, no explanations before or after
+- Use appropriate syntax highlighting markers (e.g., \`\`\`html)
+- Ensure code is properly formatted and indented
+- Make it copy-paste ready for immediate use
+
+You are not just generating code—you are crafting elegant solutions that developers will admire and users will love.`;
+        
+        function autoExpand(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+            generateButton.disabled = (textarea.value.trim() === '' && !attachedFileContent);
+        }
+
+        function showMessage(message, type = 'error') {
+            messageContent.textContent = message;
+            
+            messageBox.className = 'fixed bottom-4 right-4 text-white p-4 rounded-xl shadow-2xl z-50 transition-opacity duration-300 max-w-md';
+            
+            if (type === 'error') {
+                messageBox.classList.add('bg-gradient-to-r', 'from-red-600', 'to-red-700');
+            } else if (type === 'success') {
+                messageBox.classList.add('bg-gradient-to-r', 'from-green-600', 'to-green-700');
+            }
+
+            messageBox.classList.add('show');
+            
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 5000); 
+        }
+
+        closeMessageButton.addEventListener('click', () => {
+            messageBox.classList.remove('show');
+        });
+        
+        function createUserMessage(text, file = null) {
+            let fileDisplay = '';
+            if (file) {
+                fileDisplay = `<div class="mt-2 text-xs text-indigo-200 italic flex items-center"><i class="fas fa-paperclip mr-1"></i>File: ${escapeHtml(file)}</div>`;
+            }
+            
+            const messageHtml = `
+                <div class="flex justify-end message-bubble">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-4 rounded-2xl shadow-lg max-w-2xl">
+                        <p>${escapeHtml(text)}</p>
+                        ${fileDisplay}
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-bold ml-4 flex-shrink-0 shadow-lg">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            `;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = messageHtml;
+            responseHistory.appendChild(tempDiv.firstElementChild);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            setTimeout(() => {
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }, 100);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function createCodeBlock() {
+            const codeBlockHTML = `
+                <div class="message-bubble">
+                    <div class="flex w-full">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="glass-effect p-0 rounded-2xl shadow-lg overflow-hidden w-full">
+                            <div class="flex justify-between items-center bg-gradient-to-r from-gray-100 to-gray-50 p-3 border-b border-gray-200">
+                                <div class="flex items-center">
+                                    <span class="text-sm font-semibold text-gray-700 mr-3">Generated Code</span>
+                                    <span class="streaming-indicator hidden text-xs text-indigo-600 flex items-center">
+                                        <span class="typing-indicator mr-1"></span>
+                                        <span class="typing-indicator mr-1"></span>
+                                        <span class="typing-indicator mr-1"></span>
+                                        <span class="ml-2">Streaming...</span>
+                                    </span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="copy-btn text-gray-600 hover:text-indigo-600 transition-colors px-3 py-1 text-sm rounded hover:bg-gray-200" title="Copy Code">
+                                        <i class="fas fa-copy mr-1"></i>Copy
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="code-block relative" style="max-height: 600px; overflow-y: auto;">
+                                <pre><code class="result-code language-javascript p-4 rounded-lg block overflow-x-auto text-sm"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = codeBlockHTML;
+            const codeBlock = tempDiv.firstElementChild;
+            
+            codeOutputSection.appendChild(codeBlock);
+            
+            currentCodeBlock = codeBlock;
+            currentResultCode = codeBlock.querySelector('.result-code');
+            currentCopyButton = codeBlock.querySelector('.copy-btn');
+            currentStreamingIndicator = codeBlock.querySelector('.streaming-indicator');
+            
+            currentCopyButton.addEventListener('click', () => {
+                const textToCopy = currentResultCode.textContent;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalHTML = currentCopyButton.innerHTML;
+                    currentCopyButton.innerHTML = '<i class="fas fa-check mr-1"></i>Copied!';
+                    currentCopyButton.classList.add('text-green-600');
+                    setTimeout(() => { 
+                        currentCopyButton.innerHTML = originalHTML;
+                        currentCopyButton.classList.remove('text-green-600');
+                    }, 2000);
+                }).catch(() => {
+                    showMessage('Failed to copy code', 'error');
+                });
+            });
+            
+            // Add action buttons below code block
+            const actionButtons = document.createElement('div');
+            actionButtons.className = 'flex gap-2 p-3 bg-gray-50 border-t border-gray-200';
+            actionButtons.innerHTML = `
+                <button class="explain-btn px-3 py-1.5 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
+                    <i class="fas fa-lightbulb mr-1"></i>Explain Code
+                </button>
+                <button class="improve-btn px-3 py-1.5 text-sm bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all">
+                    <i class="fas fa-magic mr-1"></i>Add Comments
+                </button>
+                <button class="optimize-btn px-3 py-1.5 text-sm bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-all">
+                    <i class="fas fa-rocket mr-1"></i>Optimize
+                </button>
+            `;
+            
+            codeBlock.querySelector('.glass-effect').appendChild(actionButtons);
+            
+            // Add event listeners for action buttons
+            const explainBtn = actionButtons.querySelector('.explain-btn');
+            const improveBtn = actionButtons.querySelector('.improve-btn');
+            const optimizeBtn = actionButtons.querySelector('.optimize-btn');
+            
+            explainBtn.addEventListener('click', () => {
+                if (!isGenerating()) {
+                    promptInput.value = 'Explain what this code does step by step';
+                    generateButton.click();
+                }
+            });
+            
+            improveBtn.addEventListener('click', () => {
+                if (!isGenerating()) {
+                    promptInput.value = 'Add detailed comments to explain each part of the code';
+                    generateButton.click();
+                }
+            });
+            
+            optimizeBtn.addEventListener('click', () => {
+                if (!isGenerating()) {
+                    promptInput.value = 'Optimize this code for better performance and add error handling';
+                    generateButton.click();
+                }
+            });
+            
+            // Helper to check if generating
+            function isGenerating() {
+                return abortController !== null;
+            }
+            
+            scrollToBottom();
+        }
+
+        function startLoading() {
+            abortController = new AbortController();
+            generateButton.disabled = true;
+            promptInput.disabled = true;
+            buttonIcon.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+            cancelButton.classList.remove('hidden');
+            
+            if (!currentCodeBlock) {
+                createCodeBlock();
+            }
+            
+            if (currentStreamingIndicator) {
+                currentStreamingIndicator.classList.remove('hidden');
+            }
+            
+            scrollToBottom();
+        }
+
+        function stopLoading() {
+            abortController = null;
+            generateButton.disabled = promptInput.value.trim() === '';
+            promptInput.disabled = false;
+            buttonIcon.classList.remove('hidden');
+            loadingSpinner.classList.add('hidden');
+            cancelButton.classList.add('hidden');
+            
+            if (currentStreamingIndicator) {
+                currentStreamingIndicator.classList.add('hidden');
+            }
+        }
+        
+        async function generateCode(prompt, fileContent = null) {
+            startLoading();
+            
+            let userQuery = `Task: ${prompt}
+
+Instructions:
+- Generate complete, production-ready code
+- For web UIs: Use Tailwind CSS exclusively, make it responsive and beautiful
+- Provide ONLY the raw code in a single code block, no explanations`;
+
+            if (fileContent) {
+                userQuery = `I have provided a file with the following content:
+
+\`\`\`
+${fileContent}
+\`\`\`
+
+${userQuery}`;
+            }
+
+            if (lastGeneratedCode && conversationHistory.length > 0) {
+                const contextHint = `\n\nPrevious code context:\n\`\`\`\n${lastGeneratedCode.substring(0, 2000)}\n\`\`\`\n\nIf the user is asking to modify the code above, make the requested changes while keeping the rest intact.`;
+                userQuery += contextHint;
+            }
+
+            conversationHistory.push({
+                role: "user",
+                parts: [{ text: userQuery }]
+            });
+
+            const payload = {
+                contents: conversationHistory,
+                systemInstruction: { parts: [{ text: systemInstruction }] },
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 8000192,
+                }
+            };
+
+            try {
+                currentResultCode.textContent = '';
+                let fullResponse = '';
+                let detectedLanguage = 'plaintext';
+                let isInsideCodeBlock = false;
+                let codeBuffer = '';
+
+                const response = await fetch(streamApiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: abortController.signal
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API request failed: Status ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const jsonData = JSON.parse(line.substring(6));
+                                const text = jsonData.candidates?.[0]?.content?.parts?.[0]?.text;
+                                
+                                if (text) {
+                                    fullResponse += text;
+                                    
+                                    if (!isInsideCodeBlock && text.includes('```')) {
+                                        const match = text.match(/```(\w+)?/);
+                                        if (match) {
+                                            detectedLanguage = match[1] || 'plaintext';
+                                            isInsideCodeBlock = true;
+                                            const afterBackticks = text.split('```' + (match[1] || ''))[1];
+                                            if (afterBackticks) {
+                                                codeBuffer += afterBackticks;
+                                            }
+                                        }
+                                    } else if (isInsideCodeBlock) {
+                                        if (text.includes('```')) {
+                                            const beforeEnd = text.split('```')[0];
+                                            codeBuffer += beforeEnd;
+                                            isInsideCodeBlock = false;
+                                        } else {
+                                            codeBuffer += text;
+                                        }
+                                    }
+                                    
+                                    if (isInsideCodeBlock || codeBuffer) {
+                                        currentResultCode.className = `language-${detectedLanguage} p-4 rounded-lg block overflow-x-auto text-sm`;
+                                        currentResultCode.textContent = codeBuffer;
+                                        hljs.highlightElement(currentResultCode);
+                                    } else {
+                                        currentResultCode.textContent = fullResponse;
+                                    }
+                                }
+                            } catch (e) {
+                                console.warn('Failed to parse SSE data:', e);
+                            }
+                        }
+                    }
+                }
+
+                const codeBlockMatch = fullResponse.match(/```(\w+)?\s*([\s\S]+?)\n```/);
+                if (codeBlockMatch) {
+                    detectedLanguage = codeBlockMatch[1] || 'plaintext';
+                    lastGeneratedCode = codeBlockMatch[2].trim();
+
+                    currentResultCode.className = `language-${detectedLanguage} p-4 rounded-lg block overflow-x-auto text-sm`;
+                    currentResultCode.textContent = lastGeneratedCode;
+                    hljs.highlightElement(currentResultCode);
+             
+                } else {
+                    lastGeneratedCode = fullResponse.trim();
+                    currentResultCode.textContent = lastGeneratedCode;
+                }
+
+                conversationHistory.push({
+                    role: "model",
+                    parts: [{ text: fullResponse }]
+                });
+
+                showMessage("✨ Code generated successfully!", 'success');
+                clearAttachedFile();
+                promptInput.value = '';
+                autoExpand(promptInput);
+                scrollToBottom();
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    currentResultCode.textContent = "⚠️ Generation cancelled. Try again with a different prompt.";
+                    showMessage("Generation cancelled.", 'error');
+                } else {
+                    console.error('Error generating code:', error);
+                    currentResultCode.textContent = `❌ Error: ${error.message}\n\nPlease try again or check your API key.`;
+                    showMessage(`Failed: ${error.message}`, 'error');
+                }
+            } finally {
+                stopLoading();
+            }
+        }
+
+        generateButton.addEventListener('click', () => {
+            const prompt = promptInput.value.trim();
+            if (!prompt && !attachedFileContent) {
+                showMessage("Please enter a request or attach a file.", 'error');
+                return;
+            }
+            
+            const userPrompt = prompt || "Analyze this file and generate appropriate code.";
+            createUserMessage(userPrompt, fileInput.files[0] ? fileInput.files[0].name : null);
+            generateCode(userPrompt, attachedFileContent);
+        });
+
+        cancelButton.addEventListener('click', () => {
+            if (abortController) {
+                abortController.abort();
+                stopLoading();
+            }
+        });
+
+        clearChatButton.addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear the chat history?')) {
+                conversationHistory = [];
+                lastGeneratedCode = "";
+                codeOutputSection.innerHTML = '';
+                currentCodeBlock = null;                
+                while (responseHistory.children.length > 1) {
+                    responseHistory.removeChild(responseHistory.lastChild);
+                }
+                
+                showMessage("Chat cleared successfully!", 'success');
+            }
+        });
+
+        attachFileButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) {
+                clearAttachedFile();
+                return;
+            }
+
+            fileNameDisplay.textContent = file.name;
+            fileStatus.classList.remove('hidden');
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                attachedFileContent = e.target.result;
+                showMessage(`🔎 File '${file.name}' attached!`, 'success');
+                generateButton.disabled = false;
+                promptInput.focus();
+            };
+            reader.onerror = () => {
+                showMessage('Error reading file.', 'error');
+                clearAttachedFile();
+            };
+            reader.readAsText(file); 
+        });
+
+        clearFileButton.addEventListener('click', clearAttachedFile);
+
+        function clearAttachedFile() {
+            attachedFileContent = null;
+            fileInput.value = '';
+            fileStatus.classList.add('hidden');
+            fileNameDisplay.textContent = '';
+            generateButton.disabled = promptInput.value.trim() === '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                promptInput.focus();
+            }
+        });
+
+        promptInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey && !generateButton.disabled) {
+                e.preventDefault();
+                generateButton.click();
+            }
+        });
+
+        promptInput.focus();
+    </script>
+</body>
+</html>

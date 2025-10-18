@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Generator - Web Service Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .code-block { background-color: #282c34; }
+        #protection-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); color: white; display: none;
+            justify-content: center; align-items: center; text-align: center;
+            z-index: 9999; padding: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="protection-overlay">
+        <div>
+            <h2 class="text-3xl font-bold mb-4">Access Denied</h2>
+            <p class="text-lg">For security and ethical reasons, viewing the source code and using developer tools on this page is disabled.</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">Web Service Hub</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="text-gray-600 hover:text-indigo-600">Home</a>
+                <a href="index.html#tools" class="text-gray-600 hover:text-indigo-600">All Tools</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <section class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">AI Code Generator</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                Describe the code you need, select a language, and let AI write it for you.
+            </p>
+        </section>
+
+        <div class="bg-white rounded-lg shadow-xl p-4 sm:p-6 max-w-5xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <label for="language" class="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                    <select id="language" class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option>JavaScript</option>
+                        <option>Python</option>
+                        <option>HTML</option>
+                        <option>CSS</option>
+                        <option>Java</option>
+                        <option>C++</option>
+                        <option>C#</option>
+                        <option>PHP</option>
+                        <option>Ruby</option>
+                        <option>Go</option>
+                        <option>Rust</option>
+                        <option>TypeScript</option>
+                        <option>SQL</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <label for="prompt" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea id="prompt" rows="4" class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g., A Python function that takes a list of numbers and returns the sum."></textarea>
+                </div>
+                <div class="md:col-span-2 text-center">
+                    <button id="generateButton" class="bg-indigo-600 text-white font-bold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:bg-indigo-300 w-full sm:w-auto">
+                        Generate Code
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <h3 class="text-xl font-semibold mb-2">Generated Code:</h3>
+                <div id="result-container" class="code-block rounded-lg relative">
+                    <button id="copyButton" class="absolute top-2 right-2 bg-gray-600 text-white px-3 py-1 text-sm rounded hover:bg-gray-500 transition-colors">Copy</button>
+                    <pre><code id="result" class="language-javascript p-4 rounded-lg"></code></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        const generateButton = document.getElementById('generateButton');
+        const promptInput = document.getElementById('prompt');
+        const languageSelect = document.getElementById('language');
+        const resultCode = document.getElementById('result');
+        const copyButton = document.getElementById('copyButton');
+        
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        
+        generateButton.addEventListener('click', async () => {
+            const prompt = promptInput.value.trim();
+            const language = languageSelect.value;
+            if (!prompt) {
+                // IMPORTANT: Replaced alert() with console.error/log as per instructions.
+                console.error("Please enter a description for the code."); 
+                return;
+            }
+
+            generateButton.disabled = true;
+            generateButton.textContent = 'Generating...';
+            resultCode.textContent = 'Loading...';
+            hljs.highlightElement(resultCode);
+
+            const fullPrompt = `Generate a single, complete, and well-commented code snippet in ${language}. The code should accomplish the following task: "${prompt}". Only output the raw code itself inside a single code block, with no extra explanations or introductory text before or after it.`;
+
+            const payload = {
+                contents: [{ parts: [{ text: fullPrompt }] }],
+                generationConfig: {
+                    temperature: 0.3,
+                    maxOutputTokens: 2048,
+                }
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                 if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+                const result = await response.json();
+                let codeText = result.candidates[0].content.parts[0].text;
+                
+                // Clean the response to get only the code
+                // FIXED: The regular expression was incomplete in the previous file.
+                const codeBlockRegex = /
+                                const match = codeText.match(codeBlockRegex);
+                if (match) {
+                    codeText = match[1].trim();
+                } else {
+                    // Fallback in case the model doesn't use triple backticks
+                    codeText = codeText.trim();
+                }
+
+                resultCode.className = `language-${language.toLowerCase()}`;
+                resultCode.textContent = codeText;
+                hljs.highlightElement(resultCode);
+            } catch (error) {
+                console.error('Error generating code:', error);
+                resultCode.textContent = 'Error generating code. Please check the console for details.';
+            } finally {
+                generateButton.disabled = false;
+                generateButton.textContent = 'Generate Code';
+            }
+        });
+
+        copyButton.addEventListener('click', () => {
+             const textToCopy = resultCode.textContent;
+             const textArea = document.createElement('textarea');
+             textArea.value = textToCopy;
+             document.body.appendChild(textArea);
+             textArea.select();
+             document.execCommand('copy');
+             document.body.removeChild(textArea);
+             copyButton.textContent = 'Copied!';
+             setTimeout(() => { copyButton.textContent = 'Copy'; }, 2000);
+        });
+
+        // Protection script
+        const protectionOverlay = document.getElementById('protection-overlay');
+        const showProtection = () => { protectionOverlay.style.display = 'flex'; };
+        document.addEventListener('contextmenu', (e) => { e.preventDefault(); showProtection(); });
+        document.onkeydown = function(e) {
+            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) || (e.ctrlKey && e.key === "U")) {
+                e.preventDefault(); showProtection(); return false;
+            }
+        };
+    </script>
+</body>
+</html>
+

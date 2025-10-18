@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer - Web Service Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+         .time {
+             font-family: 'monospace';
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">Web Service Hub</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="text-gray-600 hover:text-indigo-600">Home</a>
+                <a href="index.html#tools" class="text-gray-600 hover:text-indigo-600">All Tools</a>
+            </div>
+             <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="index.html" class="block py-2 text-gray-600 hover:text-indigo-600">Home</a>
+            <a href="index.html#tools" class="block py-2 text-gray-600 hover:text-indigo-600">All Tools</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-6 py-12">
+        <div class="max-w-xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
+            <h1 class="text-3xl font-bold text-gray-900 mb-6">Countdown Timer</h1>
+            <div id="inputs" class="flex justify-center space-x-2 mb-4">
+                <input type="number" id="hours" class="w-20 p-2 text-center rounded-md border-gray-300" placeholder="HH" min="0">
+                <input type="number" id="minutes" class="w-20 p-2 text-center rounded-md border-gray-300" placeholder="MM" min="0" max="59">
+                <input type="number" id="seconds" class="w-20 p-2 text-center rounded-md border-gray-300" placeholder="SS" min="0" max="59">
+            </div>
+            <div id="display" class="time text-6xl font-bold text-indigo-600 my-8 hidden">00:00:00</div>
+            <div class="flex justify-center space-x-4">
+                <button id="startBtn" class="bg-indigo-600 text-white font-bold py-2 px-6 rounded-md hover:bg-indigo-700">Start</button>
+                <button id="resetBtn" class="bg-gray-600 text-white font-bold py-2 px-6 rounded-md hover:bg-gray-700">Reset</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-16">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500">
+            <p>&copy; 2024 Web Service Hub. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        let countdown;
+        const display = document.getElementById('display');
+        const inputsDiv = document.getElementById('inputs');
+        
+        document.getElementById('startBtn').addEventListener('click', () => {
+            const hours = parseInt(document.getElementById('hours').value) || 0;
+            const minutes = parseInt(document.getElementById('minutes').value) || 0;
+            const seconds = parseInt(document.getElementById('seconds').value) || 0;
+            
+            let totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+            if (totalSeconds <= 0) return;
+
+            display.classList.remove('hidden');
+            inputsDiv.classList.add('hidden');
+            
+            countdown = setInterval(() => {
+                if (totalSeconds <= 0) {
+                    clearInterval(countdown);
+                    display.textContent = "Time's up!";
+                    return;
+                }
+                totalSeconds--;
+                updateDisplay(totalSeconds);
+            }, 1000);
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            clearInterval(countdown);
+            display.classList.add('hidden');
+            inputsDiv.classList.remove('hidden');
+            document.getElementById('hours').value = '';
+            document.getElementById('minutes').value = '';
+            document.getElementById('seconds').value = '';
+        });
+
+        function updateDisplay(totalSeconds) {
+            const h = Math.floor(totalSeconds / 3600);
+            const m = Math.floor((totalSeconds % 3600) / 60);
+            const s = totalSeconds % 60;
+            display.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+</html>

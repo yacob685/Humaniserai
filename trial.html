@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobalTech Solutions - Innovate. Connect. Thrive.</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom CSS for sophisticated animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+        .animate-slide-up { animation: slideUp 0.8s ease-out forwards; }
+        .animate-scale-in { animation: scaleIn 0.8s ease-out forwards; }
+
+        /* Initial state for elements that will be animated on scroll */
+        .opacity-0-on-load { opacity: 0; }
+
+        /* Modal specific transitions */
+        .modal {
+            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+        }
+        .modal.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            transition: transform 0.3s ease-out;
+            transform: translateY(-20px);
+        }
+        .modal.visible .modal-content {
+            transform: translateY(0);
+        }
+
+        /* Delay utilities for staggered animations */
+        .animation-delay-100 { animation-delay: 100ms; }
+        .animation-delay-200 { animation-delay: 200ms; }
+        .animation-delay-300 { animation-delay: 300ms; }
+        .animation-delay-400 { animation-delay: 400ms; }
+        .animation-delay-500 { animation-delay: 500ms; }
+        .animation-delay-600 { animation-delay: 600ms; }
+        .animation-delay-700 { animation-delay: 700ms; }
+
+        /* Body lock for modals/overlays */
+        .body-lock {
+            overflow: hidden;
+            touch-action: none; /* Prevents scroll on touch devices */
+        }
+    </style>
+</head>
+<body class="font-sans antialiased bg-gray-50 text-gray-900 overflow-x-hidden">
+
+    <!-- Navigation Bar -->
+    <header class="bg-white shadow-sm fixed w-full z-50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-slate-800 hover:text-blue-600 transition-colors duration-300" aria-label="GlobalTech Home">
+                GlobalTech
+            </a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#hero" class="text-slate-700 hover:text-blue-600 transition-colors duration-300 font-medium">Home</a>
+                <a href="#services" class="text-slate-700 hover:text-blue-600 transition-colors duration-300 font-medium">Services</a>
+                <a href="#about" class="text-slate-700 hover:text-blue-600 transition-colors duration-300 font-medium">About Us</a>
+                <a href="#testimonials" class="text-slate-700 hover:text-blue-600 transition-colors duration-300 font-medium">Testimonials</a>
+                <a href="#contact" class="text-slate-700 hover:text-blue-600 transition-colors duration-300 font-medium">Contact</a>
+                <button id="login-btn" class="px-5 py-2 border border-slate-300 text-slate-700 rounded-md hover:bg-slate-100 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Log In</button>
+                <button id="signup-btn" class="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Sign Up</button>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-slate-800 focus:outline-none" aria-label="Open mobile menu">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-white bg-opacity-95 z-40 flex flex-col items-center justify-center space-y-6 text-xl">
+            <button id="close-mobile-menu" class="absolute top-4 right-4 text-slate-800 focus:outline-none" aria-label="Close mobile menu">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <a href="#hero" class="text-slate-800 hover:text-blue-600 transition-colors duration-300 font-medium py-2" onclick="closeMobileMenu()">Home</a>
+            <a href="#services" class="text-slate-800 hover:text-blue-600 transition-colors duration-300 font-medium py-2" onclick="closeMobileMenu()">Services</a>
+            <a href="#about" class="text-slate-800 hover:text-blue-600 transition-colors duration-300 font-medium py-2" onclick="closeMobileMenu()">About Us</a>
+            <a href="#testimonials" class="text-slate-800 hover:text-blue-600 transition-colors duration-300 font-medium py-2" onclick="closeMobileMenu()">Testimonials</a>
+            <a href="#contact" class="text-slate-800 hover:text-blue-600 transition-colors duration-300 font-medium py-2" onclick="closeMobileMenu()">Contact</a>
+            <button id="mobile-login-btn" class="px-6 py-3 border border-slate-300 text-slate-700 rounded-md hover:bg-slate-100 transition-all duration-300 w-48 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Log In</button>
+            <button id="mobile-signup-btn" class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300 w-48 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Sign Up</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="relative bg-gradient-to-br from-slate-900 to-slate-700 text-white flex items-center justify-center min-h-screen pt-16 md:pt-0">
+            <div class="absolute inset-0 bg-fixed bg-cover bg-center opacity-10" style="background-image: url('https://images.unsplash.com/photo-1519389950473-4757c2574846?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');"></div>
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 opacity-0-on-load animate-slide-up">
+                    Innovate. Connect. Thrive.
+                </h1>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-10 text-slate-300 opacity-0-on-load animate-slide-up animation-delay-200">
+                    Empowering businesses worldwide with cutting-edge technology solutions and unparalleled expertise.
+                </p>
+                <div class="space-x-4 opacity-0-on-load animate-slide-up animation-delay-400">
+                    <a href="#services" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Explore Our Services
+                    </a>
+                    <a href="#contact" class="inline-block border border-white hover:bg-white hover:text-blue-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4 opacity-0-on-load animate-slide-up">Our Core Services</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-16 opacity-0-on-load animate-slide-up animation-delay-100">
+                    We offer a comprehensive suite of services designed to propel your business forward in the digital age.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Service Card 1 -->
+                    <div class="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 opacity-0-on-load animate-slide-up animation-delay-200">
+                        <div class="text-blue-600 mb-6 mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-blue-100">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-1.25-3M10 11l4-2V3l4 2v7l-4 2-4-2v-7l4-2z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-800 mb-3">Custom Software Development</h3>
+                        <p class="text-slate-600">
+                            Tailored software solutions built to precise specifications, enhancing efficiency and innovation.
+                        </p>
+                    </div>
+                    <!-- Service Card 2 -->
+                    <div class="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 opacity-0-on-load animate-slide-up animation-delay-300">
+                        <div class="text-blue-600 mb-6 mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-blue-100">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-800 mb-3">Cloud Solutions & DevOps</h3>
+                        <p class="text-slate-600">
+                            Scalable and secure cloud infrastructure, empowering agile development and seamless operations.
+                        </p>
+                    </div>
+                    <!-- Service Card 3 -->
+                    <div class="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 opacity-0-on-load animate-slide-up animation-delay-400">
+                        <div class="text-blue-600 mb-6 mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-blue-100">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-800 mb-3">Data Analytics & AI</h3>
+                        <p class="text-slate-600">
+                            Unlocking insights from your data with advanced analytics and intelligent AI-driven solutions.
+                        </p>
+                    </div>
+                    <!-- Service Card 4 -->
+                    <div class="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 opacity-0-on-load animate-slide-up animation-delay-500">
+                        <div class="text-blue-600 mb-6 mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-blue-100">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17l3-3m0 0l3 3m-3-3v6m0-11V9m0 0V3m0 6a2 2 0 100-4 2 2 0 000 4zm-5 8a2 2 0 100-4 2 2 0 000 4zm10 0a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-800 mb-3">Cybersecurity Consulting</h3>
+                        <p class="text-slate-600">
+                            Protecting your digital assets with robust security strategies and proactive threat management.
+                        </p>
+                    </div>
+                     <!-- Service Card 5 -->
+                     <div class="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 opacity-0-on-load animate-slide-up animation-delay-600">
+                        <div class="text-blue-600 mb-6 mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-blue-100">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-800 mb-3">IT Consulting & Strategy</h3>
+                        <p class="text-slate-600">
+                            Expert guidance to optimize your IT infrastructure and align technology with business goals.
+                        </p>
+                    </div>
+                     <!-- Service Card 6 -->
+                     <div class="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2 opacity-0-on-load animate-slide-up animation-delay-700">
+                        <div class="text-blue-600 mb-6 mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-blue-100">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 8a8 8 0 01-8-8c0-5.429 3.136-10 8-10s8 4.571 8 10a8 8 0 01-8 8z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-800 mb-3">Global Support & Maintenance</h3>
+                        <p class="text-slate-600">
+                            24/7 world-class support and proactive maintenance to ensure uninterrupted operations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-20 md:py-28 bg-slate-800 text-white">
+            <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="lg:order-2 opacity-0-on-load animate-fade-in">
+                    <img src="https://images.unsplash.com/photo-1552588320-302a24564c7f?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDBMHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Team collaborating in a modern office" class="rounded-lg shadow-2xl object-cover w-full h-full max-h-[500px]">
+                </div>
+                <div class="lg:order-1 opacity-0-on-load animate-slide-up animation-delay-200">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">About GlobalTech Solutions</h2>
+                    <p class="text-lg text-slate-300 mb-6">
+                        Founded on the principles of innovation and excellence, GlobalTech Solutions has grown into a leading technology partner for enterprises across the globe. We believe in harnessing the power of technology to solve complex business challenges and drive sustainable growth.
+                    </p>
+                    <p class="text-slate-300 mb-6">
+                        Our diverse team of experts brings together decades of experience in software engineering, cloud architecture, data science, and cybersecurity. We are committed to delivering bespoke solutions that not only meet but exceed our clients' expectations, fostering long-term partnerships built on trust and mutual success.
+                    </p>
+                    <a href="#contact" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 md:py-28 bg-gray-50">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4 opacity-0-on-load animate-slide-up">What Our Clients Say</h2>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-16 opacity-0-on-load animate-slide-up animation-delay-100">
+                    Hear directly from the businesses we've helped transform and empower.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Testimonial Card 1 -->
+                    <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 opacity-0-on-load animate-slide-up animation-delay-200">
+                        <p class="text-slate-700 italic mb-6 leading-relaxed">
+                            "GlobalTech Solutions delivered an incredible custom software platform that revolutionized our internal operations. Their team's expertise and dedication were truly exceptional."
+                        </p>
+                        <div class="flex items-center justify-center">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client Avatar - John Doe" class="w-14 h-14 rounded-full mr-4 object-cover border-2 border-blue-600">
+                            <div>
+                                <p class="font-semibold text-slate-800">John Doe</p>
+                                <p class="text-sm text-slate-500">CEO, Innovate Corp</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial Card 2 -->
+                    <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 opacity-0-on-load animate-slide-up animation-delay-300">
+                        <p class="text-slate-700 italic mb-6 leading-relaxed">
+                            "Their cloud migration strategy was seamless and efficient. GlobalTech's support has been outstanding, allowing us to focus on our core business with peace of mind."
+                        </p>
+                        <div class="flex items-center justify-center">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client Avatar - Jane Smith" class="w-14 h-14 rounded-full mr-4 object-cover border-2 border-blue-600">
+                            <div>
+                                <p class="font-semibold text-slate-800">Jane Smith</p>
+                                <p class="text-sm text-slate-500">CTO, DataFlow Analytics</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial Card 3 -->
+                    <div class="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 opacity-0-on-load animate-slide-up animation-delay-400">
+                        <p class="text-slate-700 italic mb-6 leading-relaxed">
+                            "The cybersecurity audit and implementation provided by GlobalTech were thorough and highly effective. We now feel much more secure and compliant."
+                        </p>
+                        <div class="flex items-center justify-center">
+                            <img src="https://randomuser.me/api/portraits/men/47.jpg" alt="Client Avatar - Robert Johnson" class="w-14 h-14 rounded-full mr-4 object-cover border-2 border-blue-600">
+                            <div>
+                                <p class="font-semibold text-slate-800">Robert Johnson</p>
+                                <p class="text-sm text-slate-500">COO, SecureNet Solutions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section id="contact" class="py-20 md:py-28 bg-gradient-to-br from-blue-600 to-blue-800 text-white text-center">
+            <div class="container mx-auto px-6 opacity-0-on-load animate-scale-in">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Business?</h2>
+                <p class="text-lg md:text-xl max-w-3xl mx-auto mb-10 text-blue-100">
+                    Partner with GlobalTech Solutions and unlock your full potential. Let's build the future together.
+                </p>
+                <a href="mailto:info@globaltech.com" class="inline-block bg-white hover:bg-gray-100 text-blue-700 font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+                    Request a Consultation
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-12 md:py-16">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-10">
+            <!-- Company Info -->
+            <div>
+                <h3 class="text-xl font-bold text-white mb-4">GlobalTech</h3>
+                <p class="text-slate-400 leading-relaxed mb-4">
+                    Empowering businesses worldwide with cutting-edge technology solutions.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-slate-400 hover:text-blue-600 transition-colors duration-300" aria-label="Facebook">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.271 0-4.192 1.581-4.192 4.615v3.385z"></path></svg>
+                    </a>
+                    <a href="#" class="text-slate-400 hover:text-blue-600 transition-colors duration-300" aria-label="Twitter">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.791-1.574 2.16-2.723-.951.555-2.005.959-3.127 1.184C18.473 3.498 17.18 3 15.686 3c-3.13 0-5.666 2.54-5.666 5.669 0 .444.05.875.147 1.292-4.717-.237-8.892-2.495-11.693-5.92-.484.832-.766 1.794-.766 2.824 0 1.96.995 3.692 2.507 4.707-.929-.03-1.8-.28-2.55-.745v.072c0 2.753 1.956 5.044 4.559 5.562-.478.135-.98.207-1.494.207-.366 0-.72-.036-1.065-.102.725 2.268 2.835 3.925 5.337 3.962-1.944 1.527-4.39 2.44-7.05 2.44-4.57 0-8.85-2.585-11.604-6.324 2.929.18 6.035-.193 8.878-1.577z"></path></svg>
+                    </a>
+                    <a href="#" class="text-slate-400 hover:text-blue-600 transition-colors duration-300" aria-label="LinkedIn">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.325-.028-3.044-1.853-3.044-1.854 0-2.136 1.445-2.136 2.951v5.662h-3.554v-12.001h3.418v1.667h.046c.477-.9 1.635-1.851 3.373-1.851 3.614 0 4.28 2.378 4.28 5.402v6.216zM5.004 7.005c-1.644 0-2.973-1.332-2.973-2.977s1.329-2.977 2.973-2.977c1.649 0 2.978 1.332 2.978 2.977s-1.329 2.977-2.978 2.977zm-1.782 13.447h3.564v-12.001h-3.564v12.001z"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-xl font-bold text-white mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="#hero" class="text-slate-400 hover:text-blue-600 transition-colors duration-300">Home</a></li>
+                    <li><a href="#services" class="text-slate-400 hover:text-blue-600 transition-colors duration-300">Services</a></li>
+                    <li><a href="#about" class="text-slate-400 hover:text-blue-600 transition-colors duration-300">About Us</a></li>
+                    <li><a href="#testimonials" class="text-slate-400 hover:text-blue-600 transition-colors duration-300">Testimonials</a></li>
+                    <li><a href="#contact" class="text-slate-400 hover:text-blue-600 transition-colors duration-300">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div>
+                <h3 class="text-xl font-bold text-white mb-4">Contact Us</h3>
+                <address class="not-italic text-slate-400 mb-2">123 Tech Avenue, Global City, GC 10001</address>
+                <p class="text-slate-400 mb-2">Email: <a href="mailto:info@globaltech.com" class="hover:text-blue-600 transition-colors duration-300">info@globaltech.com</a></p>
+                <p class="text-slate-400">Phone: <a href="tel:+1234567890" class="hover:text-blue-600 transition-colors duration-300">+1 (234) 567-890</a></p>
+            </div>
+
+            <!-- Newsletter Signup -->
+            <div class="lg:col-span-1">
+                <h3 class="text-xl font-bold text-white mb-4">Stay Connected</h3>
+                <p class="text-slate-400 mb-4">Subscribe to our newsletter for the latest updates.</p>
+                <form class="flex flex-col sm:flex-row gap-2" onsubmit="handleNewsletterSubmit(event)">
+                    <label for="newsletter-email" class="sr-only">Email address</label>
+                    <input type="email" id="newsletter-email" placeholder="Your email address" required
+                           class="flex-grow px-4 py-2 rounded-md bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <button type="submit"
+                            class="px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="container mx-auto px-6 text-center text-slate-500 text-sm mt-12 pt-8 border-t border-slate-700">
+            &copy; <span id="current-year"></span> GlobalTech Solutions. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[999] hidden" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+        <div class="modal-content bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4 relative">
+            <button class="close-modal absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors duration-300 focus:outline-none" aria-label="Close login modal">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 id="login-modal-title" class="text-2xl font-bold text-slate-800 mb-6 text-center">Log In to Your Account</h2>
+            <form id="login-form" onsubmit="handleLoginSubmit(event)">
+                <div class="mb-4">
+                    <label for="login-email" class="block text-slate-700 text-sm font-medium mb-2">Email Address</label>
+                    <input type="email" id="login-email" name="email" required autocomplete="email"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="your@example.com">
+                </div>
+                <div class="mb-2">
+                    <label for="login-password" class="block text-slate-700 text-sm font-medium mb-2">Password</label>
+                    <input type="password" id="login-password" name="password" required autocomplete="current-password"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="••••••••">
+                </div>
+                <div class="text-right mb-6">
+                    <button type="button" id="forgot-password-link" class="text-sm text-blue-600 hover:underline focus:outline-none">Forgot Password?</button>
+                </div>
+                <button type="submit"
+                        class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Log In
+                </button>
+                <p class="text-center text-sm text-slate-600 mt-4">
+                    Don't have an account? <button type="button" id="switch-to-signup-from-login" class="text-blue-600 hover:underline focus:outline-none">Sign Up</button>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[999] hidden" role="dialog" aria-modal="true" aria-labelledby="signup-modal-title">
+        <div class="modal-content bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4 relative">
+            <button class="close-modal absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors duration-300 focus:outline-none" aria-label="Close sign up modal">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 id="signup-modal-title" class="text-2xl font-bold text-slate-800 mb-6 text-center">Create Your Account</h2>
+            <form id="signup-form" onsubmit="handleSignupSubmit(event)">
+                <div class="mb-4">
+                    <label for="signup-name" class="block text-slate-700 text-sm font-medium mb-2">Full Name</label>
+                    <input type="text" id="signup-name" name="name" required autocomplete="name"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="John Doe">
+                </div>
+                <div class="mb-4">
+                    <label for="signup-email" class="block text-slate-700 text-sm font-medium mb-2">Email Address</label>
+                    <input type="email" id="signup-email" name="email" required autocomplete="email"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="your@example.com">
+                </div>
+                <div class="mb-6">
+                    <label for="signup-password" class="block text-slate-700 text-sm font-medium mb-2">Password</label>
+                    <input type="password" id="signup-password" name="password" required autocomplete="new-password"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           placeholder="••••••••">
+                    <p class="text-xs text-slate-500 mt-1" id="signup-password-hint">Minimum 8 characters, at least one uppercase, one lowercase, one number.</p>
+                </div>
+                <button type="submit"
+                        class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Sign Up
+                </button>
+                <p class="text-center text-sm text-slate-600 mt-4">
+                    Already have an account? <button type="button" id="switch-to-login-from-signup" class="text-blue-600 hover:underline focus:outline-none">Log In</button>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-password-modal" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[999] hidden" role="dialog" aria-modal="true" aria-labelledby="forgot-password-modal-title">
+        <div class="modal-content bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4 relative">
+            <button class="close-modal absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors duration-300 focus:outline-none" aria-label="Close forgot password modal">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 id="forgot-password-modal-title" class="text-2xl font-bold text-slate-800 mb-6 text-center">Forgot Your Password?</h2>
+            <form id="forgot-password-form" onsubmit="handleForgotPasswordSubmit(event)">
+                <div id="forgot-password-email-step">
+                    <p class="text-slate-600 mb-4 text-center">Enter your email address to reset your password.</p>
+                    <div class="mb-4">
+                        <label for="forgot-email" class="block text-slate-700 text-sm font-medium mb-2">Email Address</label>
+                        <input type="email" id="forgot-email" name="email" required autocomplete="email"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="your@example.com">
+                    </div>
+                    <button type="submit"
+                            class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Reset Password
+                    </button>
+                    <p class="text-center text-sm text-slate-600 mt-4">
+                        Remember your password? <button type="button" id="switch-to-login-from-forgot" class="text-blue-600 hover:underline focus:outline-none">Log In</button>
+                    </p>
+                </div>
+
+                <div id="forgot-password-new-password-step" class="hidden">
+                    <p class="text-slate-600 mb-4 text-center">Please enter and confirm your new password.</p>
+                    <div class="mb-4">
+                        <label for="new-password" class="block text-slate-700 text-sm font-medium mb-2">New Password</label>
+                        <input type="password" id="new-password" name="newPassword" required autocomplete="new-password"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="••••••••">
+                    </div>
+                    <div class="mb-6">
+                        <label for="confirm-new-password" class="block text-slate-700 text-sm font-medium mb-2">Confirm New Password</label>
+                        <input type="password" id="confirm-new-password" name="confirmNewPassword" required autocomplete="new-password"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                               placeholder="••••••••">
+                        <p class="text-xs text-slate-500 mt-1" id="new-password-hint">Minimum 8 characters, at least one uppercase, one lowercase, one number.</p>
+                    </div>
+                    <button type="submit"
+                            class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Set New Password
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Usage Restriction Modal -->
+    <div id="restriction-modal" class="modal fixed inset-0 bg-gray-900 bg-opacity-90 flex items-center justify-center z-[1000] hidden" role="dialog" aria-modal="true" aria-labelledby="restriction-modal-title">
+        <div class="modal-content bg-white p-8 rounded-lg shadow-xl max-w-sm w-full mx-4 text-center relative">
+            <h2 id="restriction-modal-title" class="text-2xl font-bold text-slate-800 mb-4">Time's Up!</h2>
+            <p class="text-slate-700 mb-6">
+                Your complimentary browsing period has ended. To continue using GlobalTech Solutions, please acknowledge.
+            </p>
+            <button id="acknowledge-restriction-btn"
+                    class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                Continue Browsing
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Utility function to get users from Local Storage
+        const getUsers = () => {
+            const usersJson = localStorage.getItem('users');
+            return usersJson ? JSON.parse(usersJson) : [];
+        };
+
+        // Utility function to save users to Local Storage
+        const saveUsers = (users) => {
+            localStorage.setItem('users', JSON.stringify(users));
+        };
+
+        /**
+         * IMPORTANT SECURITY NOTE:
+         * In a real-world application, passwords should NEVER be stored or transmitted in plain text.
+         * They must be securely hashed on the server-side using strong, modern algorithms (e.g., bcrypt, Argon2).
+         * For this client-side-only demonstration, we are using btoa (Base64 encoding) as a *simulation* of hashing
+         * to prevent direct plain-text visibility in local storage. This offers NO real security.
+         * Do NOT use this password handling approach in a production environment.
+         */
+        const hashPassword = (password) => btoa(password); // Simulated hashing
+        const verifyPassword = (storedHashedPassword, enteredPassword) => storedHashedPassword === btoa(enteredPassword);
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/; // Min 8 chars, 1 uppercase, 1 lowercase, 1 number
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+
+        function openMobileMenu() {
+            mobileMenu.classList.remove('hidden');
+            document.body.classList.add('body-lock'); // Prevent scrolling when menu is open
+            mobileMenu.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.add('hidden');
+            document.body.classList.remove('body-lock'); // Restore scrolling
+            mobileMenu.setAttribute('aria-expanded', 'false');
+        }
+
+        mobileMenuButton.addEventListener('click', openMobileMenu);
+        closeMobileMenuButton.addEventListener('click', closeMobileMenu);
+
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+
+        // Modal Logic
+        const loginModal = document.getElementById('login-modal');
+        const signupModal = document.getElementById('signup-modal');
+        const forgotPasswordModal = document.getElementById('forgot-password-modal');
+        const restrictionModal = document.getElementById('restriction-modal');
+
+        const loginBtn = document.getElementById('login-btn');
+        const signupBtn = document.getElementById('signup-btn');
+        const mobileLoginBtn = document.getElementById('mobile-login-btn');
+        const mobileSignupBtn = document.getElementById('mobile-signup-btn');
+
+        const closeButtons = document.querySelectorAll('.close-modal');
+        const switchToSignupFromLogin = document.getElementById('switch-to-signup-from-login');
+        const switchToLoginFromSignup = document.getElementById('switch-to-login-from-signup');
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+        const switchToLoginFromForgot = document.getElementById('switch-to-login-from-forgot');
+
+        const forgotPasswordEmailStep = document.getElementById('forgot-password-email-step');
+        const forgotPasswordNewPasswordStep = document.getElementById('forgot-password-new-password-step');
+
+        let currentForgotPasswordEmail = ''; // To store email during the reset process
+
+        function openModal(modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('visible');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('body-lock'); // Prevent scrolling when modal is open
+            
+            // Focus on the first interactive element in the modal for accessibility
+            const firstFocusableElement = modal.querySelector('input, button, a');
+            if (firstFocusableElement) {
+                firstFocusableElement.focus();
+            }
+        }
+
+        function closeModal(modal) {
+            modal.classList.remove('visible');
+            modal.classList.add('hidden');
+            modal.setAttribute('aria-hidden', 'true');
+            // Only remove body-lock if no other modals are open
+            if (!document.querySelector('.modal.visible')) {
+                document.body.classList.remove('body-lock'); // Restore scrolling
+            }
+            // Reset forgot password modal state if it's being closed
+            if (modal === forgotPasswordModal) {
+                forgotPasswordEmailStep.classList.remove('hidden');
+                forgotPasswordNewPasswordStep.classList.add('hidden');
+                document.getElementById('forgot-password-form').reset();
+                currentForgotPasswordEmail = '';
+            }
+            // Reset forms
+            if (modal === loginModal) document.getElementById('login-form').reset();
+            if (modal === signupModal) document.getElementById('signup-form').reset();
+        }
+
+        // Event listeners for opening modals
+        loginBtn.addEventListener('click', () => openModal(loginModal));
+        signupBtn.addEventListener('click', () => openModal(signupModal));
+        mobileLoginBtn.addEventListener('click', () => { closeMobileMenu(); openModal(loginModal); });
+        mobileSignupBtn.addEventListener('click', () => { closeMobileMenu(); openModal(signupModal); });
+
+        // Event listeners for closing modals
+        closeButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const modal = e.target.closest('.modal');
+                if (modal) closeModal(modal);
+            });
+        });
+
+        // Close modal when clicking outside
+        [loginModal, signupModal, forgotPasswordModal, restrictionModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal);
+            });
+        });
+
+        // Close modal when Escape key is pressed
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (restrictionModal.classList.contains('visible')) {
+                    // Restriction modal cannot be closed by escape
+                    return;
+                }
+                if (signupModal.classList.contains('visible')) {
+                    closeModal(signupModal);
+                } else if (loginModal.classList.contains('visible')) {
+                    closeModal(loginModal);
+                } else if (forgotPasswordModal.classList.contains('visible')) {
+                    closeModal(forgotPasswordModal);
+                } else if (!mobileMenu.classList.contains('hidden')) {
+                    closeMobileMenu();
+                }
+            }
+        });
+
+        // Switch between login and signup forms
+        switchToSignupFromLogin.addEventListener('click', () => {
+            closeModal(loginModal);
+            openModal(signupModal);
+        });
+        switchToLoginFromSignup.addEventListener('click', () => {
+            closeModal(signupModal);
+            openModal(loginModal);
+        });
+
+        // Forgot Password flow
+        forgotPasswordLink.addEventListener('click', () => {
+            closeModal(loginModal);
+            openModal(forgotPasswordModal);
+        });
+        switchToLoginFromForgot.addEventListener('click', () => {
+            closeModal(forgotPasswordModal);
+            openModal(loginModal);
+        });
+
+        // Handle form submissions
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const email = e.target.elements['email'].value;
+            const password = e.target.elements['password'].value;
+
+            const users = getUsers();
+            const user = users.find(u => u.email === email);
+
+            if (user && verifyPassword(user.password, password)) {
+                console.log('Login successful:', { email });
+                alert('Login successful!');
+                closeModal(loginModal);
+                // In a real app, you'd set a session token here
+            } else {
+                alert('Invalid email or password.');
+            }
+            e.target.reset();
+        }
+
+        function handleSignupSubmit(e) {
+            e.preventDefault();
+            const name = e.target.elements['name'].value;
+            const email = e.target.elements['email'].value;
+            const password = e.target.elements['password'].value;
+
+            if (!passwordRegex.test(password)) {
+                alert('Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, and one number.');
+                return;
+            }
+
+            const users = getUsers();
+            if (users.some(u => u.email === email)) {
+                alert('An account with this email already exists. Please log in or use a different email.');
+                return;
+            }
+
+            const newUser = {
+                name,
+                email,
+                password: hashPassword(password) // Store hashed password
+            };
+            users.push(newUser);
+            saveUsers(users);
+
+            console.log('Sign Up successful:', newUser);
+            alert('Account created successfully! You can now log in.');
+            closeModal(signupModal);
+            openModal(loginModal); // Optionally direct to login after signup
+            e.target.reset();
+        }
+
+        function handleForgotPasswordSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+
+            if (forgotPasswordEmailStep.classList.contains('hidden')) {
+                // This is the new password step
+                const newPassword = form.elements['newPassword'].value;
+                const confirmNewPassword = form.elements['confirmNewPassword'].value;
+
+                if (newPassword !== confirmNewPassword) {
+                    alert('New password and confirmation do not match.');
+                    return;
+                }
+                if (!passwordRegex.test(newPassword)) {
+                    alert('New password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, and one number.');
+                    return;
+                }
+
+                let users = getUsers();
+                const userIndex = users.findIndex(u => u.email === currentForgotPasswordEmail);
+
+                if (userIndex !== -1) {
+                    users[userIndex].password = hashPassword(newPassword); // Update with new hashed password
+                    saveUsers(users);
+                    alert('Password reset successfully! You can now log in with your new password.');
+                    closeModal(forgotPasswordModal);
+                    openModal(loginModal);
+                } else {
+                    // Should not happen if email was validated in the first step
+                    alert('An error occurred. Please try again.');
+                }
+            } else {
+                // This is the email verification step
+                const email = form.elements['email'].value;
+                const users = getUsers();
+                const userExists = users.some(u => u.email === email);
+
+                if (userExists) {
+                    currentForgotPasswordEmail = email;
+                    forgotPasswordEmailStep.classList.add('hidden');
+                    forgotPasswordNewPasswordStep.classList.remove('hidden');
+                    document.getElementById('new-password').focus(); // Focus on new password field
+                } else {
+                    alert('No account found with that email address.');
+                }
+            }
+        }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            const email = e.target.elements['newsletter-email'].value;
+            console.log('Newsletter signup:', { email });
+            alert(`Thank you for subscribing to our newsletter with ${email}!`);
+            e.target.reset();
+        }
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Remove the initial opacity-0 and let CSS animations take over
+                    entry.target.classList.remove('opacity-0-on-load');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Apply observer to all elements with animation classes
+        document.querySelectorAll('.animate-fade-in, .animate-slide-up, .animate-scale-in').forEach(element => {
+            // Add initial state class only if it's not the hero section's direct children
+            // Hero section elements are animated immediately on DOMContentLoaded
+            if (!element.closest('#hero')) {
+                element.classList.add('opacity-0-on-load');
+            }
+            observer.observe(element);
+        });
+
+        // Special handling for hero section animation on load (not scroll)
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('#hero h1').classList.remove('opacity-0-on-load');
+            document.querySelector('#hero p').classList.remove('opacity-0-on-load');
+            document.querySelector('#hero .space-x-4').classList.remove('opacity-0-on-load');
+        });
+
+        // Usage Restriction Logic
+        const USAGE_RESTRICTION_TIMEOUT = 30 * 1000; // 30 seconds
+        let restrictionTimer;
+
+        function startUsageRestrictionTimer() {
+            // Only start if not acknowledged for the current session
+            if (sessionStorage.getItem('restrictionAcknowledged') !== 'true') {
+                restrictionTimer = setTimeout(() => {
+                    openModal(restrictionModal);
+                    // The modal itself applies body-lock, effectively locking the page.
+                    // No further interaction outside the modal is possible.
+                }, USAGE_RESTRICTION_TIMEOUT);
+            }
+        }
+
+        function acknowledgeRestriction() {
+            closeModal(restrictionModal);
+            sessionStorage.setItem('restrictionAcknowledged', 'true'); // Acknowledge for current session
+            // Clear any pending timeout if for some reason it's called early (e.g., user clicks button just before timer fires)
+            if (restrictionTimer) {
+                clearTimeout(restrictionTimer);
+            }
+        }
+
+        document.getElementById('acknowledge-restriction-btn').addEventListener('click', acknowledgeRestriction);
+
+        // Start the restriction timer when the page loads
+        document.addEventListener('DOMContentLoaded', startUsageRestrictionTimer);
+    </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Editor - Web Service Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        #editor {
+            font-family: 'Fira Code', monospace;
+        }
+        #preview {
+           font-family: 'Inter', sans-serif;
+        }
+        #preview h1, #preview h2, #preview h3 {
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.3em;
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+            font-weight: 600;
+        }
+         #preview h1 { font-size: 2em; }
+         #preview h2 { font-size: 1.5em; }
+         #preview h3 { font-size: 1.25em; }
+        #preview p, #preview ul, #preview ol, #preview blockquote {
+            margin-bottom: 1em;
+        }
+        #preview ul, #preview ol {
+            padding-left: 2em;
+        }
+        #preview code {
+            background-color: #f3f4f6;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-size: 85%;
+            font-family: 'Fira Code', monospace;
+        }
+        #preview pre {
+            background-color: #f3f4f6;
+            padding: 1em;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        #preview pre code {
+            padding: 0;
+            background-color: transparent;
+        }
+        #preview blockquote {
+            border-left: 4px solid #d1d5db;
+            padding-left: 1em;
+            color: #6b7280;
+        }
+        #preview a {
+            color: #4f46e5;
+            text-decoration: underline;
+        }
+        #preview table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #preview th, #preview td {
+            border: 1px solid #d1d5db;
+            padding: 8px;
+        }
+        #preview th {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">Web Service Hub</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="text-gray-600 hover:text-indigo-600">Home</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="index.html" class="block py-2 text-gray-600 hover:text-indigo-600">Home</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold text-center mb-2">Live Markdown Editor</h1>
+            <p class="text-center text-gray-500 mb-6">Type Markdown on the left, see the rendered HTML on the right.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" style="height: 65vh;">
+                <!-- Editor -->
+                <div class="flex flex-col h-full">
+                    <label for="editor" class="text-lg font-semibold mb-2 block">Markdown</label>
+                    <textarea id="editor" class="w-full flex-grow p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 resize-none"></textarea>
+                </div>
+                <!-- Preview -->
+                <div class="flex flex-col h-full">
+                    <label for="preview" class="text-lg font-semibold mb-2 block">Preview</label>
+                    <div id="preview" class="w-full flex-grow p-3 border border-gray-300 rounded-md bg-gray-50 overflow-y-auto"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-16">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500">
+            <p>&copy; 2024 Web Service Hub. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const preview = document.getElementById('preview');
+
+        const defaultMarkdown = `# Welcome to the Markdown Editor!
+
+## This is a sub-heading
+### And here's some other cool stuff:
+
+Here's some code, \`<div></div>\`, between 2 backticks.
+
+\`\`\`javascript
+// this is multi-line code:
+
+function anotherExample(firstLine, lastLine) {
+  if (firstLine == '\`\`\`' && lastLine == '\`\`\`') {
+    return multiLineCode;
+  }
+}
+\`\`\`
+
+You can also make text **bold**... whoa!
+Or _italic_.
+Or... wait for it... **_both!_**
+And feel free to go crazy ~~crossing stuff out~~.
+
+There's also [links](https://www.google.com), and
+> Block Quotes!
+
+- And of course there are lists.
+  - Some are bulleted.
+     - With different indentation levels.
+        - That look like this.
+`;
+
+        editor.value = defaultMarkdown;
+
+        function renderMarkdown() {
+            preview.innerHTML = marked.parse(editor.value);
+        }
+
+        editor.addEventListener('input', renderMarkdown);
+
+        // Initial render
+        renderMarkdown();
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+</html>

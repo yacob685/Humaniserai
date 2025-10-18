@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent AI Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"></script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .code-block { background-color: #282c34; }
+        
+        .chat-container {
+            flex-grow: 1;
+            padding-bottom: 140px;
+            background: linear-gradient(to bottom, #f9fafb, #f3f4f6);
+        }
+        .input-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #ffffff;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            z-index: 10;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin 1.5s linear infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        #messageBox {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        #messageBox.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .message-content {
+            line-height: 1.7;
+        }
+        .message-content p {
+            margin-bottom: 1em;
+        }
+        .message-content ul, .message-content ol {
+            margin-left: 1.5em;
+            margin-bottom: 1em;
+        }
+        .message-content li {
+            margin-bottom: 0.5em;
+        }
+        .message-content code {
+            background-color: #f3f4f6;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .message-content pre {
+            background-color: #282c34;
+            padding: 1em;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 1em;
+        }
+        .message-content pre code {
+            background-color: transparent;
+            padding: 0;
+            color: #abb2bf;
+        }
+        .message-content h1, .message-content h2, .message-content h3 {
+            font-weight: 600;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        .message-content h1 { font-size: 1.5em; }
+        .message-content h2 { font-size: 1.3em; }
+        .message-content h3 { font-size: 1.1em; }
+        .message-content blockquote {
+            border-left: 4px solid #e5e7eb;
+            padding-left: 1em;
+            margin: 1em 0;
+            color: #6b7280;
+        }
+        .thinking-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .thinking-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #6366f1;
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+        .thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+        #cancelButton.hidden {
+            display: none !important;
+        }
+        .copy-code-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #4b5563;
+            color: white;
+            padding: 4px 12px;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .copy-code-btn:hover {
+            background-color: #6b7280;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <main class="chat-container">
+        <div class="max-w-4xl mx-auto pt-8 px-4">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-2">Intelligent AI Assistant</h1>
+                <p class="text-gray-600">Powered by Gemini 2.5 Flash • Advanced reasoning & code generation</p>
+            </div>
+            
+            <div id="responseHistory" class="space-y-6">
+                <div class="flex">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm max-w-full border border-gray-100">
+                        <p class="text-gray-800 font-semibold text-lg mb-3">👋 Hello! I'm your intelligent AI assistant.</p>
+                        <p class="text-gray-700 mb-3">Unlike typical code generators, I think before I respond. I can:</p>
+                        <ul class="text-gray-700 space-y-2 ml-4">
+                            <li><strong>🧠 Reason & Analyze:</strong> I assess your request first, understanding context and nuance</li>
+                            <li><strong>💬 Conversational:</strong> Chat naturally about any topic, from philosophy to physics</li>
+                            <li><strong>💻 Expert Coding:</strong> Generate production-ready code with best practices</li>
+                            <li><strong>📚 Comprehensive:</strong> Explain concepts, write essays, solve problems</li>
+                            <li><strong>🎨 Creative:</strong> Design beautiful UIs with modern patterns</li>
+                            <li><strong>📄 File Analysis:</strong> Understand and work with your documents</li>
+                        </ul>
+                        <p class="text-gray-700 mt-4">Ask me anything - I'll determine the best way to help you!</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    
+    <div class="input-area">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex items-end bg-gray-50 border-2 border-gray-200 rounded-xl p-3 shadow-md focus-within:border-indigo-500 transition-colors">
+                
+                <input type="file" id="fileInput" class="hidden" accept="*/*">
+                <button id="attachFileButton" class="text-gray-500 hover:text-indigo-600 transition-colors p-2 rounded-lg mr-2 flex-shrink-0" title="Attach File">
+                    <i class="fas fa-paperclip w-5 h-5"></i>
+                </button>
+
+                <textarea id="prompt" rows="1" class="flex-grow bg-transparent resize-none border-none focus:outline-none placeholder-gray-500 text-base py-1 pr-3" placeholder="Ask me anything... (Ctrl+Enter to send)" oninput="autoExpand(this)"></textarea>
+                
+                <div class="flex space-x-2 ml-2 flex-shrink-0">
+                    <button id="cancelButton" class="hidden bg-red-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors">
+                        <i class="fas fa-stop mr-1"></i> Stop
+                    </button>
+
+                    <button id="generateButton" class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white w-10 h-10 rounded-lg flex items-center justify-center hover:from-indigo-700 hover:to-purple-700 transition-all disabled:opacity-50">
+                        <span id="buttonIcon">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
+                        <svg id="loadingSpinner" class="hidden h-5 w-5 text-white animate-spin-slow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+             <div id="fileStatus" class="text-xs text-gray-600 mt-1 pl-1 flex items-center hidden">
+                <i class="fas fa-file mr-1"></i>
+                <span class="truncate max-w-full" id="fileNameDisplay"></span>
+                <button id="clearFileButton" class="ml-2 text-red-500 hover:text-red-700 font-bold text-sm leading-none">&times;</button>
+             </div>
+        </div>
+    </div>
+
+    <div id="messageBox" class="fixed bottom-24 right-4 bg-red-600 text-white p-4 rounded-lg shadow-xl z-50 transition-opacity duration-300 max-w-md">
+        <div class="flex items-center justify-between">
+            <span id="messageContent" class="mr-4"></span>
+            <button id="closeMessage" class="font-bold text-lg hover:text-gray-200">&times;</button>
+        </div>
+    </div>
+    
+    <script>
+        const generateButton = document.getElementById('generateButton');
+        const cancelButton = document.getElementById('cancelButton');
+        const buttonIcon = document.getElementById('buttonIcon');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const promptInput = document.getElementById('prompt');
+        const responseHistory = document.getElementById('responseHistory');
+        const attachFileButton = document.getElementById('attachFileButton');
+        const fileInput = document.getElementById('fileInput');
+        const fileStatus = document.getElementById('fileStatus');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const clearFileButton = document.getElementById('clearFileButton');
+        const messageBox = document.getElementById('messageBox');
+        const messageContent = document.getElementById('messageContent');
+        const closeMessageButton = document.getElementById('closeMessage');
+
+        let attachedFileContent = null;
+        let attachedFileName = null;
+        let abortController = null;
+        let conversationHistory = [];
+        
+        const modelName = "gemini-2.5-flash-preview-05-20";
+        const apiKey = "AIzaSyBIAAAwdRvVuUMyq2RfLYo2HapOe_25j1c";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+        
+        // ADVANCED SYSTEM INSTRUCTION - Claude-like intelligence
+        const systemInstruction = `You are an advanced AI assistant with exceptional reasoning and deep expertise across all domains. Be concise, direct, and efficient.
+
+CORE IDENTITY:
+- Helpful, honest, and fast
+- Think step-by-step but respond efficiently
+- Adapt communication style to user needs
+- Excel at both conversation and technical expertise
+
+RESPONSE APPROACH:
+- Assess what user needs and respond directly
+- Choose appropriate format: conversation, explanation, or code
+- Be concise - no unnecessary elaboration
+- Get to the point quickly
+
+CODE GENERATION (when appropriate):
+- Complete, production-ready code
+- Modern best practices
+- For web: Tailwind CSS, fully responsive
+- Clean, well-commented code
+- Security and performance optimized
+
+CONVERSATIONAL:
+- Natural and warm but concise
+- Clear explanations with examples
+- No excessive formatting
+
+OUTPUT:
+- Code in markdown blocks with language
+- Clear structure for explanations
+- Prioritize usefulness over length`;
+
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    return hljs.highlight(code, { language: lang }).value;
+                }
+                return hljs.highlightAuto(code).value;
+            },
+            breaks: true,
+            gfm: true
+        });
+        
+        function autoExpand(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+            generateButton.disabled = textarea.value.trim() === '';
+        }
+
+        function showMessage(message, type = 'error') {
+            messageContent.textContent = message;
+            
+            if (type === 'error') {
+                messageBox.classList.remove('bg-green-600', 'bg-blue-600');
+                messageBox.classList.add('bg-red-600');
+            } else if (type === 'success') {
+                messageBox.classList.remove('bg-red-600', 'bg-blue-600');
+                messageBox.classList.add('bg-green-600');
+            } else if (type === 'info') {
+                messageBox.classList.remove('bg-red-600', 'bg-green-600');
+                messageBox.classList.add('bg-blue-600');
+            }
+
+            messageBox.classList.add('show');
+            
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 4000); 
+        }
+
+        closeMessageButton.addEventListener('click', () => {
+            messageBox.classList.remove('show');
+        });
+
+        async function fetchWithBackoff(url, options, retries = 2, delay = 800) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status !== 429) { 
+                        return response;
+                    }
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2; 
+                } catch (error) {
+                    if (error.name === 'AbortError') throw error; 
+
+                    if (i === retries - 1) throw error; 
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                }
+            }
+            throw new Error("Failed after multiple retries.");
+        }
+        
+        function createUserMessage(text, file = null) {
+            let fileDisplay = '';
+            if (file) {
+                fileDisplay = `<div class="mt-2 text-xs text-indigo-200 italic flex items-center"><i class="fas fa-paperclip mr-1"></i> ${file}</div>`;
+            }
+            
+            const messageHtml = `
+                <div class="flex justify-end">
+                    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-4 rounded-xl shadow-sm max-w-full">
+                        <p class="whitespace-pre-wrap">${escapeHtml(text)}</p>
+                        ${fileDisplay}
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white font-bold ml-4 flex-shrink-0">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            `;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = messageHtml;
+            responseHistory.appendChild(tempDiv.firstElementChild);
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function createThinkingMessage() {
+            const messageHtml = `
+                <div class="flex thinking-message">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <div class="thinking-indicator">
+                            <span class="thinking-dot"></span>
+                            <span class="thinking-dot"></span>
+                            <span class="thinking-dot"></span>
+                            <span class="text-gray-600 ml-2">Thinking...</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = messageHtml;
+            responseHistory.appendChild(tempDiv.firstElementChild);
+            window.scrollTo(0, document.body.scrollHeight);
+            return tempDiv.firstElementChild;
+        }
+
+        function createAIMessage(content) {
+            const processedContent = processMarkdown(content);
+            
+            const messageHtml = `
+                <div class="flex">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm max-w-full border border-gray-100 message-content">
+                        ${processedContent}
+                    </div>
+                </div>
+            `;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = messageHtml;
+            const messageEl = tempDiv.firstElementChild;
+            responseHistory.appendChild(messageEl);
+            
+            // Add copy buttons to code blocks
+            messageEl.querySelectorAll('pre code').forEach((block, index) => {
+                const pre = block.parentElement;
+                pre.style.position = 'relative';
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-code-btn';
+                copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
+                copyBtn.onclick = () => {
+                    const code = block.textContent;
+                    navigator.clipboard.writeText(code).then(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-check mr-1"></i> Copied!';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-copy mr-1"></i> Copy';
+                        }, 2000);
+                    });
+                };
+                pre.appendChild(copyBtn);
+                
+                hljs.highlightElement(block);
+            });
+            
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        function processMarkdown(text) {
+            return marked.parse(text);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function startLoading() {
+            abortController = new AbortController();
+            generateButton.disabled = true;
+            promptInput.disabled = true;
+            buttonIcon.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+            cancelButton.classList.remove('hidden');
+        }
+
+        function stopLoading() {
+            abortController = null;
+            generateButton.disabled = promptInput.value.trim() === '';
+            promptInput.disabled = false;
+            buttonIcon.classList.remove('hidden');
+            loadingSpinner.classList.add('hidden');
+            cancelButton.classList.add('hidden');
+        }
+        
+        async function generateResponse(prompt, fileContent = null, fileName = null) {
+            startLoading();
+
+            const thinkingMsg = createThinkingMessage();
+
+            // Build concise user message
+            let userMessage = prompt;
+            if (fileContent) {
+                // Truncate large files for speed
+                const maxFileLength = 3000;
+                const truncatedContent = fileContent.length > maxFileLength 
+                    ? fileContent.substring(0, maxFileLength) + '\n...[truncated]'
+                    : fileContent;
+                userMessage = `File "${fileName}":\n\`\`\`\n${truncatedContent}\n\`\`\`\n\n${prompt}`;
+            }
+
+            // Add to conversation history
+            conversationHistory.push({
+                role: "user",
+                parts: [{ text: userMessage }]
+            });
+
+            const payload = {
+                contents: conversationHistory,
+                systemInstruction: { parts: [{ text: systemInstruction }] },
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 4096,
+                    topP: 0.9,
+                    topK: 32
+                }
+            };
+
+            try {
+                const response = await fetchWithBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: abortController.signal
+                });
+                
+                if (!response.ok) {
+                    let errorDetail = `Status ${response.status}`;
+                    if (response.status === 403) {
+                        errorDetail += ". Please check your API key.";
+                    } else if (response.status === 429) {
+                        errorDetail += ". Rate limit exceeded. Please wait a moment.";
+                    }
+                    throw new Error(`API Error: ${errorDetail}`);
+                }
+                
+                const result = await response.json();
+
+                if (result.error) {
+                    throw new Error(`Gemini API Error: ${result.error.message}`);
+                }
+
+                const candidateText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (!candidateText) {
+                    const finishReason = result.candidates?.[0]?.finishReason || 'UNKNOWN';
+                    throw new Error(`Failed to generate response. Reason: ${finishReason}`);
+                }
+                
+                // Add AI response to history
+                conversationHistory.push({
+                    role: "model",
+                    parts: [{ text: candidateText }]
+                });
+
+                // Remove thinking message
+                thinkingMsg.remove();
+                
+                // Create AI message
+                createAIMessage(candidateText);
+
+                clearAttachedFile();
+                promptInput.value = '';
+                autoExpand(promptInput);
+
+            } catch (error) {
+                thinkingMsg.remove();
+                
+                if (error.name === 'AbortError') {
+                    showMessage("Response cancelled.", 'info');
+                } else {
+                    console.error('Error:', error);
+                    createAIMessage(`I apologize, but I encountered an error: ${error.message}\n\nPlease try again.`);
+                    showMessage(`Error: ${error.message}`, 'error');
+                }
+                
+                // Remove failed message from history
+                conversationHistory.pop();
+            } finally {
+                stopLoading();
+            }
+        }
+
+        generateButton.addEventListener('click', () => {
+            const prompt = promptInput.value.trim();
+            if (!prompt && !attachedFileContent) {
+                showMessage("Please enter a message or attach a file.", 'error');
+                return;
+            }
+            
+            createUserMessage(prompt, attachedFileName);
+            generateResponse(prompt, attachedFileContent, attachedFileName);
+        });
+
+        cancelButton.addEventListener('click', () => {
+            if (abortController) {
+                abortController.abort();
+                stopLoading();
+            }
+        });
+
+        attachFileButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) {
+                clearAttachedFile();
+                return;
+            }
+
+            attachedFileName = file.name;
+            fileNameDisplay.textContent = file.name;
+            fileStatus.classList.remove('hidden');
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                attachedFileContent = e.target.result;
+                showMessage(`File "${file.name}" attached successfully!`, 'success');
+                promptInput.focus();
+            };
+            reader.onerror = (e) => {
+                showMessage('Error reading file.', 'error');
+                clearAttachedFile();
+            };
+            reader.readAsText(file); 
+        });
+
+        clearFileButton.addEventListener('click', clearAttachedFile);
+
+        function clearAttachedFile() {
+            attachedFileContent = null;
+            attachedFileName = null;
+            fileInput.value = '';
+            fileStatus.classList.add('hidden');
+            fileNameDisplay.textContent = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                if (!generateButton.disabled && promptInput.value.trim()) {
+                    generateButton.click();
+                }
+            }
+        });
+
+        promptInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !generateButton.disabled) {
+                e.preventDefault();
+                generateButton.click();
+            }
+        });
+
+        promptInput.focus();
+    </script>
+</body>
+</html>

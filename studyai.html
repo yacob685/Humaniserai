@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced AI Study Platform - Complete Learning Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #1f2937; min-height: 100vh; }
+        .app-container { display: flex; height: 100vh; }
+        .sidebar { width: 280px; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); box-shadow: 4px 0 20px rgba(0,0,0,0.1); overflow-y: auto; transition: transform 0.3s ease; }
+        .sidebar.collapsed { transform: translateX(-280px); }
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        /* Main view containers */
+        .chat-container, #mainToolView { flex: 1; overflow-y: auto; padding: 2rem; padding-bottom: 220px; }
+        
+        .input-area { position: fixed; bottom: 0; right: 0; left: 280px; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15); padding: 1.5rem; z-index: 10; transition: left 0.3s ease; }
+        .sidebar.collapsed ~ .main-content .input-area { left: 0; }
+        
+        /* Markdown Styling */
+        .message-content h1 { font-size: 1.8rem; font-weight: 800; margin: 1.5em 0 0.5em 0; color: #1f2937; border-bottom: 3px solid #667eea; padding-bottom: 0.3em; }
+        .message-content h2 { font-size: 1.5rem; font-weight: 700; margin: 1.3em 0 0.5em 0; color: #4b5563; border-left: 4px solid #667eea; padding-left: 0.5em; }
+        .message-content h3 { font-size: 1.2rem; font-weight: 600; margin: 1em 0 0.5em 0; color: #6b7280; }
+        .message-content p { margin-bottom: 1em; line-height: 1.7; }
+        .message-content ul, .message-content ol { margin-left: 1.5em; margin-bottom: 1em; }
+        .message-content ul { list-style: none; }
+        .message-content ul li { position: relative; padding-left: 1.5em; margin-bottom: 0.5em; }
+        .message-content ul li:before { content: "▸"; position: absolute; left: 0; color: #667eea; font-weight: bold; }
+        .message-content ul ul li:before { content: "+"; color: #764ba2; }
+        .message-content ol { list-style: decimal; padding-left: 1.5em; }
+        .message-content ol li { margin-bottom: 0.5em; padding-left: 0.5em; }
+        .message-content strong { color: #1f2937; font-weight: 700; }
+        .message-content em { font-style: italic; color: #4b5563; }
+        .message-content blockquote { border-left: 4px solid #667eea; background: #f3f4f6; padding: 1em; margin: 1em 0; border-radius: 0.5rem; font-style: italic; }
+        .message-content hr { border: none; border-top: 2px solid #e5e7eb; margin: 2em 0; }
+        .message-content pre { background-color: #282c34; padding: 1em; border-radius: 8px; overflow-x: auto; margin-bottom: 1em; }
+        .message-content code { background-color: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        .message-content pre code { background-color: transparent; padding: 0; color: #abb2bf; }
+        .message-content table { border-collapse: collapse; width: 100%; margin: 1.5em 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 0.5rem; overflow: hidden; }
+        .message-content th, .message-content td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+        .message-content th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; }
+        .message-content tr:nth-child(even) { background-color: #f9fafb; }
+        .message-content tr:hover { background-color: #f3f4f6; transition: background-color 0.2s; }
+        .message-content td { color: #374151; }
+        
+        /* Tool Button Styling */
+        .tool-btn { display: flex; align-items: center; padding: 0.75rem 1rem; margin: 0.5rem; border-radius: 0.75rem; background: white; border: 2px solid #e5e7eb; cursor: pointer; transition: all 0.3s; }
+        .tool-btn:hover { background: #f3f4f6; border-color: #667eea; transform: translateX(5px); }
+        .tool-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-color: #667eea; }
+        .tool-btn.active div:last-child { color: rgba(255, 255, 255, 0.8) !important; }
+        .tool-btn.active i { color: white !important; }
+        
+        .canvas-container { background: white; border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .typing-cursor { display: inline-block; width: 2px; height: 1em; background: #667eea; margin-left: 2px; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+        
+        .progress-bar { width: 100%; height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin: 0.5rem 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); transition: width 0.3s; }
+        
+        /* Flashcard Styling */
+        .flip-card.flipped .flashcard-inner { transform: rotateY(180deg); }
+        
+        /* Quiz Styling */
+        .quiz-option { padding: 1rem; margin: 0.5rem 0; border-radius: 0.5rem; border: 2px solid #e5e7eb; cursor: pointer; transition: all 0.3s; }
+        .quiz-option:hover { border-color: #667eea; background: #f3f4f6; }
+        .quiz-option.selected { border-color: #667eea; background: #ede9fe; }
+        .quiz-option.correct { border-color: #10b981; background: #d1fae5; }
+        .quiz-option.incorrect { border-color: #ef4444; background: #fee2e2; }
+        
+        /* General Layout */
+        .toggle-sidebar { position: fixed; top: 1rem; left: 1rem; z-index: 20; width: 40px; height: 40px; background: white; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-bar { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; z-index: 5; }
+        
+        /* Custom Modal Styling */
+        .modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 50; }
+        .modal-content { background: white; border-radius: 1rem; padding: 2rem; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); }
+        
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; z-index: 15; height: 100vh; }
+            .input-area { left: 0 !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="p-6 bg-gradient-to-br from-purple-600 to-blue-600 text-white">
+                <h2 class="text-2xl font-bold mb-2"><i class="fas fa-graduation-cap mr-2"></i>Study Tools</h2>
+                <p class="text-sm opacity-90">Complete Learning Suite</p>
+            </div>
+            
+            <div class="p-4">
+                <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 px-2">AI Assistant</h3>
+                <div class="tool-btn active" data-tool="chat">
+                    <i class="fas fa-comments text-xl mr-3 text-purple-600"></i>
+                    <div>
+                        <div class="font-semibold">AI Tutor Chat</div>
+                        <div class="text-xs text-gray-500">Ask anything</div>
+                    </div>
+                </div>
+                
+                <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 px-2 mt-4">Study Tools</h3>
+                <div class="tool-btn" data-tool="flashcards">
+                    <i class="fas fa-layer-group text-xl mr-3 text-blue-600"></i>
+                    <div>
+                        <div class="font-semibold">Flashcards</div>
+                        <div class="text-xs text-gray-500">Generate & practice</div>
+                    </div>
+                </div>
+
+                
+                <div class="tool-btn" data-tool="quiz">
+                    <i class="fas fa-clipboard-check text-xl mr-3 text-green-600"></i>
+                    <div>
+                        <div class="font-semibold">Quiz Generator</div>
+                        <div class="text-xs text-gray-500">Test your knowledge</div>
+                    </div>
+                </div>
+                
+                <div class="tool-btn" data-tool="summary">
+                    <i class="fas fa-file-alt text-xl mr-3 text-orange-600"></i>
+                    <div>
+                        <div class="font-semibold">Summarizer</div>
+                        <div class="text-xs text-gray-500">Condense content</div>
+                    </div>
+                </div>
+                
+                <div class="tool-btn" data-tool="studyplan">
+                    <i class="fas fa-calendar-alt text-xl mr-3 text-red-600"></i>
+                    <div>
+                        <div class="font-semibold">Study Planner</div>
+                        <div class="text-xs text-gray-500">Organize schedule</div>
+                    </div>
+                </div>
+                
+                <div class="tool-btn" data-tool="practice">
+                    <i class="fas fa-pen text-xl mr-3 text-indigo-600"></i>
+                    <div>
+                        <div class="font-semibold">Practice Problems</div>
+                        <div class="text-xs text-gray-500">Solve & learn</div>
+                    </div>
+                </div>
+                
+                <div class="tool-btn" data-tool="mindmap">
+                    <i class="fas fa-project-diagram text-xl mr-3 text-pink-600"></i>
+                    <div>
+                        <div class="font-semibold">Mind Maps</div>
+                        <div class="text-xs text-gray-500">Visual learning</div>
+                    </div>
+                </div>
+                
+                <div class="tool-btn" data-tool="formula">
+                    <i class="fas fa-square-root-alt text-xl mr-3 text-teal-600"></i>
+                    <div>
+                        <div class="font-semibold">Formula Sheet</div>
+                        <div class="text-xs text-gray-500">Quick reference</div>
+                    </div>
+                </div>
+                
+                <div class="tool-btn" data-tool="citation">
+                    <i class="fas fa-quote-right text-xl mr-3 text-yellow-600"></i>
+                    <div>
+                        <div class="font-semibold">Citation Generator</div>
+                        <div class="text-xs text-gray-500">APA, MLA, Chicago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="toggle-sidebar" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <div class="header-bar" id="headerBar">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800" id="toolTitle">AI Tutor Chat</h1>
+                    <p class="text-sm text-gray-600" id="toolSubtitle">Your advanced learning companion</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="px-4 py-2 bg-white border-2 border-gray-200 rounded-lg hover:border-purple-500 transition-all" id="clearChat">
+                        <i class="fas fa-trash mr-2"></i>Clear Chat
+                    </button>
+                    <button class="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all" id="exportChat">
+                        <i class="fas fa-download mr-2"></i>Export
+                    </button>
+                </div>
+            </div>
+            <!-- CHAT VIEW (Default) -->
+            <div class="chat-container" id="chatContainer">
+                <div id="responseHistory" class="max-w-5xl mx-auto space-y-6">
+                    <div class="flex">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100">
+                            <p class="text-gray-800 font-bold text-xl mb-4">🎓 Welcome to Your Advanced AI Study Platform!</p>
+                            <p class="text-gray-700 mb-3">I'm your comprehensive learning assistant with powerful features:</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                                <div class="bg-purple-50 p-3 rounded-lg">
+                                    <div class="font-bold text-purple-700 mb-1"><i class="fas fa-brain mr-2"></i>AI Tutor</div>
+                                    <div class="text-sm text-gray-600">Real-time streaming responses across all subjects</div>
+                                </div>
+                                <div class="bg-blue-50 p-3 rounded-lg">
+                                    <div class="font-bold text-blue-700 mb-1"><i class="fas fa-chart-line mr-2"></i>Visual Canvas</div>
+                                    <div class="text-sm text-gray-600">Dynamic charts, graphs, and tables</div>
+                                </div>
+                                <div class="bg-green-50 p-3 rounded-lg">
+                                    <div class="font-bold text-green-700 mb-1"><i class="fas fa-tools mr-2"></i>Study Tools</div>
+                                    <div class="text-sm text-gray-600">Flashcards, quizzes, summaries, and more</div>
+                                </div>
+                                <div class="bg-orange-50 p-3 rounded-lg">
+                                    <div class="font-bold text-orange-700 mb-1"><i class="fas fa-file-upload mr-2"></i>File Analysis</div>
+                                    <div class="text-sm text-gray-600">Upload and analyze study materials</div>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mt-4"><strong>💡 Pro Tip:</strong> Use the sidebar to access specialized tools or just chat with me about anything!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- DEDICATED TOOL VIEW (Hidden by default) -->
+            <div id="mainToolView" class="flex-1 overflow-y-auto p-8 bg-gray-50 hidden">
+                <!-- Tool content will be injected here -->
+            </div>
+            
+            <div class="input-area">
+                <div class="max-w-5xl mx-auto">
+                    <div id="toolOptions" class="mb-2"></div>
+                    <div class="flex items-end bg-white border-3 border-purple-300 rounded-2xl p-4 shadow-2xl focus-within:border-purple-500 transition-all">
+                        <input type="file" id="fileInput" class="hidden" accept=".txt,.md,.csv,.html,.js,.py,.css,.pdf,.doc,.docx">
+                        <button id="attachFileButton" class="text-gray-500 hover:text-purple-600 p-2 rounded-lg mr-2 transition-colors" title="Attach File">
+                            <i class="fas fa-paperclip text-xl"></i>
+                        </button>
+                        <button id="voiceButton" class="text-gray-500 hover:text-purple-600 p-2 rounded-lg mr-2 transition-colors" title="Voice Input">
+                            <i class="fas fa-microphone text-xl"></i>
+                        </button>
+                        <textarea id="prompt" rows="1" class="flex-grow bg-transparent resize-none border-none focus:outline-none placeholder-gray-500 text-base py-2 px-2" placeholder="Ask anything or choose a tool from the sidebar..." oninput="autoExpand(this)"></textarea>
+                        <button id="generateButton" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white w-12 h-12 rounded-xl flex items-center justify-center hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg disabled:opacity-50" disabled>
+                            <i class="fas fa-paper-plane text-lg"></i>
+                        </button>
+                    </div>
+                    <div id="fileStatus" class="text-sm text-gray-700 mt-2 pl-2 flex items-center hidden bg-purple-50 p-2 rounded-lg">
+                        <i class="fas fa-file-alt mr-2 text-purple-600"></i>
+                        <span id="fileNameDisplay" class="font-medium"></span>
+                        <button id="clearFileButton" class="ml-3 text-red-500 hover:text-red-700 font-bold text-lg">&times;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom Modal UI for Confirmations/Alerts -->
+    <div id="customModal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <h3 id="modalTitle" class="text-xl font-bold mb-4 text-gray-800"></h3>
+            <p id="modalMessage" class="mb-6 text-gray-600"></p>
+            <div class="flex justify-end gap-3" id="modalButtons">
+                <button id="modalCancel" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all">Cancel</button>
+                <button id="modalConfirm" class="px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-all">Confirm</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configure marked options
+            marked.setOptions({
+                highlight: (code, lang) => {
+                    if (lang && hljs.getLanguage(lang)) {
+                        return hljs.highlight(code, { language: lang }).value;
+                    }
+                    return hljs.highlightAuto(code).value;
+                },
+                breaks: true,
+                gfm: true
+            });
+
+            const generateButton = document.getElementById('generateButton');
+            const promptInput = document.getElementById('prompt');
+            const responseHistory = document.getElementById('responseHistory');
+            const fileInput = document.getElementById('fileInput');
+            const attachFileButton = document.getElementById('attachFileButton');
+            const fileStatus = document.getElementById('fileStatus');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            const clearFileButton = document.getElementById('clearFileButton');
+            const sidebar = document.getElementById('sidebar');
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            const clearChat = document.getElementById('clearChat');
+            const exportChat = document.getElementById('exportChat');
+            const toolTitle = document.getElementById('toolTitle');
+            const toolSubtitle = document.getElementById('toolSubtitle');
+            const chatContainer = document.getElementById('chatContainer');
+            const toolOptions = document.getElementById('toolOptions');
+            const mainToolView = document.getElementById('mainToolView');
+            const headerBar = document.getElementById('headerBar');
+
+            // Modal elements
+            const customModal = document.getElementById('customModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const modalConfirm = document.getElementById('modalConfirm');
+            const modalCancel = document.getElementById('modalCancel');
+
+            let attachedFileContent = null;
+            let attachedFileName = null;
+            let conversationHistory = [];
+            let currentTool = 'chat';
+            let currentView = 'chat'; // 'chat' or a specific tool name (e.g., 'flashcards')
+            let isGenerating = false;
+            let studyData = {
+                flashcards: [], // Stores raw flashcard objects for quick re-rendering
+                quizzes: [],
+                studyPlans: []
+            };
+            
+            const apiKey = "AIzaSyBIAAAwdRvVuUMyq2RfLYo2HapOe_25j1c";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:streamGenerateContent?key=${apiKey}&alt=sse`;
+            
+            // System instructions (unchanged)
+            const systemInstructions = {
+                chat: `You are an elite AI academic tutor with PhD-level expertise. Provide PRECISE, ACCURATE, and COMPREHENSIVE educational assistance across Mathematics, Science, English, History, and Geography.
+
+CRITICAL FORMATTING RULES - YOU MUST FOLLOW THESE:
+
+1. **ALWAYS use proper markdown formatting** - Never output plain text walls
+2. **Use headers** to organize sections: # Main Topic, ## Subtopics, ### Details
+3. **Use bullet points** extensively
+4. **Use numbered lists** for step-by-step instructions
+5. **Use tables** whenever comparing data
+6. **Use bold** for key terms and important concepts
+7. **Use italic** for emphasis and examples
+8. **Use code blocks** with syntax highlighting
+9. **Use blockquotes** (>) for important notes
+10. **Structure every response** with clear sections
+
+When appropriate, create visualizations using "CANVAS:" prefix for charts/graphs.`,
+                
+                flashcards: `Generate educational flashcards in JSON format. Return ONLY valid JSON array with this structure:
+[{"front": "Question/Term", "back": "Answer/Definition", "subject": "math|science|english|history|geography"}]
+Create {{count}} cards covering key concepts. Be concise but informative.`,
+                
+                quiz: `Generate a quiz in JSON format. Return ONLY valid JSON with this structure:
+{"title": "Quiz Title", "questions": [{"question": "Question text", "options": ["A", "B", "C", "D"], "correct": 0, "explanation": "Why this is correct"}]}
+Create 5-10 multiple choice questions with explanations.`,
+                
+                summary: `Create a comprehensive yet concise summary using STRICT FORMATTING with headers, tables, bullet points, numbered lists, and bold text.`,
+                
+                studyplan: `Create a detailed study plan using STRUCTURED FORMATTING with timeline tables, daily breakdowns, and progress checkpoints.`,
+                
+                practice: `Generate practice problems with COMPLETE FORMATTING including step-by-step solutions, difficulty comparisons in tables, and study tips.`,
+                
+                mindmap: `Create a mind map structure using CLEAR HIERARCHICAL FORMATTING with branches, sub-topics, and relationship tables.`,
+                
+                formula: `Create a comprehensive formula sheet using ORGANIZED FORMATTING with equations, variable tables, usage examples, and quick reference guides.`,
+                
+                citation: `Generate citations using COMPREHENSIVE FORMATTING for APA, MLA, and Chicago styles with comparison tables and formatting examples.`
+            };
+            
+            // --- View Management ---
+
+            function showChatView() {
+                chatContainer.classList.remove('hidden');
+                mainToolView.classList.add('hidden');
+                currentView = 'chat';
+                // Reset header bar for chat
+                document.getElementById('toolTitle').textContent = 'AI Tutor Chat';
+                document.getElementById('toolSubtitle').textContent = 'Your advanced learning companion';
+                document.getElementById('clearChat').classList.remove('hidden');
+                document.getElementById('exportChat').classList.remove('hidden');
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+
+            function showToolView(toolName, contentHTML) {
+                chatContainer.classList.add('hidden');
+                mainToolView.classList.remove('hidden');
+                mainToolView.innerHTML = contentHTML;
+                currentView = toolName;
+                // Update header bar for tool view
+                document.getElementById('toolTitle').textContent = toolName;
+                document.getElementById('toolSubtitle').textContent = 'Dedicated interactive workspace';
+                document.getElementById('clearChat').classList.add('hidden');
+                document.getElementById('exportChat').classList.add('hidden');
+                mainToolView.scrollTop = 0;
+            }
+            
+            // --- Custom Modal Functions (Replacing alert/confirm) ---
+
+            const showCustomModal = (title, message, isConfirm = false) => {
+                return new Promise(resolve => {
+                    modalTitle.textContent = title;
+                    modalMessage.textContent = message;
+                    
+                    modalCancel.classList.toggle('hidden', !isConfirm);
+                    modalConfirm.textContent = isConfirm ? 'Confirm' : 'OK';
+                    
+                    const handleConfirm = () => {
+                        customModal.classList.add('hidden');
+                        modalConfirm.removeEventListener('click', handleConfirm);
+                        modalCancel.removeEventListener('click', handleCancel);
+                        resolve(true);
+                    };
+                    
+                    const handleCancel = () => {
+                        customModal.classList.add('hidden');
+                        modalConfirm.removeEventListener('click', handleConfirm);
+                        modalCancel.removeEventListener('click', handleCancel);
+                        resolve(false);
+                    };
+                    
+                    modalConfirm.addEventListener('click', handleConfirm);
+                    if (isConfirm) {
+                        modalCancel.addEventListener('click', handleCancel);
+                    }
+                    
+                    customModal.classList.remove('hidden');
+                });
+            };
+
+            // Sidebar toggle
+            toggleSidebar.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+            });
+
+            // Tool switching logic (UPDATED HERE)
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const selectedTool = btn.dataset.tool;
+                    
+                    // 1. Update the active style
+                    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // 2. Set the current tool context
+                    currentTool = selectedTool;
+                    updateToolHeader(currentTool);
+
+                    // 3. Check if we have data for this tool to show the dedicated view
+                    if (currentTool === 'flashcards' && studyData.flashcards.length > 0) {
+                        // If flashcard data exists, re-render the interactive tool view
+                        renderFlashcardTool(studyData.flashcards);
+                    } else {
+                        // Otherwise, switch to chat view (default)
+                        showChatView();
+                    }
+                });
+            });
+            
+            // Initial view setup
+            showChatView();
+
+            function updateToolHeader(tool) {
+                const toolInfo = {
+                    chat: { title: 'AI Tutor Chat', subtitle: 'Your advanced learning companion' },
+                    flashcards: { title: 'Flashcard Generator', subtitle: 'Create and practice with AI-generated flashcards' },
+                    quiz: { title: 'Quiz Generator', subtitle: 'Test your knowledge with custom quizzes' },
+                    summary: { title: 'Content Summarizer', subtitle: 'Condense complex materials into key points' },
+                    studyplan: { title: 'Study Planner', subtitle: 'Organize your learning schedule' },
+                    practice: { title: 'Practice Problems', subtitle: 'Solve problems with step-by-step solutions' },
+                    mindmap: { title: 'Mind Map Creator', subtitle: 'Visualize concepts and connections' },
+                    formula: { title: 'Formula Sheet', subtitle: 'Quick reference for important formulas' },
+                    citation: { title: 'Citation Generator', subtitle: 'Generate proper citations in multiple formats' }
+                };
+                
+                const info = toolInfo[tool];
+                toolTitle.textContent = info.title;
+                toolSubtitle.textContent = info.subtitle;
+                promptInput.placeholder = `Enter a topic for the ${info.title.toLowerCase()}...`;
+
+                toolOptions.innerHTML = '';
+                if (tool === 'flashcards') {
+                    toolOptions.innerHTML = `
+                        <div class="bg-white p-3 rounded-xl border-2 border-gray-200 flex items-center gap-4 animate-fade-in">
+                            <label for="flashcard-count" class="font-semibold text-gray-700">Number of Cards:</label>
+                            <input type="number" id="flashcard-count" value="8" min="1" max="50" class="w-24 px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                        </div>
+                    `;
+                }
+            }
+
+            // Auto-expand textarea
+            window.autoExpand = (textarea) => {
+                textarea.style.height = 'auto';
+                textarea.style.height = `${Math.min(textarea.scrollHeight, 150)}px`;
+                generateButton.disabled = textarea.value.trim() === '' && !attachedFileContent;
+            };
+
+            // Escape HTML
+            const escapeHtml = (text) => {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            };
+
+            // Create user message
+            const createUserMessage = (text, file) => {
+                const fileDisplay = file ? `<div class="mt-2 text-sm text-blue-100 italic bg-blue-600 bg-opacity-30 p-2 rounded"><i class="fas fa-paperclip mr-1"></i> ${escapeHtml(file)}</div>` : '';
+                const messageDiv = document.createElement('div');
+                messageDiv.className = "flex justify-end";
+                messageDiv.innerHTML = `
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-5 rounded-2xl shadow-xl max-w-2xl">
+                        <p class="whitespace-pre-wrap font-medium">${escapeHtml(text)}</p>${fileDisplay}
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-bold ml-4 flex-shrink-0 shadow-lg">
+                        <i class="fas fa-user"></i>
+                    </div>`;
+                responseHistory.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            };
+
+            // Create AI message with streaming
+            const createStreamingAIMessage = () => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = "flex";
+                messageDiv.innerHTML = `
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content">
+                        <span class="streaming-text"></span><span class="typing-cursor"></span>
+                    </div>`;
+                responseHistory.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                return messageDiv.querySelector('.streaming-text');
+            };
+
+            // Stream text with typing effect
+            const streamText = (element, text, speed = 50) => {
+                return new Promise((resolve) => {
+                    let index = 0;
+                    const interval = setInterval(() => {
+                        if (index < text.length) {
+                            element.textContent += text[index];
+                            index++;
+                            chatContainer.scrollTop = chatContainer.scrollHeight;
+                        } else {
+                            clearInterval(interval);
+                            resolve();
+                        }
+                    }, speed);
+                });
+            };
+
+            // Finalize message - Renders the AI response in the chat history
+            const finalizeMessage = (element, fullText) => {
+                // CRITICAL FIX: Check if the element or its parent is null before proceeding
+                if (!element || !element.parentElement) {
+                    console.error("Error: Streaming element or its parent is missing. Skipping finalization due to a race condition (e.g., chat cleared during streaming).");
+                    return; 
+                }
+
+                const parentElement = element.parentElement; // Cache the parent reference to be safe
+                
+                const cursor = parentElement.querySelector('.typing-cursor');
+                if (cursor) cursor.remove();
+                
+                const processedContent = marked.parse(fullText);
+                parentElement.innerHTML = processedContent;
+                
+                // Check for canvas requests (Charts/Tables)
+                if (fullText.includes('CANVAS:')) {
+                    processCanvasRequest(fullText, parentElement);
+                }
+                
+                parentElement.querySelectorAll('pre code').forEach(block => {
+                    hljs.highlightElement(block);
+                });
+                
+                if (window.MathJax) {
+                    MathJax.typesetPromise([parentElement]).catch(err => {
+                        console.log('MathJax error:', err);
+                    });
+                }
+                
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            };
+
+            // Process canvas requests (Charts/Tables - kept for general chat)
+            const processCanvasRequest = (text, container) => {
+                const canvasMatch = text.match(/CANVAS:\s*(\w+)\s*\[([\s\S]*?)\]/);
+                if (!canvasMatch) return;
+                // ... (Chart and Table rendering logic remains the same if needed by chat)
+            };
+
+            // --- Dedicated Flashcard Tool Renderer (Refactored to be reusable) ---
+            const renderFlashcardTool = (cards) => {
+                // 1. Store the data globally
+                studyData.flashcards = cards; 
+                const toolName = 'Flashcard Generator';
+
+                // 2. Build the HTML content
+                const backButtonHTML = `
+                    <button id="backToChatBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all mb-6">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Chat
+                    </button>
+                `;
+                
+                const flashcardViewerHTML = `
+                    <div class="flashcard-viewer flex flex-col items-center max-w-xl mx-auto">
+                        <div class="flex items-center justify-center gap-6 w-full mb-6">
+                            <button id="prevCardBtn" class="flashcard-nav-btn" style="width: 56px; height: 56px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s;">
+                                <i class="fas fa-chevron-left text-xl"></i>
+                            </button>
+                            
+                            <div class="flashcard-flip-container" style="width: 100%; height: 350px; perspective: 1000px; position: relative;">
+                                <div class="flashcard flip-card" style="width: 100%; height: 100%; position: relative; cursor: pointer;">
+                                    <div class="flashcard-inner" style="width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                                        <!-- Front -->
+                                        <div class="flashcard-front" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); color: white; border-radius: 1.5rem; display: flex; align-items: center; justify-content: center; padding: 2.5rem; text-align: center; font-size: 1.5rem; font-weight: 700;">
+                                            <div>
+                                                <div class="text-sm mb-3 opacity-80 current-card-count">Card 1 of ${cards.length}</div>
+                                                <div class="card-front-content"></div>
+                                            </div>
+                                        </div>
+                                        <!-- Back -->
+                                        <div class="flashcard-back" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: white; border: 4px solid #667eea; color: #1f2937; border-radius: 1.5rem; display: flex; align-items: center; justify-content: center; padding: 2.5rem; text-align: center; font-size: 1.3rem; font-weight: 600; transform: rotateY(180deg);">
+                                            <div>
+                                                <div class="text-sm mb-3 text-purple-600 font-bold">DEFINITION/ANSWER</div>
+                                                <div class="card-back-content"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button id="nextCardBtn" class="flashcard-nav-btn" style="width: 56px; height: 56px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s;">
+                                <i class="fas fa-chevron-right text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <div id="cardDots" class="flex justify-center gap-2 mt-4">
+                            ${cards.map((_, i) => `<div class="flashcard-dot ${i === 0 ? 'active' : ''}" data-index="${i}" style="width: 12px; height: 12px; border-radius: 50%; background: ${i === 0 ? '#667eea' : '#ccc'}; cursor: pointer; transition: all 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"></div>`).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                // 3. Combine and show the main tool view
+                const mainContentHTML = `
+                    <div class="max-w-5xl mx-auto">
+                        ${backButtonHTML}
+                        <h2 class="text-3xl font-extrabold text-gray-800 mb-2">${toolName}</h2>
+                        <p class="text-lg text-gray-600 mb-8">Click the card to flip, or use the arrows to navigate through ${cards.length} concepts.</p>
+                        ${flashcardViewerHTML}
+                    </div>
+                `;
+                
+                showToolView(toolName, mainContentHTML);
+                
+                // 4. Event listener setup after DOM injection
+                let currentIndex = 0;
+                const flashcardDiv = mainToolView.querySelector('.flip-card');
+                const prevBtn = mainToolView.querySelector('#prevCardBtn');
+                const nextBtn = mainToolView.querySelector('#nextCardBtn');
+                const backBtn = mainToolView.querySelector('#backToChatBtn');
+                const dotsContainer = mainToolView.querySelector('#cardDots');
+                const dots = dotsContainer.querySelectorAll('.flashcard-dot');
+
+                const updateFlashcard = (index) => {
+                    currentIndex = index;
+                    const card = cards[currentIndex];
+                    // Keep card flipped if it was flipped, or always show front if just navigated
+                    flashcardDiv.classList.remove('flipped'); 
+                    
+                    // Use marked.parse for rich text in flashcards
+                    mainToolView.querySelector('.card-front-content').innerHTML = marked.parse(card.front);
+                    mainToolView.querySelector('.card-back-content').innerHTML = marked.parse(card.back);
+                    
+                    mainToolView.querySelector('.current-card-count').textContent = `Card ${currentIndex + 1} of ${cards.length}`;
+                    
+                    dots.forEach((dot, i) => {
+                        dot.style.background = i === currentIndex ? '#667eea' : '#ccc';
+                    });
+                };
+                
+                // Initial load
+                updateFlashcard(0);
+
+                prevBtn.addEventListener('click', () => {
+                    let newIndex = (currentIndex - 1 + cards.length) % cards.length;
+                    updateFlashcard(newIndex);
+                });
+                
+                nextBtn.addEventListener('click', () => {
+                    let newIndex = (currentIndex + 1) % cards.length;
+                    updateFlashcard(newIndex);
+                });
+                
+                flashcardDiv.addEventListener('click', () => {
+                    flashcardDiv.classList.toggle('flipped');
+                });
+                
+                dots.forEach(dot => {
+                    dot.addEventListener('click', () => {
+                        updateFlashcard(parseInt(dot.dataset.index));
+                    });
+                });
+
+                backBtn.addEventListener('click', showChatView);
+            };
+
+            // --- Main Generation Logic ---
+            const generateResponse = async (prompt) => {
+                if (isGenerating) return;
+                isGenerating = true;
+                generateButton.disabled = true;
+                promptInput.disabled = true;
+
+                let userMessage = prompt;
+                if (attachedFileContent) {
+                    userMessage = `File "${attachedFileName}" content:\n\n${attachedFileContent}\n\nUser request: ${prompt}`;
+                }
+
+                conversationHistory.push({ role: "user", parts: [{ text: userMessage }] });
+                
+                // Ensure we are in chat view to show streaming
+                showChatView();
+
+                const streamingElement = createStreamingAIMessage();
+                let fullResponse = '';
+                
+                let systemPromptText = systemInstructions[currentTool];
+                if (currentTool === 'flashcards') {
+                    const count = document.getElementById('flashcard-count')?.value || 8;
+                    systemPromptText = systemPromptText.replace('{{count}}', count);
+                }
+
+                const payload = {
+                    contents: conversationHistory,
+                    systemInstruction: { parts: [{ text: systemPromptText }] },
+                    generationConfig: {
+                        temperature: currentTool === 'chat' ? 0.7 : 0.3,
+                        maxOutputTokens: 8192,
+                        topP: 0.95
+                    }
+                };
+
+                try {
+                    // API Call
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+
+                        const chunk = decoder.decode(value);
+                        const lines = chunk.split('\n');
+
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                try {
+                                    const data = JSON.parse(line.slice(6));
+                                    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                                    if (text) {
+                                        fullResponse += text;
+                                        await streamText(streamingElement, text, 15);
+                                    }
+                                } catch (e) {
+                                    // Ignore JSON parse errors
+                                }
+                            }
+                        }
+                    }
+
+                    // Finalize message in chat history
+                    conversationHistory.push({ role: "model", parts: [{ text: fullResponse }] });
+                    finalizeMessage(streamingElement, fullResponse);
+                    
+                    // RENDER TOOL IN DEDICATED VIEW (This is the logic that uses the generated data)
+                    if (currentTool === 'flashcards') {
+                        try {
+                            // Match the JSON array structure explicitly
+                            const jsonMatch = fullResponse.match(/\[\s*\{[\s\S]*\}\s*\]/);
+                            if (jsonMatch) {
+                                const cards = JSON.parse(jsonMatch[0]);
+                                if (cards.length > 0) {
+                                    renderFlashcardTool(cards);
+                                }
+                            }
+                        } catch (e) {
+                            console.warn('Failed to parse flashcards JSON for dedicated view:', e);
+                            // If parsing fails, the full response remains in the chat history for debugging
+                        }
+                    }
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    // Ensure element exists before attempting to write error message
+                    if (streamingElement && streamingElement.parentElement) {
+                        streamingElement.parentElement.innerHTML = `<div class="text-red-600"><strong>Error:</strong> ${escapeHtml(error.message)}</div>`;
+                    }
+                } finally {
+                    isGenerating = false;
+                    promptInput.disabled = false;
+                    generateButton.disabled = promptInput.value.trim() === '';
+                    promptInput.focus();
+                    clearAttachedFile();
+                }
+            };
+
+            // --- Event Listeners and Utilities ---
+            
+            generateButton.addEventListener('click', () => {
+                const prompt = promptInput.value.trim();
+                if (!prompt) return;
+                createUserMessage(prompt, attachedFileName);
+                generateResponse(prompt);
+                promptInput.value = '';
+                window.autoExpand(promptInput);
+            });
+
+            promptInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey && !generateButton.disabled) {
+                    e.preventDefault();
+                    generateButton.click();
+                }
+            });
+
+            // File handling
+            const clearAttachedFile = () => {
+                attachedFileContent = null;
+                attachedFileName = null;
+                fileInput.value = '';
+                fileStatus.classList.add('hidden');
+                window.autoExpand(promptInput);
+            };
+
+            attachFileButton.addEventListener('click', () => fileInput.click());
+            clearFileButton.addEventListener('click', clearAttachedFile);
+
+            fileInput.addEventListener('change', async (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                if (file.size > 5 * 1024 * 1024) {
+                    await showCustomModal('File Too Large', 'Please select a file smaller than 5MB.', false);
+                    return;
+                }
+                
+                attachedFileName = file.name;
+                fileNameDisplay.textContent = file.name;
+                fileStatus.classList.remove('hidden');
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    attachedFileContent = e.target.result;
+                    window.autoExpand(promptInput);
+                };
+                reader.readAsText(file);
+            });
+
+            // Clear chat (using custom modal)
+            clearChat.addEventListener('click', async () => {
+                const result = await showCustomModal('Confirm Clear', 'Are you sure you want to clear all chat history? This action cannot be undone.', true);
+                if (result) {
+                    conversationHistory = [];
+                    responseHistory.innerHTML = '';
+                    // Note: Instead of location.reload(), we should probably just reset the state 
+                    // and re-show the welcome message, but for simplicity, we'll keep the reload for now.
+                    location.reload(); 
+                }
+            });
+
+            // Export chat
+            exportChat.addEventListener('click', () => {
+                const content = responseHistory.innerText;
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `study-session-${Date.now()}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            promptInput.addEventListener('input', () => window.autoExpand(promptInput));
+            updateToolHeader('chat');
+        });
+    </script>
+</body>
+</html>
