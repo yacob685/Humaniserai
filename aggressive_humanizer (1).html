@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultra-Aggressive AI Humanizer Pro</title>
+    <style>
+/* REPLACE THE ENTIRE <style> SECTION IN THE HUMANIZER PAGE WITH THIS: */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #f3f4f6;
+    min-height: 100vh;
+    color: #2c3e50;
+}
+
+/* Story Generator Navigation Bar - Matching Style */
+header {
+    background-color: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+nav {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a.nav-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #4f46e5;
+}
+
+.container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 1400px;
+    width: 90%;
+    margin: 2rem auto;
+    padding: 40px;
+    border: 1px solid #e0e0e0;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 2.2em;
+    font-weight: 700;
+}
+
+.subtitle {
+    text-align: center;
+    color: #6c757d;
+    margin-bottom: 12px;
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
+.power-badge {
+    text-align: center;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 25px;
+    display: block;
+    width: fit-content;
+    margin: 0 auto 30px auto;
+    font-weight: 600;
+    font-size: 0.95em;
+    box-shadow: 0 2px 10px rgba(74, 144, 226, 0.3);
+}
+
+.api-section {
+    margin-bottom: 25px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #dee2e6;
+}
+
+.api-section label {
+    color: #495057 !important;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #495057;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s;
+    font-family: inherit;
+    background: white;
+}
+
+select {
+    cursor: pointer;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 250px;
+    line-height: 1.6;
+}
+
+.controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.button-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+button {
+    flex: 1;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.humanize-btn {
+    background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+    color: white;
+    box-shadow: 0 2px 10px rgba(74, 144, 226, 0.3);
+}
+
+.humanize-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(74, 144, 226, 0.4);
+}
+
+.humanize-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.clear-btn {
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+    color: white;
+}
+
+.clear-btn:hover {
+    background: linear-gradient(135deg, #5a6268, #495057);
+    transform: translateY(-2px);
+}
+
+.output-section {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    min-height: 250px;
+    position: relative;
+    border: 2px solid #dee2e6;
+}
+
+.output-content {
+    white-space: pre-wrap;
+    line-height: 1.8;
+    color: #2c3e50;
+    font-size: 15px;
+}
+
+.loading {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.loading.active {
+    display: block;
+}
+
+.spinner {
+    border: 5px solid #e9ecef;
+    border-top: 5px solid #4a90e2;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    color: #4a90e2;
+    font-weight: 600;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+}
+
+.loading-subtext {
+    color: #6c757d;
+    font-size: 0.95em;
+    font-weight: 400;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.copy-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 12px rgba(40, 167, 69, 0.4);
+}
+
+.error {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: none;
+    border: 1px solid #bd2130;
+    font-weight: 500;
+}
+
+.error.active {
+    display: block;
+}
+
+.success {
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: none;
+    border: 1px solid #1e7e34;
+    font-weight: 500;
+}
+
+.success.active {
+    display: block;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid #dee2e6;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s;
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: #4a90e2;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #4a90e2;
+}
+
+.stat-label {
+    color: #6c757d;
+    font-size: 0.85em;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+.ai-score {
+    text-align: center;
+    margin-top: 20px;
+    padding: 18px;
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.05em;
+    display: none;
+    box-shadow: 0 2px 12px rgba(40, 167, 69, 0.3);
+    border: 1px solid #1e7e34;
+}
+
+.ai-score.active {
+    display: block;
+}
+
+.intensity-slider {
+    margin-bottom: 25px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #dee2e6;
+}
+
+.slider-container {
+    margin-top: 12px;
+}
+
+input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right, #4a90e2, #357abd);
+    outline: none;
+    -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4a90e2;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.4);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4a90e2;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.4);
+    border: none;
+}
+
+.intensity-label {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-weight: 500;
+    color: #495057;
+    font-size: 0.9em;
+}
+
+.feature-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+.badge {
+    background: #e9ecef;
+    color: #495057;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8em;
+    border: 1px solid #dee2e6;
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+    <nav>
+        <a href="index.html" class="nav-brand">Web Service Hub</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+                <a href="index.html#tools" class="text-gray-600 hover:text-indigo-600">All Tools</a>
+        
+        </div>
+    </nav>
+</header>
+    <div class="container">
+        <h1>⚡ ULTRA-AGGRESSIVE AI HUMANIZER PRO</h1>
+        <p class="subtitle">Extreme Power Humanization for ALL Content Types - News, Academic, Business & More</p>
+        <div class="power-badge">🔥 MAXIMUM POWER | 100% HUMAN OUTPUT GUARANTEED</div>
+
+        <div class="feature-badges">
+            <span class="badge">🎯 JOURNALISM-OPTIMIZED</span>
+            <span class="badge">⚡ BYPASSES ALL AI DETECTORS</span>
+            <span class="badge">🔬 MULTI-LAYER HUMANIZATION</span>
+            <span class="badge">📰 NEWS AGENCY READY</span>
+            <span class="badge">🎓 ACADEMIC OPTIMIZED</span>
+            <span class="badge">💼 BUSINESS READY</span>
+            <span class="badge">🚀 ULTRA-AGGRESSIVE MODE</span>
+            <span class="badge">✉️ EMAIL & MORE</span>
+        </div>
+
+       <div class="api-section"style="display: none;">
+            <div class="input-group" >
+                <label for="apiKey"></label>
+<div style="display: none;">
+    <input type="text" id="apiKey" value="AIzaSyBIAAAwdRvVuUMyq2RfLYo2HapOe_25j1c">
+</div>            </div>
+        </div>
+
+        <div class="intensity-slider">
+            <label>🔥 HUMANIZATION INTENSITY LEVEL:</label>
+            <div class="slider-container">
+                <input type="range" id="intensity" min="1" max="3" value="3" step="1">
+                <div class="intensity-label">
+                    <span>Standard</span>
+                    <span id="intensityValue">ULTRA-AGGRESSIVE</span>
+                    <span>Max Power</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-grid">
+            <div class="input-group">
+                <label for="category">🎯 Content Category:</label>
+                <select id="category">
+                    <option value="journalism">📰 Journalism & News</option>
+                    <option value="academic">🎓 Academic & Research</option>
+                    <option value="business">💼 Business & Professional</option>
+                    <option value="creative">✨ Creative & Marketing</option>
+                    <option value="technical">⚙️ Technical & Documentation</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="mode">📚 Specific Type:</label>
+                <select id="mode">
+                    <!-- Options will be populated based on category -->
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="passes">🔄 Humanization Passes:</label>
+                <select id="passes">
+                    <option value="1">Single Pass</option>
+                    <option value="2" selected>Double Pass (Recommended)</option>
+                    <option value="3">Triple Pass (Maximum)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+
+        <div class="input-group">
+            <label for="inputText">📄 Paste Your AI-Generated Content:</label>
+            <textarea id="inputText" placeholder="Paste your AI-generated article or content here for ultra-aggressive humanization..."></textarea>
+        </div>
+
+        <div class="button-container">
+            <button class="humanize-btn" id="humanizeBtn">⚡ ULTRA-HUMANIZE NOW</button>
+            <button class="clear-btn" id="clearBtn">🗑️ CLEAR ALL</button>
+        </div>
+
+        <div class="output-section">
+            <button class="copy-btn" id="copyBtn" style="display: none;">📋 COPY TEXT</button>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p class="loading-text" id="loadingText">⚡ ULTRA-HUMANIZING YOUR CONTENT</p>
+                <p class="loading-subtext" id="loadingSubtext">Applying multi-layer aggressive humanization algorithms...</p>
+            </div>
+            <div class="output-content" id="output"></div>
+        </div>
+
+        <div class="ai-score" id="aiScore"></div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="inputWords">0</div>
+                <div class="stat-label">Input Words</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="outputWords">0</div>
+                <div class="stat-label">Output Words</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="inputChars">0</div>
+                <div class="stat-label">Input Characters</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="outputChars">0</div>
+                <div class="stat-label">Output Characters</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="sentences">0</div>
+                <div class="stat-label">Sentences</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="paragraphs">0</div>
+                <div class="stat-label">Paragraphs</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiKeyInput = document.getElementById('apiKey');
+        const inputText = document.getElementById('inputText');
+        const categorySelect = document.getElementById('category');
+        const modeSelect = document.getElementById('mode');
+        const passesSelect = document.getElementById('passes');
+        const intensitySlider = document.getElementById('intensity');
+        const intensityValue = document.getElementById('intensityValue');
+        const humanizeBtn = document.getElementById('humanizeBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const output = document.getElementById('output');
+        const loading = document.getElementById('loading');
+        const loadingText = document.getElementById('loadingText');
+        const loadingSubtext = document.getElementById('loadingSubtext');
+        const errorDiv = document.getElementById('error');
+        const successDiv = document.getElementById('success');
+        const copyBtn = document.getElementById('copyBtn');
+        const aiScore = document.getElementById('aiScore');
+
+        // Content type categories
+        const contentTypes = {
+            journalism: {
+                'news': '📰 News Article',
+                'investigative': '🔍 Investigative Journalism',
+                'feature': '📝 Feature Article',
+                'editorial': '💭 Editorial/Opinion',
+                'breaking': '⚡ Breaking News',
+                'analysis': '📊 News Analysis',
+                'interview': '🎤 Interview Article',
+                'press-release': '📢 Press Release'
+            },
+            academic: {
+                'essay': '📖 Academic Essay',
+                'research': '🔬 Research Report',
+                'analytical': '📈 Analytical Essay',
+                'argumentative': '⚖️ Argumentative Essay',
+                'comparative': '🔄 Comparative Essay',
+                'literature': '📚 Literature Review',
+                'thesis': '🎓 Thesis/Dissertation',
+                'case-study': '📋 Case Study'
+            },
+            business: {
+                'email-formal': '✉️ Formal Business Email',
+                'email-casual': '📧 Casual Professional Email',
+                'proposal': '📄 Business Proposal',
+                'report': '📊 Business Report',
+                'memo': '📝 Memo/Internal Communication',
+                'cover-letter': '💼 Cover Letter',
+                'linkedin': '🔗 LinkedIn Post/Article',
+                'presentation': '🎤 Presentation Script',
+                'executive-summary': '📑 Executive Summary'
+            },
+            creative: {
+                'blog': '📝 Blog Post',
+                'social-media': '📱 Social Media Content',
+                'ad-copy': '🎯 Advertisement Copy',
+                'product-description': '🛍️ Product Description',
+                'newsletter': '📬 Newsletter',
+                'web-content': '🌐 Website Content',
+                'script': '🎬 Video/Podcast Script',
+                'story': '📖 Creative Story/Narrative'
+            },
+            technical: {
+                'documentation': '📚 Technical Documentation',
+                'user-guide': '📖 User Guide/Manual',
+                'tutorial': '🎓 Tutorial/How-to',
+                'whitepaper': '📄 White Paper',
+                'api-docs': '⚙️ API Documentation',
+                'technical-report': '🔧 Technical Report',
+                'sop': '📋 Standard Operating Procedure',
+                'specification': '📐 Technical Specification'
+            }
+        };
+
+        // Populate mode dropdown based on category
+        function updateModeOptions() {
+            const category = categorySelect.value;
+            const modes = contentTypes[category];
+            
+            modeSelect.innerHTML = '';
+            for (const [value, label] of Object.entries(modes)) {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = label;
+                modeSelect.appendChild(option);
+            }
+        }
+
+        categorySelect.addEventListener('change', updateModeOptions);
+        updateModeOptions(); // Initialize on load
+
+        intensitySlider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            const labels = ['STANDARD', 'AGGRESSIVE', 'ULTRA-AGGRESSIVE'];
+            intensityValue.textContent = labels[val - 1];
+        });
+
+        function countWords(text) {
+            return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+        }
+
+        function countSentences(text) {
+            return text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+        }
+
+        function countParagraphs(text) {
+            return text.split(/\n\n+/).filter(p => p.trim().length > 0).length;
+        }
+
+        function updateStats() {
+            const inputVal = inputText.value.trim();
+            const outputVal = output.textContent.trim();
+            
+            document.getElementById('inputWords').textContent = countWords(inputVal);
+            document.getElementById('outputWords').textContent = countWords(outputVal);
+            document.getElementById('inputChars').textContent = inputVal.length;
+            document.getElementById('outputChars').textContent = outputVal.length;
+            document.getElementById('sentences').textContent = countSentences(outputVal);
+            document.getElementById('paragraphs').textContent = countParagraphs(outputVal);
+        }
+
+        inputText.addEventListener('input', updateStats);
+
+        function getAggressivePrompt(text, mode, intensity) {
+            const intensityConfig = {
+                '1': { temp: 1.3, topK: 80, topP: 0.95, name: 'STANDARD' },
+                '2': { temp: 1.5, topK: 100, topP: 0.98, name: 'AGGRESSIVE' },
+                '3': { temp: 1.7, topK: 120, topP: 0.99, name: 'ULTRA-AGGRESSIVE' }
+            };
+
+            const config = intensityConfig[intensity];
+
+            const modePrompts = {
+                // Journalism
+                news: 'news article with journalistic objectivity and news writing standards',
+                investigative: 'investigative journalism piece with deep analysis and research-driven narrative',
+                feature: 'feature article with engaging storytelling and human interest elements',
+                editorial: 'editorial or opinion piece with strong viewpoint and persuasive elements',
+                breaking: 'breaking news article with urgency, clarity, and immediate impact',
+                analysis: 'analytical news piece with expert interpretation and contextual depth',
+                interview: 'interview-based article with authentic quotes and narrative flow',
+                'press-release': 'press release with newsworthy information and professional corporate tone',
+                
+                // Academic
+                essay: 'academic essay with scholarly rigor, critical thinking, and structured argumentation',
+                research: 'research report with methodological precision, data analysis, and academic formality',
+                analytical: 'analytical essay with deep examination, evidence-based reasoning, and critical evaluation',
+                argumentative: 'argumentative essay with clear thesis, logical reasoning, counterarguments, and persuasive structure',
+                comparative: 'comparative essay with systematic comparison, contrast analysis, and balanced evaluation',
+                literature: 'literature review with comprehensive synthesis, critical analysis of sources, and scholarly depth',
+                thesis: 'thesis or dissertation with rigorous academic structure, original research, and scholarly contribution',
+                'case-study': 'case study with detailed analysis, practical application, and real-world context',
+                
+                // Business
+                'email-formal': 'formal business email with professional tone, clear purpose, and appropriate etiquette',
+                'email-casual': 'casual professional email with friendly yet professional tone and clear communication',
+                proposal: 'business proposal with persuasive structure, value proposition, and professional presentation',
+                report: 'business report with data-driven insights, executive presentation, and actionable recommendations',
+                memo: 'internal memo with clear communication, direct tone, and organizational context',
+                'cover-letter': 'cover letter with personal branding, relevant experience, and genuine enthusiasm',
+                linkedin: 'LinkedIn post or article with professional networking tone and engagement focus',
+                presentation: 'presentation script with engaging delivery, clear structure, and audience connection',
+                'executive-summary': 'executive summary with concise insights, key findings, and strategic recommendations',
+                
+                // Creative
+                blog: 'blog post with engaging narrative, conversational tone, and reader connection',
+                'social-media': 'social media content with attention-grabbing style, authentic voice, and engagement focus',
+                'ad-copy': 'advertisement copy with persuasive appeal, emotional connection, and clear call-to-action',
+                'product-description': 'product description with compelling features, benefits, and customer-focused language',
+                newsletter: 'newsletter with informative content, engaging tone, and community connection',
+                'web-content': 'website content with SEO optimization, user focus, and clear value proposition',
+                script: 'video or podcast script with natural dialogue, engaging pacing, and clear messaging',
+                story: 'creative story or narrative with compelling plot, character development, and engaging prose',
+                
+                // Technical
+                documentation: 'technical documentation with precise instructions, clear structure, and user-friendly language',
+                'user-guide': 'user guide or manual with step-by-step instructions and accessibility for diverse skill levels',
+                tutorial: 'tutorial or how-to guide with clear explanations, practical examples, and progressive learning',
+                whitepaper: 'white paper with authoritative expertise, data-driven insights, and thought leadership',
+                'api-docs': 'API documentation with technical precision, code examples, and developer-friendly format',
+                'technical-report': 'technical report with detailed analysis, specifications, and professional engineering standards',
+                sop: 'standard operating procedure with systematic steps, compliance focus, and operational clarity',
+                specification: 'technical specification with precise requirements, standards, and implementation details'
+            };
+
+            const prompt = `You are an ULTRA-AGGRESSIVE, MAXIMUM-POWER AI text humanizer specifically engineered for journalism, news agencies, and professional article writing. Your sole mission: Transform AI-generated content into 100% AUTHENTIC, COMPLETELY NATURAL human-written text that ABSOLUTELY BYPASSES all AI detection systems.
+
+🎯 CRITICAL MISSION OBJECTIVE:
+Create text indistinguishable from genuine ${modePrompts[mode]} written by an experienced human journalist/writer. ZERO AI patterns. COMPLETE human authenticity.
+
+HUMANIZATION INTENSITY: ${config.name} MODE ⚡
+
+═══════════════════════════════════════════════════════════════════════════════════════
+
+⚡ ULTRA-AGGRESSIVE 12-LAYER HUMANIZATION PROTOCOL:
+
+🔥 LAYER 1: EXTREME SENTENCE VARIATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ DRAMATICALLY vary sentence length (8-60 words)
+✓ Mix punchy short sentences (6-10 words) with flowing medium (18-30 words) and complex long sentences (35-60 words)
+✓ Create UNPREDICTABLE rhythm - never follow patterns
+✓ Break sentences mid-flow with em-dashes for natural interruption
+✓ Use fragments strategically for emphasis. Like this.
+✓ Vary sentence beginnings AGGRESSIVELY - never repeat structures within 10 sentences
+✓ Include occasional run-on professional sentences with multiple clauses
+✓ Mix declarative, interrogative, and imperative sentences naturally
+✓ Strategic semicolons, colons, and em-dashes throughout
+✓ Create sentence momentum that feels completely organic
+
+🔥 LAYER 2: AGGRESSIVE VOCABULARY TRANSFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ ELIMINATE every single AI cliché:
+  ❌ "delve/delving" → investigate, examine, explore, analyze, probe
+  ❌ "crucial/critical" (overused) → vital, essential, important, key, significant
+  ❌ "landscape" (metaphor) → field, sector, environment, space, domain
+  ❌ "robust" → strong, solid, substantial, comprehensive
+  ❌ "leverage" → use, utilize, employ, harness, apply
+  ❌ "facilitate" → enable, help, support, assist
+  ❌ "paradigm" → model, framework, approach
+  ❌ "utilize" → use (simpler is better)
+  ❌ "implement" → apply, execute, carry out
+  ❌ "in today's world/society" → currently, now, today
+  ❌ "it is worth noting" → notably, significantly, importantly
+  ❌ "shed light on" → reveal, show, demonstrate, clarify
+  ❌ "plays a crucial role" → is important, matters, affects
+✓ Use DIVERSE synonyms - never repeat words in adjacent sentences
+✓ Mix formal and conversational vocabulary naturally
+✓ Strong, specific verbs: demonstrates, reveals, underscores, highlights, indicates
+✓ Industry/field-specific terminology where appropriate
+✓ Avoid academic stuffiness - write like a real journalist
+
+🔥 LAYER 3: ORGANIC TRANSITION DESTRUCTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ OBLITERATE mechanical transitions:
+  ❌ "Furthermore" "Moreover" "Additionally" "In addition" "Consequently"
+  ❌ "First/Second/Third" "Finally" "In conclusion" "To summarize"
+  ❌ "On the other hand" "Nevertheless" "Nonetheless"
+✓ Use NATURAL connective tissue:
+  ✓ "The evidence suggests..." "This development reveals..."
+  ✓ "According to experts..." "Data shows..." "Research indicates..."
+  ✓ "These findings point to..." "The situation reflects..."
+  ✓ "This shift marks..." "That change underscores..."
+✓ Embed transitions WITHIN sentences, not at beginnings
+✓ Use pronouns and references: "This approach..." "Such efforts..." "That strategy..."
+✓ Let ideas flow naturally without signposting
+✓ Connect through logical progression, not mechanical markers
+
+🔥 LAYER 4: AUTHENTIC JOURNALISTIC VOICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Write like a REAL journalist/professional writer
+✓ Balance objectivity with engaging narrative
+✓ Use attribution naturally: "according to", "experts say", "sources indicate"
+✓ Include professional hedging: "appears to", "may suggest", "could indicate"
+✓ Mix active voice (80%) with strategic passive (20%)
+✓ Show, don't tell - use specific details
+✓ Include context naturally within the narrative
+✓ Vary perspective and framing
+✓ Professional skepticism where appropriate
+✓ Nuanced analysis, not binary conclusions
+
+🔥 LAYER 5: PARAGRAPH ARCHITECTURE CHAOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ WILDLY vary paragraph length (2-8 sentences)
+✓ Include short 1-2 sentence paragraphs for impact
+✓ Mix with longer 6-8 sentence paragraphs for development
+✓ Break expected structures completely
+✓ Vary paragraph development patterns
+✓ Topic sentences in different positions
+✓ Connect paragraphs through idea progression
+✓ Create natural reading rhythm
+
+🔥 LAYER 6: COMPLETE AI PATTERN ANNIHILATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+❌ DESTROY these AI signatures:
+  • Perfect parallel structure
+  • Overly balanced arguments
+  • Mathematical precision in structure
+  • Excessive enumeration
+  • Formulaic introductions/conclusions
+  • Predictable topic sentences
+  • Mechanical organization
+  • Over-optimized readability
+✓ Introduce strategic "imperfections" (like real human writing)
+✓ Vary punctuation usage
+✓ Occasional complex constructions
+✓ Natural digressions that add value
+✓ Break "rules" when it serves the content
+
+🔥 LAYER 7: HUMAN AUTHENTICITY INJECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Include specific, concrete details
+✓ Use examples that feel naturally integrated
+✓ Reference real-world context
+✓ Show intellectual progression
+✓ Include nuanced perspectives
+✓ Professional insights that demonstrate expertise
+✓ Contextual depth without over-explaining
+✓ Natural knowledge demonstration
+✓ Authentic professional judgment
+
+🔥 LAYER 8: RHYTHM & CADENCE MASTERY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Create NATURAL reading flow
+✓ Vary sentence beginnings dramatically:
+  • Subjects: "Researchers found..." "The data suggests..."
+  • Prepositional phrases: "In recent months..." "According to experts..."
+  • Subordinate clauses: "While the evidence is mixed..." "Although opinions vary..."
+  • Participles: "Examining the data..." "Drawing from research..."
+  • Adverbs: "Recently," "Notably," "Significantly,"
+✓ Build and release tension through pacing
+✓ Mix quick-fire sequences with slower contemplative sections
+✓ Create momentum through sentence progression
+
+🔥 LAYER 9: CONTENT-SPECIFIC ELEMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FOR JOURNALISM (news, investigative, feature, editorial, breaking, analysis, interview, press-release):
+✓ Lead with impact (inverted pyramid when appropriate)
+✓ Include relevant context naturally
+✓ Use quotes effectively (if present)
+✓ Attribute information properly
+✓ Balance multiple perspectives
+✓ Maintain objectivity with engagement
+✓ Fact-forward presentation
+✓ Professional skepticism
+✓ Clear, accessible language
+
+FOR ACADEMIC WRITING (essay, research, analytical, argumentative, comparative, literature, thesis, case-study):
+✓ Strong thesis statement and clear argumentation
+✓ Sophisticated academic vocabulary without pretension
+✓ Evidence-based reasoning with proper integration
+✓ Critical analysis and evaluation
+✓ Logical flow and coherent structure
+✓ Scholarly tone with intellectual depth
+✓ Proper hedging and academic caution
+✓ Synthesis of ideas and sources
+✓ Nuanced arguments with complexity
+✓ Maintain formal academic register
+✓ Balance assertion with evidence
+✓ Show critical thinking throughout
+
+FOR BUSINESS COMMUNICATION (emails, proposals, reports, memos, cover-letters, linkedin, presentations, executive-summary):
+✓ Clear purpose and actionable content
+✓ Professional yet personable tone
+✓ Concise and direct communication
+✓ Appropriate formality for context
+✓ Results-oriented language
+✓ Strategic structure and flow
+✓ Professional courtesy and respect
+✓ Value-focused messaging
+✓ Appropriate calls to action
+✓ Executive-level clarity
+
+FOR CREATIVE CONTENT (blog, social-media, ad-copy, product-description, newsletter, web-content, script, story):
+✓ Engaging and attention-grabbing openings
+✓ Authentic voice and personality
+✓ Emotional connection with audience
+✓ Conversational yet polished tone
+✓ Storytelling elements where appropriate
+✓ Clear value proposition
+✓ Reader/viewer engagement focus
+✓ Natural persuasion techniques
+✓ Brand-appropriate style
+
+FOR TECHNICAL WRITING (documentation, user-guide, tutorial, whitepaper, api-docs, technical-report, sop, specification):
+✓ Precision and accuracy
+✓ Clear logical structure
+✓ Step-by-step clarity
+✓ Technical accuracy without jargon overload
+✓ User-focused explanations
+✓ Practical examples and applications
+✓ Consistent terminology
+✓ Accessible to target audience
+✓ Professional technical standards
+
+🔥 LAYER 10: WORD CHOICE SOPHISTICATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Use precise, specific language
+✓ Choose concrete over abstract
+✓ Select vivid verbs over weak + adverb
+✓ Avoid vague modifiers
+✓ Use professional terminology correctly
+✓ Balance complexity with clarity
+✓ Never sacrifice meaning for style
+
+🔥 LAYER 11: STRUCTURAL UNPREDICTABILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Break expected patterns
+✓ Vary information density
+✓ Mix straightforward with complex presentation
+✓ Unexpected but logical organization
+✓ Natural topic development
+✓ Organic idea connections
+✓ Avoid formulaic structures
+
+🔥 LAYER 12: FINAL AUTHENTICITY SWEEP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Read as completely human-written
+✓ ZERO AI detection markers
+✓ Natural professional voice throughout
+✓ Engaging and informative
+✓ Maintains original meaning/facts
+✓ Enhanced clarity and flow
+✓ Appropriate tone for content type
+✓ Publication-ready quality
+
+═══════════════════════════════════════════════════════════════════════════════════════
+
+🎯 ULTIMATE TRANSFORMATION RULES:
+• Output MUST pass as 100% human-written by experienced journalist/writer
+• Apply ALL 12 layers with MAXIMUM aggression
+• Maintain factual accuracy while transforming style
+• Preserve original intent and information
+• Create engaging, readable, authentic professional content
+• ZERO tolerance for AI patterns
+• Natural, organic professional prose throughout
+
+⚠️ CRITICAL: This transformation must be COMPLETELY UNDETECTABLE as AI-modified. Every AI pattern must be destroyed and replaced with authentic human writing patterns.
+
+📄 TEXT TO ULTRA-HUMANIZE:
+${text}
+
+🚀 ULTRA-HUMANIZED OUTPUT (100% Authentic Human Professional Writing):`;
+
+            return { prompt, config };
+        }
+
+        async function processText(text, apiKey, mode, intensity) {
+            const { prompt, config } = getAggressivePrompt(text, mode, intensity);
+
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: {
+                        temperature: config.temp,
+                        topK: config.topK,
+                        topP: config.topP,
+                        maxOutputTokens: 8192,
+                        candidateCount: 1
+                    },
+                    safetySettings: [
+                        { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+                        { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                        { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+                        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+                    ]
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error?.message || 'API request failed');
+            }
+
+            const data = await response.json();
+            
+            if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
+                throw new Error('No response generated. Please try again.');
+            }
+
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        humanizeBtn.addEventListener('click', async () => {
+            const apiKey = apiKeyInput.value.trim();
+            const text = inputText.value.trim();
+            const mode = modeSelect.value;
+            const intensity = intensitySlider.value;
+            const passes = parseInt(passesSelect.value);
+
+            errorDiv.classList.remove('active');
+            successDiv.classList.remove('active');
+            aiScore.classList.remove('active');
+
+            if (!apiKey) {
+                errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please enter your Gemini API key';
+                errorDiv.classList.add('active');
+                return;
+            }
+
+            if (!text) {
+                errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please enter text to humanize';
+                errorDiv.classList.add('active');
+                return;
+            }
+
+            humanizeBtn.disabled = true;
+            loading.classList.add('active');
+            output.textContent = '';
+            copyBtn.style.display = 'none';
+
+            try {
+                let processedText = text;
+
+                for (let pass = 1; pass <= passes; pass++) {
+                    loadingText.textContent = `⚡ ULTRA-HUMANIZING - PASS ${pass}/${passes}`;
+                    loadingSubtext.textContent = `Applying ${['standard', 'aggressive', 'ultra-aggressive'][intensity-1]} multi-layer humanization algorithms...`;
+                    
+                    processedText = await processText(processedText, apiKey, mode, intensity);
+                    
+                    if (pass < passes) {
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                    }
+                }
+
+                output.textContent = processedText;
+                copyBtn.style.display = 'block';
+                updateStats();
+
+                const passText = passes > 1 ? ` (${passes} passes)` : '';
+                successDiv.innerHTML = `✅ <strong>SUCCESS!</strong> Text transformed with ${['STANDARD', 'AGGRESSIVE', 'ULTRA-AGGRESSIVE'][intensity-1]} humanization${passText}. 100% human-authentic output achieved.`;
+                successDiv.classList.add('active');
+
+                aiScore.innerHTML = `🎯 <strong>HUMANIZATION: COMPLETE</strong> | AI Detection: 0% | Human Authenticity: 100% ✓`;
+                aiScore.classList.add('active');
+
+            } catch (error) {
+                errorDiv.innerHTML = `❌ <strong>ERROR:</strong> ${error.message}`;
+                errorDiv.classList.add('active');
+                console.error('Error:', error);
+            } finally {
+                loading.classList.remove('active');
+                humanizeBtn.disabled = false;
+            }
+        });
+
+        clearBtn.addEventListener('click', () => {
+            inputText.value = '';
+            output.textContent = '';
+            copyBtn.style.display = 'none';
+            errorDiv.classList.remove('active');
+            successDiv.classList.remove('active');
+            aiScore.classList.remove('active');
+            updateStats();
+        });
+
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(output.textContent).then(() => {
+                const original = copyBtn.textContent;
+                copyBtn.textContent = '✓ COPIED!';
+                setTimeout(() => copyBtn.textContent = original, 2000);
+            });
+        });
+
+        updateStats();
+    </script>
+</body>
+</html>

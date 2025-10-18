@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Service Hub - Free Online Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tool-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer; /* Indicate interactivity */
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-indigo-600">Web Service Hub</a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html" class="text-gray-600 hover:text-indigo-600">Home</a>
+                <a href="#tools" class="text-gray-600 hover:text-indigo-600">All Tools</a>
+                <a id="auth-link" href="login.html" class="px-3 py-1.5 text-sm font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition duration-150">Login</a>
+            </div>
+            <div class="md:hidden flex items-center space-x-4">
+                <a id="auth-link-mobile" href="login.html" class="text-sm font-semibold text-indigo-600 hover:text-indigo-700">Login</a>
+                <button id="mobile-menu-button" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="index.html" class="block py-2 text-gray-600 hover:text-indigo-600">Home</a>
+            <a href="#tools" class="block py-2 text-gray-600 hover:text-indigo-600">All Tools</a>
+            <a href="login.html" class="block py-2 text-gray-600 hover:text-indigo-600">Login/Sign Up</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Your Ultimate Collection of Online Tools</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                A one-stop suite of free, easy-to-use web services. **Unlock all tools by subscribing for just $1 USD/month.**
+            </p>
+            <p id="subscription-status" class="mt-4 text-xl font-medium text-red-500"></p>
+        </section>
+
+    <section id="tools">
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-10 mt-[30px]">Our Tools</h2>        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            
+            <a href="password-generator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Password Generator</h3>
+                <p class="text-gray-500">Create strong, secure, and random passwords for your accounts.</p>
+            </a>
+            
+            <a href="qr-code-generator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path><path d="M3 10h1m16 0h1m-1-5h1m-1 10h1m-6-15h1m-1 16h1m-6-1h1m-5-15h1M4 5h1m15 5h1m-5 10h1M9 3v1m6 16v1M3 9v1m17 5v1m-1-16v1m-1 15v1m-15-5v1m15-1v1"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">QR Code Generator</h3>
+                <p class="text-gray-500">Generate QR codes from text, URLs, or any other data instantly.</p>
+            </a>
+
+            <a href="unit-converter.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Unit Converter</h3>
+                <p class="text-gray-500">Convert various units of measurement like length, weight, and temperature.</p>
+            </a>
+
+            <a href="text-tools.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                 <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Text Tools</h3>
+                <p class="text-gray-500">Analyze and manipulate text with word count, case converter, and more.</p>
+            </a>
+
+            <a href="color-picker.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                   <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Color Picker</h3>
+                <p class="text-gray-500">Pick colors from a palette and get their HEX, RGB, and HSL codes.</p>
+            </a>
+
+            <a href="json-formatter.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">JSON Formatter</h3>
+                <p class="text-gray-500">Validate, format, and beautify your JSON data for readability.</p>
+            </a>
+
+             <a href="base64-encoder.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Base64 Encoder/Decoder</h3>
+                <p class="text-gray-500">Easily encode your data to Base64 or decode a Base64 string back to its original form.</p>
+            </a>
+
+             <a href="markdown-editor.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Markdown Editor</h3>
+                <p class="text-gray-500">Write Markdown and see the HTML preview in real-time.</p>
+            </a>
+            
+            <a href="hash-generator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7h3a5 5 0 015 5v3m-4-15H9a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2v-6a2 2 0 00-2-2zm-2 16a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2h-2z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Hash Generator</h3>
+                <p class="text-gray-500">Generate MD5, SHA-1, SHA-256, and SHA-512 cryptographic hashes.</p>
+            </a>
+
+            <a href="lorem-ipsum-generator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Lorem Ipsum Generator</h3>
+                <p class="text-gray-500">Create placeholder text in words, sentences, or paragraphs for design mockups.</p>
+            </a>
+
+            <a href="timestamp-converter.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Timestamp Converter</h3>
+                <p class="text-gray-500">Convert Unix timestamps to human-readable dates and vice-versa.</p>
+            </a>
+
+            <a href="url-encoder.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.836l1.59-1.592.584.584a2 2 0 01-.061 2.915l-1.353 1.352"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.172 13.828a4 4 0 005.656 0l4-4a4 4 0 10-5.656-5.656l-1.1 1.1"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">URL Encoder/Decoder</h3>
+                <p class="text-gray-500">Encode and decode text for safe transmission within URLs.</p>
+            </a>
+            
+            <a href="bmi-calculator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v3.5l1.5-1.5m-3 0L10 12v3.5m4-3.5H9m5 0a2 2 0 00-2 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4a2 2 0 00-2-2H4a2 2 0 00-2 2v4a2 2 0 002 2h16a2 2 0 002-2v-4a2 2 0 00-2-2h-3zm-7-2v2"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">BMI Calculator</h3>
+                <p class="text-gray-500">Calculate your Body Mass Index using metric or imperial measurements.</p>
+            </a>
+
+            <a href="age-calculator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.424V8.586a2 2 0 00-2-2H5a2 2 0 00-2 2v6.838a2 2 0 00.586 1.414l5.586 5.586A2 2 0 0012 22a2 2 0 002-2v-1.172a2 2 0 00-.586-1.414L12 15.828l-2.172-2.172a2 2 0 010-2.828L12 8.172l2.414 2.414a2 2 0 002.828 0l4.172-4.172M12 8.172V3m0 18v-2.172"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Age Calculator</h3>
+                <p class="text-gray-500">Find out your exact age from your date of birth.</p>
+            </a>
+
+            <a href="percentage-calculator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21v-4m4 4v-4m4 4v-4M4 4h16"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Percentage Calculator</h3>
+                <p class="text-gray-500">Quickly calculate percentages for any scenario.</p>
+            </a>
+
+            <a href="random-number-generator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.636-6.364l-.707-.707M12 21v-1m-6.364-1.636l.707-.707M6 12a6 6 0 1112 0 6 6 0 01-12 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Random Number Generator</h3>
+                <p class="text-gray-500">Generate random numbers within a custom range.</p>
+            </a>
+
+            <a href="time-zone-converter.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c.552 0 1-.448 1-1V4c0-.552-.448-1-1-1s-1 .448-1 1v3c0 .552.448 1 1 1zm0 8c-.552 0-1 .448-1 1v3c0 .552.448 1 1 1s1-.448 1-1v-3c0-.552-.448-1-1-1zm6-11.414l-2.121 2.121a1 1 0 01-1.414 0l-2.121-2.121A1 1 0 0113.828 6H10.17a1 1 0 01-.707-.293L7.342 3.586a1 1 0 010-1.414L9.464.05a1 1 0 011.414 0l2.121 2.121a1 1 0 010 1.414L10.878 5.707a1 1 0 01-.707.293h-1.414l2.121 2.121a1 1 0 010 1.414L8.757 11.243a1 1 0 01-1.414 0L5.222 9.121a1 1 0 010-1.414l2.121-2.121a1 1 0 011.414 0L11 8.828"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Time Zone Converter</h3>
+                <p class="text-gray-500">Convert time between different time zones across the world.</p>
+            </a>
+
+            <a href="loan-calculator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.539 1.118l-3.975-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118L2.05 10.1c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Loan Calculator</h3>
+                <p class="text-gray-500">Calculate monthly payments for a loan.</p>
+            </a>
+
+            <a href="stopwatch.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Stopwatch</h3>
+                <p class="text-gray-500">A simple and accurate online stopwatch.</p>
+            </a>
+
+            <a href="countdown-timer.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Countdown Timer</h3>
+                <p class="text-gray-500">Set a timer for any event or task.</p>
+            </a>
+
+            <a href="palette-generator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Palette Generator</h3>
+                <p class="text-gray-500">Create beautiful color palettes for your projects.</p>
+            </a>
+
+            <a href="regex-tester.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Regex Tester</h3>
+                <p class="text-gray-500">Test your regular expressions in real-time.</p>
+            </a>
+
+                    <a href="html-viewer.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">HTML/CSS/JS Viewer</h3>
+                <p class="text-gray-500">Write and instantly preview HTML, CSS, and JavaScript code.</p>
+            </a>
+            <a href="case-converter.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18M3 8h18M3 12h18M3 16h18M3 20h18"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Case Converter</h3>
+                <p class="text-gray-500">Convert text between different letter cases.</p>
+            </a>
+
+            <a href="image-resizer.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 0l-5-5"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Image Resizer</h3>
+                <p class="text-gray-500">Resize images to any dimension you need.</p>
+            </a>
+
+            <a href="favicon-generator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l-1-1m-4 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Favicon Generator</h3>
+                <p class="text-gray-500">Create a favicon from any image for your website.</p>
+            </a>
+
+            <a href="css-gradient-generator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">CSS Gradient Generator</h3>
+                <p class="text-gray-500">Generate CSS gradients for your web designs.</p>
+            </a>
+
+            <a href="morse-code-translator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Morse Code Translator</h3>
+                <p class="text-gray-500">Translate text to and from Morse code.</p>
+            </a>
+
+            <a href="binary-converter.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-indigo-100 text-indigo-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Binary Converter</h3>
+                <p class="text-gray-500">Convert text to binary and vice versa.</p>
+            </a>
+        </div>
+    </section>
+
+    <section id="ai-tools">
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-10 mt-[50px]">Our AI Tools</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <a href="story-generator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-purple-100 text-purple-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Story Generator</h3>
+                <p class="text-gray-500">Chat with an AI to generate unique and creative stories on any topic.</p>
+            </a>
+            <a href="omni.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-purple-100 text-purple-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Code Generator</h3>
+                <p class="text-gray-500">Generate code snippets in any language with the help of AI.</p>
+            </a>
+            <a href="game-generator.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-purple-100 text-purple-600 rounded-full p-4 mb-4">
+                   <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 15.536c-1.171 1.952-3.07 1.952-4.242 0-1.172-1.953-1.172-5.119 0-7.072 1.171-1.952 3.07-1.952 4.242 0 1.172 1.953 1.172 5.119 0 7.072z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Game Ideas</h3>
+                <p class="text-gray-500">Get suggestions and creative ideas for your next game project.</p>
+            </a>
+          
+            <a href="researcher.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-purple-100 text-purple-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path><path d="M3.055 11H5a7 7 0 0114 0h1.945"></path><path d="M12 21a9 9 0 01-9-9 1 1 0 011-1h16a1 1 0 011 1 9 9 0 01-9 9z"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">AI Researcher</h3>
+                <p class="text-gray-500">Get web-grounded, cited answers for any research topic.</p>
+            </a>
+
+            <a href="aggressive_humanizer (1).html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-purple-100 text-purple-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">AI Text Humaniser</h3>
+                <p class="text-gray-500">Humanise any text type generated by AI.</p>
+            </a>
+
+            <a href="translatorai.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-purple-100 text-purple-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Fast Language Translator</h3>
+                <p class="text-gray-500">All Languages Translator</p>
+            </a>
+
+            <a href="studyai.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-purple-100 text-purple-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">AI Study Assistant - Academic Excellence</h3>
+                <p class="text-gray-500">An AI tailored for Students Success</p>
+            </a>
+
+              <a href="flashcards.html" class="tool-card bg-white rounded-xl p-6 shadow-xl flex flex-col items-center text-center transition duration-300 ease-in-out border-4 border-transparent hover:border-indigo-500 data-tool-link">
+                <div class="bg-purple-100 text-purple-600 rounded-full p-4 mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">AI Flashcards Generator - Academic Excellence</h3>
+                <p class="text-gray-500">An AI tailored for Students Success</p>
+            </a>
+
+            </section>
+</main>
+    <footer class="bg-white mt-16">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500">
+            <p>&copy; 2024 Web Service Hub. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Paywall and Auth Management Logic
+        const toolLinks = document.querySelectorAll('.tool-card');
+        const authLink = document.getElementById('auth-link');
+        const authLinkMobile = document.getElementById('auth-link-mobile');
+        const statusElement = document.getElementById('subscription-status');
+
+        const loggedInUser = localStorage.getItem('loggedInUser');
+        let userStatus = null;
+        let isSubscribed = false;
+
+        if (loggedInUser) {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            userStatus = users.find(u => u.email === loggedInUser);
+            if (userStatus && userStatus.subscribed === true) {
+                isSubscribed = true;
+                statusElement.textContent = `Welcome back, ${loggedInUser}! You are a SUBSCRIBER.`;
+                statusElement.classList.remove('text-red-500');
+                statusElement.classList.add('text-green-600');
+            } else {
+                statusElement.textContent = `Logged in as ${loggedInUser}. Not Subscribed. Click a tool to sign up!`;
+            }
+            // Change Login/Signup button to Logout
+            const logout = (e) => {
+                e.preventDefault();
+                localStorage.removeItem('loggedInUser');
+                // Optional: clear subscription status for all users on logout for demo
+                // For a real app, this should only happen if the user deletes their account
+                // localStorage.removeItem('users'); 
+                window.location.reload();
+            };
+            authLink.textContent = 'Logout';
+            authLink.href = '#';
+            authLink.addEventListener('click', logout);
+            if (authLinkMobile) {
+                authLinkMobile.textContent = 'Logout';
+                authLinkMobile.href = '#';
+                authLinkMobile.addEventListener('click', logout);
+            }
+        } else {
+            statusElement.textContent = 'Please Login or Sign Up to access all tools.';
+        }
+
+
+        // Apply Paywall Logic
+        toolLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const targetUrl = link.getAttribute('href');
+                
+                // Block access if not subscribed (and not the login/signup page itself)
+                if (!isSubscribed) {
+                    e.preventDefault();
+                    
+                    // You can decide if they must log in first, or go straight to sign up
+                    if (!loggedInUser) {
+                        alert("You must log in or sign up and subscribe to access this tool. Redirecting to Sign Up.");
+                        window.location.href = 'signup.html';
+                    } else {
+                        // Logged in but not subscribed
+                        alert("Your account is not subscribed. Redirecting to payment page.");
+                        // Redirect to a specific payment page if you had one, or sign-up to see the payment section
+                        window.location.href = 'signup.html?email=' + loggedInUser; 
+                    }
+                } else {
+                    // Access granted. The default navigation proceeds.
+                    // This is where a real tool page would load.
+                    console.log(`Accessing tool: ${targetUrl}`);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
