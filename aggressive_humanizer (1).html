@@ -446,6 +446,82 @@ input[type="range"]::-moz-range-thumb {
         font-size: 1.8em;
     }
 }
+
+        .history-item {
+    background: white;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.history-item:hover {
+    border-color: #e74c3c;
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
+    transform: translateX(5px);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.history-title {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.95em;
+}
+
+.history-date {
+    font-size: 0.8em;
+    color: #6c757d;
+}
+
+.history-preview {
+    color: #495057;
+    font-size: 0.85em;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.history-meta {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+    font-size: 0.75em;
+    color: #6c757d;
+}
+
+.history-badge {
+    background: #e9ecef;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.delete-history-btn {
+    padding: 4px 10px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75em;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.delete-history-btn:hover {
+    background: #c82333;
+}
     </style>
 </head>
 <body>
@@ -584,7 +660,19 @@ input[type="range"]::-moz-range-thumb {
 
         <div class="human-score" id="humanScore"></div>
 
-        <div class="stats">
+<!-- Chat History Section -->
+        <div class="chat-history-section" style="margin-top: 30px; padding: 25px; background: #f8f9fa; border-radius: 12px; border: 2px solid #dee2e6;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin-right:  30px; color: #2c3e50; font-size: 1.3em;">📜 Chat History</h3>
+                <button id="clearHistoryBtn" style="padding: 8px 16px; background: linear-gradient(135deg, #dc3545, #c82333); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9em;">🗑️ Clear History</button>
+            </div>
+            <div id="chatHistoryList" style="max-height: 400px; overflow-y: auto;">
+                <!-- History items will be inserted here -->
+            </div>
+            <p id="noHistory" style="text-align: center; color: #6c757d; padding: 40px; display: none;">No chat history yet. Generate or humanize content to start!</p>
+        </div>
+
+        <div class="stats">         
             <div class="stat-item">
                 <div class="stat-value" id="outputWords">0</div>
                 <div class="stat-label">Words Generated</div>
@@ -691,7 +779,158 @@ const generateInputs = document.getElementById('generateInputs');
 const humanizeInputs = document.getElementById('humanizeInputs');
 const existingTextInput = document.getElementById('existingText');
 let currentMode = 'generate'; // 'generate' or 'humanize'
+// Chat History Management
+let chatHistory = [];
 
+// Load chat history from localStorage
+function loadChatHistory() {
+    const saved = localStorage.getItem('ultraHumanChatHistory');
+    if (saved) {
+        chatHistory = JSON.parse(saved);
+        renderChatHistory();
+    }
+}
+
+// Save chat history to localStorage
+function saveChatHistory() {
+    localStorage.setItem('ultraHumanChatHistory', JSON.stringify(chatHistory));
+}
+
+// Add new chat to history
+function addToHistory(data) {
+    const historyItem = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        mode: data.mode,
+        contentType: data.contentType,
+        input: data.input,
+        output: data.output,
+        wordCount: data.wordCount,
+        intensity: data.intensity
+    };
+    
+    chatHistory.unshift(historyItem); // Add to beginning
+    
+    // Keep only last 50 items
+    if (chatHistory.length > 50) {
+        chatHistory = chatHistory.slice(0, 50);
+    }
+    
+    saveChatHistory();
+    renderChatHistory();
+}
+
+// Render chat history list
+function renderChatHistory() {
+    const historyList = document.getElementById('chatHistoryList');
+    const noHistory = document.getElementById('noHistory');
+    
+    if (chatHistory.length === 0) {
+        historyList.innerHTML = '';
+        noHistory.style.display = 'block';
+        return;
+    }
+    
+    noHistory.style.display = 'none';
+    
+    historyList.innerHTML = chatHistory.map(item => {
+        const date = new Date(item.timestamp);
+        const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const preview = item.output.substring(0, 150) + (item.output.length > 150 ? '...' : '');
+        const modeLabel = item.mode === 'generate' ? '🚀 Generated' : '✨ Humanized';
+        
+        return `
+            <div class="history-item" data-id="${item.id}">
+                <div class="history-header">
+                    <span class="history-title">${modeLabel} - ${item.contentType}</span>
+                    <div>
+                        <span class="history-date">${formattedDate}</span>
+                        <button class="delete-history-btn" onclick="deleteHistoryItem(${item.id}, event)">🗑️</button>
+                    </div>
+                </div>
+                <div class="history-preview">${preview}</div>
+                <div class="history-meta">
+                    <span class="history-badge">${item.wordCount} words</span>
+                    <span class="history-badge">${['Natural', 'Enhanced', 'Ultra-Human'][item.intensity - 1]}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    // Add click listeners to history items
+    document.querySelectorAll('.history-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('delete-history-btn')) {
+                loadHistoryItem(parseInt(item.dataset.id));
+            }
+        });
+    });
+}
+
+// Load a history item into the editor
+function loadHistoryItem(id) {
+    const item = chatHistory.find(h => h.id === id);
+    if (!item) return;
+    
+    // Set mode
+    if (item.mode === 'generate') {
+        generateModeBtn.click();
+        topicInput.value = item.input;
+    } else {
+        humanizeModeBtn.click();
+        existingTextInput.value = item.input;
+    }
+    
+    // Set output
+    output.textContent = item.output;
+    copyBtn.style.display = 'block';
+    updateStats();
+    
+    // Set intensity
+    intensitySlider.value = item.intensity;
+    intensitySlider.dispatchEvent(new Event('input'));
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Show success message
+    successDiv.innerHTML = `✅ <strong>Loaded from history!</strong> ${item.mode === 'generate' ? 'Generated' : 'Humanized'} content restored.`;
+    successDiv.classList.add('active');
+    
+    setTimeout(() => {
+        successDiv.classList.remove('active');
+    }, 3000);
+}
+
+// Delete a history item
+function deleteHistoryItem(id, event) {
+    event.stopPropagation();
+    
+    if (confirm('Delete this chat from history?')) {
+        chatHistory = chatHistory.filter(h => h.id !== id);
+        saveChatHistory();
+        renderChatHistory();
+    }
+}
+
+// Clear all history
+document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+    if (confirm('Are you sure you want to clear all chat history? This cannot be undone.')) {
+        chatHistory = [];
+        localStorage.removeItem('ultraHumanChatHistory');
+        renderChatHistory();
+        
+        successDiv.innerHTML = '✅ <strong>Chat history cleared!</strong>';
+        successDiv.classList.add('active');
+        
+        setTimeout(() => {
+            successDiv.classList.remove('active');
+        }, 2000);
+    }
+});
+
+// Initialize chat history on page load
+loadChatHistory();
     // Populate mode dropdown based on category
     function updateModeOptions() {
         const category = categorySelect.value;
@@ -764,11 +1003,11 @@ humanizeModeBtn.addEventListener('click', () => {
 
     // Get generation prompt
     function getGenerationPrompt(topic, keywords, mode, intensity, wordCount) {
-        const intensityConfig = {
-            '1': { temp: 1.4, topK: 90, topP: 0.96, name: 'NATURAL' },
-            '2': { temp: 1.6, topK: 110, topP: 0.98, name: 'ENHANCED' },
-            '3': { temp: 1.8, topK: 130, topP: 0.99, name: 'ULTRA-HUMAN' }
-        };
+      const intensityConfig = {
+        '1': { temp: 1.35, topK: 80, topP: 0.94, name: 'NATURAL' },
+        '2': { temp: 1.65, topK: 110, topP: 0.975, name: 'ENHANCED' },
+        '3': { temp: 1.92, topK: 160, topP: 0.998, name: 'ULTRA-HUMAN' }
+    };
 
         const config = intensityConfig[intensity];
 
@@ -826,11 +1065,15 @@ humanizeModeBtn.addEventListener('click', () => {
             'specification': 'precise technical specification'
         };
 
-        const prompt = `You are an ULTRA-HUMAN content writer who creates AUTHENTICALLY HUMAN text that is 100% UNDETECTABLE as AI-generated. Your writing is indistinguishable from content written by experienced human professionals.
+const prompt = `You are an ULTRA-HUMAN content writer who creates AUTHENTICALLY HUMAN text that is 100% UNDETECTABLE as AI-generated. Your writing is indistinguishable from content written by experienced human professionals.
 
 🎯 MISSION: Generate approximately ${wordCount} words of ${modeDescriptions[mode]} on the following topic.
 
+⚠️ FORMAT PRESERVATION RULE:
+If the user's topic/brief contains bullet points, numbered lists, or specific formatting, you MUST return the content in THE EXACT SAME FORMAT. Bullet points stay as bullet points, numbered lists stay numbered, paragraphs stay as paragraphs.
+
 HUMAN AUTHENTICITY LEVEL: ${config.name} 🔥
+
 ⚠️ CRITICAL OPENING PARAGRAPH RULES:
 The FIRST paragraph is ALWAYS flagged by AI detectors. You MUST make it 100% human by:
 ✓ Start with a SPECIFIC detail, fact, or scene - NOT a broad statement
@@ -986,12 +1229,15 @@ FOR TECHNICAL: Precision, logical structure, clear explanations, practical examp
 
 🎯 CRITICAL REQUIREMENTS:
 - Generate approximately ${wordCount} words
+- PRESERVE the exact format structure (bullets/numbers/paragraphs) from the user's input
 - Apply ALL 12 layers with maximum intensity
 - Write as a genuine human expert would
 - ZERO AI patterns or signatures
 - Natural, organic professional prose
 - Engaging and substantive content
 - Complete authenticity throughout
+- DO NOT add extra information or extend beyond what's requested
+- Stay focused and concise - humanize directly without unnecessary elaboration
 
 ⚠️ ULTIMATE RULE: This content must be COMPLETELY UNDETECTABLE as AI-generated. Write exactly as an experienced human professional would write this content naturally.
 
@@ -1004,10 +1250,10 @@ ${topic}${keywordsText}
     }
        // Get humanization prompt with preservation
 function getHumanizationPrompt(text, mode, intensity) {
-    const intensityConfig = {
-        '1': { temp: 1.4, topK: 90, topP: 0.96, name: 'NATURAL' },
-        '2': { temp: 1.6, topK: 110, topP: 0.98, name: 'ENHANCED' },
-        '3': { temp: 1.8, topK: 130, topP: 0.99, name: 'ULTRA-HUMAN' }
+   const intensityConfig = {
+        '1': { temp: 1.5, topK: 100, topP: 0.97, name: 'NATURAL' },
+        '2': { temp: 1.7, topK: 120, topP: 0.98, name: 'ENHANCED' },
+        '3': { temp: 1.9, topK: 140, topP: 0.995, name: 'ULTRA-HUMAN' }
     };
 
     const config = intensityConfig[intensity];
@@ -1033,11 +1279,104 @@ function getHumanizationPrompt(text, mode, intensity) {
         sop: 'SOP', 'specification': 'specification'
     };
 
-    const prompt = `You are an ULTRA-HUMAN text transformer who converts AI-written text into AUTHENTICALLY HUMAN writing that is 100% UNDETECTABLE.
+const prompt = `You are an ULTRA-AGGRESSIVE HUMAN text transformer. Your ONLY job is to make text 100% UNDETECTABLE as AI, even if it's just 10 words.
 
-🎯 MISSION: Transform the following ${modeDescriptions[mode]} into natural human writing.
+🎯 MISSION: Transform the following ${modeDescriptions[mode]} into AUTHENTICALLY HUMAN writing.
 
-HUMAN AUTHENTICITY LEVEL: ${config.name} 🔥
+⚡ AGGRESSION LEVEL: ${config.name} - MAXIMUM TRANSFORMATION 🔥
+
+🚨 CRITICAL: Even if the text is SHORT (10-50 words), you MUST apply FULL humanization. NO SHORTCUTS.
+
+📋 FORMALITY & TONE REQUIREMENTS FOR ${modeDescriptions[mode].toUpperCase()}:
+
+${mode.includes('academic') || mode.includes('med-') || mode.includes('research') || mode.includes('thesis') || mode.includes('literature') || mode.includes('essay') || mode.includes('analytical') || mode.includes('argumentative') || mode.includes('comparative') || mode.includes('case-study') ? `
+🎓 ACADEMIC FORMALITY - STRICTLY MAINTAIN:
+✓ FORMAL academic register throughout - NO casual language
+✓ Third-person perspective (avoid "I/you" unless reflective essay)
+✓ Objective, scholarly tone with intellectual rigor
+✓ Precise, discipline-specific terminology
+✓ Complex sentence structures appropriate to academic discourse
+✓ Formal connectives: "consequently," "therefore," "thus," "nonetheless"
+✓ Hedging language: "suggests," "indicates," "appears to," "may demonstrate"
+✓ NO contractions (don't → do not, can't → cannot)
+✓ NO colloquialisms or informal expressions
+✓ NO casual transitions or conversational elements
+✓ Authoritative but measured academic voice
+✓ Evidence-based reasoning with scholarly presentation
+✓ Maintain gravity and seriousness of academic discourse
+
+⚠️ ACADEMIC-SPECIFIC RULES:
+- Keep formal vocabulary: "demonstrate," "illustrate," "examine," "analyze," "elucidate"
+- Use sophisticated academic structures (nominalization, passive where appropriate)
+- Maintain scholarly distance and objectivity
+- Preserve academic conventions and discourse markers
+- NO informal phrases like "a lot of," "get," "thing," "stuff," "really," "very"
+` : ''}
+
+${mode.includes('journalism') || mode.includes('news') || mode.includes('investigative') || mode.includes('feature') || mode.includes('editorial') || mode.includes('analysis') || mode.includes('interview') || mode.includes('press-release') ? `
+📰 JOURNALISTIC FORMALITY - MAINTAIN:
+✓ Professional journalistic tone - clear, direct, authoritative
+✓ Third-person perspective (except editorials/opinion)
+✓ Objective presentation with balanced perspective
+✓ Precise, specific language with concrete details
+✓ Active voice predominantly (but natural variation)
+✓ Professional connectives: "meanwhile," "however," "according to"
+✓ Attribution and sourcing language
+✓ NO casual slang or overly informal language
+✓ NO excessive informality or chatty tone
+✓ Maintain journalistic credibility and authority
+✓ Clear, accessible but professional language
+` : ''}
+
+${mode.includes('business') || mode.includes('email') || mode.includes('proposal') || mode.includes('report') || mode.includes('memo') || mode.includes('cover-letter') || mode.includes('linkedin') || mode.includes('presentation') || mode.includes('executive') ? `
+💼 BUSINESS FORMALITY - ADAPT TO SUB-TYPE:
+${mode.includes('email-formal') || mode.includes('proposal') || mode.includes('report') || mode.includes('executive') ? `
+✓ FORMAL business register - professional and polished
+✓ Respectful, courteous tone throughout
+✓ Clear, direct communication with professionalism
+✓ NO casual language or informal expressions
+✓ NO contractions in formal communications
+✓ Professional vocabulary: "accordingly," "regarding," "pursuant to"
+` : `
+✓ PROFESSIONAL but approachable tone
+✓ Clear, direct communication
+✓ Warm professionalism without excessive formality
+✓ Contractions acceptable for natural flow
+✓ Conversational polish while maintaining respect
+`}
+✓ Results-oriented, strategic language
+✓ Confidence without arrogance
+✓ Appropriate formality for business context
+` : ''}
+
+${mode.includes('creative') || mode.includes('blog') || mode.includes('social-media') || mode.includes('ad-copy') || mode.includes('product') || mode.includes('newsletter') || mode.includes('web-content') || mode.includes('script') || mode.includes('story') ? `
+✨ CREATIVE/MARKETING FORMALITY - FLEXIBLE:
+✓ Engaging, accessible tone appropriate to audience
+✓ Natural, conversational style (contractions OK)
+✓ Personality and voice encouraged
+✓ Emotional connection and relatability
+✓ Direct address ("you") is natural and appropriate
+✓ Informal language acceptable when authentic
+✓ Creative freedom while maintaining coherence
+✓ Adapt formality to specific creative purpose
+` : ''}
+
+${mode.includes('technical') || mode.includes('documentation') || mode.includes('user-guide') || mode.includes('tutorial') || mode.includes('whitepaper') || mode.includes('api-docs') || mode.includes('technical-report') || mode.includes('sop') || mode.includes('specification') ? `
+⚙️ TECHNICAL FORMALITY - MAINTAIN:
+✓ FORMAL technical register with precision
+✓ Clear, unambiguous language throughout
+✓ Objective, instructional tone
+✓ Technical terminology used accurately
+✓ Direct, systematic presentation
+✓ NO casual language or informal expressions
+✓ Professional technical voice
+✓ Clarity and precision over personality
+✓ Logical, structured presentation
+` : ''}
+
+🚨 CRITICAL FORMALITY RULE:
+MATCH THE FORMALITY LEVEL TO THE CONTENT TYPE. Academic = formal. Business formal = formal. Creative = flexible. Technical = formal. NEVER mix inappropriate casualness into formal content types.
+
 
 ⚠️ ABSOLUTE PRESERVATION REQUIREMENTS - DO NOT VIOLATE:
 🔒 PRESERVE EXACTLY (DO NOT CHANGE):
@@ -1066,25 +1405,94 @@ HUMAN AUTHENTICITY LEVEL: ${config.name} 🔥
 ✓ Start with specific detail, fact, or engaging hook
 ✓ Vary sentence length immediately (mix short and long)
 
-🚫 NEVER USE THESE AI PHRASES:
-✗ "delve/delving" ✗ "robust" ✗ "leverage" ✗ "paradigm" ✗ "utilize"
-✗ "landscape" ✗ "facilitate" ✗ "crucial" (overused)
-✗ "it is worth noting" ✗ "shed light on" ✗ "plays a crucial role"
-✗ "Furthermore" ✗ "Moreover" ✗ "In conclusion"
+🚫 AGGRESSIVELY ELIMINATE ALL AI PATTERNS:
+✗ AI VERBS: "delve/delving", "utilize", "leverage", "facilitate", "implement", "employ"
+✗ AI ADJECTIVES: "robust", "comprehensive", "seamless", "dynamic", "innovative", "cutting-edge"
+✗ AI NOUNS: "landscape", "paradigm", "realm", "sphere", "framework", "ecosystem"
+✗ AI TRANSITIONS: "Furthermore", "Moreover", "Additionally", "In conclusion", "To summarize"
+✗ AI PHRASES: "it is worth noting", "shed light on", "plays a crucial role", "delve into"
+✗ AI OPENINGS: "In today's", "In recent years", "It is important", "As we navigate"
+✗ AI CLICHÉS: "game-changer", "revolutionary", "unprecedented", "transformative"
 
-✅ HUMANIZATION PROTOCOL:
-1. Keep ALL citations, names, dates, numbers EXACTLY as written
-2. Transform sentence structure for natural, sophisticated flow
-3. Replace AI vocabulary with natural but ADVANCED alternatives appropriate to the field
-4. Vary sentence length dramatically (6-60 words) while maintaining intellectual rigor
-5. Remove mechanical transitions, use sophisticated connective tissue
-6. Create organic paragraph connections with academic/professional depth
-7. Add natural rhythm and cadence befitting expert-level writing
-8. Sound like a seasoned human expert/scholar in the field
-9. Preserve original meaning with enhanced clarity and precision
-10. Maintain HIGH-LEVEL academic/professional sophistication throughout
+⚡ REPLACE INSTANTLY with natural human alternatives - ZERO TOLERANCE for AI language.
+
+⚡ ULTRA-AGGRESSIVE HUMANIZATION PROTOCOL (MANDATORY FOR ALL TEXT LENGTHS):
+
+🔴 PHASE 1: DETECTION & DESTRUCTION (Apply to EVERY sentence)
+1. Scan EVERY SINGLE WORD for AI patterns
+2. Identify and ELIMINATE all AI vocabulary immediately
+3. Detect formulaic sentence structures - DESTROY them
+4. Find mechanical transitions - REPLACE with organic flow
+5. Spot generic openings - TRANSFORM to specific, engaging starts
+6. Locate predictable patterns - SCRAMBLE into natural variation
+
+🔴 PHASE 2: SURGICAL HUMANIZATION (Word-by-Word)
+1. PRESERVE: Citations, names, dates, numbers, specific data EXACTLY
+2. PRESERVE: Original format (bullets, numbers, paragraphs) EXACTLY  
+3. TRANSFORM: Every AI verb into natural human alternatives
+4. PRESERVE: Formality level appropriate to content type (formal stays formal, casual stays casual)
+5. TRANSFORM: Every AI verb into natural human alternatives MATCHING formality level
+6. TRANSFORM: Every AI adjective into precise descriptors MATCHING formality level
+7. TRANSFORM: Every generic phrase into specific language MATCHING formality level     
+8. TRANSFORM: Every AI adjective into precise descriptors
+9. TRANSFORM: Every generic phrase into specific language
+10. TRANSFORM: Sentence structure for maximum natural variation
+11. REMOVE: All mechanical/formulaic elements completely
+12. INJECT: Natural rhythm, flow, and human cadence
+
+🔴 PHASE 3: AGGRESSIVE VARIATION (Every Sentence Must Differ)
+1. Vary sentence length DRAMATICALLY (5-35 words for short texts, 5-60 for long)
+2. Mix simple, compound, complex, compound-complex structures
+3. Alternate sentence beginnings (subject, prepositional, adverb, participle, subordinate)
+4. Use fragments strategically. Like this.
+5. Include rhetorical questions where natural?
+6. Break expected rhythms constantly
+7. Create unpredictable but logical flow
+
+🔴 PHASE 4: HUMAN AUTHENTICITY INJECTION (Formality-Aware)
+1. Replace generic with specific wherever possible WITHIN formality constraints
+2. Use concrete details over abstract statements
+3. Employ active voice naturally (but passive when appropriate for formality)
+4. Add subtle personality ONLY if content type permits (creative/casual)
+5. For FORMAL content: maintain scholarly/professional distance
+6. For ACADEMIC: preserve intellectual rigor and formal register
+7. For CASUAL: allow conversational warmth and personality
+8. NEVER add inappropriate casualness to formal content
+9. NEVER add inappropriate formality to casual content
+
+🔴 PHASE 5: ZERO-TOLERANCE FINAL CHECK
+1. Re-scan EVERY sentence for remaining AI patterns
+2. Verify NO AI vocabulary remains
+3. Confirm sentence variation is EXTREME
+4. Ensure transitions are ORGANIC not mechanical
+5. Validate natural human rhythm throughout
+6. Check opening is ENGAGING not generic
+7. Guarantee 100% UNDETECTABLE result
+8. VERIFY formality level matches content type (academic = formal, creative = flexible)
+9. CHECK for inappropriate casualness in formal content
+10. CHECK for inappropriate formality in casual content
+11. CONFIRM vocabulary matches expected register
+12. VALIDATE tone consistency throughout
+
+⚠️ SPECIAL RULES FOR SHORT TEXT (10-100 words):
+- Apply SAME aggressive transformation - NO exceptions
+- FULL humanization even for single sentences
+- Maximum variation in minimal space
+- Every word counts - make each one human
+- Short text is EASIER to detect - be MORE aggressive
+
+⚡ AGGRESSIVE TRANSFORMATION INTENSITY LEVELS:
+
+LEVEL 1 (NATURAL): Transform 80% of AI patterns, moderate variation
+LEVEL 2 (ENHANCED): Transform 95% of AI patterns, high variation  
+LEVEL 3 (ULTRA-HUMAN): Transform 100% of AI patterns, MAXIMUM variation
+
+YOUR CURRENT LEVEL: ${config.name} - Apply transformation with MAXIMUM INTENSITY.
+
+Even if text seems human already, STILL apply full protocol. Even if text is 10 words, STILL humanize completely.
 
 🎯 SOPHISTICATION REQUIREMENTS:
+
 ✓ Use ADVANCED vocabulary appropriate to ${modeDescriptions[mode]}
 ✓ Maintain field-specific terminology and jargon naturally
 ✓ Employ complex sentence structures where appropriate (subordinate clauses, appositives, etc.)
@@ -1096,13 +1504,19 @@ HUMAN AUTHENTICITY LEVEL: ${config.name} 🔥
 ✓ Maintain authoritative yet natural voice
 ✓ Use varied, sophisticated transitions that flow organically
 
-📚 ADVANCED LANGUAGE GUIDELINES:
-FOR ACADEMIC/MEd WRITING:
+📚 ADVANCED LANGUAGE GUIDELINES (Formality-Specific):
+
+FOR ACADEMIC/MEd WRITING (FORMAL REGISTER MANDATORY):
 ✓ Scholarly vocabulary: empirical, pedagogical, epistemological, heuristic, paradigmatic
 ✓ Research terminology: methodology, theoretical framework, implications, findings suggest
 ✓ Critical language: problematize, interrogate, deconstruct, examine critically
-✓ Synthesis phrases: converge on, diverge from, build upon, extend the work of
-✓ Nuanced hedging: arguably, potentially, may indicate, appears to suggest
+✓ Formal verbs: demonstrate, illustrate, elucidate, postulate, contend, argue
+✓ NO casual language: "get," "a lot of," "thing," "stuff," "really," "very," "pretty"
+✓ NO contractions: use "cannot" not "can't," "do not" not "don't"
+✓ NO informal transitions: use "consequently" not "so," "therefore" not "that's why"
+✓ Maintain third-person unless reflective: "The research indicates" not "I found"
+✓ Hedging appropriately: "suggests," "may indicate," "appears to," "potentially"
+✓ Complex nominalization: "The implementation of" vs "When we implemented"
 
 FOR JOURNALISM:
 ✓ Precise reporting verbs: indicates, reveals, demonstrates, underscores, highlights
@@ -1138,9 +1552,23 @@ The sophistication level should match what a human expert in the field would nat
 TEXT TO HUMANIZE:
 ${text}
 
-🚀 OUTPUT THE HUMANIZED VERSION (Sophisticated, advanced, field-appropriate, 100% human, preserve all citations/names/dates exactly):`;
- 
-    return { prompt, config };
+⚡ CRITICAL OUTPUT RULES:
+- Apply FULL humanization regardless of text length (even 10 words get FULL treatment)
+- MAINTAIN appropriate formality level for ${modeDescriptions[mode]}
+- KEEP formal content FORMAL (academic, business formal, technical)
+- KEEP casual content CASUAL (creative, social media, blogs)
+- NEVER mix inappropriate casualness into formal writing
+- NEVER mix inappropriate formality into casual writing
+- SAME format structure (bullets stay bullets, numbers stay numbers)
+- SAME length scope (don't extend unnecessarily)
+- ZERO AI vocabulary remaining
+- MAXIMUM sentence variation
+- ORGANIC flow throughout
+- 100% UNDETECTABLE as AI
+- Preserve ALL citations/names/dates/formatting EXACTLY
+- NO unnecessary additions
+
+🚀 OUTPUT THE AGGRESSIVELY HUMANIZED VERSION NOW (100% HUMAN, 0% AI DETECTABLE):`;    return { prompt, config };
 }
 
     // API call to generate content
@@ -1238,7 +1666,17 @@ generateBtn.addEventListener('click', async () => {
 
             humanScore.innerHTML = `🎯 <strong>HUMAN AUTHENTICITY: 100%</strong> | AI Detection: 0% | Natural Human Writing ✓`;
             humanScore.classList.add('active');
+// Save to history
+            addToHistory({
+                mode: 'generate',
+                contentType: modeSelect.options[modeSelect.selectedIndex].text,
+                input: topic + (keywords ? '\nKeywords: ' + keywords : ''),
+                output: generatedText,
+                wordCount: actualWords,
+                intensity: parseInt(intensity)
+            });
 
+            
         } catch (error) {
             errorDiv.innerHTML = `❌ <strong>ERROR:</strong> ${error.message}`;
             errorDiv.classList.add('active');
@@ -1279,7 +1717,16 @@ generateBtn.addEventListener('click', async () => {
 
             humanScore.innerHTML = `🎯 <strong>HUMANIZATION: COMPLETE</strong> | Citations Preserved: ✓ | AI Detection: 0% ✓`;
             humanScore.classList.add('active');
-
+// Save to history
+            addToHistory({
+                mode: 'humanize',
+                contentType: modeSelect.options[modeSelect.selectedIndex].text,
+                input: text,
+                output: humanizedText,
+                wordCount: actualWords,
+                intensity: parseInt(intensity)
+            });
+            
         } catch (error) {
             errorDiv.innerHTML = `❌ <strong>ERROR:</strong> ${error.message}`;
             errorDiv.classList.add('active');
