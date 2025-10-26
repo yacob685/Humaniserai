@@ -620,13 +620,30 @@ input[type="range"]::-moz-range-thumb {
                     <option value="creative">✨ Creative & Marketing</option>
                     <option value="technical">⚙️ Technical & Documentation</option>
                 </select>
-            </div>
+                <div class="input-group">
+    <label for="textTypeOverride">
+        <br><br>
+        ✍️ Specify Text Type (Optional - only in Auto-Detect mode)
+    </label>
+    <input 
+        type="text" 
+        id="textTypeOverride" 
+        placeholder="e.g., academic essay, news article, blog post, research paper, creative story..."
+        style="font-size: 15px;"
+    >
+    <small style="display: block; margin-top: 8px; color: #6c757d; font-size: 0.85em;">
+        💡 Leave blank to let AI auto-detect. Type any text type you want (e.g., "acadmic esay" - AI understands even with typos!). Only works in Auto-Detect mode.
+    </small>
+</div>
+</div>
+
             <div class="input-group">
                 <label for="mode">📚 Specific Type:</label>
                 <select id="mode">
                     <!-- Options will be populated based on category -->
                 </select>
             </div>
+
             <div class="input-group">
                 <label for="wordCount">📊 Target Word Count:</label>
                 <input type="number" id="wordCount" min="100" max="5000" value="800" step="50">
@@ -880,7 +897,7 @@ function logRotationStats() {
     });
 }
       
-      const contentTypes = {
+   const contentTypes = {
     journalism: {
         'news': '📰 News Article',
         'investigative': '🔍 Investigative Journalism',
@@ -967,10 +984,170 @@ const academicSubjects = {
     'education': '🎓 Education'
 };
 
+// --- NEW: canonical questionType templates (structure + required sections) ---
+const questionTypes = {
+    'explain': {
+        short: 'Explain',
+        template: [
+            'PRECISE DEFINITION: State the concept with field-specific terminology and scope boundaries',
+            'MECHANISTIC BREAKDOWN: Explain underlying mechanisms, processes, or principles using discipline-appropriate models',
+            'CAUSAL RELATIONSHIPS: Show how components interact and why phenomena occur (not just what happens)',
+            'CONCRETE EXEMPLIFICATION: Provide 2-3 specific, relevant examples demonstrating the concept in action',
+            'BROADER SIGNIFICANCE: Connect to larger theoretical frameworks, practical applications, or implications',
+            'SYNTHESIS: Integrate understanding into coherent takeaway that advances beyond surface description'
+        ],
+        fieldRequirements: {
+            biology: 'Explain molecular mechanisms, cellular processes, physiological systems. Use terms like: substrate specificity, enzyme kinetics, homeostatic regulation, gene expression, signal transduction pathways, allosteric modulation',
+            chemistry: 'Explain bonding theories, reaction mechanisms, thermodynamics, kinetics. Use terms like: electron configuration, orbital hybridization (sp3, sp2, sp), reaction coordinate diagrams, Le Chatelier\'s principle, equilibrium constant (Keq), activation energy (Ea)',
+            physics: 'Explain forces, energy transformations, wave-particle duality, field theory. Use terms like: vector quantities, scalar quantities, conservation laws, field strength, quantum states, reference frames, relativity principles',
+            mathematics: 'Explain derivations, proofs, theorems, axioms. Use terms like: necessary conditions, sufficient conditions, if and only if (iff), lemmas, corollaries, bijection, homeomorphism, isomorphism, convergence',
+            history: 'Explain causation, context, contingency, historiography. Use terms like: primary sources, secondary sources, historiographical debate, periodization, structural factors, agency vs structure, longue durée',
+            economics: 'Explain market mechanisms, economic theories, models. Use terms like: elasticity of demand, marginal utility, equilibrium price, externalities, asymmetric information, market failure, deadweight loss'
+        }
+    },
+    
+    'analyse': {
+        short: 'Analyse',
+        template: [
+            'ESTABLISH ANALYTICAL FRAMEWORK: Define criteria, lens, or methodology for analysis (must be theory-driven or evidence-based)',
+            'SYSTEMATIC DECOMPOSITION: Break subject into constituent elements, variables, or dimensions with precision',
+            'CRITICAL EXAMINATION: Evaluate each component using evidence, logic, and disciplinary standards—identify patterns and anomalies',
+            'RELATIONAL PATTERNS: Reveal relationships, correlations, causations, or contradictions between elements',
+            'SYNTHESIS & INTERPRETATION: Integrate findings to generate insight that transcends descriptive observation',
+            'IMPLICATIONS & LIMITATIONS: Discuss what analysis reveals, what remains uncertain, boundary conditions, and why findings matter'
+        ],
+        fieldRequirements: {
+            biology: 'Analyze experimental data, statistical patterns, evolutionary relationships. Use: p-values, confidence intervals, control variables, confounding factors, phylogenetic analysis, phenotypic variation',
+            chemistry: 'Analyze reaction mechanisms, spectroscopic data, molecular structures. Use: rate laws, reaction orders, equilibrium calculations, NMR/IR/MS spectroscopy, orbital symmetry rules, stereochemistry',
+            literature: 'Analyze themes, symbols, narrative structure, authorial choices, literary devices. Use: close reading, textual evidence, literary theory (feminist, Marxist, postcolonial, etc.), intertextuality',
+            political_science: 'Analyze power structures, policy outcomes, institutional behavior. Use: comparative method, case studies, rational choice theory, institutionalism, discourse analysis',
+            business: 'Analyze market data, financial statements, strategic positioning. Use: SWOT analysis, Porter\'s Five Forces, financial ratios (ROI, ROE, P/E), break-even analysis, market segmentation'
+        }
+    },
+    
+    'compare': {
+        short: 'Compare/Contrast',
+        template: [
+            'ESTABLISH BASIS FOR COMPARISON: Define specific criteria, dimensions, or variables being compared (must be explicit and justified)',
+            'SYSTEMATIC SIMILARITIES: Identify shared features, characteristics, or patterns with specific evidence for each point',
+            'SYSTEMATIC DIFFERENCES: Identify contrasting features, divergent outcomes, or distinct mechanisms with evidence',
+            'ANALYTICAL DEPTH: Explain WHY similarities/differences exist—causal factors, historical contexts, underlying principles, structural constraints',
+            'RELATIVE EVALUATION: Assess comparative strengths, weaknesses, advantages, limitations, trade-offs',
+            'INTEGRATED CONCLUSION: Synthesize comparison into meaningful insight about relationships, hierarchies, conditions, or contexts'
+        ],
+        structure: 'Use point-by-point comparison (alternating between subjects for each criterion) for closely related subjects. Use block comparison (all of Subject A, then all of Subject B) for distinct subjects. NEVER just list—always analyze significance of each comparison point.'
+    },
+    
+    'evaluate': {
+        short: 'Evaluate',
+        template: [
+            'EVALUATION CRITERIA: Establish explicit, justified standards (effectiveness, validity, reliability, coherence, impact, feasibility, ethics)',
+            'EVIDENCE MARSHALLING: Present comprehensive, relevant evidence for each criterion—both quantitative and qualitative where appropriate',
+            'STRENGTHS ASSESSMENT: Identify what works well, what succeeds, what is valid—supported by specific examples and reasoning',
+            'LIMITATIONS ASSESSMENT: Identify weaknesses, gaps, failures, contradictions, or methodological issues with evidence',
+            'WEIGHING & JUDGMENT: Synthesize assessment into overall evaluative judgment with clear, transparent justification for weighting',
+            'ALTERNATIVE CONSIDERATIONS: Discuss how different criteria, perspectives, or contexts might alter evaluation—acknowledge nuance'
+        ],
+        rigor: 'Evaluations must be evidence-based, balanced, and fair. Acknowledge complexity and trade-offs. Avoid simplistic "good/bad" binary judgments without sophisticated justification. Consider both intrinsic merit and contextual appropriateness.'
+    },
+    
+    'discuss': {
+        short: 'Discuss',
+        template: [
+            'ESTABLISH SCOPE: Define boundaries of discussion, key questions at stake, and what requires exploration',
+            'MULTIPLE PERSPECTIVES: Present 2-4 distinct viewpoints, theories, or positions with evidence and reasoning for each',
+            'CRITICAL ENGAGEMENT: Analyze strengths and weaknesses of each perspective—don\'t just describe, evaluate',
+            'DEBATE SYNTHESIS: Identify areas of consensus, irreconcilable differences, and productive tensions between views',
+            'REASONED POSITION: Articulate your own reasoned stance while acknowledging complexity and counterarguments',
+            'UNRESOLVED QUESTIONS: Identify what remains contested, unknown, or worthy of further investigation—intellectual humility'
+        ],
+        balance: 'Discussion must demonstrate understanding of multiple views before taking a position. Engage with strongest versions of opposing arguments (steel man, not straw man).'
+    },
+    
+    'argue': {
+        short: 'Argue',
+        template: [
+            'THESIS: Clear, specific, defensible claim that takes a position (not description, not question)',
+            'ARGUMENT 1 + EVIDENCE: First supporting reason with specific examples, data, logical reasoning, or authoritative sources',
+            'ARGUMENT 2 + EVIDENCE: Second supporting reason (distinct from first) with substantiation',
+            'ARGUMENT 3 + EVIDENCE: Third supporting reason (if needed for complexity and depth)',
+            'COUNTERARGUMENT + REBUTTAL: Acknowledge strongest opposing view and refute with evidence, logic, or demonstration of limited applicability',
+            'CONCLUSION: Reinforce thesis by synthesizing arguments and showing implications of accepting your position'
+        ],
+        logic: 'Use valid reasoning patterns: deductive (premises → necessary conclusion), inductive (evidence → probable generalization), or abductive (inference to best explanation). Avoid logical fallacies: ad hominem, straw man, false dichotomy, circular reasoning, hasty generalization, post hoc ergo propter hoc.'
+    }
+};
+
+// --- NEW: helper to infer subject when user doesn't supply one (light heuristic) ---
+function inferSubjectFromText(text) {
+    if (!text || typeof text !== 'string') return null;
+    const lower = text.toLowerCase();
+
+    // simple keyword-based inference (keeps it deterministic and minimal)
+    const subjectKeywords = {
+        'biology': ['cell', 'photosynthesis', 'organism', 'dna', 'evolution', 'enzyme'],
+        'chemistry': ['molecule', 'acid', 'base', 'reaction', 'stoichiometry', 'ph'],
+        'physics': ['force', 'energy', 'momentum', 'quantum', 'voltage', 'thermodynamics'],
+        'mathematics': ['integral', 'derivative', 'algebra', 'geometry', 'statistic', 'probability'],
+        'history': ['war', 'empire', 'revolution', 'treaty', 'colony', 'ancient'],
+        'geography': ['climate', 'map', 'terrain', 'river', 'mountain', 'urban'],
+        'computer-science': ['algorithm', 'data structure', 'api', 'bug', 'software', 'model', 'ml', 'ai'],
+        'economics': ['market', 'inflation', 'gdp', 'supply', 'demand', 'fiscal'],
+        'political-science': ['election', 'government', 'policy', 'constitution', 'diplomacy'],
+        'psychology': ['cognitive', 'behaviour', 'memory', 'psychology', 'mental', 'therapy']
+        // add more heuristics as you wish
+    };
+
+    for (const key of Object.keys(subjectKeywords)) {
+        const kws = subjectKeywords[key];
+        for (const k of kws) {
+            if (lower.includes(k)) return key;
+        }
+    }
+    return null;
+}
+
+// --- NEW: function returning succinct subject-specific + question-type instructions to inject into the prompt ---
+function getSubjectSpecificInstructions(subjectKey, questionTypeKey) {
+    // If subjectKey is null, caller should have attempted inference before calling.
+    const subjectLabel = subjectKey && academicSubjects[subjectKey] ? academicSubjects[subjectKey] : (subjectKey || 'General');
+    const questionTemplate = questionTypes[questionTypeKey];
+
+    // Base subject constraints (short, high-signal)
+    const subjectConstraints = {
+        'biology': 'Use biological terminology precisely (e.g., cell types, ecological terms). Where quantitative data appears, preserve units and magnitudes.',
+        'chemistry': 'Preserve formulas, chemical names, and units. Prefer clear mechanism explanations when describing reactions.',
+        'physics': 'Keep units, signs, and equations intact. Explain mechanisms and assumptions behind models (e.g., frictionless, ideal gas).',
+        'mathematics': 'Preserve notation. Show key steps concisely; if a proof structure is required, give a clear lemma → proof flow.',
+        'history': 'Keep dates, names, and locales unchanged. Provide primary/secondary source context where relevant.',
+        'computer-science': 'Preserve API names, code identifiers, and complexity notation. If code sample requested, include minimal runnable snippet.',
+        'economics': 'Preserve numerical indicators, percentages, and definitions of terms (e.g., CPI, GDP). Be explicit about assumptions.',
+        'political-science': 'Preserve names, offices, and dates. Distinguish between normative claims and empirical evidence.',
+        'psychology': 'Use precise psychological terms and note study types (e.g., RCT, longitudinal) when citing evidence.'
+        // default for other keys will be concise generic instruction
+    };
+
+    const subjInstr = subjectConstraints[subjectKey] || `When discussing ${subjectLabel}, preserve domain-specific terms and any quantitative or named references exactly.`;
+
+    // Build the instructions block
+    const lines = [];
+    lines.push(`SUBJECT: ${subjectLabel}.`);
+    lines.push(`GUIDELINES: ${subjInstr}`);
+    if (questionTemplate) {
+        lines.push(`STRUCTURE (${questionTemplate.short}):`);
+        for (const step of questionTemplate.template) lines.push(`- ${step}`);
+    } else {
+        lines.push(`STRUCTURE: Provide a clear thesis, 2–4 supporting points with evidence, and a concise conclusion.`);
+    }
+
+    // A short, deterministic phrasing to be inserted into the main prompt
+    return lines.join(' ');
+}
 // =====================================================
 // DOM ELEMENTS
 // =====================================================
-const apiKeyInput = document.getElementById('apiKey');
+const textTypeOverride = document.getElementById('textTypeOverride');
+      const apiKeyInput = document.getElementById('apiKey');
 const topicInput = document.getElementById('topic');
 const keywordsInput = document.getElementById('keywords');
 const categorySelect = document.getElementById('category');
@@ -1028,19 +1205,32 @@ function updateStats() {
 // =====================================================
 // CATEGORY CHANGE HANDLER
 // =====================================================
+// =====================================================
+// CATEGORY CHANGE HANDLER - FIXED
+// =====================================================
 function updateModeOptions() {
     const category = categorySelect.value;
     const modes = contentTypes[category];
     
+    // Clear existing options
     modeSelect.innerHTML = '';
+    
+    // Add new options based on selected category
     for (const [value, label] of Object.entries(modes)) {
         const option = document.createElement('option');
         option.value = value;
         option.textContent = label;
         modeSelect.appendChild(option);
     }
+    
+    console.log(`Updated mode options for category: ${category}`);
 }
 
+// Make sure the event listener is properly attached
+categorySelect.addEventListener('change', updateModeOptions);
+
+// Initialize on page load
+updateModeOptions();
 // =====================================================
 // INTENSITY SLIDER
 // =====================================================
@@ -1158,8 +1348,467 @@ enhanceModeBtn.addEventListener('click', () => {
 
 // Add this case in your generateBtn click handler (after humanize case):
 
+const contentTypeTemplates = {
+  journalism: {
+    'news': {
+      tone: 'urgent, factual, immediate',
+      requiredSections: [
+        'Lede (who/what/when/where/why in 1-2 sentences)',
+        'Key facts in descending importance',
+        'Direct quotes from named sources',
+        'Background context',
+        'Impact/consequences',
+        'Next developments'
+      ],
+      sentenceLength: 'Average 15-20 words. Vary between 8-25 words. Clarity over complexity.',
+      vocabulary: 'Precise journalism terms: confirmed, reported, according to, officials stated, data shows, sources reveal, investigation found, records indicate, witnesses described. Attribution essential.',
+      structure: 'INVERTED PYRAMID strictly. Most important info first. Each paragraph complete thought. Can cut from bottom without losing core story. Active voice predominates. Attribution for all claims.'
+    },
+    
+    'investigative': {
+      tone: 'revelatory, detailed, evidence-heavy, methodologically transparent',
+      requiredSections: [
+        'Hook (compelling finding or revelation)',
+        'Core discovery/revelation stated clearly',
+        'Evidence trail (documents, sources, data)',
+        'Context and broader significance',
+        'Methodology transparency',
+        'Implications and impact',
+        'Response from subjects investigated'
+      ],
+      vocabulary: 'Forensic language: documents reveal, investigation found, records show, sources confirmed, obtained by, verified through, cross-referenced, whistleblower disclosed, internal memos indicate',
+      structure: 'Lead with strongest finding. Build case through layered evidence. Show your work—methodology transparent. Multiple named and anonymous sources. Document citations. Timeline when relevant.'
+    },
+    
+    'feature': {
+      tone: 'narrative, immersive, character-driven, literary',
+      requiredSections: [
+        'Scene-setting opening (anecdote, moment, vivid description)',
+        'Introduce key subjects/characters with detail',
+        'Broaden to larger context/issue',
+        'Development through scenes, quotes, and exposition',
+        'Analysis and interpretation woven in',
+        'Resonant closing that echoes opening theme'
+      ],
+      vocabulary: 'Sensory details, specific nouns, active verbs. Literary devices: metaphor, symbolism, foreshadowing. Terms like: describes, recalls, reflects, observes, remembers, gestures, pauses.',
+      structure: 'Narrative arc with rising action. Scenes alternate with exposition. Show don\'t tell. Character development through action and dialogue. Thematic unity. Emotional resonance. Subtext.'
+    }
+  },
 
-function getAdvancedPrompt(text, mode, intensity, wordCount, isHumanizing = false, subject = null, questionType = null) {
+  academic: {
+    'essay': {
+      tone: 'analytical, argued, sophisticated, evidence-driven',
+      requiredSections: [
+        'Introduction: hook → context → thesis statement (clear, arguable, specific)',
+        'Body paragraph 1: topic sentence → context → evidence → analysis → link to thesis',
+        'Body paragraph 2: distinct point → evidence → analysis → link',
+        'Body paragraph 3: third point → evidence → analysis → link',
+        'Counterargument paragraph (acknowledge opposing view, then refute)',
+        'Conclusion: restate thesis (new words) → synthesize arguments → broader implications'
+      ],
+      vocabulary: 'Academic discourse markers: furthermore, moreover, conversely, nevertheless, consequently, notwithstanding, demonstrates, illustrates, exemplifies, underscores, elucidates. Field-specific terminology MANDATORY.',
+      structure: 'Thesis must be arguable and specific (not fact or question). Each paragraph develops ONE idea. Topic sentences roadmap the paragraph. Evidence must be analyzed deeply, not just cited. Link back to thesis explicitly at paragraph end.',
+      paragraphStructure: '5-8 sentences per paragraph. PEEL/TEEL format: Point (topic sentence/claim) → Evidence (quote, data, example with citation) → Explanation (analyze how evidence supports point) → Link (connect back to thesis).'
+    },
+    
+    'research': {
+      tone: 'objective, methodical, technical, replicable',
+      requiredSections: [
+        'Abstract (150-250 words): purpose, method, key findings, significance',
+        'Introduction: research question, literature review, hypothesis/research aims',
+        'Methodology: participants/sample (n=X), materials, procedure (replicable detail), analysis plan',
+        'Results: quantitative/qualitative findings, statistical analysis, tables/figures with captions',
+        'Discussion: interpretation of findings, theoretical implications, practical applications, limitations, directions for future research',
+        'Conclusion: concise summary, take-home message',
+        'References: properly formatted citations (APA/MLA/Chicago)'
+      ],
+      vocabulary: 'Methodological precision: participants (n=156, M_age = 22.4, SD = 3.1), Likert scale (1-7), correlation coefficient (r = .45), p-value (p < .001), effect size (d = 0.65), qualitative coding, thematic analysis, regression analysis, ANOVA, confounding variables, operational definition',
+      structure: 'IMRaD format (Introduction, Method, Results, and Discussion) strictly. Past tense for methods/results. Present tense for established knowledge and discussion of findings. Passive voice acceptable in methods section. Results section reports data WITHOUT interpretation (save interpretation for discussion).',
+      statisticalReporting: 'Report exact statistics with precision: M = 4.35, SD = 0.89, t(48) = 3.21, p = .002, Cohen\'s d = 0.65. Include confidence intervals: 95% CI [2.14, 3.87]. Report effect sizes always.'
+    },
+    
+    'lab-report': {
+      tone: 'objective, precise, technical, replicable',
+      requiredSections: [
+        'Title: specific and descriptive (include key variables)',
+        'Abstract: purpose, method, key results, conclusion (150-200 words)',
+        'Introduction: theory, previous research, hypothesis with justification',
+        'Method: apparatus (with model numbers), materials, procedure (step-by-step, replicable)',
+        'Results: data tables, calculations shown, graphs with error bars',
+        'Discussion: interpretation, error analysis (systematic vs random), sources of uncertainty, improvements, conclusion',
+        'References: properly cited sources'
+      ],
+      vocabulary: 'Scientific precision: apparatus, titration, calibration, systematic error, random error, percentage uncertainty (±X%), anomalous results, directly proportional, inversely proportional, null hypothesis, independent variable, dependent variable, control variables',
+      structure: 'Passive voice in method ("50mL was measured" not "I measured"). Data tables must have: title, column headings with units, consistent decimal places. Graphs must have: title, labeled axes with units, line of best fit, error bars if applicable. Error analysis mandatory—discuss both systematic and random errors.'
+    }
+  },
+
+  business: {
+    'proposal': {
+      tone: 'persuasive, structured, benefit-focused, ROI-driven',
+      requiredSections: [
+        'Executive Summary: problem, solution, benefits, costs (1 page max)',
+        'Problem Statement: current situation, challenges, quantified costs of inaction',
+        'Proposed Solution: detailed description, methodology, implementation approach',
+        'Benefits and Value Proposition: quantified benefits, ROI analysis, competitive advantage',
+        'Implementation Plan: timeline with milestones, resource requirements, responsibilities',
+        'Budget: itemized costs, pricing structure, payment terms',
+        'Risk Assessment and Mitigation: identify risks and contingencies',
+        'Conclusion and Call to Action: next steps, decision timeline',
+        'Appendices: supporting data, case studies, technical specifications, references'
+      ],
+      vocabulary: 'Persuasive business language: drive revenue growth, enhance operational efficiency, maximize ROI, strategic advantage, proven methodology, measurable outcomes, competitive differentiation, scalability, cost-benefit ratio, value proposition, synergies',
+      structure: 'Problem-solution format with emphasis on quantification. Use $, %, and time metrics throughout. Include charts/tables for financial data. Case studies demonstrate credibility. Address objections proactively. Make ROI crystal clear: "Implementation costs $50K but saves $200K annually."'
+    },
+    
+    'email-formal': {
+      tone: 'courteous, concise, purposeful, professional',
+      requiredSections: [
+        'Subject line: specific and informative (8-12 words)',
+        'Salutation: Dear [Title] [Last Name], (research correct name and title)',
+        'Opening: state purpose immediately (1-2 sentences max)',
+        'Body: details, context, or request (2-4 sentences, use paragraph breaks)',
+        'Closing: clear call to action or next steps',
+        'Sign-off: Sincerely/Best regards/Kind regards, [Full Name, Title, Contact Info]'
+      ],
+      vocabulary: 'Professional courtesy: I am writing to inquire about, I would appreciate your guidance on, please find attached, kindly advise, at your earliest convenience, thank you for your consideration, I look forward to your response',
+      structure: 'Subject line must be specific: "Meeting Request: Q2 Budget Review" not just "Meeting". Keep email 150-250 words total. One email = one clear purpose. Use paragraph breaks for readability (not walls of text). Proofread meticulously—errors undermine credibility.'
+    }
+  },
+
+  technical: {
+    'tutorial': {
+      tone: 'instructional, clear, step-by-step, supportive',
+      requiredSections: [
+        'Title: action-oriented ("How to X" or "Setting Up X")',
+        'Introduction: what will be accomplished, who this is for, time required',
+        'Prerequisites: required knowledge, tools, software versions, accounts',
+        'Step 1: action in imperative ("Click...", "Navigate to...", "Enter...")',
+        'Step 2: single action with expected outcome ("You should see...")',
+        'Continue steps: one action per numbered step',
+        'Verification: how to confirm success',
+        'Troubleshooting: common errors and solutions',
+        'Next steps: what to learn/do next'
+      ],
+      vocabulary: 'Instructional language: click, navigate to, select, enter, copy, paste, install, configure, verify, confirm. Technical terms: API endpoint, authentication token, dependency, repository, command line interface, parameter, variable',
+      structure: 'Imperative mood ("Do X" not "You should do X"). Numbered steps with single action each. Screenshots with annotations where helpful. Code blocks properly formatted with syntax highlighting. Warning boxes for critical steps. Expected outcome after each step: "You should now see the dashboard loading."'
+    },
+    
+    'api-docs': {
+      tone: 'reference-style, unambiguous, complete, technical',
+      requiredSections: [
+        'Endpoint name and purpose',
+        'HTTP Method (GET, POST, PUT, DELETE, PATCH)',
+        'URL structure with parameters: /api/v1/users/{id}',
+        'Authentication requirements',
+        'Request parameters: name, type, required/optional, description',
+        'Request body schema (JSON example)',
+        'Response codes: 200, 201, 400, 401, 404, 500 with meanings',
+        'Response body schema (JSON example)',
+        'Error responses with examples',
+        'Code examples in multiple languages (Python, JavaScript, cURL)'
+      ],
+      vocabulary: 'API terminology: endpoint, method, parameter, query string, request body, response body, status code, header, authentication, authorization, bearer token, JSON, XML, REST, payload, rate limiting',
+      structure: 'Consistent formatting for all endpoints. Parameter tables: Name | Type | Required | Description. Actual code examples that work (not pseudocode). Error handling comprehensively documented. Version all endpoints (/api/v1/). Include rate limits and pagination info.'
+    }
+  }
+};
+// --- NEW: helper to resolve style instructions for a given content category & subkey ---
+function getStyleForContentType(contentCategory = null, contentKey = null) {
+  if (!contentCategory) return '';
+  const cat = contentTypeTemplates[contentCategory];
+  if (!cat) return '';
+  // prefer specific subtype if exists, else default
+  const subtype = contentKey && cat[contentKey] ? cat[contentKey] : cat.default;
+  // produce a compact single-line instruction block
+  const instr = [
+    `CONTENT TYPE: ${contentCategory}${contentKey ? ' / ' + contentKey : ''}.`,
+    `TONE: ${subtype.tone || 'balanced'}.`,
+    `STRUCTURE PRIORITY: ${subtype.priority || 'thesis → body → conclusion'}.`,
+    `REQUIRED SECTIONS: ${ (subtype.requiredSections || []).join(' | ') || 'Thesis; Evidence; Conclusion'}.`,
+    `VOICE: ${subtype.voice || 'appropriate to genre'}.`
+  ].join(' ');
+  return instr;
+}
+
+      // --- ADD: detectContentTypeUsingTemplates (uses contentTypeTemplates) ---
+// --- ENHANCED: detectContentTypeUsingTemplates with ULTRA-PRECISE detection ---
+function detectContentTypeUsingTemplates(text, subject = null, templates = contentTypeTemplates) {
+  if (!text || typeof text !== 'string') return { contentCategory: null, contentTypeKey: null, confidence: 0, evidence: [] };
+  
+  const lower = text.toLowerCase();
+  const words = text.trim().split(/\s+/).length;
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const avgSentenceLength = words / sentences.length;
+  const evidence = [];
+
+  // Helper: calculate structural signatures
+  function getStructuralSignature(txt) {
+    return {
+      hasCitations: /\([A-Z][a-z]+,?\s+\d{4}\)|\[\d+\]|et al\.|ibid\./i.test(txt),
+      hasQuotes: /"[^"]{20,}"|'[^']{20,}'/.test(txt),
+      hasSections: /^(introduction|abstract|method|results|discussion|conclusion)/im.test(txt),
+      hasDateline: /^[A-Z][A-Z\s]+,\s+[A-Z][a-z]+\s+\d{1,2}\s+[-–]\s+/.test(txt),
+      hasByline: /^by\s+[A-Z][a-z]+\s+[A-Z][a-z]+/im.test(txt),
+      hasStatistics: /\d+%|\d+\s+(percent|million|billion|thousand)|\$\d+|n\s*=\s*\d+/i.test(txt),
+      hasTechnicalTerms: /\b(function|class|method|API|endpoint|parameter|algorithm|implementation)\b/i.test(txt),
+      hasAcademicMarkers: /\b(furthermore|moreover|conversely|nevertheless|consequently|hypothesis|methodology|findings)\b/i.test(txt),
+      hasJournalismMarkers: /\b(according to|officials|sources|reported|confirmed|witnesses|breaking)\b/i.test(txt),
+      hasBusinessMarkers: /\b(stakeholders|ROI|strategy|revenue|growth|implementation|deliverables)\b/i.test(txt),
+      hasImperatives: /^(click|navigate|enter|select|install|configure|open|run|type)\b/im.test(txt),
+      hasBulletPoints: /^[\s]*[-•*]\s+/m.test(txt),
+      hasNumberedSteps: /^[\s]*\d+\.\s+/m.test(txt),
+      hasPersonalPronouns: /\b(I|we|our|my|you|your)\b/.test(txt),
+      hasFormalSalutation: /^dear\s+[a-z]/i.test(txt) || /sincerely,|regards,|respectfully,/i.test(txt)
+    };
+  }
+
+  const sig = getStructuralSignature(text);
+
+  // ACADEMIC DETECTION (highest priority if citations present)
+  if (sig.hasCitations || (sig.hasAcademicMarkers && !sig.hasJournalismMarkers)) {
+    
+    // Research paper detection
+    if (sig.hasSections && /\b(abstract|methodology|method|results|participants|hypothesis|findings|limitations)\b/i.test(lower)) {
+      if (/\b(n\s*=\s*\d+|p\s*[<>=]\s*\.?\d+|M\s*=\s*\d+|SD\s*=|correlation|ANOVA|regression|qualitative|thematic analysis)\b/i.test(text)) {
+        evidence.push('research:statisticalAnalysis', 'research:methodologySection', 'research:IMRaDStructure');
+        return { contentCategory: 'academic', contentTypeKey: 'research', confidence: 96, evidence };
+      }
+      evidence.push('research:abstractPresent', 'research:sectionsPresent');
+      return { contentCategory: 'academic', contentTypeKey: 'research', confidence: 92, evidence };
+    }
+
+    // Lab report detection
+    if (/\b(apparatus|procedure|materials|experiment|titration|measurement|uncertainty|error analysis|observation)\b/i.test(lower)) {
+      evidence.push('labReport:experimentalTerms', 'labReport:procedureSection');
+      return { contentCategory: 'academic', contentTypeKey: 'lab-report', confidence: 90, evidence };
+    }
+
+    // Literature review detection
+    if (/\b(literature review|scholars argue|research demonstrates|studies reveal|consensus|meta-analysis|synthesis of|gap in literature)\b/i.test(lower)) {
+      evidence.push('literatureReview:scholarlyLanguage', 'literatureReview:synthesisMarkers');
+      return { contentCategory: 'academic', contentTypeKey: 'literature-review', confidence: 88, evidence };
+    }
+
+    // Thesis/dissertation detection
+    if (words > 3000 && /\b(chapter|thesis|dissertation|research question|theoretical framework|significance of study)\b/i.test(lower)) {
+      evidence.push('thesis:lengthIndicator', 'thesis:structuralMarkers');
+      return { contentCategory: 'academic', contentTypeKey: 'thesis', confidence: 85, evidence };
+    }
+
+    // Default to essay if academic but no specific type
+    if (sig.hasCitations) {
+      evidence.push('essay:citationsPresent', 'essay:argumentativeStructure');
+      return { contentCategory: 'academic', contentTypeKey: 'essay', confidence: 82, evidence };
+    }
+  }
+
+  // JOURNALISM DETECTION
+  if (sig.hasJournalismMarkers || sig.hasQuotes || sig.hasDateline || sig.hasByline) {
+    
+    // Breaking news detection
+    if (/\b(breaking|developing|just in|latest|update|urgent|alert)\b/i.test(lower) && words < 500) {
+      evidence.push('news:breakingKeywords', 'news:shortLength', 'news:urgentTone');
+      return { contentCategory: 'journalism', contentTypeKey: 'breaking', confidence: 94, evidence };
+    }
+
+    // Investigative journalism detection
+    if (/\b(investigation|documents reveal|obtained by|sources confirm|whistleblower|internal memo|records show|uncovered|expose)\b/i.test(lower) && words > 800) {
+      evidence.push('investigative:forensicLanguage', 'investigative:documentEvidence', 'investigative:depth');
+      return { contentCategory: 'journalism', contentTypeKey: 'investigative', confidence: 92, evidence };
+    }
+
+    // Feature article detection
+    if (words > 600 && sig.hasQuotes && /\b(describes|recalls|remembers|reflects|observes|gestures|pauses)\b/i.test(lower)) {
+      if (sentences[0] && sentences[0].length > 150) { // Long narrative opening
+        evidence.push('feature:narrativeOpening', 'feature:characterDriven', 'feature:literaryDevices');
+        return { contentCategory: 'journalism', contentTypeKey: 'feature', confidence: 90, evidence };
+      }
+    }
+
+    // News analysis detection
+    if (/\b(analysis|implications|consequences|factors|underlying|context|explains why|significance of)\b/i.test(lower) && sig.hasStatistics) {
+      evidence.push('analysis:analyticalLanguage', 'analysis:dataSupport');
+      return { contentCategory: 'journalism', contentTypeKey: 'analysis', confidence: 87, evidence };
+    }
+
+    // Interview article detection
+    if ((text.match(/Q:|A:|Question:|Answer:/g) || []).length >= 4) {
+      evidence.push('interview:QAFormat', 'interview:structuredDialogue');
+      return { contentCategory: 'journalism', contentTypeKey: 'interview', confidence: 95, evidence };
+    }
+
+    // Editorial/Opinion detection
+    if (/\b(I argue|we must|should|ought to|in my view|opinion|perspective|contend|believe)\b/i.test(lower) && !sig.hasCitations) {
+      evidence.push('editorial:opinionMarkers', 'editorial:firstPerson', 'editorial:prescriptive');
+      return { contentCategory: 'journalism', contentTypeKey: 'editorial', confidence: 86, evidence };
+    }
+
+    // Default to news
+    evidence.push('news:journalisticConventions', 'news:objectiveTone');
+    return { contentCategory: 'journalism', contentTypeKey: 'news', confidence: 80, evidence };
+  }
+
+  // BUSINESS COMMUNICATION DETECTION
+  if (sig.hasBusinessMarkers || sig.hasFormalSalutation) {
+    
+    // Formal email detection
+    if (sig.hasFormalSalutation && words < 300) {
+      evidence.push('email:salutation', 'email:shortLength', 'email:professionalTone');
+      return { contentCategory: 'business', contentTypeKey: 'email-formal', confidence: 93, evidence };
+    }
+
+    // Proposal detection
+    if (/\b(executive summary|problem statement|proposed solution|implementation plan|budget|ROI|value proposition|deliverables)\b/i.test(lower)) {
+      evidence.push('proposal:structuredSections', 'proposal:persuasiveLanguage', 'proposal:financialElements');
+      return { contentCategory: 'business', contentTypeKey: 'proposal', confidence: 91, evidence };
+    }
+
+    // Business report detection
+    if (/\b(table of contents|findings|recommendations|analysis|quarterly|year-over-year|performance metrics|KPI)\b/i.test(lower) && words > 500) {
+      evidence.push('report:structuralSections', 'report:analyticalContent', 'report:dataPresentation');
+      return { contentCategory: 'business', contentTypeKey: 'report', confidence: 89, evidence };
+    }
+
+    // Cover letter detection
+    if (/\b(I am writing to apply|position|qualifications|experience|skills|resume|curriculum vitae|portfolio)\b/i.test(lower) && words < 600) {
+      evidence.push('coverLetter:applicationContext', 'coverLetter:personalExperience', 'coverLetter:appropriateLength');
+      return { contentCategory: 'business', contentTypeKey: 'cover-letter', confidence: 92, evidence };
+    }
+
+    // Memo detection
+    if (/^(TO:|FROM:|DATE:|RE:|SUBJECT:)/im.test(text) || /\bmemo\b/i.test(lower)) {
+      evidence.push('memo:headerFormat', 'memo:internalCommunication');
+      return { contentCategory: 'business', contentTypeKey: 'memo', confidence: 94, evidence };
+    }
+
+    // LinkedIn post detection
+    if (words < 300 && /\b(excited to announce|proud to share|thrilled|networking|connection|professional|career)\b/i.test(lower)) {
+      evidence.push('linkedin:professionalSocial', 'linkedin:shortLength', 'linkedin:networkingLanguage');
+      return { contentCategory: 'business', contentTypeKey: 'linkedin', confidence: 85, evidence };
+    }
+  }
+
+  // TECHNICAL DOCUMENTATION DETECTION
+  if (sig.hasTechnicalTerms || sig.hasImperatives || sig.hasNumberedSteps) {
+    
+    // Tutorial detection
+    if (sig.hasNumberedSteps && sig.hasImperatives) {
+      if (/\b(step \d+|how to|getting started|prerequisites|requirements|installation|setup)\b/i.test(lower)) {
+        evidence.push('tutorial:stepByStep', 'tutorial:imperativeMood', 'tutorial:instructional');
+        return { contentCategory: 'technical', contentTypeKey: 'tutorial', confidence: 94, evidence };
+      }
+    }
+
+    // API documentation detection
+    if (/\b(endpoint|GET|POST|PUT|DELETE|request|response|parameter|authentication|HTTP|JSON|REST|API)\b/i.test(lower)) {
+      evidence.push('apiDocs:technicalTerms', 'apiDocs:httpMethods', 'apiDocs:referenceStyle');
+      return { contentCategory: 'technical', contentTypeKey: 'api-docs', confidence: 95, evidence };
+    }
+
+    // User guide detection
+    if (sig.hasImperatives && /\b(user guide|manual|instructions|overview|interface|navigation|features)\b/i.test(lower)) {
+      evidence.push('userGuide:instructionalContent', 'userGuide:comprehensiveCoverage');
+      return { contentCategory: 'technical', contentTypeKey: 'user-guide', confidence: 88, evidence };
+    }
+
+    // Technical specification detection
+    if (/\b(specification|requirements|architecture|design|protocol|standard|compliance|version)\b/i.test(lower) && !sig.hasImperatives) {
+      evidence.push('specification:technicalDetail', 'specification:formalStructure');
+      return { contentCategory: 'technical', contentTypeKey: 'specification', confidence: 87, evidence };
+    }
+
+    // Whitepaper detection
+    if (words > 1500 && /\b(abstract|technical overview|architecture|implementation|use cases|performance|scalability)\b/i.test(lower)) {
+      evidence.push('whitepaper:technicalDepth', 'whitepaper:comprehensiveLength', 'whitepaper:authoritative');
+      return { contentCategory: 'technical', contentTypeKey: 'whitepaper', confidence: 86, evidence };
+    }
+  }
+
+  // CREATIVE WRITING DETECTION
+  if (sig.hasPersonalPronouns && !sig.hasCitations && !sig.hasBusinessMarkers) {
+    
+    // Blog post detection
+    if (words > 300 && words < 2000 && /\b(discover|learn|tips|guide|secrets|essential|ultimate|best|top \d+)\b/i.test(lower)) {
+      if (sig.hasBulletPoints || sig.hasNumberedSteps) {
+        evidence.push('blog:conversationalTone', 'blog:practicalContent', 'blog:listicleFormat');
+        return { contentCategory: 'creative', contentTypeKey: 'blog', confidence: 88, evidence };
+      }
+    }
+
+    // Social media detection
+    if (words < 100 && (/\b(check out|follow|like|share|comment|link in bio|DM me)\b/i.test(lower) || /[#@]\w+/.test(text))) {
+      evidence.push('socialMedia:shortLength', 'socialMedia:casualTone', 'socialMedia:hashtagsMentions');
+      return { contentCategory: 'creative', contentTypeKey: 'social-media', confidence: 92, evidence };
+    }
+
+    // Ad copy detection
+    if (words < 150 && /\b(buy now|order today|limited time|exclusive|guarantee|free|save|discount|don't miss)\b/i.test(lower)) {
+      evidence.push('adCopy:persuasiveLanguage', 'adCopy:urgency', 'adCopy:CTA');
+      return { contentCategory: 'creative', contentTypeKey: 'ad-copy', confidence: 90, evidence };
+    }
+
+    // Story/narrative detection
+    if (words > 500 && /\b(once|suddenly|whispered|gazed|trembled|heart|shadow|dream)\b/i.test(lower)) {
+      if (/["'].*?(said|asked|replied|whispered|shouted)/.test(text)) { // Dialogue present
+        evidence.push('story:narrativeElements', 'story:dialogue', 'story:descriptiveLanguage');
+        return { contentCategory: 'creative', contentTypeKey: 'story', confidence: 87, evidence };
+      }
+    }
+
+    // Script detection
+    if (/^[A-Z\s]+:/m.test(text) || /\(.*?\)/.test(text.substring(0, 200))) { // Character names or stage directions
+      evidence.push('script:characterNames', 'script:dialogueFormat', 'script:stageDirections');
+      return { contentCategory: 'creative', contentTypeKey: 'script', confidence: 91, evidence };
+    }
+
+    // Newsletter detection
+    if (/\b(newsletter|subscribe|unsubscribe|this week|this month|roundup|digest)\b/i.test(lower)) {
+      evidence.push('newsletter:periodicContent', 'newsletter:compiledFormat');
+      return { contentCategory: 'creative', contentTypeKey: 'newsletter', confidence: 84, evidence };
+    }
+  }
+
+  // FALLBACK LOGIC: Conservative heuristics based on structure and length
+  
+  // Academic fallbacks
+  if (avgSentenceLength > 20 && /\b(theory|concept|framework|analysis|evidence|research|study)\b/i.test(lower)) {
+    evidence.push('fallback:academicVocabulary', 'fallback:complexSentences');
+    return { contentCategory: 'academic', contentTypeKey: 'essay', confidence: 65, evidence };
+  }
+
+  // Business fallback
+  if (/\b(project|team|management|strategy|meeting|deadline|client|stakeholder)\b/i.test(lower)) {
+    evidence.push('fallback:businessVocabulary');
+    return { contentCategory: 'business', contentTypeKey: 'email-formal', confidence: 60, evidence };
+  }
+
+  // Technical fallback
+  if (/\b(system|software|code|data|process|configure|install|execute)\b/i.test(lower)) {
+    evidence.push('fallback:technicalVocabulary');
+    return { contentCategory: 'technical', contentTypeKey: 'documentation', confidence: 60, evidence };
+  }
+
+  // Creative fallback for very short text
+  if (words < 100) {
+    evidence.push('fallback:shortLength');
+    return { contentCategory: 'creative', contentTypeKey: 'social-media', confidence: 55, evidence };
+  }
+
+  // Ultimate fallback: academic essay (most general)
+  evidence.push('fallback:defaultAcademic');
+  return { contentCategory: 'academic', contentTypeKey: 'essay', confidence: 50, evidence };
+}
+
+// convenience alias (keeps backward compatibility)
+function detectContentType(text, subject = null) {
+  return detectContentTypeUsingTemplates(text, subject, contentTypeTemplates);
+}
+
+      
+// Update the getAdvancedPrompt function to use override:
+
+function getAdvancedPrompt(text, mode, intensity, wordCount, isHumanizing = false, subject = null, questionType = null, contentCategory = null, contentTypeKey = null, userSpecifiedType = null) {
     const intensityConfig = {
         '1': { temp: 1.75, topK: 120, topP: 0.97, name: 'NATURAL' },
         '2': { temp: 1.95, topK: 160, topP: 0.99, name: 'ENHANCED' },
@@ -1167,15 +1816,81 @@ function getAdvancedPrompt(text, mode, intensity, wordCount, isHumanizing = fals
     };
     
     const config = intensityConfig[intensity];
-        let subjectInstructions = '';
-    if (subject && questionType) {
-        subjectInstructions = getSubjectSpecificInstructions(subject, questionType);
+
+    // Build content-type instruction injection
+   // Build content-type instruction injection
+let contentTypeInstructions = '';
+let detectionInfo = '';
+
+if (userSpecifiedType) {
+    // User manually specified the type - let AI interpret it
+    contentTypeInstructions = `
+═══════════════════════════════════════════════════════════════════════════
+🎯 USER-SPECIFIED TEXT TYPE: "${userSpecifiedType}"
+═══════════════════════════════════════════════════════════════════════════
+
+CRITICAL INSTRUCTION: The user has specified this text type. You MUST:
+
+1. UNDERSTAND THE TYPE: Interpret "${userSpecifiedType}" even if misspelled (e.g., "acadmic esay" = academic essay, "reserch paper" = research paper, "blog pst" = blog post)
+
+2. MATCH THE STRUCTURE: Follow the EXACT structure conventions for this text type:
+   - If it's an essay: Introduction → Body Paragraphs (with topic sentences, evidence, analysis) → Conclusion
+   - If it's a research paper: Abstract → Introduction → Methodology → Results → Discussion → Conclusion
+   - If it's a news article: Inverted pyramid (most important first), quotes, attribution
+   - If it's a blog post: Engaging hook, conversational but informative, actionable takeaways
+   - If it's a business email: Subject line logic, professional greeting, clear purpose, call-to-action
+   - Match whatever structure is standard for "${userSpecifiedType}"
+
+3. USE APPROPRIATE VOCABULARY: 
+   - Academic: Use scholarly language, field-specific terms, formal register
+   - Journalism: Use clear, factual language, proper attribution (according to, sources say)
+   - Business: Use professional terminology, action-oriented language
+   - Creative: Use vivid, sensory language, show don't tell
+   - Technical: Use precise technical terms, step-by-step clarity
+
+4. FOLLOW GENRE CONVENTIONS:
+   - Academic: Citations needed, thesis-driven, analytical depth, counterarguments
+   - News: Lead with key facts, quotes from sources, objective tone, inverted pyramid
+   - Blog: Conversational tone, subheadings, scannable, personality
+   - Business: Professional, concise, results-focused, clear action items
+   - Technical: Logical sequence, clarity over style, examples and screenshots
+
+5. MAINTAIN HUMAN AUTHENTICITY: 
+   - While following structure, keep natural sentence variation
+   - Use the vocabulary of the genre but vary sentence length dramatically
+   - Follow conventions but avoid AI-pattern words (no delve, robust, leverage, etc.)
+   - Be structurally sound AND naturally human
+
+YOU ARE WRITING A REAL ${userSpecifiedType.toUpperCase()} - NOT JUST "HUMAN-SOUNDING TEXT"
+Follow the discipline. Follow the structure. Follow the conventions. But write like a human expert in this format would write.
+`;
+    detectionInfo = `\n🎯 USER-SPECIFIED TEXT TYPE: "${userSpecifiedType}"\n`;
+} else if (contentCategory && contentTypeKey) {
+    contentTypeInstructions = getStyleForContentType(contentCategory, contentTypeKey);
+    detectionInfo = `\n🤖 AUTO-DETECTED TEXT TYPE: ${contentCategory}/${contentTypeKey}\n`;
+}
+
+    // subject inference
+    let resolvedSubject = subject;
+    if (!resolvedSubject && typeof inferSubjectFromText === 'function') {
+      const inferred = inferSubjectFromText(text);
+      if (inferred) resolvedSubject = inferred;
+    }
+
+    // build subject instruction block
+    let subjectInstructions = '';
+    if (typeof getSubjectSpecificInstructions === 'function') {
+      if (resolvedSubject && questionType) subjectInstructions = getSubjectSpecificInstructions(resolvedSubject, questionType);
+      else if (resolvedSubject) subjectInstructions = getSubjectSpecificInstructions(resolvedSubject, null);
+      else if (questionType) subjectInstructions = `STRUCTURE (${questionTypes[questionType].short}): ${questionTypes[questionType].template.join(' | ')}`;
     }
     
+    // --- original basePrompt left intact (only subjectInstructions is injected where you already reference getSubjectSpecificInstructions) ---
     const basePrompt = isHumanizing 
         ? `You are executing PROFESSIONAL-GRADE MILITARY-LEVEL TEXT HUMANIZATION. This is NOT casual rewriting. This is DEEP STRUCTURAL WARFARE against AI detection algorithms.
 
-🎯 MISSION: Transform to 100% UNDETECTABLE human writing | ${config.name} MODE ACTIVE
+🎯 MISSION: Create 100% UNDETECTABLE human content | ${wordCount} words | ${config.name} MODE
+${detectionInfo}
 
 ═══════════════════════════════════════════════════════════════════
 ⚠️ ABSOLUTE PRESERVATION PROTOCOL - NON-NEGOTIABLE
@@ -1194,6 +1909,8 @@ PRESERVE 100% EXACTLY AS WRITTEN:
 ✅ Document structure: keep bullets as bullets, paragraphs as paragraphs
 
 TARGET WORD COUNT: ${countWords(text)} words (±1% tolerance = ${Math.floor(countWords(text) * 0.99)}-${Math.ceil(countWords(text) * 1.01)} words)
+
+
 
 ═══════════════════════════════════════════════════════════════════
 💀 NUCLEAR AI PATTERN ANNIHILATION - ZERO SURVIVORS
@@ -1491,6 +2208,13 @@ Before outputting, verify:
 🚀 HUMANIZATION EXECUTION
 ═══════════════════════════════════════════════════════════════════
 
+SUBJECT INSTRUCTIONS:
+${subjectInstructions}
+
+CONTENT-TYPE INSTRUCTIONS:
+${contentTypeInstructions}
+
+      
 TEXT TO HUMANIZE:
 ${text}
 
@@ -1705,6 +2429,12 @@ Before outputting, verify:
 ═══════════════════════════════════════════════════════════════════
 🚀 CONTENT GENERATION EXECUTION
 ═══════════════════════════════════════════════════════════════════
+
+SUBJECT INSTRUCTIONS:
+${subjectInstructions}
+
+CONTENT-TYPE INSTRUCTIONS:
+${contentTypeInstructions}
 
 TOPIC/BRIEF:
 ${text}
@@ -2412,8 +3142,13 @@ async function callGeminiAPI(prompt, config, providedApiKey = null) {
 function addToHistory(entry) {
     try {
         const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+        
+        // Capture user-specified type if it exists
+        const userSpecifiedType = textTypeOverride.value.trim();
+        
         history.unshift({
             ...entry,
+            userSpecifiedType: userSpecifiedType || null, // Store user specification
             timestamp: new Date().toISOString(),
             id: Date.now()
         });
@@ -2424,51 +3159,6 @@ function addToHistory(entry) {
     }
 }
 
-function renderHistory() {
-    const historyList = document.getElementById('chatHistoryList');
-    const noHistory = document.getElementById('noHistory');
-    
-    try {
-        const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
-        
-        if (history.length === 0) {
-            historyList.innerHTML = '';
-            noHistory.style.display = 'block';
-            return;
-        }
-        
-        noHistory.style.display = 'none';
-        historyList.innerHTML = history.map(item => {
-            const date = new Date(item.timestamp);
-            const outputPreview = item.output.substring(0, 100) + '...';
-            const inputPreview = item.input.substring(0, 150) + '...';
-            
-            return `
-                <div class="history-item" onclick="loadHistoryItem(${item.id})">
-                    <div class="history-header">
-                        <span class="history-title">${item.mode === 'generate' ? '🚀 Generated' : item.mode === 'enhance' ? '🎯 Enhanced' : '✨ Humanized'}: ${item.contentType}</span>
-                        <span class="history-date">${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                    </div>
-                    <div style="margin: 8px 0;">
-                        <strong style="color: #4f46e5; font-size: 0.85em;">📝 Request:</strong>
-                        <div class="history-preview" style="margin-top: 4px;">${inputPreview}</div>
-                    </div>
-                    <div style="margin: 8px 0;">
-                        <strong style="color: #28a745; font-size: 0.85em;">✅ Output:</strong>
-                        <div class="history-preview" style="margin-top: 4px;">${outputPreview}</div>
-                    </div>
-                    <div class="history-meta">
-                        <span class="history-badge">${item.wordCount} words</span>
-                        <span class="history-badge">Intensity: ${item.intensity}/3</span>
-                        <button class="delete-history-btn" onclick="event.stopPropagation(); deleteHistoryItem(${item.id})">🗑️ Delete</button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    } catch (e) {
-        console.error('Error rendering history:', e);
-    }
-}
 function loadHistoryItem(id) {
     try {
         const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
@@ -2480,11 +3170,22 @@ function loadHistoryItem(id) {
             copyBtn.style.display = 'block';
             updateStats();
             
+            // Restore user-specified type if it exists
+            if (item.userSpecifiedType) {
+                textTypeOverride.value = item.userSpecifiedType;
+            } else {
+                textTypeOverride.value = '';
+            }
+            
             // Restore the input based on mode
-           const infoRestored = document.getElementById('infoRestored');
+            const infoRestored = document.getElementById('infoRestored');
             const restoredInfo = document.getElementById('restoredInfo');
             if (infoRestored && restoredInfo) {
-                restoredInfo.textContent = `Your original request and the generated output have been restored. You can regenerate or modify as needed.`;
+                let restoredMessage = 'Your original request and the generated output have been restored.';
+                if (item.userSpecifiedType) {
+                    restoredMessage += ` User-specified type: "${item.userSpecifiedType}"`;
+                }
+                restoredInfo.textContent = restoredMessage;
                 infoRestored.style.display = 'block';
                 
                 // Hide after 5 seconds
@@ -2492,6 +3193,7 @@ function loadHistoryItem(id) {
                     infoRestored.style.display = 'none';
                 }, 5000);
             }
+            
             if (item.mode === 'generate') {
                 // Switch to generate mode
                 currentMode = 'generate';
@@ -2529,8 +3231,14 @@ function loadHistoryItem(id) {
             const labels = ['NATURAL', 'ENHANCED', 'ULTRA-HUMAN'];
             intensityValue.textContent = labels[item.intensity - 1];
             
-            // Show success message
-            successDiv.innerHTML = `✅ <strong>Loaded from history:</strong> ${item.contentType} - Request and output restored`;
+            // Show success message with user specification if applicable
+            let successMessage = `✅ <strong>Loaded from history:</strong> ${item.contentType}`;
+            if (item.userSpecifiedType) {
+                successMessage += ` (User specified: "${item.userSpecifiedType}")`;
+            }
+            successMessage += ` - Request and output restored`;
+            
+            successDiv.innerHTML = successMessage;
             successDiv.classList.add('active');
             
             // Scroll to top to see the restored input
@@ -2543,6 +3251,58 @@ function loadHistoryItem(id) {
     }
 }
 
+function renderHistory() {
+    const historyList = document.getElementById('chatHistoryList');
+    const noHistory = document.getElementById('noHistory');
+    
+    try {
+        const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+        
+        if (history.length === 0) {
+            historyList.innerHTML = '';
+            noHistory.style.display = 'block';
+            return;
+        }
+        
+        noHistory.style.display = 'none';
+        historyList.innerHTML = history.map(item => {
+            const date = new Date(item.timestamp);
+            const outputPreview = item.output.substring(0, 100) + '...';
+            const inputPreview = item.input.substring(0, 150) + '...';
+            
+            // Add user specification badge if exists
+            let specificationBadge = '';
+            if (item.userSpecifiedType) {
+                specificationBadge = `<span class="history-badge" style="background: #4f46e5; color: white;">📝 "${item.userSpecifiedType}"</span>`;
+            }
+            
+            return `
+                <div class="history-item" onclick="loadHistoryItem(${item.id})">
+                    <div class="history-header">
+                        <span class="history-title">${item.mode === 'generate' ? '🚀 Generated' : item.mode === 'enhance' ? '🎯 Enhanced' : '✨ Humanized'}: ${item.contentType}</span>
+                        <span class="history-date">${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                    </div>
+                    <div style="margin: 8px 0;">
+                        <strong style="color: #4f46e5; font-size: 0.85em;">📝 Request:</strong>
+                        <div class="history-preview" style="margin-top: 4px;">${inputPreview}</div>
+                    </div>
+                    <div style="margin: 8px 0;">
+                        <strong style="color: #28a745; font-size: 0.85em;">✅ Output:</strong>
+                        <div class="history-preview" style="margin-top: 4px;">${outputPreview}</div>
+                    </div>
+                    <div class="history-meta">
+                        <span class="history-badge">${item.wordCount} words</span>
+                        <span class="history-badge">Intensity: ${item.intensity}/3</span>
+                        ${specificationBadge}
+                        <button class="delete-history-btn" onclick="event.stopPropagation(); deleteHistoryItem(${item.id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } catch (e) {
+        console.error('Error rendering history:', e);
+    }
+}
       
 function deleteHistoryItem(id) {
     try {
@@ -2571,24 +3331,25 @@ document.getElementById('clearHistoryBtn').addEventListener('click', () => {
 // =====================================================
 // GENERATE/HUMANIZE/ENHANCE BUTTON
 // =====================================================
+
+// Complete Generate/Humanize/Enhance button click handler with override support
 generateBtn.addEventListener('click', async () => {
     const apiKey = apiKeyInput.value.trim();
-    const mode = modeSelect.value;
-    const intensity = intensitySlider.value;
-
-    errorDiv.classList.remove('active');
-    successDiv.classList.remove('active');
-    humanScore.classList.remove('active');
-
+    
     if (!apiKey) {
         errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please enter your Gemini API key';
         errorDiv.classList.add('active');
         return;
     }
 
+    errorDiv.classList.remove('active');
+    successDiv.classList.remove('active');
+    humanScore.classList.remove('active');
+
     if (currentMode === 'generate') {
         const topic = topicInput.value.trim();
         const wordCount = parseInt(wordCountInput.value);
+        const intensity = intensitySlider.value;
 
         if (!topic) {
             errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please describe what content you want to generate';
@@ -2602,6 +3363,35 @@ generateBtn.addEventListener('click', async () => {
             return;
         }
 
+        let contentCat = null;
+        let contentKey = null;
+        let userSpecifiedType = null;
+        
+        // Check detection mode FIRST - this takes priority
+        if (detectionMode === 'automatic') {
+            // Check if user manually typed a text type
+            const userTypedType = textTypeOverride.value.trim();
+            
+            if (userTypedType && userTypedType !== '') {
+                // User typed a custom text type - pass it directly to AI
+                userSpecifiedType = userTypedType;
+                console.log('🎯 AUTO-DETECT MODE with USER INPUT: User specified text type:', userSpecifiedType);
+                console.log('   AI will interpret and understand this type (even with spelling mistakes)');
+            } else {
+                // AUTO-DETECT MODE: Let AI detect from content
+                const detected = detectContentType(topic, null);
+                contentCat = detected.contentCategory;
+                contentKey = detected.contentTypeKey;
+                console.log('🤖 AUTO-DETECT MODE: AI detected content type:', contentCat, contentKey, `(${detected.confidence}% confidence)`);
+                console.log('   Evidence:', detected.evidence);
+            }
+        } else {
+            // MANUAL MODE: Use manual selections only
+            contentCat = categorySelect.value;
+            contentKey = modeSelect.value;
+            console.log('🎯 MANUAL MODE: Using manual selections:', contentCat, contentKey);
+        }
+
         generateBtn.disabled = true;
         loading.classList.add('active');
         output.textContent = '';
@@ -2609,9 +3399,24 @@ generateBtn.addEventListener('click', async () => {
 
         try {
             loadingText.textContent = `🚀 GENERATING ULTRA-HUMAN CONTENT`;
-            loadingSubtext.textContent = `Creating authentic content with zero AI patterns...`;
+            loadingSubtext.textContent = userSpecifiedType
+                ? `AI interpreting your specified type: "${userSpecifiedType}"...`
+                : detectionMode === 'automatic' 
+                    ? `AI auto-detecting content type and creating authentic content...`
+                    : `Creating authentic content with your selected type...`;
             
-            const { prompt, config } = getAdvancedPrompt(topic, mode, intensity, wordCount, false);
+            const { prompt, config } = getAdvancedPrompt(
+                topic, 
+                modeSelect.value, 
+                intensity, 
+                wordCount, 
+                false, 
+                null, 
+                null, 
+                contentCat, 
+                contentKey,
+                userSpecifiedType  // Pass the user-specified type
+            );
             const generatedText = await callGeminiAPI(prompt, config, apiKey);
 
             output.textContent = generatedText;
@@ -2619,7 +3424,18 @@ generateBtn.addEventListener('click', async () => {
             updateStats();
 
             const actualWords = countWords(generatedText);
-            successDiv.innerHTML = `✅ <strong>SUCCESS!</strong> Generated ${actualWords} words of authentic human content.`;
+            
+            // Show detection info in success message
+            let detectionInfo = '';
+            if (userSpecifiedType) {
+                detectionInfo = `(User specified: "${userSpecifiedType}")`;
+            } else if (detectionMode === 'automatic') {
+                detectionInfo = `(AI detected: ${contentCat}/${contentKey})`;
+            } else {
+                detectionInfo = `(Manual selection: ${contentCat}/${contentKey})`;
+            }
+            
+            successDiv.innerHTML = `✅ <strong>SUCCESS!</strong> Generated ${actualWords} words of authentic human content. ${detectionInfo}`;
             successDiv.classList.add('active');
 
             humanScore.innerHTML = `🎯 <strong>HUMAN AUTHENTICITY: 100%</strong> | AI Detection: 0%`;
@@ -2627,7 +3443,7 @@ generateBtn.addEventListener('click', async () => {
 
             addToHistory({
                 mode: 'generate',
-                contentType: modeSelect.options[modeSelect.selectedIndex].text,
+                contentType: userSpecifiedType || modeSelect.options[modeSelect.selectedIndex].text,
                 input: topic,
                 output: generatedText,
                 wordCount: actualWords,
@@ -2645,11 +3461,41 @@ generateBtn.addEventListener('click', async () => {
 
     } else if (currentMode === 'humanize') {
         const text = existingTextInput.value.trim();
+        const intensity = intensitySlider.value;
 
         if (!text) {
             errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please paste text to humanize';
             errorDiv.classList.add('active');
             return;
+        }
+
+        let contentCat = null;
+        let contentKey = null;
+        let userSpecifiedType = null;
+        
+        // Check detection mode FIRST - this takes priority
+        if (detectionMode === 'automatic') {
+            // Check if user manually typed a text type
+            const userTypedType = textTypeOverride.value.trim();
+            
+            if (userTypedType && userTypedType !== '') {
+                // User typed a custom text type - pass it directly to AI
+                userSpecifiedType = userTypedType;
+                console.log('🎯 AUTO-DETECT MODE with USER INPUT: User specified text type:', userSpecifiedType);
+                console.log('   AI will interpret and understand this type (even with spelling mistakes)');
+            } else {
+                // AUTO-DETECT MODE: Let AI detect from content
+                const detected = detectContentType(text, null);
+                contentCat = detected.contentCategory;
+                contentKey = detected.contentTypeKey;
+                console.log('🤖 AUTO-DETECT MODE: AI detected content type:', contentCat, contentKey, `(${detected.confidence}% confidence)`);
+                console.log('   Evidence:', detected.evidence);
+            }
+        } else {
+            // MANUAL MODE: Use manual selections only
+            contentCat = categorySelect.value;
+            contentKey = modeSelect.value;
+            console.log('🎯 MANUAL MODE: Using manual selections:', contentCat, contentKey);
         }
 
         generateBtn.disabled = true;
@@ -2659,10 +3505,25 @@ generateBtn.addEventListener('click', async () => {
 
         try {
             loadingText.textContent = `✨ HUMANIZING YOUR TEXT`;
-            loadingSubtext.textContent = `Transforming to authentic human writing...`;
+            loadingSubtext.textContent = userSpecifiedType
+                ? `AI interpreting your specified type: "${userSpecifiedType}"...`
+                : detectionMode === 'automatic'
+                    ? `AI auto-detecting content type and transforming to authentic human writing...`
+                    : `Transforming to authentic human writing with your selected type...`;
             
             const wordCount = countWords(text);
-            const { prompt, config } = getAdvancedPrompt(text, mode, intensity, wordCount, true);
+            const { prompt, config } = getAdvancedPrompt(
+                text, 
+                modeSelect.value, 
+                intensity, 
+                wordCount, 
+                true, 
+                null, 
+                null, 
+                contentCat, 
+                contentKey,
+                userSpecifiedType  // Pass the user-specified type
+            );
             const humanizedText = await callGeminiAPI(prompt, config, apiKey);
 
             output.textContent = humanizedText;
@@ -2670,7 +3531,18 @@ generateBtn.addEventListener('click', async () => {
             updateStats();
 
             const actualWords = countWords(humanizedText);
-            successDiv.innerHTML = `✅ <strong>SUCCESS!</strong> Humanized ${actualWords} words. All citations and data preserved.`;
+            
+            // Show detection info in success message
+            let detectionInfo = '';
+            if (userSpecifiedType) {
+                detectionInfo = `(User specified: "${userSpecifiedType}")`;
+            } else if (detectionMode === 'automatic') {
+                detectionInfo = `(AI detected: ${contentCat}/${contentKey})`;
+            } else {
+                detectionInfo = `(Manual selection: ${contentCat}/${contentKey})`;
+            }
+            
+            successDiv.innerHTML = `✅ <strong>SUCCESS!</strong> Humanized ${actualWords} words. All citations and data preserved. ${detectionInfo}`;
             successDiv.classList.add('active');
 
             humanScore.innerHTML = `🎯 <strong>HUMANIZATION: COMPLETE</strong> | AI Detection: 0%`;
@@ -2678,7 +3550,7 @@ generateBtn.addEventListener('click', async () => {
 
             addToHistory({
                 mode: 'humanize',
-                contentType: modeSelect.options[modeSelect.selectedIndex].text,
+                contentType: userSpecifiedType || modeSelect.options[modeSelect.selectedIndex].text,
                 input: text,
                 output: humanizedText,
                 wordCount: actualWords,
@@ -2698,6 +3570,7 @@ generateBtn.addEventListener('click', async () => {
         const content = contentToEnhance.value.trim();
         const instructions = enhanceInstructions.value.trim();
         const subject = enhanceSubject.value;
+        const intensity = intensitySlider.value;
 
         if (!content) {
             errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please paste content to enhance';
@@ -2753,9 +3626,7 @@ generateBtn.addEventListener('click', async () => {
             generateBtn.disabled = false;
         }
     }
-});
-// =====================================================
-// CLEAR BUTTON
+});// CLEAR BUTTON
 // =====================================================
 clearBtn.addEventListener('click', () => {
     topicInput.value = '';
@@ -2786,8 +3657,11 @@ copyBtn.addEventListener('click', () => {
 // =====================================================
 // INITIALIZE
 // =====================================================
+// =====================================================
+// INITIALIZE - UPDATED
+// =====================================================
 categorySelect.addEventListener('change', updateModeOptions);
-updateModeOptions();
+updateModeOptions(); // Initial load
 updateStats();
 renderHistory();
 
@@ -2797,15 +3671,6 @@ initializeApiKeys();
 // Re-initialize keys when input changes
 apiKeyInput.addEventListener('change', initializeApiKeys);
 apiKeyInput.addEventListener('blur', initializeApiKeys);
-
-// Log stats periodically (optional - for debugging)
-setInterval(() => {
-    if (apiKeys.length > 1) {
-        logRotationStats();
-    }
-}, 60000); // Every 60 seconds
-
-
 </script>
 </body>
 </html>
