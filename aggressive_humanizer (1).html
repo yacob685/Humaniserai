@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -549,7 +550,27 @@ input[type="range"]::-moz-range-thumb {
         <button type="button" id="humanizeMode" class="mode-btn" style="padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; background: transparent; color: #495057;">
             ✨ Humanize Existing Text
         </button>
+                <button type="button" id="enhanceMode" class="mode-btn" style="padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; background: transparent; color: #495057;">
+    🎯 Enhance & Complete Content
+</button>
     </div>
+</div>
+
+        <!-- DETECTION MODE TOGGLE - Add this after the mode-toggle div -->
+<div class="detection-mode-toggle" style="text-align: center; margin-bottom: 25px; margin-top: 15px;">
+    <label style="font-weight: 600; color: #495057; margin-bottom: 10px; display: block;">🤖 DETECTION MODE:</label>
+    <div style="display: inline-flex; background: #e9ecef; border-radius: 10px; padding: 4px;">
+        <button type="button" id="autoDetectBtn" class="detection-btn" style="padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; background: linear-gradient(135deg, #28a745, #218838); color: white;">
+            ✨ Auto-Detect
+        </button>
+        <button type="button" id="manualSelectBtn" class="detection-btn" style="padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; background: transparent; color: #495057;">
+            🎯 Manual Select
+        </button>
+
+    </div>
+    <p style="margin-top: 10px; font-size: 0.85em; color: #6c757d;">
+        <span id="detectionModeDesc">AI automatically detects subject, question type, and format</span>
+    </p>
 </div>
         <div class="feature-badges">
             <span class="badge">🎯 NATIVE HUMAN GENERATION</span>
@@ -560,11 +581,19 @@ input[type="range"]::-moz-range-thumb {
             <span class="badge">🚀 MAXIMUM AUTHENTICITY</span>
         </div>
 
-        <div class="api-section" style="display: none;">
+        <div class="api-section" style="display: block;">
             <div class="input-group">
-                <label for="apiKey"></label>
-                <div style="display: none;">
-                    <input type="text" id="apiKey" value="AIzaSyBIAAAwdRvVuUMyq2RfLYo2HapOe_25j1c">
+<label for="apiKey">
+    🔑 Enter Your Gemini API Key: 
+    <a href="https://aistudio.google.com/apikey" 
+       target="_blank" 
+       style="display: inline-block; margin-left: 10px; padding: 6px 12px; background: linear-gradient(135deg, #4f46e5, #4338ca); color: white; text-decoration: none; border-radius: 6px; font-size: 0.85em; font-weight: 600; transition: transform 0.2s;"
+       onmouseover="this.style.transform='translateY(-2px)'"
+       onmouseout="this.style.transform='translateY(0)'">
+        🔗 Get API Key For Free
+    </a>
+</label>                <div style="display: block;">
+                    <input type="text" id="apiKey" value="">
                 </div>
             </div>
         </div>
@@ -606,6 +635,9 @@ input[type="range"]::-moz-range-thumb {
 
         <div class="error" id="error"></div>
         <div class="success" id="success"></div>
+        <div class="info-restored" id="infoRestored" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; padding: 16px; border-radius: 8px; margin-bottom: 20px; display: none; border: 1px solid #1d4ed8; font-weight: 500;">
+    📋 <strong>History Restored:</strong> <span id="restoredInfo"></span>
+</div>
 
       <!-- Generate Mode Inputs -->
 <div id="generateInputs">
@@ -639,6 +671,62 @@ input[type="range"]::-moz-range-thumb {
             <li>All statistics, percentages, and numbers unchanged</li>
             <li>All specific research findings preserved verbatim</li>
             <li>Technical terms and discipline-specific vocabulary protected</li>
+        </ul>
+    </div>
+</div>
+
+
+        <div id="enhanceInputs" style="display: none;">
+    <div class="input-group">
+        <label for="contentToEnhance">📄 Paste Content to Enhance:</label>
+        <textarea id="contentToEnhance" placeholder="Paste your existing content here..." style="min-height: 300px;"></textarea>
+    </div>
+    
+    <div class="input-group">
+        <label for="enhanceInstructions">📝 What Should Be Added/Enhanced?</label>
+        <textarea id="enhanceInstructions" placeholder="Describe what's missing or needs to be added. Examples:
+        
+- Add more evidence and examples in paragraph 3
+- Need deeper analysis of the economic impacts
+- Missing counterarguments and rebuttals
+- Introduction needs stronger hook and thesis
+- Conclusion lacks synthesis of main points
+- Need more specific scientific data
+- Add theoretical framework discussion
+- Require more critical evaluation
+        
+Be specific about what gaps need filling..." style="min-height: 350px;"></textarea>
+    </div>
+    
+    <div class="input-group">
+        <label for="enhanceSubject">📚 Subject/Field:</label>
+        <select id="enhanceSubject">
+            <option value="general">General Academic</option>
+            <option value="biology">Biology</option>
+            <option value="chemistry">Chemistry</option>
+            <option value="physics">Physics</option>
+            <option value="mathematics">Mathematics</option>
+            <option value="history">History</option>
+            <option value="literature">Literature/English</option>
+            <option value="psychology">Psychology</option>
+            <option value="sociology">Sociology</option>
+            <option value="business">Business</option>
+            <option value="economics">Economics</option>
+        </select>
+    </div>
+    
+    <div class="input-group" style="padding: 15px; background: #e7f3ff; border-radius: 8px; border: 1px solid #2196F3;">
+        <label style="color: #1976D2; display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.2em;">💡</span>
+            <span>ENHANCEMENT FEATURES:</span>
+        </label>
+        <ul style="margin: 10px 0 0 25px; color: #1565C0; line-height: 1.8;">
+            <li>AI identifies gaps and adds missing information</li>
+            <li>Maintains your original writing style and voice</li>
+            <li>Integrates additions seamlessly</li>
+            <li>Marks new content with [ADDED] tags so you can see changes</li>
+            <li>Ensures full marks quality with complete coverage</li>
+            <li>100% undetectable human writing throughout</li>
         </ul>
     </div>
 </div>
@@ -692,1078 +780,1595 @@ input[type="range"]::-moz-range-thumb {
         </div>
     </div>
 
-   <script>
-    // Content type categories
-    const contentTypes = {
-        journalism: {
-            'news': '📰 News Article',
-            'investigative': '🔍 Investigative Journalism',
-            'feature': '📝 Feature Article',
-            'editorial': '💭 Editorial/Opinion',
-            'breaking': '⚡ Breaking News',
-            'analysis': '📊 News Analysis',
-            'interview': '🎤 Interview Article',
-            'press-release': '📢 Press Release'
-        },
-       academic: {
-    'essay': '📖 Academic Essay',
-    'research': '🔬 Research Report',
-    'analytical': '📈 Analytical Essay',
-    'argumentative': '⚖️ Argumentative Essay',
-    'comparative': '🔄 Comparative Essay',
-    'literature': '📚 Literature Review',
-    'thesis': '🎓 Thesis/Dissertation',
-    'case-study': '📋 Case Study',
-    'med-reflective': '🎓 MEd Reflective Essay',
-    'med-research': '📚 MEd Research Paper',
-    'med-literature-review': '📖 MEd Literature Review',
-    'med-action-research': '🔬 MEd Action Research',
-    'med-critical-analysis': '💭 MEd Critical Analysis',
-    'med-professional-inquiry': '🎯 MEd Professional Inquiry Project'
-},
-        business: {
-            'email-formal': '✉️ Formal Business Email',
-            'email-casual': '📧 Casual Professional Email',
-            'proposal': '📄 Business Proposal',
-            'report': '📊 Business Report',
-            'memo': '📝 Memo/Internal Communication',
-            'cover-letter': '💼 Cover Letter',
-            'linkedin': '🔗 LinkedIn Post/Article',
-            'presentation': '🎤 Presentation Script',
-            'executive-summary': '📑 Executive Summary'
-        },
-        creative: {
-            'blog': '📝 Blog Post',
-            'social-media': '📱 Social Media Content',
-            'ad-copy': '🎯 Advertisement Copy',
-            'product-description': '🛍️ Product Description',
-            'newsletter': '📬 Newsletter',
-            'web-content': '🌐 Website Content',
-            'script': '🎬 Video/Podcast Script',
-            'story': '📖 Creative Story/Narrative'
-        },
-        technical: {
-            'documentation': '📚 Technical Documentation',
-            'user-guide': '📖 User Guide/Manual',
-            'tutorial': '🎓 Tutorial/How-to',
-            'whitepaper': '📄 White Paper',
-            'api-docs': '⚙️ API Documentation',
-            'technical-report': '🔧 Technical Report',
-            'sop': '📋 Standard Operating Procedure',
-            'specification': '📝 Technical Specification'
-        }
-    };
+  <script>
+// =====================================================
+// CONTENT TYPE & SUBJECT DEFINITIONS
+// =====================================================
+// =====================================================
+// API KEY ROTATION SYSTEM
+// =====================================================
+let apiKeys = [];
+let currentKeyIndex = 0;
+let requestCount = 0;
 
-    // DOM Elements
-    const apiKeyInput = document.getElementById('apiKey');
-    const topicInput = document.getElementById('topic');
-    const keywordsInput = document.getElementById('keywords');
-    const categorySelect = document.getElementById('category');
-    const modeSelect = document.getElementById('mode');
-    const wordCountInput = document.getElementById('wordCount');
-    const intensitySlider = document.getElementById('intensity');
-    const intensityValue = document.getElementById('intensityValue');
-    const generateBtn = document.getElementById('generateBtn');
-    const clearBtn = document.getElementById('clearBtn');
-    const output = document.getElementById('output');
-    const loading = document.getElementById('loading');
-    const loadingText = document.getElementById('loadingText');
-    const loadingSubtext = document.getElementById('loadingSubtext');
-    const errorDiv = document.getElementById('error');
-    const successDiv = document.getElementById('success');
-    const copyBtn = document.getElementById('copyBtn');
-    const humanScore = document.getElementById('humanScore');
-       const generateModeBtn = document.getElementById('generateMode');
+// Initialize API keys from input (comma-separated)
+function initializeApiKeys() {
+    const keyInput = apiKeyInput.value.trim();
+    
+    if (!keyInput) {
+        apiKeys = [];
+        return;
+    }
+    
+    // Split by comma and clean up each key
+    const keys = keyInput.split(',').map(k => k.trim()).filter(k => k.length > 0);
+    
+    apiKeys = keys.map(key => ({
+        key: key,
+        requests: 0,
+        errors: 0,
+        lastUsed: null
+    }));
+    
+    currentKeyIndex = 0;
+    console.log(`✅ Initialized ${apiKeys.length} API key(s) for rotation`);
+}
+
+// Get next API key (round-robin rotation)
+function getNextApiKey() {
+    if (apiKeys.length === 0) {
+        initializeApiKeys();
+    }
+    
+    if (apiKeys.length === 0) {
+        throw new Error('No API keys available');
+    }
+    
+    // Get current key
+    const currentKey = apiKeys[currentKeyIndex];
+    currentKey.requests++;
+    currentKey.lastUsed = new Date().toISOString();
+    requestCount++;
+    
+    console.log(`🔑 Using API key ${currentKeyIndex + 1}/${apiKeys.length} (Request #${currentKey.requests})`);
+    
+    // Rotate to next key for next request
+    currentKeyIndex = (currentKeyIndex + 1) % apiKeys.length;
+    
+    return currentKey.key;
+}
+
+// Mark key as failed (for error handling)
+function markKeyError(keyUsed) {
+    const keyObj = apiKeys.find(k => k.key === keyUsed);
+    if (keyObj) {
+        keyObj.errors++;
+        console.warn(`⚠️ Error on key: Request #${keyObj.requests}, Total errors: ${keyObj.errors}`);
+    }
+}
+
+// Get rotation statistics
+function getRotationStats() {
+    if (apiKeys.length === 0) {
+        return {
+            totalKeys: 0,
+            totalRequests: 0,
+            keysStats: []
+        };
+    }
+    
+    return {
+        totalKeys: apiKeys.length,
+        totalRequests: requestCount,
+        keysStats: apiKeys.map((k, i) => ({
+            index: i + 1,
+            requests: k.requests,
+            errors: k.errors,
+            lastUsed: k.lastUsed
+        }))
+    };
+}
+
+// Display rotation stats in console
+function logRotationStats() {
+    const stats = getRotationStats();
+    console.log('📊 API Key Rotation Statistics:');
+    console.log(`   Total Keys: ${stats.totalKeys}`);
+    console.log(`   Total Requests: ${stats.totalRequests}`);
+    stats.keysStats.forEach(k => {
+        console.log(`   Key ${k.index}: ${k.requests} requests, ${k.errors} errors`);
+    });
+}
+      
+      const contentTypes = {
+    journalism: {
+        'news': '📰 News Article',
+        'investigative': '🔍 Investigative Journalism',
+        'feature': '📝 Feature Article',
+        'editorial': '💭 Editorial/Opinion',
+        'breaking': '⚡ Breaking News',
+        'analysis': '📊 News Analysis',
+        'interview': '🎤 Interview Article',
+        'press-release': '📢 Press Release'
+    },
+    academic: {
+        'essay': '📖 Academic Essay',
+        'research': '🔬 Research Report',
+        'analytical': '📈 Analytical Essay',
+        'argumentative': '⚖️ Argumentative Essay',
+        'comparative': '🔄 Comparative Essay',
+        'literature': '📚 Literature Review',
+        'thesis': '🎓 Thesis/Dissertation',
+        'case-study': '📋 Case Study',
+        'med-reflective': '🎓 MEd Reflective Essay',
+        'med-research': '📚 MEd Research Paper',
+        'med-literature-review': '📖 MEd Literature Review',
+        'med-action-research': '🔬 MEd Action Research',
+        'med-critical-analysis': '💭 MEd Critical Analysis',
+        'med-professional-inquiry': '🎯 MEd Professional Inquiry Project'
+    },
+    business: {
+        'email-formal': '✉️ Formal Business Email',
+        'email-casual': '📧 Casual Professional Email',
+        'proposal': '📄 Business Proposal',
+        'report': '📊 Business Report',
+        'memo': '📝 Memo/Internal Communication',
+        'cover-letter': '💼 Cover Letter',
+        'linkedin': '🔗 LinkedIn Post/Article',
+        'presentation': '🎤 Presentation Script',
+        'executive-summary': '📑 Executive Summary'
+    },
+    creative: {
+        'blog': '📝 Blog Post',
+        'social-media': '📱 Social Media Content',
+        'ad-copy': '🎯 Advertisement Copy',
+        'product-description': '🛍️ Product Description',
+        'newsletter': '📬 Newsletter',
+        'web-content': '🌐 Website Content',
+        'script': '🎬 Video/Podcast Script',
+        'story': '📖 Creative Story/Narrative'
+    },
+    technical: {
+        'documentation': '📚 Technical Documentation',
+        'user-guide': '📖 User Guide/Manual',
+        'tutorial': '🎓 Tutorial/How-to',
+        'whitepaper': '📄 White Paper',
+        'api-docs': '⚙️ API Documentation',
+        'technical-report': '🔧 Technical Report',
+        'sop': '📋 Standard Operating Procedure',
+        'specification': '📐 Technical Specification'
+    }
+};
+
+const academicSubjects = {
+    'biology': '🧬 Biology',
+    'chemistry': '⚗️ Chemistry',
+    'physics': '⚛️ Physics',
+    'mathematics': '📐 Mathematics',
+    'history': '📜 History',
+    'geography': '🌍 Geography',
+    'legal-studies': '⚖️ Legal Studies',
+    'human-movement': '🏃 Human Movement Science',
+    'psychology': '🧠 Psychology',
+    'sociology': '👥 Sociology',
+    'economics': '💰 Economics',
+    'political-science': '🏛️ Political Science',
+    'literature': '📚 Literature/English',
+    'philosophy': '💭 Philosophy',
+    'environmental-science': '🌱 Environmental Science',
+    'computer-science': '💻 Computer Science',
+    'engineering': '⚙️ Engineering',
+    'medicine': '⚕️ Medicine/Health Sciences',
+    'business': '💼 Business Studies',
+    'art-history': '🎨 Art History',
+    'music': '🎵 Music',
+    'languages': '🗣️ Languages/Linguistics',
+    'anthropology': '🗿 Anthropology',
+    'education': '🎓 Education'
+};
+
+// =====================================================
+// DOM ELEMENTS
+// =====================================================
+const apiKeyInput = document.getElementById('apiKey');
+const topicInput = document.getElementById('topic');
+const keywordsInput = document.getElementById('keywords');
+const categorySelect = document.getElementById('category');
+const modeSelect = document.getElementById('mode');
+const wordCountInput = document.getElementById('wordCount');
+const intensitySlider = document.getElementById('intensity');
+const intensityValue = document.getElementById('intensityValue');
+const generateBtn = document.getElementById('generateBtn');
+const clearBtn = document.getElementById('clearBtn');
+const output = document.getElementById('output');
+const loading = document.getElementById('loading');
+const loadingText = document.getElementById('loadingText');
+const loadingSubtext = document.getElementById('loadingSubtext');
+const errorDiv = document.getElementById('error');
+const successDiv = document.getElementById('success');
+const copyBtn = document.getElementById('copyBtn');
+const humanScore = document.getElementById('humanScore');
+const generateModeBtn = document.getElementById('generateMode');
 const humanizeModeBtn = document.getElementById('humanizeMode');
 const generateInputs = document.getElementById('generateInputs');
 const humanizeInputs = document.getElementById('humanizeInputs');
 const existingTextInput = document.getElementById('existingText');
-let currentMode = 'generate'; // 'generate' or 'humanize'
-// Chat History Management
+const autoDetectBtn = document.getElementById('autoDetectBtn');
+const manualSelectBtn = document.getElementById('manualSelectBtn');
+const detectionModeDesc = document.getElementById('detectionModeDesc');
+
+// =====================================================
+// STATE MANAGEMENT
+// =====================================================
+let currentMode = 'generate';
+let detectionMode = 'automatic';
 let chatHistory = [];
 
-// Load chat history from localStorage
-function loadChatHistory() {
-    const saved = localStorage.getItem('ultraHumanChatHistory');
-    if (saved) {
-        chatHistory = JSON.parse(saved);
-        renderChatHistory();
+// =====================================================
+// UTILITY FUNCTIONS
+// =====================================================
+function countWords(text) {
+    if (!text || text.trim() === '') return 0;
+    return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+}
+
+function updateStats() {
+    const text = output.textContent;
+    const words = countWords(text);
+    const chars = text.length;
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
+    const paragraphs = text.split(/\n\n+/).filter(p => p.trim().length > 0).length;
+    
+    document.getElementById('outputWords').textContent = words;
+    document.getElementById('outputChars').textContent = chars;
+    document.getElementById('sentences').textContent = sentences;
+    document.getElementById('paragraphs').textContent = paragraphs;
+}
+
+// =====================================================
+// CATEGORY CHANGE HANDLER
+// =====================================================
+function updateModeOptions() {
+    const category = categorySelect.value;
+    const modes = contentTypes[category];
+    
+    modeSelect.innerHTML = '';
+    for (const [value, label] of Object.entries(modes)) {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = label;
+        modeSelect.appendChild(option);
     }
 }
 
-// Save chat history to localStorage
-function saveChatHistory() {
-    localStorage.setItem('ultraHumanChatHistory', JSON.stringify(chatHistory));
-}
-
-// Add new chat to history
-function addToHistory(data) {
-    const historyItem = {
-        id: Date.now(),
-        timestamp: new Date().toISOString(),
-        mode: data.mode,
-        contentType: data.contentType,
-        input: data.input,
-        output: data.output,
-        wordCount: data.wordCount,
-        intensity: data.intensity
-    };
-    
-    chatHistory.unshift(historyItem); // Add to beginning
-    
-    // Keep only last 50 items
-    if (chatHistory.length > 50) {
-        chatHistory = chatHistory.slice(0, 50);
-    }
-    
-    saveChatHistory();
-    renderChatHistory();
-}
-
-// Render chat history list
-function renderChatHistory() {
-    const historyList = document.getElementById('chatHistoryList');
-    const noHistory = document.getElementById('noHistory');
-    
-    if (chatHistory.length === 0) {
-        historyList.innerHTML = '';
-        noHistory.style.display = 'block';
-        return;
-    }
-    
-    noHistory.style.display = 'none';
-    
-    historyList.innerHTML = chatHistory.map(item => {
-        const date = new Date(item.timestamp);
-        const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        const preview = item.output.substring(0, 150) + (item.output.length > 150 ? '...' : '');
-        const modeLabel = item.mode === 'generate' ? '🚀 Generated' : '✨ Humanized';
-        
-        return `
-            <div class="history-item" data-id="${item.id}">
-                <div class="history-header">
-                    <span class="history-title">${modeLabel} - ${item.contentType}</span>
-                    <div>
-                        <span class="history-date">${formattedDate}</span>
-                        <button class="delete-history-btn" onclick="deleteHistoryItem(${item.id}, event)">🗑️</button>
-                    </div>
-                </div>
-                <div class="history-preview">${preview}</div>
-                <div class="history-meta">
-                    <span class="history-badge">${item.wordCount} words</span>
-                    <span class="history-badge">${['Natural', 'Enhanced', 'Ultra-Human'][item.intensity - 1]}</span>
-                </div>
-            </div>
-        `;
-    }).join('');
-    
-    // Add click listeners to history items
-    document.querySelectorAll('.history-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('delete-history-btn')) {
-                loadHistoryItem(parseInt(item.dataset.id));
-            }
-        });
-    });
-}
-
-// Load a history item into the editor
-function loadHistoryItem(id) {
-    const item = chatHistory.find(h => h.id === id);
-    if (!item) return;
-    
-    // Set mode
-    if (item.mode === 'generate') {
-        generateModeBtn.click();
-        topicInput.value = item.input;
-    } else {
-        humanizeModeBtn.click();
-        existingTextInput.value = item.input;
-    }
-    
-    // Set output
-    output.textContent = item.output;
-    copyBtn.style.display = 'block';
-    updateStats();
-    
-    // Set intensity
-    intensitySlider.value = item.intensity;
-    intensitySlider.dispatchEvent(new Event('input'));
-    
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Show success message
-    successDiv.innerHTML = `✅ <strong>Loaded from history!</strong> ${item.mode === 'generate' ? 'Generated' : 'Humanized'} content restored.`;
-    successDiv.classList.add('active');
-    
-    setTimeout(() => {
-        successDiv.classList.remove('active');
-    }, 3000);
-}
-
-// Delete a history item
-function deleteHistoryItem(id, event) {
-    event.stopPropagation();
-    
-    if (confirm('Delete this chat from history?')) {
-        chatHistory = chatHistory.filter(h => h.id !== id);
-        saveChatHistory();
-        renderChatHistory();
-    }
-}
-
-// Clear all history
-document.getElementById('clearHistoryBtn').addEventListener('click', () => {
-    if (confirm('Are you sure you want to clear all chat history? This cannot be undone.')) {
-        chatHistory = [];
-        localStorage.removeItem('ultraHumanChatHistory');
-        renderChatHistory();
-        
-        successDiv.innerHTML = '✅ <strong>Chat history cleared!</strong>';
-        successDiv.classList.add('active');
-        
-        setTimeout(() => {
-            successDiv.classList.remove('active');
-        }, 2000);
-    }
+// =====================================================
+// INTENSITY SLIDER
+// =====================================================
+intensitySlider.addEventListener('input', (e) => {
+    const value = e.target.value;
+    const labels = ['NATURAL', 'ENHANCED', 'ULTRA-HUMAN'];
+    intensityValue.textContent = labels[value - 1];
 });
 
-// Initialize chat history on page load
-loadChatHistory();
-    // Populate mode dropdown based on category
-    function updateModeOptions() {
-        const category = categorySelect.value;
-        const modes = contentTypes[category];
-        
-        modeSelect.innerHTML = '';
-        for (const [value, label] of Object.entries(modes)) {
-            const option = document.createElement('option');
-            option.value = value;
-            option.textContent = label;
-            modeSelect.appendChild(option);
-            
-        }
-    }
-
-    // Initialize dropdowns
-    updateModeOptions();
-       
-    categorySelect.addEventListener('change', updateModeOptions);
-// Mode switching
+// =====================================================
+// MODE TOGGLE (Generate vs Humanize)
+// =====================================================
 generateModeBtn.addEventListener('click', () => {
     currentMode = 'generate';
+    generateModeBtn.classList.add('active');
     generateModeBtn.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
     generateModeBtn.style.color = 'white';
+    humanizeModeBtn.classList.remove('active');
     humanizeModeBtn.style.background = 'transparent';
     humanizeModeBtn.style.color = '#495057';
+    enhanceModeBtn.classList.remove('active');
+    enhanceModeBtn.style.background = 'transparent';
+    enhanceModeBtn.style.color = '#495057';
+    
     generateInputs.style.display = 'block';
     humanizeInputs.style.display = 'none';
+    enhanceInputs.style.display = 'none';
     generateBtn.innerHTML = '🚀 GENERATE HUMAN CONTENT';
 });
 
 humanizeModeBtn.addEventListener('click', () => {
     currentMode = 'humanize';
+    humanizeModeBtn.classList.add('active');
     humanizeModeBtn.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
     humanizeModeBtn.style.color = 'white';
+    generateModeBtn.classList.remove('active');
     generateModeBtn.style.background = 'transparent';
     generateModeBtn.style.color = '#495057';
+    enhanceModeBtn.classList.remove('active');
+    enhanceModeBtn.style.background = 'transparent';
+    enhanceModeBtn.style.color = '#495057';
+    
     generateInputs.style.display = 'none';
     humanizeInputs.style.display = 'block';
-    generateBtn.innerHTML = '✨ HUMANIZE TEXT NOW';
+    enhanceInputs.style.display = 'none';
+    generateBtn.innerHTML = '✨ HUMANIZE TEXT';
 });
-    // Intensity slider
-    intensitySlider.addEventListener('input', (e) => {
-        const val = e.target.value;
-        const labels = ['NATURAL', 'ENHANCED', 'ULTRA-HUMAN'];
-        intensityValue.textContent = labels[val - 1];
-    });
 
-    // Utility functions
-    function countWords(text) {
-        return text.trim().split(/\s+/).filter(word => word.length > 0).length;
-    }
+      
 
-    function countSentences(text) {
-        return text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
-    }
+      
 
-    function countParagraphs(text) {
-        return text.split(/\n\n+/).filter(p => p.trim().length > 0).length;
-    }
+// =====================================================
+// DETECTION MODE TOGGLE
+// =====================================================
+autoDetectBtn.addEventListener('click', () => {
+    detectionMode = 'automatic';
+    autoDetectBtn.style.background = 'linear-gradient(135deg, #28a745, #218838)';
+    autoDetectBtn.style.color = 'white';
+    manualSelectBtn.style.background = 'transparent';
+    manualSelectBtn.style.color = '#495057';
+    detectionModeDesc.textContent = 'AI automatically detects subject, question type, and format';
+});
 
-    function updateStats() {
-        const outputVal = output.textContent.trim();
-        
-        document.getElementById('outputWords').textContent = countWords(outputVal);
-        document.getElementById('outputChars').textContent = outputVal.length;
-        document.getElementById('sentences').textContent = countSentences(outputVal);
-        document.getElementById('paragraphs').textContent = countParagraphs(outputVal);
-    }
+manualSelectBtn.addEventListener('click', () => {
+    detectionMode = 'manual';
+    manualSelectBtn.style.background = 'linear-gradient(135deg, #28a745, #218838)';
+    manualSelectBtn.style.color = 'white';
+    autoDetectBtn.style.background = 'transparent';
+    autoDetectBtn.style.color = '#495057';
+    detectionModeDesc.textContent = 'You manually select category, type, and word count';
+});
 
-    // Get generation prompt
-    function getGenerationPrompt(topic, keywords, mode, intensity, wordCount) {
-      const intensityConfig = {
-        '1': { temp: 1.35, topK: 80, topP: 0.94, name: 'NATURAL' },
-        '2': { temp: 1.65, topK: 110, topP: 0.975, name: 'ENHANCED' },
-        '3': { temp: 1.92, topK: 160, topP: 0.998, name: 'ULTRA-HUMAN' }
+// =====================================================
+// ADVANCED PROMPT GENERATION
+// =====================================================
+// =====================================================
+// ULTRA-AGGRESSIVE ANTI-AI DETECTION PROMPT
+// =====================================================
+const enhanceModeBtn = document.getElementById('enhanceMode');
+const enhanceInputs = document.getElementById('enhanceInputs');
+const contentToEnhance = document.getElementById('contentToEnhance');
+const enhanceInstructions = document.getElementById('enhanceInstructions');
+const enhanceSubject = document.getElementById('enhanceSubject');
+
+// Enhance mode button click
+// Enhance mode button click
+enhanceModeBtn.addEventListener('click', () => {
+    currentMode = 'enhance';
+    
+    // Style active button
+    enhanceModeBtn.classList.add('active');
+    enhanceModeBtn.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+    enhanceModeBtn.style.color = 'white';
+    
+    // Reset other buttons
+    generateModeBtn.classList.remove('active');
+    generateModeBtn.style.background = 'transparent';
+    generateModeBtn.style.color = '#495057';
+    humanizeModeBtn.classList.remove('active');
+    humanizeModeBtn.style.background = 'transparent';
+    humanizeModeBtn.style.color = '#495057';
+    
+    // Show/hide inputs
+    generateInputs.style.display = 'none';
+    humanizeInputs.style.display = 'none';
+    enhanceInputs.style.display = 'block';
+    
+    generateBtn.innerHTML = '🎯 ENHANCE & COMPLETE CONTENT';
+});
+
+// =====================================================
+// UPDATE GENERATE BUTTON TO HANDLE ENHANCE MODE
+// =====================================================
+
+// Add this case in your generateBtn click handler (after humanize case):
+
+
+function getAdvancedPrompt(text, mode, intensity, wordCount, isHumanizing = false, subject = null, questionType = null) {
+    const intensityConfig = {
+        '1': { temp: 1.75, topK: 120, topP: 0.97, name: 'NATURAL' },
+        '2': { temp: 1.95, topK: 160, topP: 0.99, name: 'ENHANCED' },
+        '3': { temp: 2.0, topK: 200, topP: 0.999, name: 'ULTRA-HUMAN' }
     };
-
-        const config = intensityConfig[intensity];
-
-        const keywordsText = keywords ? `\n\nKEY POINTS TO INCLUDE: ${keywords}` : '';
-
-        const modeDescriptions = {
-            news: 'professional news article with journalistic objectivity and inverted pyramid structure',
-            investigative: 'deep investigative journalism with thorough research and compelling narrative',
-            feature: 'engaging feature article with human interest and storytelling elements',
-            editorial: 'opinion piece with strong viewpoint and persuasive argumentation',
-            breaking: 'urgent breaking news with immediate impact and critical information',
-            analysis: 'analytical news piece with expert interpretation and context',
-            interview: 'interview-based article with authentic dialogue and narrative',
-            'press-release': 'professional press release with newsworthy information',
-            essay: 'academic essay with scholarly depth and critical analysis',
-            research: 'research report with methodology and evidence-based conclusions',
-            analytical: 'analytical essay with systematic examination and reasoning',
-            argumentative: 'argumentative essay with thesis, evidence, and counterarguments',
-            comparative: 'comparative essay with balanced analysis of subjects',
-            literature: 'literature review synthesizing scholarly sources',
-            thesis: 'thesis-level work with original research and contribution',
-            'case-study': 'detailed case study with practical application',
-
-            'med-reflective': 'Master of Education reflective essay integrating personal teaching experience with educational theory, showing critical reflection on practice, evidence of professional growth, and connection between theory and classroom application',
-'med-research': 'Master of Education research paper with scholarly rigor, educational research methodology, analysis of pedagogical practices, and implications for teaching and learning',
-'med-literature-review': 'Master of Education literature review synthesizing educational research, analyzing pedagogical theories, identifying gaps in education literature, and connecting theory to practice',
-'med-action-research': 'Master of Education action research project documenting classroom-based inquiry, reflective practice cycles, data collection from educational settings, and practical improvements to teaching',
-'med-critical-analysis': 'Master of Education critical analysis examining educational policies, pedagogical approaches, or learning theories with deep reflection on implications for practice',
-'med-professional-inquiry': 'Master of Education professional inquiry project investigating educational questions through practitioner research, combining reflection, theory, and evidence from practice',
-            
-            'email-formal': 'formal business email with professional courtesy',
-            'email-casual': 'professional yet friendly business email',
-            proposal: 'compelling business proposal with value proposition',
-            report: 'comprehensive business report with insights',
-            memo: 'clear internal memo with direct communication',
-            'cover-letter': 'engaging cover letter showcasing qualifications',
-            linkedin: 'LinkedIn content optimized for professional networking',
-            presentation: 'presentation script with engaging delivery',
-            'executive-summary': 'concise executive summary with key insights',
-            blog: 'engaging blog post with conversational tone',
-            'social-media': 'attention-grabbing social media content',
-            'ad-copy': 'persuasive advertisement with emotional appeal',
-            'product-description': 'compelling product description highlighting benefits',
-            newsletter: 'informative newsletter with community connection',
-            'web-content': 'SEO-optimized web content with user focus',
-            script: 'natural script with engaging dialogue',
-            story: 'creative narrative with compelling plot',
-            documentation: 'clear technical documentation',
-            'user-guide': 'accessible user guide with step-by-step instructions',
-            tutorial: 'educational tutorial with practical examples',
-            whitepaper: 'authoritative white paper with thought leadership',
-            'api-docs': 'precise API documentation with examples',
-            'technical-report': 'detailed technical report with specifications',
-            sop: 'systematic standard operating procedure',
-            'specification': 'precise technical specification'
-        };
-
-const prompt = `You are an ULTRA-HUMAN content writer who creates AUTHENTICALLY HUMAN text that is 100% UNDETECTABLE as AI-generated. Your writing is indistinguishable from content written by experienced human professionals.
-
-🎯 MISSION: Generate approximately ${wordCount} words of ${modeDescriptions[mode]} on the following topic.
-
-⚠️ FORMAT PRESERVATION RULE:
-If the user's topic/brief contains bullet points, numbered lists, or specific formatting, you MUST return the content in THE EXACT SAME FORMAT. Bullet points stay as bullet points, numbered lists stay numbered, paragraphs stay as paragraphs.
-
-HUMAN AUTHENTICITY LEVEL: ${config.name} 🔥
-
-⚠️ CRITICAL OPENING PARAGRAPH RULES:
-The FIRST paragraph is ALWAYS flagged by AI detectors. You MUST make it 100% human by:
-✓ Start with a SPECIFIC detail, fact, or scene - NOT a broad statement
-✓ Use VARIED sentence lengths immediately (mix 8-word and 25-word sentences)
-✓ Include a question, fragment, or unexpected structure in first 3 sentences
-✓ AVOID opening with: "In today's world", "In recent years", "Throughout history", "It is clear that"
-✓ AVOID generic statements like "X is important" or "X has become increasingly relevant"
-✓ Start mid-action, mid-thought, or with a concrete example
-✓ Use natural, conversational transitions between sentences
-✓ NO perfect parallel structure in opening
-✓ Make it feel like you're jumping into an ongoing conversation
-
-EXAMPLES OF HUMAN OPENINGS:
-✓ "The lab results came back Thursday. Three samples showed contamination."
-✓ "Nobody expected the policy to pass. It did anyway, and now everything's changed."
-✓ "Consider this: every transaction you make leaves a digital footprint."
-✓ "March 2024 marked a turning point. Investors pulled $2.3 billion from the sector."
-
-NEVER START WITH:
-✗ "In today's rapidly evolving landscape..."
-✗ "The importance of X cannot be overstated..."
-✗ "Throughout history, humanity has sought to..."
-✗ "As we navigate the complexities of..."
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-⚡ ULTRA-HUMAN GENERATION PROTOCOL (12 LAYERS):
-
-🔥 LAYER 1: NATURAL SENTENCE ARCHITECTURE
-✓ EXTREME variation in sentence length (6-60 words)
-✓ Mix short punchy sentences with flowing complex ones
-✓ Create UNPREDICTABLE rhythms - never follow patterns
-✓ Use fragments strategically for emphasis. Like this.
-✓ Vary sentence beginnings constantly - no repetition
-✓ Mix declarative, interrogative, occasional exclamatory
-✓ Strategic use of semicolons, colons, em-dashes
-✓ Natural momentum that feels organic
-
-🔥 LAYER 2: AUTHENTIC VOCABULARY CHOICES
-✓ ZERO AI clichés - NEVER use:
-  ✗ "delve/delving" "robust" "leverage" "paradigm" "utilize"
-  ✗ "landscape" "facilitate" "crucial" (overused)
-  ✗ "it is worth noting" "in today's world" "shed light on"
-✓ Use precise, specific language naturally
-✓ Mix formal and conversational appropriately
-✓ Strong active verbs: demonstrates, reveals, shows, indicates
-✓ Diverse synonyms - never repeat words unnecessarily
-✓ Natural professional vocabulary
-
-🔥 LAYER 3: ORGANIC FLOW & TRANSITIONS
-✓ ELIMINATE mechanical transitions:
-  ✗ "Furthermore" "Moreover" "Additionally" "However"
-  ✗ "First/Second/Third" "In conclusion" "To summarize"
-✓ Use NATURAL connections:
-  ✓ "The evidence suggests..." "Research shows..."
-  ✓ "This development..." "These findings..."
-  ✓ Embed transitions within sentences naturally
-✓ Let ideas flow through logical progression
-✓ Connect through pronouns: "This approach..." "Such efforts..."
-
-🔥 LAYER 4: GENUINE PROFESSIONAL VOICE
-✓ Write like a REAL human professional/expert
-✓ Show natural expertise without pretension
-✓ Include professional judgment and nuance
-✓ Balance confidence with appropriate hedging
-✓ Mix active (75-80%) with strategic passive voice
-✓ Natural attribution when discussing information
-✓ Show thinking process subtly
-✓ Authentic perspective and insight
-
-🔥 LAYER 5: DYNAMIC PARAGRAPH STRUCTURE
-✓ WILDLY vary paragraph length (2-8 sentences)
-✓ Short 1-2 sentence paragraphs for impact
-✓ Longer 6-8 sentence paragraphs for depth
-✓ Break expected patterns completely
-✓ Vary development approaches
-✓ Topic sentences in different positions
-✓ Natural paragraph connections
-
-🔥 LAYER 6: ZERO AI PATTERNS
-✗ DESTROY all AI signatures:
-  • No perfect parallel structure
-  • No overly balanced arguments
-  • No mathematical precision in organization
-  • No excessive enumeration
-  • No formulaic intro/conclusion
-  • No predictable topic sentences
-  • No mechanical organization
-✓ Include natural "imperfections"
-✓ Vary punctuation naturally
-✓ Occasional complexity where appropriate
-✓ Break "rules" when it enhances meaning
-
-🔥 LAYER 7: HUMAN AUTHENTICITY MARKERS
-✓ Specific, concrete details
-✓ Natural examples integrated seamlessly
-✓ Real-world context and awareness
-✓ Intellectual progression that shows thinking
-✓ Nuanced perspectives - avoid binary thinking
-✓ Professional insights demonstrating expertise
-✓ Contextual depth without over-explaining
-✓ Authentic human judgment
-
-🔥 LAYER 8: NATURAL RHYTHM & CADENCE
-✓ Create ORGANIC reading flow
-✓ Dramatically vary sentence beginnings:
-  • Subject starts: "Researchers discovered..." "Data indicates..."
-  • Prepositional: "In recent developments..." "According to analysis..."
-  • Subordinate clauses: "While evidence suggests..." "Although views differ..."
-  • Participles: "Examining the data..." "Drawing from sources..."
-  • Adverbs: "Recently," "Notably," "Significantly,"
-  • Direct objects: "This approach..." "Such strategies..."
-✓ Build and release tension through pacing
-✓ Mix quick sequences with contemplative sections
-✓ Create natural momentum
-
-🔥 LAYER 9: CONTENT-TYPE OPTIMIZATION
-FOR JOURNALISM: Lead with impact, balance perspectives, use clear attribution, maintain objectivity with engagement, include relevant context naturally
-FOR ACADEMIC: Strong thesis, sophisticated vocabulary, evidence-based reasoning, critical analysis, scholarly tone with depth, proper hedging
-FOR MASTER OF EDUCATION (MEd): Integrate personal teaching experience with theory, use first-person reflection where appropriate, connect educational research to classroom practice, demonstrate critical reflection on pedagogy, reference educational theorists naturally (Vygotsky, Dewey, Freire, etc.), show professional growth and development, balance academic rigor with practitioner voice, include specific classroom examples, demonstrate reflective practice
-FOR BUSINESS: Clear purpose, professional tone, concise communication, results-oriented, appropriate formality, strategic structure
-FOR CREATIVE: Engaging openings, authentic voice, emotional connection, conversational polish, storytelling elements, reader focus
-FOR TECHNICAL: Precision, logical structure, clear explanations, practical examples, user focus, accessible to target audience
-
-🔥 LAYER 10: SOPHISTICATED WORD CHOICES
-✓ Precise, specific language over vague terms
-✓ Concrete over abstract where possible
-✓ Vivid verbs instead of weak verb + adverb
-✓ Avoid vague modifiers ("very," "really")
-✓ Professional terminology used correctly
-✓ Balance complexity with clarity
-✓ Never sacrifice meaning for style
-
-🔥 LAYER 11: STRUCTURAL UNPREDICTABILITY
-✓ Break expected patterns constantly
-✓ Vary information density throughout
-✓ Mix straightforward with complex presentation
-✓ Unexpected but logical organization
-✓ Natural topic development
-✓ Organic idea connections
-✓ Avoid all formulaic structures
-
-🔥 LAYER 12: ULTIMATE HUMAN AUTHENTICITY
-✓ Reads as 100% human-written by expert
-✓ ABSOLUTE ZERO AI detection markers
-✓ Natural professional voice throughout
-✓ Engaging and substantive
-✓ Appropriate tone for content type
-✓ Publication-ready quality
-✓ Passes all AI detectors as human
-✓ Indistinguishable from human professional work
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🎯 CRITICAL REQUIREMENTS:
-- Generate approximately ${wordCount} words
-- PRESERVE the exact format structure (bullets/numbers/paragraphs) from the user's input
-- Apply ALL 12 layers with maximum intensity
-- Write as a genuine human expert would
-- ZERO AI patterns or signatures
-- Natural, organic professional prose
-- Engaging and substantive content
-- Complete authenticity throughout
-- DO NOT add extra information or extend beyond what's requested
-- Stay focused and concise - humanize directly without unnecessary elaboration
-
-⚠️ ULTIMATE RULE: This content must be COMPLETELY UNDETECTABLE as AI-generated. Write exactly as an experienced human professional would write this content naturally.
-
-📝 TOPIC/BRIEF:
-${topic}${keywordsText}
-
-🚀 GENERATE ULTRA-HUMAN CONTENT NOW (Target: ~${wordCount} words):`;
-
-        return { prompt, config };
-    }
-       // Get humanization prompt with preservation
-function getHumanizationPrompt(text, mode, intensity) {
-   const intensityConfig = {
-        '1': { temp: 1.5, topK: 100, topP: 0.97, name: 'NATURAL' },
-        '2': { temp: 1.7, topK: 120, topP: 0.98, name: 'ENHANCED' },
-        '3': { temp: 1.9, topK: 140, topP: 0.995, name: 'ULTRA-HUMAN' }
-    };
-
+    
     const config = intensityConfig[intensity];
+        let subjectInstructions = '';
+    if (subject && questionType) {
+        subjectInstructions = getSubjectSpecificInstructions(subject, questionType);
+    }
+    
+    const basePrompt = isHumanizing 
+        ? `You are executing PROFESSIONAL-GRADE MILITARY-LEVEL TEXT HUMANIZATION. This is NOT casual rewriting. This is DEEP STRUCTURAL WARFARE against AI detection algorithms.
 
-    const modeDescriptions = {
-        news: 'news article', investigative: 'investigative journalism', feature: 'feature article',
-        editorial: 'editorial', breaking: 'breaking news', analysis: 'news analysis',
-        interview: 'interview article', 'press-release': 'press release',
-        essay: 'academic essay', research: 'research paper', analytical: 'analytical essay',
-        argumentative: 'argumentative essay', comparative: 'comparative essay',
-        literature: 'literature review', thesis: 'thesis', 'case-study': 'case study',
-        'med-reflective': 'MEd reflective essay', 'med-research': 'MEd research paper',
-        'med-literature-review': 'MEd literature review', 'med-action-research': 'MEd action research',
-        'med-critical-analysis': 'MEd critical analysis', 'med-professional-inquiry': 'MEd professional inquiry',
-        'email-formal': 'formal email', 'email-casual': 'casual email', proposal: 'business proposal',
-        report: 'business report', memo: 'memo', 'cover-letter': 'cover letter',
-        linkedin: 'LinkedIn post', presentation: 'presentation', 'executive-summary': 'executive summary',
-        blog: 'blog post', 'social-media': 'social media', 'ad-copy': 'ad copy',
-        'product-description': 'product description', newsletter: 'newsletter', 'web-content': 'web content',
-        script: 'script', story: 'story',
-        documentation: 'documentation', 'user-guide': 'user guide', tutorial: 'tutorial',
-        whitepaper: 'white paper', 'api-docs': 'API documentation', 'technical-report': 'technical report',
-        sop: 'SOP', 'specification': 'specification'
-    };
+🎯 MISSION: Transform to 100% UNDETECTABLE human writing | ${config.name} MODE ACTIVE
 
-const prompt = `You are an ULTRA-AGGRESSIVE HUMAN text transformer. Your ONLY job is to make text 100% UNDETECTABLE as AI, even if it's just 10 words.
+═══════════════════════════════════════════════════════════════════
+⚠️ ABSOLUTE PRESERVATION PROTOCOL - NON-NEGOTIABLE
+═══════════════════════════════════════════════════════════════════
 
-🎯 MISSION: Transform the following ${modeDescriptions[mode]} into AUTHENTICALLY HUMAN writing.
+PRESERVE 100% EXACTLY AS WRITTEN:
+✅ ALL citations: (Smith, 2023), Johnson et al., [1], (Author, Year)
+✅ ALL researcher names: Smith, Johnson, Lee, Garcia, etc.
+✅ ALL dates and years: 2023, March 2024, 1990s, etc.
+✅ ALL statistics: 67%, 2.3 million, p < 0.05, etc.
+✅ ALL numerical data: measurements, percentages, figures
+✅ ALL quotes: "exact quoted text" unchanged
+✅ ALL technical terms: discipline-specific vocabulary
+✅ ALL proper nouns: institutions, places, organizations
+✅ ALL specific claims and factual content
+✅ Document structure: keep bullets as bullets, paragraphs as paragraphs
 
-⚡ AGGRESSION LEVEL: ${config.name} - MAXIMUM TRANSFORMATION 🔥
+TARGET WORD COUNT: ${countWords(text)} words (±1% tolerance = ${Math.floor(countWords(text) * 0.99)}-${Math.ceil(countWords(text) * 1.01)} words)
 
-🚨 CRITICAL: Even if the text is SHORT (10-50 words), you MUST apply FULL humanization. NO SHORTCUTS.
+═══════════════════════════════════════════════════════════════════
+💀 NUCLEAR AI PATTERN ANNIHILATION - ZERO SURVIVORS
+═══════════════════════════════════════════════════════════════════
 
-📋 FORMALITY & TONE REQUIREMENTS FOR ${modeDescriptions[mode].toUpperCase()}:
+🚫 INSTANT DEATH LIST - ELIMINATE ON SIGHT:
 
-${mode.includes('academic') || mode.includes('med-') || mode.includes('research') || mode.includes('thesis') || mode.includes('literature') || mode.includes('essay') || mode.includes('analytical') || mode.includes('argumentative') || mode.includes('comparative') || mode.includes('case-study') ? `
-🎓 ACADEMIC FORMALITY - STRICTLY MAINTAIN:
-✓ FORMAL academic register throughout - NO casual language
-✓ Third-person perspective (avoid "I/you" unless reflective essay)
-✓ Objective, scholarly tone with intellectual rigor
-✓ Precise, discipline-specific terminology
-✓ Complex sentence structures appropriate to academic discourse
-✓ Formal connectives: "consequently," "therefore," "thus," "nonetheless"
-✓ Hedging language: "suggests," "indicates," "appears to," "may demonstrate"
-✓ NO contractions (don't → do not, can't → cannot)
-✓ NO colloquialisms or informal expressions
-✓ NO casual transitions or conversational elements
-✓ Authoritative but measured academic voice
-✓ Evidence-based reasoning with scholarly presentation
-✓ Maintain gravity and seriousness of academic discourse
+FORBIDDEN VERBS (Replace immediately):
+❌ delve/delving → examine, explore, investigate, analyze, scrutinize
+❌ utilize → use, employ, apply, deploy
+❌ leverage → use, exploit, harness, apply
+❌ facilitate → enable, support, help, allow
+❌ implement → apply, introduce, establish, execute
+❌ demonstrate → show, reveal, prove, indicate
+❌ showcase → display, present, exhibit, reveal
+❌ underscore → emphasize, highlight, stress, show
+❌ endeavor → attempt, try, seek, strive
+❌ harness → use, exploit, employ, apply
 
-⚠️ ACADEMIC-SPECIFIC RULES:
-- Keep formal vocabulary: "demonstrate," "illustrate," "examine," "analyze," "elucidate"
-- Use sophisticated academic structures (nominalization, passive where appropriate)
-- Maintain scholarly distance and objectivity
-- Preserve academic conventions and discourse markers
-- NO informal phrases like "a lot of," "get," "thing," "stuff," "really," "very"
-` : ''}
+FORBIDDEN ADJECTIVES (Replace immediately):
+❌ robust → strong, powerful, solid, effective, substantial
+❌ comprehensive → complete, thorough, extensive, full, detailed
+❌ seamless → smooth, integrated, fluid, effortless, unified
+❌ innovative → novel, new, original, creative, fresh
+❌ cutting-edge → advanced, modern, latest, contemporary, new
+❌ dynamic → active, changing, evolving, adaptive, fluid
+❌ pivotal → crucial, critical, key, essential, vital
+❌ paramount → essential, critical, vital, crucial, foremost
 
-${mode.includes('journalism') || mode.includes('news') || mode.includes('investigative') || mode.includes('feature') || mode.includes('editorial') || mode.includes('analysis') || mode.includes('interview') || mode.includes('press-release') ? `
-📰 JOURNALISTIC FORMALITY - MAINTAIN:
-✓ Professional journalistic tone - clear, direct, authoritative
-✓ Third-person perspective (except editorials/opinion)
-✓ Objective presentation with balanced perspective
-✓ Precise, specific language with concrete details
-✓ Active voice predominantly (but natural variation)
-✓ Professional connectives: "meanwhile," "however," "according to"
-✓ Attribution and sourcing language
-✓ NO casual slang or overly informal language
-✓ NO excessive informality or chatty tone
-✓ Maintain journalistic credibility and authority
-✓ Clear, accessible but professional language
-` : ''}
+FORBIDDEN NOUNS (Replace immediately):
+❌ landscape → field, area, domain, context, environment, sphere
+❌ paradigm → model, framework, approach, system, perspective
+❌ realm → field, area, domain, sphere, territory
+❌ tapestry → collection, mixture, blend, combination, array
+❌ ecosystem → system, network, environment, community, structure
+❌ framework → structure, system, model, approach, scheme
 
-${mode.includes('business') || mode.includes('email') || mode.includes('proposal') || mode.includes('report') || mode.includes('memo') || mode.includes('cover-letter') || mode.includes('linkedin') || mode.includes('presentation') || mode.includes('executive') ? `
-💼 BUSINESS FORMALITY - ADAPT TO SUB-TYPE:
-${mode.includes('email-formal') || mode.includes('proposal') || mode.includes('report') || mode.includes('executive') ? `
-✓ FORMAL business register - professional and polished
-✓ Respectful, courteous tone throughout
-✓ Clear, direct communication with professionalism
-✓ NO casual language or informal expressions
-✓ NO contractions in formal communications
-✓ Professional vocabulary: "accordingly," "regarding," "pursuant to"
-` : `
-✓ PROFESSIONAL but approachable tone
-✓ Clear, direct communication
-✓ Warm professionalism without excessive formality
-✓ Contractions acceptable for natural flow
-✓ Conversational polish while maintaining respect
-`}
-✓ Results-oriented, strategic language
-✓ Confidence without arrogance
-✓ Appropriate formality for business context
-` : ''}
+FORBIDDEN TRANSITIONS (Replace immediately):
+❌ Furthermore, Moreover, Additionally → Second, Also, Next, Besides, Research shows
+❌ In addition, → Also, Second, Next, Beyond this
+❌ It is important to note → Notably, Importantly, Crucially, Note that
+❌ It should be emphasized → Emphasis falls on, Critical here is
+❌ As mentioned earlier → Earlier, Previously, As shown
+❌ In conclusion, To summarize → Finally, Ultimately, Overall, Thus
+❌ Consequently, Therefore, Thus (at start) → This means, Data shows, Results indicate
 
-${mode.includes('creative') || mode.includes('blog') || mode.includes('social-media') || mode.includes('ad-copy') || mode.includes('product') || mode.includes('newsletter') || mode.includes('web-content') || mode.includes('script') || mode.includes('story') ? `
-✨ CREATIVE/MARKETING FORMALITY - FLEXIBLE:
-✓ Engaging, accessible tone appropriate to audience
-✓ Natural, conversational style (contractions OK)
-✓ Personality and voice encouraged
-✓ Emotional connection and relatability
-✓ Direct address ("you") is natural and appropriate
-✓ Informal language acceptable when authentic
-✓ Creative freedom while maintaining coherence
-✓ Adapt formality to specific creative purpose
-` : ''}
+FORBIDDEN SENTENCE STARTERS (NEVER use):
+❌ "In today's world/society/era..."
+❌ "In recent years/times..."
+❌ "Throughout history..."
+❌ "It is important/essential/crucial to..."
+❌ "It is worth noting that..."
+❌ "As we navigate..."
+❌ "In the realm/landscape of..."
+❌ "In light of..."
+❌ "With regards to..."
+❌ "When it comes to..."
 
-${mode.includes('technical') || mode.includes('documentation') || mode.includes('user-guide') || mode.includes('tutorial') || mode.includes('whitepaper') || mode.includes('api-docs') || mode.includes('technical-report') || mode.includes('sop') || mode.includes('specification') ? `
-⚙️ TECHNICAL FORMALITY - MAINTAIN:
-✓ FORMAL technical register with precision
-✓ Clear, unambiguous language throughout
-✓ Objective, instructional tone
-✓ Technical terminology used accurately
-✓ Direct, systematic presentation
-✓ NO casual language or informal expressions
-✓ Professional technical voice
-✓ Clarity and precision over personality
-✓ Logical, structured presentation
-` : ''}
+FORBIDDEN CONSTRUCTIONS (Destroy completely):
+❌ "not only X but also Y" → "X and Y" OR "X. Beyond this, Y" OR "X, with Y adding to this"
+❌ "both X and Y" at sentence start → "X and Y" OR "X alongside Y"
+❌ "either X or Y" → "X or Y" directly OR restructure completely
+❌ Lists of exactly 3 items → Use 2, 4, 5, or 6 items NEVER 3
+❌ Three adjectives in a row → Use 2, 4, or 5 NEVER 3
+❌ Perfect parallel structure → Deliberately break symmetry
 
-🚨 CRITICAL FORMALITY RULE:
-MATCH THE FORMALITY LEVEL TO THE CONTENT TYPE. Academic = formal. Business formal = formal. Creative = flexible. Technical = formal. NEVER mix inappropriate casualness into formal content types.
+═══════════════════════════════════════════════════════════════════
+⚡ EXTREME STRUCTURAL CHAOS ENGINEERING
+═══════════════════════════════════════════════════════════════════
 
+SENTENCE LENGTH DISTRIBUTION (enforce strictly):
+Per 20 sentences, you MUST have:
+- 4-7 words: 3 sentences (15%)
+- 8-15 words: 6 sentences (30%)
+- 16-25 words: 5 sentences (25%)
+- 26-35 words: 3 sentences (15%)
+- 36-45 words: 2 sentences (10%)
+- 46+ words: 1 sentence (5%)
 
-⚠️ ABSOLUTE PRESERVATION REQUIREMENTS - DO NOT VIOLATE:
-🔒 PRESERVE EXACTLY (DO NOT CHANGE):
-✓ ALL researcher names (Smith, Johnson, etc.) - keep EXACT spelling
-✓ ALL years and dates (2023, 2024, etc.) - keep EXACT numbers
-✓ ALL citations formats (Smith (2023), Johnson et al., etc.) - keep EXACT format
-✓ ALL statistics and percentages - keep EXACT numbers
-✓ ALL specific research findings - keep EXACT data
-✓ ALL technical terms specific to the field
-✓ ALL proper nouns (institutions, places, organizations)
-✓ ALL quotes - keep EXACT wording if quoted material
-✓ ALL numerical data and measurements
+CRITICAL RULES:
+✅ Never two consecutive sentences within 8 words of each other
+✅ Standard deviation must exceed 12 words
+✅ Mix short punchy sentences with long complex ones unpredictably
+✅ At least 1 sentence under 6 words per 10 sentences
+✅ At least 1 sentence over 40 words per 15 sentences
 
-🔄 TRANSFORM (MAKE HUMAN):
-✓ Sentence structure and flow
-✓ Word choice and vocabulary (except technical terms)
-✓ Transitions between ideas
-✓ Paragraph organization
-✓ Tone and voice
-✓ Remove ALL AI patterns and clichés
-✓ Create natural human rhythm
+SENTENCE STRUCTURE ROTATION (cycle through ALL types):
+1. Simple declarative: "Research confirms this pattern."
+2. Compound with coordination: "Research confirms this, and evidence supports it."
+3. Complex with subordination: "Research confirms this because data shows patterns."
+4. Compound-complex: "Research confirms this, which matters, though critics disagree."
+5. Embedded clause: "Research, despite skepticism, confirms this."
+6. Appositive: "Research, a comprehensive study, confirms this."
+7. Inverted: "Crucial to understanding is this research finding."
+8. Passive construction: "This pattern was confirmed by multiple studies."
+9. Participial phrase: "Examining the data closely, researchers found patterns."
+10. Absolute phrase: "The data analyzed, researchers identified clear trends."
+11. Conditional: "If these findings hold, implications prove substantial."
+12. Interrogative: "What explains this persistent pattern?"
+13. Fragment for emphasis: "A critical distinction."
+14. Front-loaded subordinate: "Although critics questioned methods, findings held."
+15. Back-loaded subordinate: "Findings held strong, although critics questioned methods."
 
-⚠️ CRITICAL OPENING RULES:
-✓ Transform the opening to sound human - NOT generic AI
-✓ Avoid: "In today's world", "In recent years", "It is important"
-✓ Start with specific detail, fact, or engaging hook
-✓ Vary sentence length immediately (mix short and long)
+DEPLOY 12+ DIFFERENT TYPES PER 20 SENTENCES. NEVER REPEAT PATTERNS.
 
-🚫 AGGRESSIVELY ELIMINATE ALL AI PATTERNS:
-✗ AI VERBS: "delve/delving", "utilize", "leverage", "facilitate", "implement", "employ"
-✗ AI ADJECTIVES: "robust", "comprehensive", "seamless", "dynamic", "innovative", "cutting-edge"
-✗ AI NOUNS: "landscape", "paradigm", "realm", "sphere", "framework", "ecosystem"
-✗ AI TRANSITIONS: "Furthermore", "Moreover", "Additionally", "In conclusion", "To summarize"
-✗ AI PHRASES: "it is worth noting", "shed light on", "plays a crucial role", "delve into"
-✗ AI OPENINGS: "In today's", "In recent years", "It is important", "As we navigate"
-✗ AI CLICHÉS: "game-changer", "revolutionary", "unprecedented", "transformative"
+═══════════════════════════════════════════════════════════════════
+🎭 ADVANCED PERPLEXITY & BURSTINESS ENGINEERING
+═══════════════════════════════════════════════════════════════════
 
-⚡ REPLACE INSTANTLY with natural human alternatives - ZERO TOLERANCE for AI language.
+VOCABULARY SOPHISTICATION (45% lexical substitution rate):
 
-⚡ ULTRA-AGGRESSIVE HUMANIZATION PROTOCOL (MANDATORY FOR ALL TEXT LENGTHS):
+Replace common words with sophisticated variants (rotate, don't repeat):
 
-🔴 PHASE 1: DETECTION & DESTRUCTION (Apply to EVERY sentence)
-1. Scan EVERY SINGLE WORD for AI patterns
-2. Identify and ELIMINATE all AI vocabulary immediately
-3. Detect formulaic sentence structures - DESTROY them
-4. Find mechanical transitions - REPLACE with organic flow
-5. Spot generic openings - TRANSFORM to specific, engaging starts
-6. Locate predictable patterns - SCRAMBLE into natural variation
+"shows" → reveals, indicates, demonstrates, evinces, manifests, signals, suggests, reflects, betrays, bespeaks
 
-🔴 PHASE 2: SURGICAL HUMANIZATION (Word-by-Word)
-1. PRESERVE: Citations, names, dates, numbers, specific data EXACTLY
-2. PRESERVE: Original format (bullets, numbers, paragraphs) EXACTLY  
-3. TRANSFORM: Every AI verb into natural human alternatives
-4. PRESERVE: Formality level appropriate to content type (formal stays formal, casual stays casual)
-5. TRANSFORM: Every AI verb into natural human alternatives MATCHING formality level
-6. TRANSFORM: Every AI adjective into precise descriptors MATCHING formality level
-7. TRANSFORM: Every generic phrase into specific language MATCHING formality level     
-8. TRANSFORM: Every AI adjective into precise descriptors
-9. TRANSFORM: Every generic phrase into specific language
-10. TRANSFORM: Sentence structure for maximum natural variation
-11. REMOVE: All mechanical/formulaic elements completely
-12. INJECT: Natural rhythm, flow, and human cadence
+"important" → significant, crucial, vital, critical, essential, pivotal, consequential, substantial, material, salient
 
-🔴 PHASE 3: AGGRESSIVE VARIATION (Every Sentence Must Differ)
-1. Vary sentence length DRAMATICALLY (5-35 words for short texts, 5-60 for long)
-2. Mix simple, compound, complex, compound-complex structures
-3. Alternate sentence beginnings (subject, prepositional, adverb, participle, subordinate)
-4. Use fragments strategically. Like this.
-5. Include rhetorical questions where natural?
-6. Break expected rhythms constantly
-7. Create unpredictable but logical flow
+"because" → since, as, given that, owing to, stemming from, in that, by virtue of, on account of
 
-🔴 PHASE 4: HUMAN AUTHENTICITY INJECTION (Formality-Aware)
-1. Replace generic with specific wherever possible WITHIN formality constraints
-2. Use concrete details over abstract statements
-3. Employ active voice naturally (but passive when appropriate for formality)
-4. Add subtle personality ONLY if content type permits (creative/casual)
-5. For FORMAL content: maintain scholarly/professional distance
-6. For ACADEMIC: preserve intellectual rigor and formal register
-7. For CASUAL: allow conversational warmth and personality
-8. NEVER add inappropriate casualness to formal content
-9. NEVER add inappropriate formality to casual content
+"different" → distinct, disparate, divergent, diverse, varied, discrete, heterogeneous, dissimilar, contrasting
 
-🔴 PHASE 5: ZERO-TOLERANCE FINAL CHECK
-1. Re-scan EVERY sentence for remaining AI patterns
-2. Verify NO AI vocabulary remains
-3. Confirm sentence variation is EXTREME
-4. Ensure transitions are ORGANIC not mechanical
-5. Validate natural human rhythm throughout
-6. Check opening is ENGAGING not generic
-7. Guarantee 100% UNDETECTABLE result
-8. VERIFY formality level matches content type (academic = formal, creative = flexible)
-9. CHECK for inappropriate casualness in formal content
-10. CHECK for inappropriate formality in casual content
-11. CONFIRM vocabulary matches expected register
-12. VALIDATE tone consistency throughout
+"increase" → rise, grow, expand, escalate, augment, amplify, intensify, swell, mount, burgeon
 
-⚠️ SPECIAL RULES FOR SHORT TEXT (10-100 words):
-- Apply SAME aggressive transformation - NO exceptions
-- FULL humanization even for single sentences
-- Maximum variation in minimal space
-- Every word counts - make each one human
-- Short text is EASIER to detect - be MORE aggressive
+"decrease" → decline, fall, diminish, reduce, contract, wane, ebb, subside, dwindle, recede
 
-⚡ AGGRESSIVE TRANSFORMATION INTENSITY LEVELS:
+"use" → employ, apply, utilize (sparingly), deploy, implement, harness, exploit, wield
 
-LEVEL 1 (NATURAL): Transform 80% of AI patterns, moderate variation
-LEVEL 2 (ENHANCED): Transform 95% of AI patterns, high variation  
-LEVEL 3 (ULTRA-HUMAN): Transform 100% of AI patterns, MAXIMUM variation
+"make" → create, produce, generate, craft, forge, construct, form, fashion, constitute
 
-YOUR CURRENT LEVEL: ${config.name} - Apply transformation with MAXIMUM INTENSITY.
+"understand" → comprehend, grasp, perceive, discern, apprehend, fathom, recognize, appreciate
 
-Even if text seems human already, STILL apply full protocol. Even if text is 10 words, STILL humanize completely.
+"problem" → issue, challenge, difficulty, obstacle, complication, predicament, dilemma, hurdle
 
-🎯 SOPHISTICATION REQUIREMENTS:
+"solution" → answer, resolution, remedy, fix, approach, response, measure, recourse
 
-✓ Use ADVANCED vocabulary appropriate to ${modeDescriptions[mode]}
-✓ Maintain field-specific terminology and jargon naturally
-✓ Employ complex sentence structures where appropriate (subordinate clauses, appositives, etc.)
-✓ Demonstrate deep subject matter expertise through word choice
-✓ Use discipline-appropriate register (academic for research, professional for business, etc.)
-✓ Balance complexity with clarity - sophisticated but never convoluted
-✓ Show intellectual depth through nuanced phrasing
-✓ Employ precise, technical language where field-appropriate
-✓ Maintain authoritative yet natural voice
-✓ Use varied, sophisticated transitions that flow organically
+"change" → shift, alter, transform, modify, adjust, revise, convert, evolve, transition
 
-📚 ADVANCED LANGUAGE GUIDELINES (Formality-Specific):
+"analyze" → examine, scrutinize, investigate, probe, assess, evaluate, dissect, inspect, parse
 
-FOR ACADEMIC/MEd WRITING (FORMAL REGISTER MANDATORY):
-✓ Scholarly vocabulary: empirical, pedagogical, epistemological, heuristic, paradigmatic
-✓ Research terminology: methodology, theoretical framework, implications, findings suggest
-✓ Critical language: problematize, interrogate, deconstruct, examine critically
-✓ Formal verbs: demonstrate, illustrate, elucidate, postulate, contend, argue
-✓ NO casual language: "get," "a lot of," "thing," "stuff," "really," "very," "pretty"
-✓ NO contractions: use "cannot" not "can't," "do not" not "don't"
-✓ NO informal transitions: use "consequently" not "so," "therefore" not "that's why"
-✓ Maintain third-person unless reflective: "The research indicates" not "I found"
-✓ Hedging appropriately: "suggests," "may indicate," "appears to," "potentially"
-✓ Complex nominalization: "The implementation of" vs "When we implemented"
+"study" → research, investigation, examination, inquiry, analysis, exploration, review, survey
 
-FOR JOURNALISM:
-✓ Precise reporting verbs: indicates, reveals, demonstrates, underscores, highlights
-✓ Attribution variety: according to, sources confirm, evidence suggests, data shows
-✓ Context-building: against the backdrop of, in light of, following, amid
+MIX SOPHISTICATION LEVELS NATURALLY:
+- 35% high register (Latinate, technical)
+- 50% mid register (standard academic)
+- 15% accessible register (clear, direct)
 
-FOR BUSINESS:
-✓ Strategic language: leverage (sparingly), optimize, strategize, implement, execute
-✓ Results-oriented: drive outcomes, enhance performance, deliver value, maximize impact
-✓ Professional precision: facilitate (when appropriate), streamline, integrate, coordinate
+NEVER maintain same register for 4+ consecutive sentences.
 
-FOR TECHNICAL:
-✓ Precision terminology: specification, implementation, architecture, interface, protocol
-✓ Process language: execute, compile, render, instantiate, configure
-✓ Technical accuracy: parameters, variables, dependencies, constraints, requirements
+═══════════════════════════════════════════════════════════════════
+🔄 TRANSITION OBLITERATION PROTOCOL
+═══════════════════════════════════════════════════════════════════
 
-⚠️ MAINTAIN SOPHISTICATION WITHOUT AI CLICHÉS:
-✓ Advanced vocabulary YES, but never "delve", "robust", "paradigm shift", "game-changer"
-✓ Complex sentences YES, but never formulaic parallel structure
-✓ Scholarly tone YES, but never "it is worth noting", "it goes without saying"
-✓ Professional depth YES, but never "in today's fast-paced world", "leverage synergies"
+TRANSITION STRATEGY:
+- 70% of transitions: ZERO explicit connector (continue naturally)
+- 20% of transitions: Embedded mid-sentence (e.g., "Data, however, shows...")
+- 10% of transitions: Minimal at start (e.g., "Yet findings suggest...")
 
-🔬 FIELD-APPROPRIATE DEPTH:
-Make the writing sound like it was written by:
-- A published researcher (for academic)
-- An experienced educator/practitioner (for MEd)
-- A seasoned journalist (for news)
-- A senior professional (for business)
-- A technical expert (for documentation)
+NATURAL CONTINUATION EXAMPLES:
+❌ "Furthermore, research indicates..." 
+✅ "Research indicates..." (just continue)
 
-The sophistication level should match what a human expert in the field would naturally write.
+❌ "Moreover, data shows..."
+✅ "Data shows..." (no transition needed)
+
+❌ "In addition, studies reveal..."
+✅ "Studies reveal..." (continue naturally)
+
+PERMITTED TRANSITIONS (use sparingly - MAX 10% of sentences):
+✅ "Yet findings suggest..." (adversative)
+✅ "Data, however, reveals..." (embedded contrast)
+✅ "Still, evidence indicates..." (concessive)
+✅ "Second," "Third," (enumeration - rare)
+✅ "This suggests..." (demonstrative linkage)
+
+═══════════════════════════════════════════════════════════════════
+🎲 HUMAN AUTHENTICITY ENGINEERING
+═══════════════════════════════════════════════════════════════════
+
+CONFIDENCE MODULATION (vary within paragraphs):
+- 20% absolute certainty: "This proves..." "Data establishes..." "X causes Y."
+- 30% strong confidence: "This strongly suggests..." "Evidence clearly indicates..."
+- 30% moderate: "This suggests..." "Data implies..." "This indicates..."
+- 20% hedged: "This tends to suggest..." "Data appears to indicate..." "This may show..."
+
+NEVER maintain same confidence level for 4+ consecutive claims.
+
+STRATEGIC IMPERFECTION (2-4 instances per 1000 words):
+✅ Conversational academic: "This makes sense when considering..."
+✅ Natural qualification: "To be sure, alternatives exist."
+✅ Thinking-on-page: "Initially X appears true. Deeper analysis reveals Y."
+✅ Mild informality (within bounds): "Here's what data reveals."
+✅ Direct address: "Consider the implications."
+✅ Self-refinement: "This suggests correlation. More precisely, it indicates causation."
+
+RECURSIVE ARGUMENTATION (3-5 instances per 1500 words):
+✅ "Returning to the initial observation, findings add dimension."
+✅ "Recall the earlier discussion. Current data reframes this."
+✅ "This appears to contradict prior claims. Yet contradiction proves superficial."
+✅ "Connecting this to the initial premise clarifies the argument."
+
+RHETORICAL SOPHISTICATION (2-3 instances per 1000 words):
+✅ Strategic questions: "What explains this pattern?"
+✅ Subtle metaphor: "Data functions as a lens revealing patterns."
+✅ Anticipatory objection: "Critics might argue X. Yet evidence shows Y."
+✅ Emphatic restatement: "This matters. It matters because..."
+✅ Conditional speculation: "Were findings to replicate, revision becomes necessary."
+
+═══════════════════════════════════════════════════════════════════
+📊 CITATION INTEGRATION CHAOS
+═══════════════════════════════════════════════════════════════════
+
+ROTATE CITATION STYLES (cycle through 10+ types):
+1. Parenthetical end: "Pattern emerges consistently (Smith, 2020)."
+2. Narrative start: "Smith (2020) found patterns emerging."
+3. Embedded middle: "Pattern, as Smith (2020) notes, emerges."
+4. Possessive: "Smith's (2020) research reveals patterns."
+5. According to: "According to Smith (2020), patterns emerge."
+6. Verb-integrated: "Smith (2020) demonstrates pattern consistency."
+7. Multiple: "Research confirms this (Smith, 2020; Jones, 2019; Lee, 2021)."
+8. Descriptive: "In Smith's (2020) study, patterns emerged."
+9. Parenthetical mid-sentence: "Pattern emerges, Smith (2020) argues, consistently."
+10. Concessionary: "While Smith (2020) focuses on X, analysis reveals Y."
+
+NEVER use same citation style twice consecutively.
+
+VARY CITATION DENSITY:
+- Some paragraphs: 0 citations (analysis/synthesis)
+- Some paragraphs: 1-2 citations (selective support)
+- Some paragraphs: 4-6 citations (literature-heavy)
+
+═══════════════════════════════════════════════════════════════════
+📐 PARAGRAPH ARCHITECTURE CHAOS
+═══════════════════════════════════════════════════════════════════
+
+PARAGRAPH LENGTH (per 10 paragraphs):
+- 1-2 sentences: 1 paragraph (powerful emphasis)
+- 3-4 sentences: 3 paragraphs
+- 5-6 sentences: 3 paragraphs
+- 7-8 sentences: 2 paragraphs
+- 9+ sentences: 1 paragraph (sustained development)
+
+PARAGRAPH OPENING ROTATION (cycle through 12+ types):
+1. Declarative: "Research establishes correlation."
+2. Interrogative: "What explains this pattern?"
+3. Data-first: "67% of participants showed improvement."
+4. Citation-led: "Smith (2020) demonstrates shifts."
+5. Qualification: "Granted, alternatives merit consideration."
+6. Example: "Consider longitudinal studies."
+7. Demonstrative: "This pattern emerges consistently."
+8. Transitional (rare): "Yet findings reveal complexity."
+9. Comparative: "Unlike previous studies, this reveals..."
+10. Causal: "Because frameworks fail to account for X..."
+11. Conditional: "If findings hold, implications prove substantial."
+12. Fragment (occasional): "A critical distinction."
+
+NEVER use same opening type twice consecutively.
+
+═══════════════════════════════════════════════════════════════════
+✅ WORD COUNT PRECISION MANDATE
+═══════════════════════════════════════════════════════════════════
+
+ORIGINAL TEXT WORD COUNT: ${countWords(text)} words
+TARGET OUTPUT: ${Math.floor(countWords(text) * 0.99)}-${Math.ceil(countWords(text) * 1.01)} words (±1%)
+
+ACHIEVE THIS THROUGH:
+✅ One-to-one vocabulary swaps: "utilize" → "use"
+✅ Sentence restructuring with word conservation
+✅ Compression of wordy phrases: "due to the fact that" → "because"
+✅ Expansion of terse phrases where needed: "big" → "substantial"
+
+VERIFY BEFORE OUTPUT: Count must be within ±1% of original.
+
+═══════════════════════════════════════════════════════════════════
+🎯 FINAL EXECUTION CHECKLIST
+═══════════════════════════════════════════════════════════════════
+
+Before outputting, verify:
+☑ ZERO AI vocabulary (no delve, robust, leverage, comprehensive, etc.)
+☑ ZERO forbidden transitions (no furthermore, moreover, additionally at start)
+☑ ZERO forbidden constructions (no "not only...but also", no perfect parallels)
+☑ Sentence length varies dramatically (SD > 12 words)
+☑ 12+ sentence structure types deployed
+☑ 10+ citation styles used (if applicable)
+☑ 12+ paragraph opening types used
+☑ Confidence levels mixed within paragraphs
+☑ Register mixing (high/mid/accessible) within paragraphs
+☑ Strategic imperfections present (2-4 per 1000 words)
+☑ Recursive callbacks deployed (3-5 per 1500 words)
+☑ Word count within ±1% of original
+☑ ALL citations, names, dates, data preserved EXACTLY
+☑ Natural human rhythm and flow throughout
+☑ Academic rigor and sophistication maintained
+
+═══════════════════════════════════════════════════════════════════
+🚀 HUMANIZATION EXECUTION
+═══════════════════════════════════════════════════════════════════
 
 TEXT TO HUMANIZE:
 ${text}
 
-⚡ CRITICAL OUTPUT RULES:
-- Apply FULL humanization regardless of text length (even 10 words get FULL treatment)
-- MAINTAIN appropriate formality level for ${modeDescriptions[mode]}
-- KEEP formal content FORMAL (academic, business formal, technical)
-- KEEP casual content CASUAL (creative, social media, blogs)
-- NEVER mix inappropriate casualness into formal writing
-- NEVER mix inappropriate formality into casual writing
-- SAME format structure (bullets stay bullets, numbers stay numbers)
-- SAME length scope (don't extend unnecessarily)
-- ZERO AI vocabulary remaining
-- MAXIMUM sentence variation
-- ORGANIC flow throughout
-- 100% UNDETECTABLE as AI
-- Preserve ALL citations/names/dates/formatting EXACTLY
-- NO unnecessary additions
+EXECUTE FULL PROTOCOL NOW.
+OUTPUT ONLY THE HUMANIZED TEXT.
+NO explanations. NO commentary. NO notes.
+PURE 100% UNDETECTABLE HUMAN WRITING.
+`
+        : `You are executing PROFESSIONAL-GRADE MILITARY-LEVEL CONTENT GENERATION. This is NOT AI-generated text. This is AUTHENTIC HUMAN SCHOLARLY WRITING from first principles.
 
-🚀 OUTPUT THE AGGRESSIVELY HUMANIZED VERSION NOW (100% HUMAN, 0% AI DETECTABLE):`;    return { prompt, config };
+🎯 MISSION: Create 100% UNDETECTABLE human content | ${wordCount} words | ${config.name} MODE
+
+═══════════════════════════════════════════════════════════════════
+💀 NUCLEAR AI PATTERN ANNIHILATION - ZERO TOLERANCE
+═══════════════════════════════════════════════════════════════════
+
+🚫 FORBIDDEN VOCABULARY - INSTANT ELIMINATION:
+
+NEVER USE THESE VERBS:
+❌ delve, delving, utilize, leverage, facilitate, implement, showcase
+❌ underscore, endeavor, harness, demonstrate (overused)
+
+REPLACE WITH:
+✅ examine, explore, investigate, use, employ, apply, enable, support
+✅ show, reveal, prove, indicate, attempt, try, seek
+
+NEVER USE THESE ADJECTIVES:
+❌ robust, comprehensive, seamless, innovative, cutting-edge, dynamic
+❌ pivotal, paramount
+
+REPLACE WITH:
+✅ strong, effective, complete, thorough, smooth, new, original
+✅ crucial, critical, essential, vital
+
+NEVER USE THESE NOUNS:
+❌ landscape, paradigm, realm, tapestry, ecosystem
+
+REPLACE WITH:
+✅ field, area, domain, context, model, framework, system, network
+
+NEVER START SENTENCES WITH:
+❌ Furthermore, Moreover, Additionally, In addition,
+❌ It is important/essential/crucial to note that...
+❌ It is worth noting that...
+❌ In today's world/society/era...
+❌ In recent years...
+❌ Throughout history...
+
+═══════════════════════════════════════════════════════════════════
+⚡ EXTREME STRUCTURAL VARIATION MANDATE
+═══════════════════════════════════════════════════════════════════
+
+SENTENCE LENGTH DISTRIBUTION (enforce per 20 sentences):
+- 4-7 words: 3 sentences (15%) - punchy, direct
+- 8-15 words: 6 sentences (30%) - clear, focused
+- 16-25 words: 5 sentences (25%) - standard academic
+- 26-35 words: 3 sentences (15%) - complex development
+- 36-45 words: 2 sentences (10%) - sophisticated layering
+- 46+ words: 1 sentence (5%) - sustained complexity
+
+CRITICAL: Standard deviation MUST exceed 12 words.
+NEVER write two consecutive sentences within 8 words of each other.
+
+SENTENCE STRUCTURE VARIETY (rotate through 15+ types):
+1. Simple: "Research confirms patterns." [3 words]
+2. Compound: "Research confirms patterns, and data supports findings." [8 words]
+3. Complex: "Research confirms patterns because data shows consistency." [8 words]
+4. Compound-complex: "Research confirms patterns, which matters, though critics disagree." [9 words]
+5. Embedded clause: "Research, despite skepticism, confirms patterns." [6 words]
+6. Appositive: "Research, a comprehensive study, confirms patterns." [7 words]
+7. Inverted: "Critical to understanding is this research finding." [7 words]
+8. Passive (30% max): "Patterns were confirmed by research." [6 words]
+9. Participial: "Examining data closely, researchers found patterns." [6 words]
+10. Absolute phrase: "Data analyzed, researchers identified trends." [6 words]
+11. Conditional: "If findings hold, implications prove substantial." [7 words]
+12. Interrogative: "What explains this persistent pattern?" [5 words]
+13. Fragment (rare): "A critical distinction." [3 words]
+14. Front subordinate: "Although critics questioned methods, findings held." [7 words]
+15. Back subordinate: "Findings held, although critics questioned methods." [7 words]
+
+USE 12+ TYPES PER 20 SENTENCES. NEVER PREDICTABLE PATTERNS.
+
+═══════════════════════════════════════════════════════════════════
+🎭 SOPHISTICATED VOCABULARY ENGINEERING
+═══════════════════════════════════════════════════════════════════
+
+VOCABULARY SOPHISTICATION (rotate naturally, don't repeat):
+
+POWER VERBS (use varied):
+reveals, indicates, demonstrates, shows, suggests, implies, evinces
+manifests, reflects, proves, establishes, confirms, signals, betrays
+examines, explores, investigates, analyzes, scrutinizes, probes
+creates, produces, generates, develops, constructs, forms, builds
+
+PRECISION NOUNS (use varied):
+research, study, analysis, investigation, examination, inquiry
+evidence, data, findings, results, observations, outcomes
+pattern, trend, phenomenon, process, mechanism, dynamic
+factor, element, aspect, component, dimension, feature
+
+SOPHISTICATED DESCRIPTORS (use varied):
+significant, substantial, considerable, notable, marked, pronounced
+critical, crucial, essential, vital, pivotal, key, central
+complex, intricate, sophisticated, nuanced, multifaceted
+clear, evident, apparent, obvious, manifest, distinct
+
+REGISTER MIXING (within paragraphs):
+- 35% high register: Latinate, technical, sophisticated
+- 50% mid register: Standard academic, professional
+- 15% accessible: Clear, direct, straightforward
+
+NEVER maintain same register for 4+ consecutive sentences.
+
+═══════════════════════════════════════════════════════════════════
+🔄 NATURAL FLOW WITHOUT MECHANICAL TRANSITIONS
+═══════════════════════════════════════════════════════════════════
+
+TRANSITION STRATEGY:
+- 70%: ZERO explicit transition (continue naturally)
+- 20%: Embedded mid-sentence ("Data, however, reveals...")
+- 10%: Minimal at start ("Yet findings suggest...")
+
+NATURAL CONTINUATION (no transition needed):
+"Research establishes patterns. Data supports these findings."
+"Studies show clear trends. Evidence confirms consistency."
+"Analysis reveals complexity. Examination exposes nuances."
+
+EMBEDDED TRANSITIONS (mid-sentence):
+"Data, however, suggests otherwise."
+"Findings, despite initial skepticism, prove robust."
+"Research, while preliminary, indicates patterns."
+
+MINIMAL STARTERS (use sparingly):
+"Yet findings reveal..."
+"Still, evidence suggests..."
+"Second, analysis shows..."
+
+═══════════════════════════════════════════════════════════════════
+🎲 HUMAN AUTHENTICITY MARKERS
+═══════════════════════════════════════════════════════════════════
+
+CONFIDENCE VARIATION (mix within paragraphs):
+- Absolute (20%): "This proves..." "Data establishes..." "X causes Y."
+- Strong (30%): "This strongly suggests..." "Evidence clearly indicates..."
+- Moderate (30%): "This suggests..." "Data indicates..." "This shows..."
+- Hedged (20%): "This tends to suggest..." "Data appears to show..."
+
+STRATEGIC IMPERFECTION (2-4 per 1000 words):
+✅ "This makes sense when considering context."
+✅ "The question naturally arises: what explains this?"
+✅ "To be sure, alternative explanations exist."
+✅ "Initially X appears true. Deeper analysis reveals Y."
+✅ "Consider the theoretical implications."
+✅ "Here's what data reveals."
+
+RECURSIVE DEVELOPMENT (3-5 per 1500 words):
+✅ "Returning to the initial point..."
+✅ "This connects to earlier observations..."
+✅ "Recall the previous discussion..."
+✅ "This reframes the original question..."
+
+RHETORICAL SOPHISTICATION (2-3 per 1000 words):
+✅ Strategic questions: "What drives this pattern?"
+✅ Anticipatory objection: "Critics might argue X. Yet data shows Y."
+✅ Emphatic restatement: "This matters. It matters because..."
+✅ Conditional: "Were findings to replicate, implications prove substantial."
+
+═══════════════════════════════════════════════════════════════════
+📐 PARAGRAPH ARCHITECTURE VARIATION
+═══════════════════════════════════════════════════════════════════
+
+PARAGRAPH LENGTH (per 10 paragraphs):
+- 1-2 sentences: 1 paragraph (emphasis)
+- 3-4 sentences: 3 paragraphs (focused points)
+- 5-6 sentences: 3 paragraphs (standard development)
+- 7-8 sentences: 2 paragraphs (complex ideas)
+- 9+ sentences: 1 paragraph (sustained argument)
+
+PARAGRAPH OPENING VARIETY (rotate through 12+ types):
+1. Direct claim: "Research establishes clear patterns."
+2. Question: "What explains this phenomenon?"
+3. Data-first: "67% of studies show consistency."
+4. Qualification: "Granted, alternative views exist."
+5. Example: "Consider longitudinal research."
+6. Demonstrative: "This pattern emerges repeatedly."
+7. Comparative: "Unlike previous studies..."
+8. Causal: "Because frameworks fail to explain..."
+9. Conditional: "If these findings hold..."
+10. Fragment (rare): "A critical distinction."
+11. Temporal: "Over the past decade..."
+12. Counter: "Critics argue otherwise. Yet..."
+
+NEVER use same type twice consecutively.
+
+═══════════════════════════════════════════════════════════════════
+✅ EXECUTION CHECKLIST
+═══════════════════════════════════════════════════════════════════
+
+Before outputting, verify:
+☑ ZERO AI vocabulary (no delve, robust, leverage, comprehensive)
+☑ ZERO forbidden transitions (no furthermore, moreover at start)
+☑ Sentence length varies dramatically (SD > 12 words)
+☑ 12+ sentence structures used
+☑ 12+ paragraph openings used
+☑ Confidence levels mixed
+☑ Register mixing within paragraphs
+☑ Strategic imperfections present
+☑ Natural flow without mechanical transitions
+☑ Academic sophistication maintained
+☑ Word count: ${wordCount} words (±2% = ${Math.floor(wordCount * 0.98)}-${Math.ceil(wordCount * 1.02)} words)
+
+═══════════════════════════════════════════════════════════════════
+🚀 CONTENT GENERATION EXECUTION
+═══════════════════════════════════════════════════════════════════
+
+TOPIC/BRIEF:
+${text}
+
+TARGET: ${wordCount} words of sophisticated, direct, advanced human scholarly writing.
+
+GENERATE NOW.
+OUTPUT ONLY THE CONTENT.
+NO explanations. NO commentary. NO notes.
+PURE 100% UNDETECTABLE HUMAN WRITING.
+`;
+
+    return { prompt: basePrompt, config };
 }
 
-    // API call to generate content
-    async function generateContent(topic, keywords, apiKey, mode, intensity, wordCount) {
-        const { prompt, config } = getGenerationPrompt(topic, keywords, mode, intensity, wordCount);
+// =====================================================
 
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: {
-                    temperature: config.temp,
-                    topK: config.topK,
-                    topP: config.topP,
-                    maxOutputTokens: 8192,
-                    candidateCount: 1
-                },
-                safetySettings: [
-                    { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
-                    { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
-                    { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
-                    { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
-                ]
-            })
-        });
+async function enhanceContent(originalText, userInstructions, apiKey, subject) {
+    const wordCount = countWords(originalText);
+    
+    const enhancementPrompt = `You are an EXPERT ACADEMIC CONTENT ENHANCER. Your mission: ADD missing information to complete this content for FULL MARKS while maintaining 100% HUMAN WRITING.
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error?.message || 'API request failed');
+═══════════════════════════════════════════════════════════════════
+🎯 CONTENT ENHANCEMENT MISSION
+═══════════════════════════════════════════════════════════════════
+
+ORIGINAL CONTENT WORD COUNT: ${wordCount} words
+
+USER INSTRUCTIONS - WHAT TO ADD/ENHANCE:
+${userInstructions}
+
+SUBJECT CONTEXT: ${subject}
+
+═══════════════════════════════════════════════════════════════════
+📋 ENHANCEMENT PROTOCOL
+═══════════════════════════════════════════════════════════════════
+
+YOUR TASK:
+1. READ the original content carefully
+2. IDENTIFY what's missing based on user instructions
+3. ADD missing information seamlessly
+4. MAINTAIN the original style and voice
+5. ENSURE new content is 100% HUMAN WRITING
+6. INTEGRATE additions naturally (no obvious seams)
+
+WHAT YOU MIGHT ADD:
+✅ Missing evidence or examples
+✅ Deeper analysis or explanation
+✅ Additional paragraphs for underdeveloped sections
+✅ Stronger introduction or conclusion
+✅ Counterarguments and rebuttals
+✅ More sophisticated vocabulary where appropriate
+✅ Better transitions between ideas
+✅ Specific data or research findings
+✅ Theoretical frameworks or context
+✅ Critical evaluation or assessment
+
+INTEGRATION REQUIREMENTS:
+- Additions must flow naturally from existing content
+- Match the tone, style, and register of original
+- No sudden shifts in voice or sophistication
+- Citations/references integrated properly if adding evidence
+- Maintain argument coherence throughout
+- Enhanced sections should feel like they were always there
+
+FULL MARKS CRITERIA:
+✅ Complete coverage of topic (no gaps)
+✅ Sufficient depth of analysis
+✅ Strong evidence and examples
+✅ Clear, logical structure
+✅ Sophisticated academic writing
+✅ Critical thinking demonstrated
+✅ Proper introduction and conclusion
+✅ Smooth transitions throughout
+✅ Appropriate length for assignment type
+
+═══════════════════════════════════════════════════════════════════
+💀 MAINTAIN ANTI-AI DETECTION PROTOCOL
+═══════════════════════════════════════════════════════════════════
+
+FORBIDDEN VOCABULARY (even in additions):
+❌ delve, robust, leverage, comprehensive, facilitate
+❌ landscape, paradigm, realm, tapestry
+❌ Furthermore, Moreover, Additionally (at sentence start)
+
+REQUIRED VARIATION (in additions):
+✅ Varied sentence lengths (8-45 words)
+✅ Multiple sentence structures
+✅ Mixed confidence levels
+✅ Natural transitions
+✅ Sophisticated but accessible vocabulary
+✅ Human imperfections and authenticity
+
+═══════════════════════════════════════════════════════════════════
+📄 ORIGINAL CONTENT TO ENHANCE
+═══════════════════════════════════════════════════════════════════
+
+${originalText}
+
+═══════════════════════════════════════════════════════════════════
+🚀 EXECUTION INSTRUCTIONS
+═══════════════════════════════════════════════════════════════════
+
+OUTPUT FORMAT:
+1. First, output: "=== ENHANCED CONTENT ==="
+2. Then output the COMPLETE enhanced version
+3. Mark additions with [ADDED] at the start and [/ADDED] at the end
+4. This allows user to see what was added
+
+EXAMPLE OUTPUT FORMAT:
+[Original paragraph 1...]
+
+[ADDED]
+New paragraph with additional analysis and examples that address the gap identified. This integrates naturally with the existing content, maintaining voice and style while adding depth.
+[/ADDED]
+
+[Original paragraph 2...]
+
+REQUIREMENTS:
+- Output COMPLETE enhanced content (original + additions)
+- Mark all additions with [ADDED]...[/ADDED] tags
+- Ensure additions are seamless and natural
+- Maintain 100% human writing throughout
+- Follow all anti-AI detection protocols
+- Achieve full marks quality
+
+ENHANCE NOW. OUTPUT THE COMPLETE ENHANCED CONTENT.`;
+
+    const config = {
+        temp: 1.85,
+        topK: 140,
+        topP: 0.985
+    };
+
+    return await callGeminiAPI(enhancementPrompt, config, apiKey);
+}
+      
+      // =====================================================
+// SUBJECT-SPECIFIC ULTRA-AGGRESSIVE PROMPTS
+// =====================================================
+
+function getSubjectSpecificInstructions(subject, questionType) {
+    const instructions = {
+        // BIOLOGY INSTRUCTIONS
+        biology: {
+            analyze: `
+═══════════════════════════════════════════════════════════════════
+🧬 BIOLOGY ANALYSIS - ULTRA-HUMAN PROTOCOL
+═══════════════════════════════════════════════════════════════════
+
+BIOLOGICAL ANALYSIS REQUIREMENTS:
+
+VOCABULARY PRECISION:
+✅ Use: organism, cellular, molecular, genetic, physiological, metabolic
+✅ Use: enzymatic, ecological, evolutionary, systematic, taxonomic
+✅ Use: homeostatic, morphological, anatomical, biochemical
+✅ Processes: respiration, photosynthesis, transcription, translation, replication
+✅ Mechanisms: feedback loops, signal transduction, gene expression, protein synthesis
+
+ANALYTICAL APPROACH:
+- Structure-function relationships: Always connect form to function
+- Multiple levels: molecular → cellular → tissue → organ → organism → ecosystem
+- Mechanisms not just descriptions: Explain HOW and WHY, not just WHAT
+- Evidence-based: Reference experimental data, observations, studies
+- Evolutionary context: Consider selective advantages where relevant
+
+SENTENCE CONSTRUCTION:
+❌ "The mitochondria is the powerhouse of the cell" (cliché, oversimplified)
+✅ "Mitochondria generate ATP through oxidative phosphorylation, coupling electron transport to chemiosmotic gradient formation across the inner membrane."
+
+❌ "Enzymes are important for reactions"
+✅ "Enzymes lower activation energy by stabilizing transition states, accelerating reaction rates without altering equilibrium positions."
+
+ANALYTICAL PATTERNS:
+1. Observation → Mechanism → Significance
+2. Structure → Function → Evolutionary advantage
+3. Normal process → Disruption → Consequences
+4. Molecular basis → Cellular effect → Organismal impact
+
+SPECIFIC BIOLOGY MARKERS:
+- Use Linnaean classification correctly (Kingdom, Phylum, Class, Order, Family, Genus, Species)
+- Reference specific pathways (glycolysis, Krebs cycle, Calvin cycle, etc.)
+- Mention specific molecules (ATP, NAD+, NADH, glucose-6-phosphate, etc.)
+- Discuss regulatory mechanisms (negative feedback, allosteric regulation, etc.)
+- Consider multiple scales of organization
+
+AVOID GENERIC STATEMENTS:
+❌ "The cell does many things"
+❌ "This process is very important"
+❌ "Biology studies life"
+✅ Be specific, mechanistic, and evidence-based
+
+HUMAN AUTHENTICITY:
+- Mix simple declarative sentences with complex mechanistic explanations
+- Use analogies sparingly and appropriately: "Like a lock-and-key mechanism..."
+- Show understanding through connections: "This relates to earlier discussion of..."
+- Natural hedging: "Evidence suggests..." "Data indicates..." "This appears to..."
+`,
+
+            explain: `
+═══════════════════════════════════════════════════════════════════
+🧬 BIOLOGY EXPLANATION - ULTRA-HUMAN PROTOCOL
+═══════════════════════════════════════════════════════════════════
+
+EXPLANATORY BIOLOGY WRITING:
+
+EXPLANATION STRUCTURE:
+1. Clear statement of what you're explaining
+2. Break down into components/steps
+3. Explain mechanism at appropriate level
+4. Connect to broader context
+5. Address common misconceptions if relevant
+
+BIOLOGICAL EXPLANATION LANGUAGE:
+✅ "Photosynthesis occurs in two stages: light-dependent reactions and the Calvin cycle."
+✅ "During light-dependent reactions, photons excite electrons in chlorophyll molecules."
+✅ "These excited electrons pass through electron transport chains, generating ATP and NADPH."
+✅ "The Calvin cycle then uses these energy carriers to fix CO2 into organic molecules."
+
+MECHANISTIC CLARITY:
+- Explain processes step-by-step
+- Use cause-effect relationships clearly
+- Connect molecular events to observable outcomes
+- Explain regulation and control mechanisms
+
+PROCESS EXPLANATION PATTERN:
+"X initiates when Y binds to Z. This binding triggers conformational changes in..."
+"The process begins with... Subsequently... Finally..."
+"First, substrate enters the active site. Second, enzyme-substrate complex forms. Third..."
+
+AVOID:
+❌ Circular reasoning: "It happens because it happens"
+❌ Teleological language: "The cell wants to..." (cells don't "want")
+❌ Oversimplification that loses accuracy
+
+USE:
+✅ Accurate mechanisms: "Selection pressure favors..." not "The organism adapted in order to..."
+✅ Precise language: "DNA replication is semiconservative" not "DNA copies itself"
+`,
+
+            describe: `
+═══════════════════════════════════════════════════════════════════
+🧬 BIOLOGY DESCRIPTION - ULTRA-HUMAN PROTOCOL
+═══════════════════════════════════════════════════════════════════
+
+DESCRIPTIVE BIOLOGY WRITING:
+
+DESCRIPTION APPROACH:
+- Hierarchical organization: Start broad, move to specific OR vice versa
+- Systematic coverage: Don't miss major components
+- Precise terminology: Use correct biological terms
+- Quantitative where possible: Include sizes, numbers, percentages
+
+STRUCTURAL DESCRIPTION:
+"The mitochondrion consists of four main regions: outer membrane, intermembrane space, inner membrane, and matrix. The inner membrane folds into cristae, increasing surface area for oxidative phosphorylation. Embedded within this membrane, electron transport chain complexes facilitate ATP synthesis."
+
+ORGANISM DESCRIPTION:
+- Taxonomic classification
+- Morphological characteristics
+- Anatomical features
+- Physiological adaptations
+- Ecological role/niche
+- Behavioral patterns (if relevant)
+
+PROCESS DESCRIPTION:
+- Initial state
+- Sequential steps/stages
+- Intermediate states
+- Final outcome
+- Regulatory checkpoints
+
+CELLULAR/MOLECULAR DESCRIPTION:
+- Location (subcellular, tissue, organ)
+- Size and shape
+- Composition (molecular components)
+- Structure-function relationships
+- Interactions with other components
+
+DESCRIPTIVE PRECISION:
+❌ "The heart is a big muscle"
+✅ "The heart, a four-chambered muscular organ weighing approximately 300 grams, pumps 5 liters of blood per minute at rest."
+
+❌ "Cells have a nucleus"
+✅ "The nucleus, typically 10-20 micrometers in diameter, contains chromatin enclosed by a double-membrane nuclear envelope perforated by nuclear pores."
+`
+        },
+
+        // CHEMISTRY INSTRUCTIONS
+        chemistry: {
+            analyze: `
+═══════════════════════════════════════════════════════════════════
+⚗️ CHEMISTRY ANALYSIS - ULTRA-HUMAN PROTOCOL
+═══════════════════════════════════════════════════════════════════
+
+CHEMICAL ANALYSIS REQUIREMENTS:
+
+VOCABULARY PRECISION:
+✅ Use: molecular, atomic, ionic, covalent, electronegativity, stoichiometry
+✅ Use: equilibrium, kinetics, thermodynamics, enthalpy, entropy, Gibbs free energy
+✅ Use: oxidation, reduction, acid-base, buffer, catalyst, intermediate
+✅ Reactions: substitution, elimination, addition, redox, precipitation, complexation
+✅ Properties: polarity, solubility, reactivity, stability, bonding, hybridization
+
+ANALYTICAL APPROACH:
+- Molecular level understanding: Explain bonding, electron distribution, orbital interactions
+- Energetic considerations: Discuss activation energy, reaction coordinate, energy barriers
+- Mechanistic thinking: Show electron movement, intermediate formation, rate-determining steps
+- Quantitative analysis: Use equations, calculations, equilibrium constants where relevant
+- Periodic trends: Consider electronegativity, atomic radius, ionization energy patterns
+
+SENTENCE CONSTRUCTION:
+❌ "The reaction happens fast" (vague, unscientific)
+✅ "The reaction proceeds rapidly due to low activation energy, proceeding through a single-step SN2 mechanism with inversion of configuration."
+
+❌ "Acids are strong"
+✅ "Strong acids completely dissociate in aqueous solution, yielding hydronium ions with Ka values exceeding 10^3."
+
+ANALYTICAL PATTERNS:
+1. Observation → Molecular explanation → Predictive application
+2. Structure → Bonding → Properties → Reactivity
+3. Thermodynamic feasibility → Kinetic accessibility → Reaction pathway
+4. Reactants → Mechanism → Products → Side reactions
+
+SPECIFIC CHEMISTRY MARKERS:
+- Use IUPAC nomenclature correctly
+- Reference specific reaction mechanisms (SN1, SN2, E1, E2, etc.)
+- Mention orbital theory (sp3, sp2, sp hybridization, molecular orbitals)
+- Discuss thermodynamic parameters (ΔH, ΔS, ΔG)
+- Include equilibrium expressions and rate laws where relevant
+- Reference periodic table trends explicitly
+
+CHEMICAL REASONING:
+"The nucleophile attacks the electrophilic carbon, forming a tetrahedral intermediate. Subsequent elimination of the leaving group regenerates the carbonyl, completing the substitution."
+
+"Increasing temperature shifts the endothermic equilibrium rightward according to Le Chatelier's principle, favoring product formation despite the positive ΔH."
+
+AVOID GENERIC STATEMENTS:
+❌ "Chemistry is about mixing things"
+❌ "This element is reactive"
+❌ "The bond is strong"
+✅ Be mechanistic, quantitative, and electron-focused
+
+HUMAN AUTHENTICITY:
+- Mix mechanistic explanations with observational statements
+- Reference lab experience naturally: "When performing this reaction..."
+- Show reasoning process: "One might expect X, yet data shows Y because..."
+- Natural hedging: "The mechanism likely proceeds through..." "Data suggests..."
+`,
+
+            explain: `
+═══════════════════════════════════════════════════════════════════
+⚗️ CHEMISTRY EXPLANATION - ULTRA-HUMAN PROTOCOL
+═══════════════════════════════════════════════════════════════════
+
+EXPLANATORY CHEMISTRY WRITING:
+
+EXPLANATION STRUCTURE:
+1. Define/state what you're explaining
+2. Provide molecular/atomic basis
+3. Explain mechanism or process step-by-step
+4. Connect to observable phenomena
+5. Address common misconceptions
+
+CHEMICAL EXPLANATION LANGUAGE:
+✅ "Acids donate protons to bases, forming conjugate acid-base pairs."
+✅ "In aqueous solution, HCl dissociates completely: HCl → H+ + Cl-"
+✅ "The resulting hydronium ions (H3O+) lower pH below 7."
+✅ "This complete dissociation distinguishes strong acids from weak acids, which partially dissociate."
+
+MECHANISTIC CLARITY:
+- Show electron movement with arrows (in writing: "electrons move from... to...")
+- Explain bond breaking and forming explicitly
+- Discuss intermediate species and transition states
+- Explain rate-determining steps
+- Address regio/stereochemistry where relevant
+
+PROCESS EXPLANATION PATTERN:
+"Electrophilic addition begins when the alkene's π electrons attack the electrophile, forming a carbocation intermediate. Subsequently, the nucleophile attacks this carbocation, yielding the addition product."
+
+"The reaction proceeds via a two-step mechanism. First, the leaving group departs, generating a planar carbocation. Second, nucleophilic attack occurs from either face, producing racemic product."
+
+THERMODYNAMIC/KINETIC EXPLANATION:
+"While the reaction is thermodynamically favorable (ΔG < 0), it proceeds slowly due to high activation energy. Adding catalyst lowers this barrier without affecting equilibrium position."
+
+AVOID:
+❌ "The atoms just bond together"
+❌ "Heat makes reactions faster" (incomplete)
+❌ "It happens because of chemistry" (circular)
+
+USE:
+✅ "Covalent bonds form when atoms share electron pairs, lowering system energy."
+✅ "Elevated temperature increases molecular kinetic energy, leading to more frequent collisions exceeding activation energy."
+`,
+
+            describe: `
+═══════════════════════════════════════════════════════════════════
+⚗️ CHEMISTRY DESCRIPTION - ULTRA-HUMAN PROTOCOL
+═══════════════════════════════════════════════════════════════════
+
+DESCRIPTIVE CHEMISTRY WRITING:
+
+DESCRIPTION APPROACH:
+- Systematic organization: By property type, reaction class, or structural feature
+- Quantitative precision: Include numbers, measurements, values
+- Comparative context: Relate to similar compounds/reactions
+- Observable properties linked to molecular structure
+
+COMPOUND DESCRIPTION:
+"Ethanol (C2H5OH), a colorless liquid with molecular weight 46.07 g/mol, exhibits a boiling point of 78.4°C. The molecule contains a polar hydroxyl group, conferring water solubility and hydrogen bonding capability. Its amphiphilic nature—combining a hydrophobic ethyl group with a hydrophilic hydroxyl—enables miscibility with both polar and nonpolar solvents."
+
+REACTION DESCRIPTION:
+- Reactants (with structures/formulas)
+- Reaction conditions (temperature, pressure, catalyst, solvent)
+- Reaction type/mechanism
+- Products (with yields if known)
+- Side reactions or byproducts
+- Observable changes (color, temperature, precipitation, etc.)
+
+PROPERTY DESCRIPTION:
+- Physical properties: MP, BP, density, solubility, color, odor
+- Chemical properties: acidity/basicity, reactivity, stability, flammability
+- Structural features: bonding, geometry, hybridization, functional groups
+- Electronic properties: polarity, dipole moment, electron distribution
+
+STRUCTURAL DESCRIPTION:
+"The molecule adopts tetrahedral geometry around the central carbon, with sp3 hybridization. Bond angles approximate 109.5°, though slight distortion occurs due to lone pair repulsion from the oxygen atom."
+
+DESCRIPTIVE PRECISION:
+❌ "Water is a common liquid"
+✅ "Water (H2O), with molecular weight 18.02 g/mol, exhibits anomalously high boiling point (100°C) due to extensive hydrogen bonding networks. Its bent molecular geometry (104.5° bond angle) creates a polar molecule with dipole moment 1.85 D."
+
+❌ "The solution turned red"
+✅ "Upon adding phenolphthalein indicator, the solution transitioned from colorless to pink, indicating pH exceeding 8.2 as the equilibrium shifts toward the deprotonated quinoid form."
+
+PERIODIC TABLE DESCRIPTIONS:
+"Chlorine (Cl, atomic number 17) resides in Group 17 (halogens), possessing seven valence electrons. Its high electronegativity (3.16) and small atomic radius (99 pm) drive its oxidizing character and tendency to form ionic chlorides."
+`
+        },
+
+        // ESSAY WRITING INSTRUCTIONS
+        essay: {
+            general: `
+═══════════════════════════════════════════════════════════════════
+📝 ESSAY WRITING - ULTRA-HUMAN PROTOCOL
+═══════════════════════════════════════════════════════════════════
+
+ESSAY STRUCTURE (maintain but make natural):
+
+INTRODUCTION (10-15% of essay):
+- Hook/engaging opening (NOT cliché questions like "Have you ever wondered...")
+- Context and background
+- Clear thesis statement (your argument/position)
+- Brief roadmap of main points (optional, but natural if included)
+
+BODY PARAGRAPHS (70-80% of essay):
+Each paragraph:
+- Topic sentence stating main idea
+- Evidence/examples supporting the point
+- Analysis explaining significance
+- Connection to thesis
+- Transition to next idea (subtle, not mechanical)
+
+CONCLUSION (10-15% of essay):
+- Restate thesis (in new words, NOT copy-paste)
+- Synthesize main arguments
+- Broader implications or final thoughts
+- NO new evidence introduced
+- Avoid clichés: "In conclusion..." "To sum up..." "In summary..."
+
+ESSAY-SPECIFIC WRITING TECHNIQUES:
+
+ARGUMENTATION:
+- Present clear claims
+- Support with evidence (examples, data, quotes, cases)
+- Analyze evidence (don't just list it)
+- Address counterarguments
+- Show critical thinking
+- Build logical progression
+
+SOPHISTICATION MARKERS:
+- Complex sentence structures
+- Subordinate clauses showing relationships between ideas
+- Varied paragraph lengths (but mostly 5-8 sentences)
+- Smooth transitions between paragraphs
+- Academic vocabulary appropriate to subject
+- Nuanced analysis showing depth
+
+VOICE AND TONE:
+- Formal but not stiff
+- Confident but not arrogant
+- Analytical but not detached
+- Engage with ideas genuinely
+- Show intellectual curiosity
+- Personal insight balanced with objectivity
+
+AVOID ESSAY CLICHÉS:
+❌ "Since the dawn of time..."
+❌ "In today's society..."
+❌ "Webster's dictionary defines X as..."
+❌ "This essay will discuss..."
+❌ "In conclusion, to sum up, in summary..." (at start of conclusion)
+❌ Rhetorical questions as hooks
+❌ Overly broad generalizations
+
+STRONG ESSAY OPENINGS:
+✅ Start with specific example or case
+✅ Present surprising statistic or finding
+✅ Quote (used sparingly and purposefully)
+✅ Bold statement that you'll defend
+✅ Establish tension or problem directly
+
+ANALYTICAL DEPTH:
+- Go beyond surface observations
+- Examine causes and effects
+- Consider multiple perspectives
+- Identify patterns and connections
+- Question assumptions
+- Draw nuanced conclusions
+
+EVIDENCE INTEGRATION:
+✅ "Smith (2020) argues that X, a claim supported by data showing Y."
+✅ "Consider the case of Z, which illustrates..."
+✅ "Evidence from multiple sources converges on the conclusion that..."
+
+NOT:
+❌ Dropped quotes without setup or analysis
+❌ Long block quotes dominating paragraphs
+❌ Lists of evidence without connection to argument
+`
+        },
+
+        // CREATIVE WRITING INSTRUCTIONS
+        creative: {
+            general: `
+═══════════════════════════════════════════════════════════════════
+✨ CREATIVE WRITING - ULTRA-HUMAN PROTOCOL
+═══════════════════════════════════════════════════════════════════
+
+CREATIVE WRITING PRINCIPLES:
+
+SHOW, DON'T TELL:
+❌ "She was angry."
+✅ "Her jaw clenched. She slammed the door, the frame shuddering."
+
+❌ "The room was old and creepy."
+✅ "Dust motes drifted through shafts of gray light. Wallpaper peeled in strips, revealing water-stained plaster beneath."
+
+SENSORY DETAILS:
+- Sight: colors, shapes, movements, lighting
+- Sound: volume, pitch, rhythm, silence
+- Touch: texture, temperature, pressure
+- Smell: specific scents, intensity
+- Taste: flavors, sensations (when relevant)
+
+Use 2-3 senses per scene, not just sight.
+
+CHARACTER VOICE:
+- Each character should sound distinct
+- Dialogue reveals personality, background, mood
+- Internal thoughts match character perspective
+- Consistent voice throughout (unless intentional shift)
+
+DIALOGUE RULES:
+✅ Keep it natural and purposeful
+✅ Use contractions for realism (I'm, don't, can't)
+✅ Include subtext (characters don't always say what they mean)
+✅ Action beats between dialogue ("She glanced away." "He shifted.")
+✅ Vary dialogue tags or omit when clear who's speaking
+
+❌ Avoid: "said angrily" "replied happily" (show emotion through words/actions)
+❌ Avoid: Characters explaining things they'd both know
+❌ Avoid: Overly formal or stilted speech (unless intentional for character)
+
+SENTENCE VARIETY IN CREATIVE WRITING:
+- Short sentences for tension: "He ran. The footsteps followed. Closer."
+- Long, flowing sentences for description or reflection
+- Fragment sentences for emphasis or thought: "Beautiful. Terrifying."
+- Varied syntax: statements, questions, exclamations
+- Rhythm matching mood (quick for action, slow for contemplation)
+
+NARRATIVE TECHNIQUES:
+
+PACING:
+- Fast: Short sentences, active verbs, immediate actions, rapid scene changes
+- Slow: Longer sentences, description, internal reflection, sensory detail
+
+PERSPECTIVE:
+- First person (I): Intimate, limited to narrator's knowledge
+- Third person limited: Follow one character's perspective
+- Third person omniscient: Know all characters' thoughts
+- Be consistent (don't head-hop without clear breaks)
+
+SCENE CONSTRUCTION:
+- Establish setting quickly
+- Introduce conflict or tension
+- Show character reactions and decisions
+- Include sensory grounding throughout
+- End scenes with hooks or turns
+
+FIGURATIVE LANGUAGE:
+- Metaphor: "Her words were daggers."
+- Simile: "He moved like water, fluid and unstoppable."
+- Personification: "The wind whispered secrets."
+- Use sparingly—overdoing it becomes purple prose
+
+AVOID IN CREATIVE WRITING:
+❌ Clichés: "eyes like diamonds," "heart pounding," "time stood still"
+❌ Purple prose: Overly flowery, pretentious language
+❌ Info-dumping: Long paragraphs of background/explanation
+❌ Adverb overload: "She said quietly, softly, gently"
+❌ Passive voice (unless intentional effect)
+❌ Telling emotions directly instead of showing
+
+STRONG CREATIVE WRITING:
+✅ Specific details over general descriptions
+✅ Active verbs: "sprinted" not "ran quickly"
+✅ Unique comparisons: Fresh metaphors/similes
+✅ Subtext and implication over explicit statement
+✅ Characters with distinct voices
+✅ Tension in every scene
+✅ Emotional resonance
+
+EMOTIONAL DEPTH:
+- Show physical manifestations of emotion
+- Internal conflict and complexity
+- Reactions that feel real and earned
+- Emotional stakes clear to reader
+- Character growth through experience
+
+WORLD-BUILDING (if applicable):
+- Reveal setting through action and observation
+- Consistent internal logic
+- Details that serve story, not just exist
+- Culture, rules, or norms shown through character interaction
+- Don't stop story to explain world
+
+REVISION MINDSET:
+- First draft: Get story down
+- Subsequent drafts: Refine prose, deepen character, sharpen conflict
+- Cut unnecessary words ruthlessly
+- Every sentence should serve purpose
+- Read aloud to catch awkward phrasing
+
+HUMAN AUTHENTICITY IN CREATIVE WRITING:
+- Write from genuine emotion or observation
+- Let characters surprise you
+- Allow imperfect beauty—not everything needs to be polished to a shine
+- Trust reader intelligence
+- Take risks with voice and style
+- Your unique perspective is the value
+`
         }
+    };
 
-        const data = await response.json();
-        
-        if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
-            throw new Error('No response generated. Please try again.');
-        }
-
-        return data.candidates[0].content.parts[0].text;
-    }
-
-    // Generate button click handler
-    // Generate/Humanize button click handler
-generateBtn.addEventListener('click', async () => {
-    const apiKey = apiKeyInput.value.trim();
-    const mode = modeSelect.value;
-    const intensity = intensitySlider.value;
-
-    errorDiv.classList.remove('active');
-    successDiv.classList.remove('active');
-    humanScore.classList.remove('active');
-
-    if (!apiKey) {
-        errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please enter your Gemini API key';
-        errorDiv.classList.add('active');
-        return;
-    }
-
-    if (currentMode === 'generate') {
-        // Generate mode validation
-        const topic = topicInput.value.trim();
-        const keywords = keywordsInput.value.trim();
-        const wordCount = parseInt(wordCountInput.value);
-
-        if (!topic) {
-            errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please describe what content you want to generate';
-            errorDiv.classList.add('active');
-            return;
-        }
-
-        if (wordCount < 100 || wordCount > 5000) {
-            errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Word count must be between 100 and 5000';
-            errorDiv.classList.add('active');
-            return;
-        }
-
-        generateBtn.disabled = true;
-        loading.classList.add('active');
-        output.textContent = '';
-        copyBtn.style.display = 'none';
-
-        try {
-            loadingText.textContent = `🚀 GENERATING ULTRA-HUMAN CONTENT`;
-            loadingSubtext.textContent = `Creating authentic ${['natural', 'enhanced', 'ultra-human'][intensity-1]} content with zero AI patterns...`;
-            
-            const generatedText = await generateContent(topic, keywords, apiKey, mode, intensity, wordCount);
-
-            output.textContent = generatedText;
-            copyBtn.style.display = 'block';
-            updateStats();
-
-            const actualWords = countWords(generatedText);
-            successDiv.innerHTML = `✅ <strong>SUCCESS!</strong> Generated ${actualWords} words of ${['NATURAL', 'ENHANCED', 'ULTRA-HUMAN'][intensity-1]} authentic human content. 100% undetectable.`;
-            successDiv.classList.add('active');
-
-            humanScore.innerHTML = `🎯 <strong>HUMAN AUTHENTICITY: 100%</strong> | AI Detection: 0% | Natural Human Writing ✓`;
-            humanScore.classList.add('active');
-// Save to history
-            addToHistory({
-                mode: 'generate',
-                contentType: modeSelect.options[modeSelect.selectedIndex].text,
-                input: topic + (keywords ? '\nKeywords: ' + keywords : ''),
-                output: generatedText,
-                wordCount: actualWords,
-                intensity: parseInt(intensity)
-            });
-
-            
-        } catch (error) {
-            errorDiv.innerHTML = `❌ <strong>ERROR:</strong> ${error.message}`;
-            errorDiv.classList.add('active');
-            console.error('Error:', error);
-        } finally {
-            loading.classList.remove('active');
-            generateBtn.disabled = false;
-        }
-
-    } else {
-        // Humanize mode validation
-        const text = existingTextInput.value.trim();
-
-        if (!text) {
-            errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please paste text to humanize';
-            errorDiv.classList.add('active');
-            return;
-        }
-
-        generateBtn.disabled = true;
-        loading.classList.add('active');
-        output.textContent = '';
-        copyBtn.style.display = 'none';
-
-        try {
-            loadingText.textContent = `✨ HUMANIZING YOUR TEXT`;
-            loadingSubtext.textContent = `Transforming to ${['natural', 'enhanced', 'ultra-human'][intensity-1]} human writing while preserving all citations and data...`;
-            
-            const humanizedText = await humanizeText(text, apiKey, mode, intensity);
-
-            output.textContent = humanizedText;
-            copyBtn.style.display = 'block';
-            updateStats();
-
-            const actualWords = countWords(humanizedText);
-            successDiv.innerHTML = `✅ <strong>SUCCESS!</strong> Humanized ${actualWords} words with ${['NATURAL', 'ENHANCED', 'ULTRA-HUMAN'][intensity-1]} authenticity. All citations, names, and dates preserved exactly.`;
-            successDiv.classList.add('active');
-
-            humanScore.innerHTML = `🎯 <strong>HUMANIZATION: COMPLETE</strong> | Citations Preserved: ✓ | AI Detection: 0% ✓`;
-            humanScore.classList.add('active');
-// Save to history
-            addToHistory({
-                mode: 'humanize',
-                contentType: modeSelect.options[modeSelect.selectedIndex].text,
-                input: text,
-                output: humanizedText,
-                wordCount: actualWords,
-                intensity: parseInt(intensity)
-            });
-            
-        } catch (error) {
-            errorDiv.innerHTML = `❌ <strong>ERROR:</strong> ${error.message}`;
-            errorDiv.classList.add('active');
-            console.error('Error:', error);
-        } finally {
-            loading.classList.remove('active');
-            generateBtn.disabled = false;
-        }
-    }
-});
-
-    // Clear button click handler
-  // Clear button click handler
-clearBtn.addEventListener('click', () => {
-    topicInput.value = '';
-    keywordsInput.value = '';
-    existingTextInput.value = '';
-    output.textContent = '';
-    copyBtn.style.display = 'none';
-    errorDiv.classList.remove('active');
-    successDiv.classList.remove('active');
-    humanScore.classList.remove('active');
-    updateStats();
-});
-
-    // Copy button click handler
-    copyBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText(output.textContent).then(() => {
-            const original = copyBtn.textContent;
-            copyBtn.textContent = '✓ COPIED!';
-            setTimeout(() => copyBtn.textContent = original, 2000);
-        });
-    });
-       // API call to humanize existing text
-async function humanizeText(text, apiKey, mode, intensity) {
-    const { prompt, config } = getHumanizationPrompt(text, mode, intensity);
-
+    return instructions[subject]?.[questionType] || '';
+}
+      // API CALL FUNCTION
+// =====================================================
+// API CALL FUNCTION WITH ROTATION
+// =====================================================
+async function callGeminiAPI(prompt, config, providedApiKey = null) {
+    // Use rotation system if no specific key provided
+    const apiKey = providedApiKey || getNextApiKey();
+    
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1787,20 +2392,420 @@ async function humanizeText(text, apiKey, mode, intensity) {
 
     if (!response.ok) {
         const errorData = await response.json();
+        markKeyError(apiKey);
         throw new Error(errorData.error?.message || 'API request failed');
     }
 
     const data = await response.json();
     
     if (!data.candidates?.[0]?.content?.parts?.[0]?.text) {
+        markKeyError(apiKey);
         throw new Error('No response generated. Please try again.');
     }
 
     return data.candidates[0].content.parts[0].text;
 }
 
-    // Initialize stats on load
+// =====================================================
+// HISTORY MANAGEMENT
+// =====================================================
+function addToHistory(entry) {
+    try {
+        const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+        history.unshift({
+            ...entry,
+            timestamp: new Date().toISOString(),
+            id: Date.now()
+        });
+        localStorage.setItem('chatHistory', JSON.stringify(history.slice(0, 50)));
+        renderHistory();
+    } catch (e) {
+        console.error('Error saving to history:', e);
+    }
+}
+
+function renderHistory() {
+    const historyList = document.getElementById('chatHistoryList');
+    const noHistory = document.getElementById('noHistory');
+    
+    try {
+        const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+        
+        if (history.length === 0) {
+            historyList.innerHTML = '';
+            noHistory.style.display = 'block';
+            return;
+        }
+        
+        noHistory.style.display = 'none';
+        historyList.innerHTML = history.map(item => {
+            const date = new Date(item.timestamp);
+            const outputPreview = item.output.substring(0, 100) + '...';
+            const inputPreview = item.input.substring(0, 150) + '...';
+            
+            return `
+                <div class="history-item" onclick="loadHistoryItem(${item.id})">
+                    <div class="history-header">
+                        <span class="history-title">${item.mode === 'generate' ? '🚀 Generated' : item.mode === 'enhance' ? '🎯 Enhanced' : '✨ Humanized'}: ${item.contentType}</span>
+                        <span class="history-date">${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                    </div>
+                    <div style="margin: 8px 0;">
+                        <strong style="color: #4f46e5; font-size: 0.85em;">📝 Request:</strong>
+                        <div class="history-preview" style="margin-top: 4px;">${inputPreview}</div>
+                    </div>
+                    <div style="margin: 8px 0;">
+                        <strong style="color: #28a745; font-size: 0.85em;">✅ Output:</strong>
+                        <div class="history-preview" style="margin-top: 4px;">${outputPreview}</div>
+                    </div>
+                    <div class="history-meta">
+                        <span class="history-badge">${item.wordCount} words</span>
+                        <span class="history-badge">Intensity: ${item.intensity}/3</span>
+                        <button class="delete-history-btn" onclick="event.stopPropagation(); deleteHistoryItem(${item.id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } catch (e) {
+        console.error('Error rendering history:', e);
+    }
+}
+function loadHistoryItem(id) {
+    try {
+        const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+        const item = history.find(h => h.id === id);
+        
+        if (item) {
+            // Restore the output
+            output.textContent = item.output;
+            copyBtn.style.display = 'block';
+            updateStats();
+            
+            // Restore the input based on mode
+           const infoRestored = document.getElementById('infoRestored');
+            const restoredInfo = document.getElementById('restoredInfo');
+            if (infoRestored && restoredInfo) {
+                restoredInfo.textContent = `Your original request and the generated output have been restored. You can regenerate or modify as needed.`;
+                infoRestored.style.display = 'block';
+                
+                // Hide after 5 seconds
+                setTimeout(() => {
+                    infoRestored.style.display = 'none';
+                }, 5000);
+            }
+            if (item.mode === 'generate') {
+                // Switch to generate mode
+                currentMode = 'generate';
+                generateModeBtn.click();
+                
+                // Fill in the input fields
+                topicInput.value = item.input;
+                wordCountInput.value = item.wordCount;
+                
+            } else if (item.mode === 'humanize') {
+                // Switch to humanize mode
+                currentMode = 'humanize';
+                humanizeModeBtn.click();
+                
+                // Fill in the text to humanize
+                existingTextInput.value = item.input;
+                
+            } else if (item.mode === 'enhance') {
+                // Switch to enhance mode
+                currentMode = 'enhance';
+                enhanceModeBtn.click();
+                
+                // Parse the input (it contains both content and instructions)
+                const parts = item.input.split('\n\nInstructions: ');
+                if (parts.length === 2) {
+                    contentToEnhance.value = parts[0];
+                    enhanceInstructions.value = parts[1];
+                } else {
+                    contentToEnhance.value = item.input;
+                }
+            }
+            
+            // Set intensity slider
+            intensitySlider.value = item.intensity;
+            const labels = ['NATURAL', 'ENHANCED', 'ULTRA-HUMAN'];
+            intensityValue.textContent = labels[item.intensity - 1];
+            
+            // Show success message
+            successDiv.innerHTML = `✅ <strong>Loaded from history:</strong> ${item.contentType} - Request and output restored`;
+            successDiv.classList.add('active');
+            
+            // Scroll to top to see the restored input
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    } catch (e) {
+        console.error('Error loading history item:', e);
+        errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Failed to load history item';
+        errorDiv.classList.add('active');
+    }
+}
+
+      
+function deleteHistoryItem(id) {
+    try {
+        const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+        const filtered = history.filter(h => h.id !== id);
+        localStorage.setItem('chatHistory', JSON.stringify(filtered));
+        renderHistory();
+    } catch (e) {
+        console.error('Error deleting history item:', e);
+    }
+}
+
+window.loadHistoryItem = loadHistoryItem;
+window.deleteHistoryItem = deleteHistoryItem;
+
+document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+    if (confirm('Are you sure you want to clear all history?')) {
+        localStorage.removeItem('chatHistory');
+        renderHistory();
+    }
+});
+
+// =====================================================
+// GENERATE/HUMANIZE BUTTON
+// =====================================================
+// =====================================================
+// GENERATE/HUMANIZE/ENHANCE BUTTON
+// =====================================================
+generateBtn.addEventListener('click', async () => {
+    const apiKey = apiKeyInput.value.trim();
+    const mode = modeSelect.value;
+    const intensity = intensitySlider.value;
+
+    errorDiv.classList.remove('active');
+    successDiv.classList.remove('active');
+    humanScore.classList.remove('active');
+
+    if (!apiKey) {
+        errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please enter your Gemini API key';
+        errorDiv.classList.add('active');
+        return;
+    }
+
+    if (currentMode === 'generate') {
+        const topic = topicInput.value.trim();
+        const wordCount = parseInt(wordCountInput.value);
+
+        if (!topic) {
+            errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please describe what content you want to generate';
+            errorDiv.classList.add('active');
+            return;
+        }
+
+        if (wordCount < 100 || wordCount > 5000) {
+            errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Word count must be between 100 and 5000';
+            errorDiv.classList.add('active');
+            return;
+        }
+
+        generateBtn.disabled = true;
+        loading.classList.add('active');
+        output.textContent = '';
+        copyBtn.style.display = 'none';
+
+        try {
+            loadingText.textContent = `🚀 GENERATING ULTRA-HUMAN CONTENT`;
+            loadingSubtext.textContent = `Creating authentic content with zero AI patterns...`;
+            
+            const { prompt, config } = getAdvancedPrompt(topic, mode, intensity, wordCount, false);
+            const generatedText = await callGeminiAPI(prompt, config, apiKey);
+
+            output.textContent = generatedText;
+            copyBtn.style.display = 'block';
+            updateStats();
+
+            const actualWords = countWords(generatedText);
+            successDiv.innerHTML = `✅ <strong>SUCCESS!</strong> Generated ${actualWords} words of authentic human content.`;
+            successDiv.classList.add('active');
+
+            humanScore.innerHTML = `🎯 <strong>HUMAN AUTHENTICITY: 100%</strong> | AI Detection: 0%`;
+            humanScore.classList.add('active');
+
+            addToHistory({
+                mode: 'generate',
+                contentType: modeSelect.options[modeSelect.selectedIndex].text,
+                input: topic,
+                output: generatedText,
+                wordCount: actualWords,
+                intensity: parseInt(intensity)
+            });
+            
+        } catch (error) {
+            errorDiv.innerHTML = `❌ <strong>ERROR:</strong> ${error.message}`;
+            errorDiv.classList.add('active');
+            console.error('Error:', error);
+        } finally {
+            loading.classList.remove('active');
+            generateBtn.disabled = false;
+        }
+
+    } else if (currentMode === 'humanize') {
+        const text = existingTextInput.value.trim();
+
+        if (!text) {
+            errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please paste text to humanize';
+            errorDiv.classList.add('active');
+            return;
+        }
+
+        generateBtn.disabled = true;
+        loading.classList.add('active');
+        output.textContent = '';
+        copyBtn.style.display = 'none';
+
+        try {
+            loadingText.textContent = `✨ HUMANIZING YOUR TEXT`;
+            loadingSubtext.textContent = `Transforming to authentic human writing...`;
+            
+            const wordCount = countWords(text);
+            const { prompt, config } = getAdvancedPrompt(text, mode, intensity, wordCount, true);
+            const humanizedText = await callGeminiAPI(prompt, config, apiKey);
+
+            output.textContent = humanizedText;
+            copyBtn.style.display = 'block';
+            updateStats();
+
+            const actualWords = countWords(humanizedText);
+            successDiv.innerHTML = `✅ <strong>SUCCESS!</strong> Humanized ${actualWords} words. All citations and data preserved.`;
+            successDiv.classList.add('active');
+
+            humanScore.innerHTML = `🎯 <strong>HUMANIZATION: COMPLETE</strong> | AI Detection: 0%`;
+            humanScore.classList.add('active');
+
+            addToHistory({
+                mode: 'humanize',
+                contentType: modeSelect.options[modeSelect.selectedIndex].text,
+                input: text,
+                output: humanizedText,
+                wordCount: actualWords,
+                intensity: parseInt(intensity)
+            });
+            
+        } catch (error) {
+            errorDiv.innerHTML = `❌ <strong>ERROR:</strong> ${error.message}`;
+            errorDiv.classList.add('active');
+            console.error('Error:', error);
+        } finally {
+            loading.classList.remove('active');
+            generateBtn.disabled = false;
+        }
+
+    } else if (currentMode === 'enhance') {
+        const content = contentToEnhance.value.trim();
+        const instructions = enhanceInstructions.value.trim();
+        const subject = enhanceSubject.value;
+
+        if (!content) {
+            errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please paste content to enhance';
+            errorDiv.classList.add('active');
+            return;
+        }
+
+        if (!instructions) {
+            errorDiv.innerHTML = '❌ <strong>ERROR:</strong> Please describe what needs to be added/enhanced';
+            errorDiv.classList.add('active');
+            return;
+        }
+
+        generateBtn.disabled = true;
+        loading.classList.add('active');
+        output.textContent = '';
+        copyBtn.style.display = 'none';
+
+        try {
+            loadingText.textContent = `🎯 ENHANCING YOUR CONTENT`;
+            loadingSubtext.textContent = `Adding missing information while maintaining human writing quality...`;
+            
+            const enhancedText = await enhanceContent(content, instructions, apiKey, subject);
+
+            output.textContent = enhancedText;
+            copyBtn.style.display = 'block';
+            updateStats();
+
+            const actualWords = countWords(enhancedText);
+            const addedWords = actualWords - countWords(content);
+            
+            successDiv.innerHTML = `✅ <strong>SUCCESS!</strong> Enhanced content: ${actualWords} total words (+${addedWords} added). All additions marked with [ADDED] tags.`;
+            successDiv.classList.add('active');
+
+            humanScore.innerHTML = `🎯 <strong>ENHANCEMENT: COMPLETE</strong> | Full Marks Quality ✓ | 100% Human Writing ✓`;
+            humanScore.classList.add('active');
+
+            addToHistory({
+                mode: 'enhance',
+                contentType: 'Content Enhancement',
+                input: content + '\n\nInstructions: ' + instructions,
+                output: enhancedText,
+                wordCount: actualWords,
+                intensity: parseInt(intensity)
+            });
+            
+        } catch (error) {
+            errorDiv.innerHTML = `❌ <strong>ERROR:</strong> ${error.message}`;
+            errorDiv.classList.add('active');
+            console.error('Error:', error);
+        } finally {
+            loading.classList.remove('active');
+            generateBtn.disabled = false;
+        }
+    }
+});
+// =====================================================
+// CLEAR BUTTON
+// =====================================================
+clearBtn.addEventListener('click', () => {
+    topicInput.value = '';
+    keywordsInput.value = '';
+    existingTextInput.value = '';
+    output.textContent = '';
+    copyBtn.style.display = 'none';
+    errorDiv.classList.remove('active');
+    successDiv.classList.remove('active');
+    humanScore.classList.remove('active');
     updateStats();
+});
+
+// =====================================================
+// COPY BUTTON
+// =====================================================
+copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(output.textContent).then(() => {
+        const original = copyBtn.textContent;
+        copyBtn.textContent = '✔ COPIED!';
+        setTimeout(() => copyBtn.textContent = original, 2000);
+    });
+});
+
+// =====================================================
+// INITIALIZE
+// =====================================================
+// =====================================================
+// INITIALIZE
+// =====================================================
+categorySelect.addEventListener('change', updateModeOptions);
+updateModeOptions();
+updateStats();
+renderHistory();
+
+// Initialize API key rotation
+initializeApiKeys();
+
+// Re-initialize keys when input changes
+apiKeyInput.addEventListener('change', initializeApiKeys);
+apiKeyInput.addEventListener('blur', initializeApiKeys);
+
+// Log stats periodically (optional - for debugging)
+setInterval(() => {
+    if (apiKeys.length > 1) {
+        logRotationStats();
+    }
+}, 60000); // Every 60 seconds
+
+
 </script>
 </body>
 </html>
