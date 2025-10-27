@@ -55,7 +55,11 @@
             let currentView = 'chat';
             let isGenerating = false;
             let studyData = { flashcards: [], quizzes: [], studyPlans: [], mindmaps: null };
-            
+            // Memory System
+let userMemories = [];
+
+// Deep Think Mode
+let deepThinkEnabled = false;
             let lastGenerationTruncated = false;
             let lastGenerationContext = {
                 prompt: '',
@@ -83,6 +87,159 @@
             let progressInterval = null;
 
             const apiKey = "AIzaSyAjLL43xndy-QvP4WcLgdefZMmKRWB3JcM";
+// Memory Management System
+const MemorySystem = {
+    memories: [],
+    
+    async init() {
+        await this.loadMemories();
+    },
+    
+    async loadMemories() {
+        try {
+            const result = await window.storage.get('user_memories');
+            if (result && result.value) {
+                this.memories = JSON.parse(result.value);
+                this.updateMemoryDisplay();
+            }
+        } catch (error) {
+            console.log('No existing memories found');
+            this.memories = [];
+        }
+    },
+    
+    async saveMemories() {
+        try {
+            await window.storage.set('user_memories', JSON.stringify(this.memories));
+        } catch (error) {
+            console.error('Failed to save memories:', error);
+        }
+    },
+    
+    addMemory(content, type = 'general') {
+        const memory = {
+            id: Date.now(),
+            content: content,
+            type: type,
+            timestamp: new Date().toISOString()
+        };
+        this.memories.push(memory);
+        this.saveMemories();
+        this.updateMemoryDisplay();
+    },
+    
+    removeMemory(id) {
+        this.memories = this.memories.filter(m => m.id !== id);
+        this.saveMemories();
+        this.updateMemoryDisplay();
+    },
+    
+    async clearAllMemories() {
+        if (confirm('Are you sure you want to clear all memories?')) {
+            this.memories = [];
+            try {
+                await window.storage.delete('user_memories');
+            } catch (error) {
+                console.error('Failed to delete memories:', error);
+            }
+            this.updateMemoryDisplay();
+        }
+    },
+    
+    extractPersonalInfo(text) {
+        const patterns = {
+            name: /(?:my name is|i'm|i am|call me)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+            email: /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/i,
+            nickname: /(?:nickname|nick)\s+(?:is\s+)?([A-Z][a-z]+)/i,
+            preference: /(?:i like|i prefer|i love|i enjoy)\s+(.+?)(?:\.|!|\?|$)/i
+        };
+        
+        for (const [type, pattern] of Object.entries(patterns)) {
+            const match = text.match(pattern);
+            if (match) {
+                // Check if not already saved
+                const exists = this.memories.some(m => m.content === match[0]);
+                if (!exists) {
+                    this.addMemory(match[0], type);
+                }
+            }
+        }
+    },
+    
+    getContext() {
+        if (this.memories.length === 0) return '';
+        
+        return '\n\n[User Context: ' + 
+               this.memories.map(m => m.content).join('; ') + 
+               ']';
+    },
+    
+    updateMemoryDisplay() {
+        const container = document.getElementById('memoryList');
+        if (!container) return;
+        
+        if (this.memories.length === 0) {
+            container.innerHTML = `
+                <div class="empty-memory">
+                    <p>No memories saved yet</p>
+                    <p style="font-size: 12px; margin-top: 10px;">Personal info is auto-saved</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = this.memories.map(memory => `
+            <div class="memory-item">
+                <div class="memory-item-header">
+                    <span class="memory-type">${memory.type}</span>
+                    <button class="memory-delete" onclick="MemorySystem.removeMemory(${memory.id})">×</button>
+                </div>
+                <div class="memory-content">${memory.content}</div>
+            </div>
+        `).join('');
+    }
+};
+            
+            // Deep Thinking Mode
+const DeepThinkMode = {
+    enabled: false,
+    
+    toggle() {
+        this.enabled = !this.enabled;
+        const btn = document.getElementById('deepThinkBtn');
+        if (this.enabled) {
+            btn.classList.add('active');
+            btn.textContent = '🧠 Deep Think: ON';
+        } else {
+            btn.classList.remove('active');
+            btn.textContent = '🧠 Deep Think: OFF';
+        }
+    },
+    
+    getSystemPromptAddition() {
+        if (!this.enabled) return '';
+        
+        return `\n\n**CRITICAL: DEEP THINKING MODE ACTIVATED**
+Before answering, you MUST engage in extended reasoning by wrapping your thinking in <thinking> tags.
+Your thinking should include:
+1. Breaking down the question into components
+2. Considering multiple approaches
+3. Evaluating pros and cons
+4. Identifying potential issues
+5. Synthesizing the best solution
+
+Example:
+<thinking>
+Let me analyze this step by step...
+1. The user is asking about X
+2. Key considerations are A, B, C
+3. Best approach is...
+</thinking>
+
+Then provide your final answer. Make your thinking thorough and detailed.`;
+    }
+};
+            
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:streamGenerateContent?key=${apiKey}&alt=sse`;
             
             const systemInstructions = {
@@ -960,7 +1117,7 @@ Use 4-6 main branches with 2-4 children each. Make it comprehensive and well-org
                 
                 citation: `Generate citations using COMPREHENSIVE FORMATTING for APA, MLA, and Chicago styles with comparison tables and formatting examples.`,
 
-                pdfanalyzer: `You are a specialized PDF document analyzer. When a PDF is provided:
+               pdfanalyzer: `You are a specialized PDF document analyzer. When a PDF is provided:
 
 1. **Document Overview**: Provide a comprehensive summary of the document's purpose, structure, and key topics
 2. **Content Analysis**: Break down main sections, chapters, or topics
@@ -969,9 +1126,40 @@ Use 4-6 main branches with 2-4 children each. Make it comprehensive and well-org
 5. **Question Answering**: Answer specific questions about the document with page references
 6. **Study Materials**: Generate flashcards, summaries, or quizzes based on the content
 
-Always use proper markdown formatting with headers, lists, tables, and emphasis.`,
+Always use proper markdown formatting with headers, lists, tables, and emphasis.
 
-                imageanalyzer: `You are a specialized image analyzer for educational content. When an image is provided:
+**🎯 REAL CODE GENERATION RULES:**
+When generating code:
+1. **NEVER** use placeholders like "// Add your logic here" or "// Implementation here"
+2. **ALWAYS** provide complete, working implementations
+3. Include actual error handling with try-catch blocks
+4. Add real validation logic, not comments
+5. Provide functional examples that can run immediately
+6. Include all necessary imports and dependencies
+7. Generate complete files, not code snippets
+
+**Example of BAD code generation:**
+function processData(data) {
+    // TODO: Add validation here
+    // Process the data
+    return result;
+}
+
+**Example of GOOD code generation:**
+function processData(data) {
+    if (!data || !Array.isArray(data)) {
+        throw new Error('Invalid input: expected array');
+    }
+    
+    return data.filter(item => item !== null)
+               .map(item => ({
+                   id: item.id,
+                   processed: true,
+                   timestamp: Date.now()
+               }));
+}`,
+
+imageanalyzer: `You are a specialized image analyzer for educational content. When an image is provided:
 
 1. **Content Identification**: Identify what type of educational content is shown (diagram, equation, graph, notes, etc.)
 2. **Text Extraction**: Transcribe all visible text accurately, including handwritten content
@@ -980,7 +1168,38 @@ Always use proper markdown formatting with headers, lists, tables, and emphasis.
 5. **Educational Explanation**: Explain concepts shown in the image
 6. **Study Materials**: Generate flashcards, summaries, or practice problems based on the image
 
-Always use proper markdown formatting with headers, lists, tables, and LaTeX for math.`
+Always use proper markdown formatting with headers, lists, tables, and LaTeX for math.
+
+**🎯 REAL CODE GENERATION RULES:**
+When generating code:
+1. **NEVER** use placeholders like "// Add your logic here" or "// Implementation here"
+2. **ALWAYS** provide complete, working implementations
+3. Include actual error handling with try-catch blocks
+4. Add real validation logic, not comments
+5. Provide functional examples that can run immediately
+6. Include all necessary imports and dependencies
+7. Generate complete files, not code snippets
+
+**Example of BAD code generation:**
+function processData(data) {
+    // TODO: Add validation here
+    // Process the data
+    return result;
+}
+
+**Example of GOOD code generation:**
+function processData(data) {
+    if (!data || !Array.isArray(data)) {
+        throw new Error('Invalid input: expected array');
+    }
+    
+    return data.filter(item => item !== null)
+               .map(item => ({
+                   id: item.id,
+                   processed: true,
+                   timestamp: Date.now()
+               }));
+}`
             };
 
             // Load previous context from localStorage
@@ -2695,7 +2914,9 @@ Build upon the previous code generation. Maintain consistency in language, frame
                 }
 
                 currentChat.history.push({ role: "user", parts: messageContent });
-                saveChats();
+
+      MemorySystem.extractPersonalInfo(prompt);
+      saveChats();
 
                 showChatView();
                 createUserMessage(prompt, attachedFileName, attachedFileType, attachedFileType === 'image' ? attachedFileContent : null);
@@ -2706,11 +2927,17 @@ Build upon the previous code generation. Maintain consistency in language, frame
                 let isInThinking = false;
                 let thinkingContent = '';
 
-                let systemPromptText = systemInstructions[currentTool] || systemInstructions['chat'];
-                if (currentTool === 'flashcards') {
-                    const count = document.getElementById('flashcard-count')?.value || 8;
-                    systemPromptText = systemPromptText.replace('{{count}}', count);
-                }
+              let systemPromptText = systemInstructions[currentTool] || systemInstructions['chat'];
+if (currentTool === 'flashcards') {
+    const count = document.getElementById('flashcard-count')?.value || 8;
+    systemPromptText = systemPromptText.replace('{{count}}', count);
+}
+
+// Add memory context
+systemPromptText += MemorySystem.getContext();
+
+// Add deep think instructions
+systemPromptText += DeepThinkMode.getSystemPromptAddition();
 
                 const payload = {
                     contents: currentChat.history,
@@ -3072,4 +3299,863 @@ try {
             loadGenerationContext();
             loadChats();
             updateToolHeader('chat');
+            // Initialize Memory System
+MemorySystem.init();
+
+// Setup Deep Think button
+document.getElementById('deepThinkBtn')?.addEventListener('click', () => {
+    DeepThinkMode.toggle();
+});
         });
+
+const memoryToggleBtn = document.getElementById('memoryToggleBtn');
+const memorySidebar = document.getElementById('memorySidebar');
+const closeMemoryBtn = document.getElementById('closeMemoryBtn');
+const inputArea = document.querySelector('.input-area');
+
+let isMemoryVisible = false;
+
+const toggleMemoryPanel = () => {
+    isMemoryVisible = !isMemoryVisible;
+    memorySidebar.classList.toggle('visible', isMemoryVisible);
+    memoryToggleBtn.classList.toggle('active', isMemoryVisible);
+    inputArea.classList.toggle('memory-visible', isMemoryVisible);
+    
+    // Update button icon
+    const icon = memoryToggleBtn.querySelector('i');
+    icon.className = isMemoryVisible ? 'fas fa-times' : 'fas fa-brain';
+};
+
+// Toggle on button click
+memoryToggleBtn.addEventListener('click', toggleMemoryPanel);
+closeMemoryBtn.addEventListener('click', toggleMemoryPanel);
+
+// Toggle on Tab key press
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab' && !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        // Only toggle if not focused on input elements
+        if (!['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+            e.preventDefault();
+            toggleMemoryPanel();
+        }
+    }
+});
+
+// ============================================
+// PERMANENT MEMORY SYSTEM WITH LOCALSTORAGE
+// ============================================
+const MemorySystem = {
+    memories: [],
+    STORAGE_KEY: 'studyai_user_memories_permanent',
+    MAX_MEMORIES: 100, // Prevent unlimited growth
+    
+    async init() {
+        console.log('🔧 Initializing Memory System...');
+        await this.loadMemories();
+        this.setupMemoryToggle();
+        this.updateMemoryBadge();
+        console.log('✅ Memory System initialized with', this.memories.length, 'memories');
+    },
+    
+    async loadMemories() {
+        try {
+            // Try localStorage first (primary storage)
+            const stored = localStorage.getItem(this.STORAGE_KEY);
+            if (stored) {
+                this.memories = JSON.parse(stored);
+                console.log(`📚 Loaded ${this.memories.length} memories from localStorage`);
+                this.updateMemoryDisplay();
+                return;
+            }
+            
+            // Fallback: Try window.storage if available
+            if (window.storage && window.storage.get) {
+                const result = await window.storage.get(this.STORAGE_KEY);
+                if (result && result.value) {
+                    this.memories = JSON.parse(result.value);
+                    console.log(`📚 Loaded ${this.memories.length} memories from window.storage`);
+                    // Migrate to localStorage for faster access
+                    this.saveToLocalStorage();
+                    this.updateMemoryDisplay();
+                    return;
+                }
+            }
+            
+            console.log('ℹ️ No existing memories found');
+            this.memories = [];
+        } catch (error) {
+            console.error('❌ Failed to load memories:', error);
+            this.memories = [];
+        }
+        this.updateMemoryDisplay();
+    },
+    
+    saveToLocalStorage() {
+        try {
+            const dataToSave = JSON.stringify(this.memories);
+            localStorage.setItem(this.STORAGE_KEY, dataToSave);
+            
+            // Verify save
+            const verification = localStorage.getItem(this.STORAGE_KEY);
+            if (!verification) {
+                throw new Error('Verification failed');
+            }
+            
+            console.log(`💾 Saved ${this.memories.length} memories to localStorage`);
+            return true;
+        } catch (error) {
+            console.error('❌ LocalStorage save failed:', error);
+            
+            // If localStorage is full, try to free space by removing oldest memories
+            if (error.name === 'QuotaExceededError') {
+                console.warn('⚠️ Storage quota exceeded, removing oldest memories...');
+                this.memories = this.memories.slice(-50); // Keep only last 50
+                return this.saveToLocalStorage();
+            }
+            
+            return false;
+        }
+    },
+    
+    async saveMemories() {
+        // Save to localStorage first (primary)
+        const localSuccess = this.saveToLocalStorage();
+        
+        // Also save to window.storage as backup (if available)
+        if (window.storage && window.storage.set) {
+            try {
+                await window.storage.set(this.STORAGE_KEY, JSON.stringify(this.memories));
+                console.log('💾 Backup saved to window.storage');
+            } catch (error) {
+                console.warn('⚠️ Backup to window.storage failed:', error);
+            }
+        }
+        
+        return localSuccess;
+    },
+    
+    addMemory(content, type = 'general') {
+        console.log(`💾 Attempting to add: [${type}] "${content}"`);
+        
+        // Validate content
+        if (!content || typeof content !== 'string') {
+            console.warn('⚠️ Invalid memory content');
+            return false;
+        }
+        
+        const cleanContent = content.trim();
+        if (cleanContent.length < 2 || cleanContent.length > 500) {
+            console.warn('⚠️ Memory content length invalid');
+            return false;
+        }
+        
+        // Check for duplicates (case-insensitive)
+        const exists = this.memories.some(m => 
+            m.content.toLowerCase() === cleanContent.toLowerCase()
+        );
+        
+        if (exists) {
+            console.log('⭕ Memory already exists, skipping');
+            return false;
+        }
+        
+        // Create memory object
+        const memory = {
+            id: Date.now() + Math.random(),
+            content: cleanContent,
+            type: type,
+            timestamp: new Date().toISOString(),
+            created: Date.now()
+        };
+        
+        // Add to beginning (most recent first)
+        this.memories.unshift(memory);
+        
+        // Enforce limit
+        if (this.memories.length > this.MAX_MEMORIES) {
+            this.memories = this.memories.slice(0, this.MAX_MEMORIES);
+            console.log(`🔄 Trimmed to ${this.MAX_MEMORIES} memories`);
+        }
+        
+        // Save immediately
+        const saved = this.saveMemories();
+        
+        if (saved) {
+            this.updateMemoryDisplay();
+            this.updateMemoryBadge();
+            this.showMemoryNotification('💾 Memory saved permanently!');
+            console.log('✅ Memory saved:', memory);
+            return true;
+        } else {
+            // Rollback if save failed
+            this.memories.shift();
+            this.showMemoryNotification('❌ Failed to save memory');
+            return false;
+        }
+    },
+    
+    removeMemory(id) {
+        console.log(`🗑️ Removing memory: ${id}`);
+        const beforeCount = this.memories.length;
+        
+        this.memories = this.memories.filter(m => m.id !== id);
+        
+        if (this.memories.length < beforeCount) {
+            this.saveMemories();
+            this.updateMemoryDisplay();
+            this.updateMemoryBadge();
+            this.showMemoryNotification('🗑️ Memory deleted');
+            console.log('✅ Memory removed');
+        } else {
+            console.warn('⚠️ Memory not found');
+        }
+    },
+    
+    async clearAllMemories() {
+        const count = this.memories.length;
+        
+        if (!confirm(`⚠️ Delete all ${count} memories?\n\nThis action CANNOT be undone!`)) {
+            return;
+        }
+        
+        this.memories = [];
+        
+        // Clear from localStorage
+        try {
+            localStorage.removeItem(this.STORAGE_KEY);
+            console.log('🧹 Cleared localStorage');
+        } catch (error) {
+            console.error('❌ Failed to clear localStorage:', error);
+        }
+        
+        // Clear from window.storage
+        if (window.storage && window.storage.delete) {
+            try {
+                await window.storage.delete(this.STORAGE_KEY);
+                console.log('🧹 Cleared window.storage');
+            } catch (error) {
+                console.warn('⚠️ Failed to clear window.storage:', error);
+            }
+        }
+        
+        this.updateMemoryDisplay();
+        this.updateMemoryBadge();
+        this.showMemoryNotification(`🧹 All ${count} memories cleared permanently`);
+    },
+    
+    extractPersonalInfo(text) {
+        if (!text || typeof text !== 'string') return;
+        
+        console.log('🔍 Extracting from:', text.substring(0, 100) + '...');
+        
+        const patterns = {
+            name: /(?:my name is|i'm|i am|call me|i go by|this is)\s+([A-Za-z]+(?:\s+[A-Za-z]+)?)/i,
+            email: /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/i,
+            phone: /(?:phone|mobile|cell)(?:\s+(?:number|is))?\s*:?\s*([0-9]{3}[-.\s]?[0-9]{3}[-.\s]?[0-9]{4})/i,
+            age: /(?:i am|i'm)\s+(\d{1,2})\s+years?\s+old/i,
+            location: /(?:i live in|i'm from|i'm in|from)\s+([A-Za-z\s]+?)(?:\.|,|and|!|\?|$)/i,
+            occupation: /(?:i am a|i'm a|i work as|my job is|i'm an?)\s+([a-z\s]+?)(?:\.|,|and|!|\?|$)/i,
+            preference: /(?:i like|i prefer|i love|i enjoy|i'm interested in|interested in)\s+(.+?)(?:\.|!|\?|,|and|$)/i,
+            goal: /(?:my goal is|i want to|i'm trying to|i aim to|goal is to)\s+(.+?)(?:\.|!|\?|and|$)/i,
+            hobby: /(?:my hobby is|my hobbies are|i do|hobby:|hobbies:)\s+(.+?)(?:\.|!|\?|for fun|and|$)/i,
+            study: /(?:i study|i'm studying|studying|i major in)\s+(.+?)(?:\.|!|\?|,|and|$)/i,
+            school: /(?:i go to|i attend|i'm at|student at)\s+(.+?)(?:\.|!|\?|,|and|$)/i
+        };
+        
+        let foundCount = 0;
+        
+        for (const [type, pattern] of Object.entries(patterns)) {
+            const match = text.match(pattern);
+            if (match) {
+                let content = match[1] ? match[1].trim() : match[0].trim();
+                
+                // Clean up content
+                content = content
+                    .replace(/\s+/g, ' ')
+                    .replace(/^(a|an|the)\s+/i, '')
+                    .trim();
+                
+                // Validate content length
+                if (content.length >= 2 && content.length <= 100) {
+                    const added = this.addMemory(content, type);
+                    if (added) {
+                        console.log(`✅ Found ${type}:`, content);
+                        foundCount++;
+                    }
+                }
+            }
+        }
+        
+        if (foundCount === 0) {
+            console.log('❌ No patterns matched');
+        } else {
+            console.log(`✅ Extracted ${foundCount} new memories`);
+        }
+    },
+    
+    getContext() {
+        if (this.memories.length === 0) return '';
+        
+        // Get most recent 10 memories for context
+        const recentMemories = this.memories.slice(0, 10);
+        
+        return '\n\n[User Context: ' + 
+               recentMemories.map(m => `${m.type}: ${m.content}`).join('; ') + 
+               ']';
+    },
+    
+    updateMemoryDisplay() {
+        const container = document.getElementById('memoryList');
+        if (!container) {
+            console.warn('⚠️ memoryList container not found');
+            return;
+        }
+        
+        if (this.memories.length === 0) {
+            container.innerHTML = `
+                <div class="empty-memory">
+                    <i class="fas fa-brain"></i>
+                    <p style="font-weight: 600; margin-bottom: 5px;">No memories saved yet</p>
+                    <p style="font-size: 12px; margin-top: 10px;">Personal info auto-saves from chat</p>
+                    <p style="font-size: 11px; margin-top: 15px; color: #6c757d;">
+                        Try: "My name is John" or "I like coding"
+                    </p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = this.memories.map(memory => `
+            <div class="memory-item" data-memory-id="${memory.id}">
+                <div class="memory-item-header">
+                    <span class="memory-type">${this.formatType(memory.type)}</span>
+                    <button class="memory-delete" onclick="MemorySystem.removeMemory(${memory.id})" title="Delete permanently">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+                <div class="memory-content">${this.escapeHtml(memory.content)}</div>
+                <div style="font-size: 10px; color: #adb5bd; margin-top: 5px;">
+                    ${this.formatDate(memory.timestamp)}
+                </div>
+            </div>
+        `).join('');
+        
+        console.log(`📊 Updated display: ${this.memories.length} memories`);
+    },
+    
+    formatType(type) {
+        const typeMap = {
+            name: '👤 Name',
+            email: '📧 Email',
+            phone: '📱 Phone',
+            age: '🎂 Age',
+            location: '📍 Location',
+            occupation: '💼 Job',
+            preference: '❤️ Like',
+            goal: '🎯 Goal',
+            hobby: '🎨 Hobby',
+            study: '📚 Study',
+            school: '🏫 School',
+            general: 'ℹ️ Info'
+        };
+        return typeMap[type] || '📝 ' + type;
+    },
+    
+    formatDate(timestamp) {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+        
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins}m ago`;
+        if (diffHours < 24) return `${diffHours}h ago`;
+        if (diffDays < 7) return `${diffDays}d ago`;
+        
+        return date.toLocaleDateString();
+    },
+    
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    },
+    
+    updateMemoryBadge() {
+        const toggleBtn = document.getElementById('memoryToggleBtn');
+        if (!toggleBtn) return;
+        
+        const count = this.memories.length;
+        const existingBadge = toggleBtn.querySelector('.memory-badge');
+        if (existingBadge) existingBadge.remove();
+        
+        if (count > 0) {
+            const badge = document.createElement('span');
+            badge.className = 'memory-badge';
+            badge.textContent = count > 99 ? '99+' : count;
+            badge.style.cssText = `
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                background: #ef4444;
+                color: white;
+                border-radius: 50%;
+                min-width: 22px;
+                height: 22px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                font-weight: bold;
+                border: 2px solid white;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                padding: 0 4px;
+            `;
+            toggleBtn.style.position = 'relative';
+            toggleBtn.appendChild(badge);
+        }
+    },
+    
+    setupMemoryToggle() {
+        const toggleBtn = document.getElementById('memoryToggleBtn');
+        const sidebar = document.getElementById('memorySidebar');
+        const closeBtn = document.getElementById('closeMemoryBtn');
+        const inputArea = document.querySelector('.input-area');
+        
+        if (!toggleBtn || !sidebar) {
+            console.warn('⚠️ Memory toggle elements not found');
+            return;
+        }
+        
+        toggleBtn.addEventListener('click', () => {
+            const isVisible = sidebar.classList.toggle('visible');
+            toggleBtn.classList.toggle('active', isVisible);
+            
+            if (inputArea) {
+                inputArea.classList.toggle('memory-visible', isVisible);
+            }
+            
+            console.log('🔄 Memory panel:', isVisible ? 'opened' : 'closed');
+        });
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                sidebar.classList.remove('visible');
+                toggleBtn.classList.remove('active');
+                if (inputArea) {
+                    inputArea.classList.remove('memory-visible');
+                }
+            });
+        }
+        
+        // Keyboard shortcut (Tab key)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab' && !e.shiftKey && !e.ctrlKey && !e.altKey) {
+                const activeElement = document.activeElement;
+                const isInputFocused = activeElement.tagName === 'INPUT' || 
+                                     activeElement.tagName === 'TEXTAREA';
+                
+                if (!isInputFocused) {
+                    e.preventDefault();
+                    toggleBtn.click();
+                }
+            }
+        });
+        
+        this.updateMemoryBadge();
+        console.log('✅ Memory toggle setup complete');
+    },
+    
+    showMemoryNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 80px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+            z-index: 9999;
+            font-weight: 600;
+            animation: slideInRight 0.3s ease-out;
+        `;
+        notification.innerHTML = message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease-in';
+            setTimeout(() => notification.remove(), 300);
+        }, 2000);
+    },
+    
+    // Export memories as JSON for backup
+    exportMemories() {
+        const dataStr = JSON.stringify(this.memories, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = `memories_backup_${Date.now()}.json`;
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+        this.showMemoryNotification('💾 Memories exported!');
+    },
+    
+    // Import memories from JSON backup
+    async importMemories(file) {
+        try {
+            const text = await file.text();
+            const imported = JSON.parse(text);
+            
+            if (!Array.isArray(imported)) {
+                throw new Error('Invalid format');
+            }
+            
+            const confirmed = confirm(`Import ${imported.length} memories?\nExisting memories will be merged.`);
+            if (!confirmed) return;
+            
+            // Merge with existing, avoiding duplicates
+            imported.forEach(mem => {
+                if (!this.memories.some(m => m.content === mem.content)) {
+                    this.memories.push(mem);
+                }
+            });
+            
+            this.saveMemories();
+            this.updateMemoryDisplay();
+            this.updateMemoryBadge();
+            this.showMemoryNotification(`✅ Imported ${imported.length} memories`);
+        } catch (error) {
+            console.error('❌ Import failed:', error);
+            alert('Failed to import memories. Invalid file format.');
+        }
+    }
+};
+
+// Add CSS animations if not already present
+if (!document.getElementById('memory-animations')) {
+    const style = document.createElement('style');
+    style.id = 'memory-animations';
+    style.textContent = `
+        @keyframes slideInRight {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Initialize Memory System on page load
+document.addEventListener('DOMContentLoaded', () => {
+    MemorySystem.init();
+});
+
+// Expose globally for debugging
+window.MemorySystem = MemorySystem;
+
+// Auto-save before page unload
+window.addEventListener('beforeunload', () => {
+    MemorySystem.saveMemories();
+});
+// Message Zoom System with Slider
+const MessageZoomSystem = {
+    activeZoom: null,
+    defaultFontSize: 16, // Base font size in pixels
+    
+    init() {
+        this.addZoomControls();
+        this.observeNewMessages();
+        console.log('✅ Message Zoom System initialized');
+    },
+    
+    observeNewMessages() {
+        const responseHistory = document.getElementById('responseHistory');
+        if (!responseHistory) return;
+        
+        const observer = new MutationObserver(() => {
+            this.addZoomControls();
+        });
+        
+        observer.observe(responseHistory, {
+            childList: true,
+            subtree: true
+        });
+    },
+    
+    addZoomControls() {
+        // Target both user and AI messages
+        const messages = document.querySelectorAll('.flex:not(.zoom-enabled)');
+        
+        messages.forEach(message => {
+            // Check if it's a message container (has message content)
+            const messageContent = message.querySelector('.message-content, .user-message-text, .streaming-text');
+            if (!messageContent) return;
+            
+            // Mark as processed
+            message.classList.add('zoom-enabled');
+            
+            // Make message position relative for absolute positioning of slider
+            message.style.position = 'relative';
+            
+            // Create zoom slider container
+            const zoomContainer = document.createElement('div');
+            zoomContainer.className = 'message-zoom-slider-container';
+            zoomContainer.style.cssText = `
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 12px 16px;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+                z-index: 100;
+                min-width: 200px;
+            `;
+            
+            zoomContainer.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <button class="zoom-btn-minus" style="
+                        width: 32px;
+                        height: 32px;
+                        border: none;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        font-size: 16px;
+                        transition: all 0.2s;
+                    ">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+                        <input type="range" class="zoom-slider" min="12" max="32" value="16" step="1" style="
+                            width: 100%;
+                            height: 6px;
+                            border-radius: 3px;
+                            background: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+                            outline: none;
+                            cursor: pointer;
+                            -webkit-appearance: none;
+                        ">
+                        <div style="display: flex; justify-content: space-between; font-size: 10px; color: #6b7280;">
+                            <span>12px</span>
+                            <span class="zoom-value" style="font-weight: bold; color: #667eea;">16px</span>
+                            <span>32px</span>
+                        </div>
+                    </div>
+                    
+                    <button class="zoom-btn-plus" style="
+                        width: 32px;
+                        height: 32px;
+                        border: none;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        font-size: 16px;
+                        transition: all 0.2s;
+                    ">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    
+                    <button class="zoom-btn-reset" title="Reset" style="
+                        width: 32px;
+                        height: 32px;
+                        border: 2px solid #667eea;
+                        background: white;
+                        color: #667eea;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        font-size: 12px;
+                        transition: all 0.2s;
+                    ">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                </div>
+            `;
+            
+            message.appendChild(zoomContainer);
+            
+            // Get elements
+            const slider = zoomContainer.querySelector('.zoom-slider');
+            const zoomValue = zoomContainer.querySelector('.zoom-value');
+            const btnMinus = zoomContainer.querySelector('.zoom-btn-minus');
+            const btnPlus = zoomContainer.querySelector('.zoom-btn-plus');
+            const btnReset = zoomContainer.querySelector('.zoom-btn-reset');
+            
+            // Store original font size
+            const originalFontSize = window.getComputedStyle(messageContent).fontSize;
+            message.dataset.originalFontSize = originalFontSize;
+            
+            // Slider functionality
+            const updateZoom = (value) => {
+                const fontSize = parseInt(value);
+                messageContent.style.fontSize = `${fontSize}px`;
+                messageContent.style.lineHeight = `${fontSize * 1.6}px`;
+                zoomValue.textContent = `${fontSize}px`;
+                slider.value = fontSize;
+                
+                // Update button states
+                btnMinus.disabled = fontSize <= 12;
+                btnPlus.disabled = fontSize >= 32;
+                
+                btnMinus.style.opacity = fontSize <= 12 ? '0.5' : '1';
+                btnPlus.style.opacity = fontSize >= 32 ? '0.5' : '1';
+            };
+            
+            slider.addEventListener('input', (e) => {
+                updateZoom(e.target.value);
+            });
+            
+            // Button controls
+            btnMinus.addEventListener('click', () => {
+                const newValue = Math.max(12, parseInt(slider.value) - 2);
+                updateZoom(newValue);
+            });
+            
+            btnPlus.addEventListener('click', () => {
+                const newValue = Math.min(32, parseInt(slider.value) + 2);
+                updateZoom(newValue);
+            });
+            
+            btnReset.addEventListener('click', () => {
+                updateZoom(16);
+            });
+            
+            // Button hover effects
+            [btnMinus, btnPlus].forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    if (!btn.disabled) {
+                        btn.style.transform = 'scale(1.1)';
+                        btn.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
+                    }
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'scale(1)';
+                    btn.style.boxShadow = 'none';
+                });
+            });
+            
+            btnReset.addEventListener('mouseenter', () => {
+                btnReset.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                btnReset.style.color = 'white';
+                btnReset.style.transform = 'scale(1.1)';
+            });
+            btnReset.addEventListener('mouseleave', () => {
+                btnReset.style.background = 'white';
+                btnReset.style.color = '#667eea';
+                btnReset.style.transform = 'scale(1)';
+            });
+            
+            // Show/hide on hover
+            message.addEventListener('mouseenter', () => {
+                zoomContainer.style.opacity = '1';
+                zoomContainer.style.pointerEvents = 'auto';
+            });
+            
+            message.addEventListener('mouseleave', () => {
+                zoomContainer.style.opacity = '0';
+                zoomContainer.style.pointerEvents = 'none';
+            });
+            
+            // Style the slider thumb
+            const style = document.createElement('style');
+            style.textContent = `
+                .zoom-slider::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 50%;
+                    background: white;
+                    border: 3px solid #667eea;
+                    cursor: pointer;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                    transition: all 0.2s;
+                }
+                
+                .zoom-slider::-webkit-slider-thumb:hover {
+                    transform: scale(1.2);
+                    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+                }
+                
+                .zoom-slider::-moz-range-thumb {
+                    width: 18px;
+                    height: 18px;
+                    border-radius: 50%;
+                    background: white;
+                    border: 3px solid #667eea;
+                    cursor: pointer;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                    transition: all 0.2s;
+                }
+                
+                .zoom-slider::-moz-range-thumb:hover {
+                    transform: scale(1.2);
+                    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+                }
+            `;
+            
+            if (!document.getElementById('zoom-slider-styles')) {
+                style.id = 'zoom-slider-styles';
+                document.head.appendChild(style);
+            }
+        });
+    }
+};
+
+// Initialize the zoom system when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait a bit for other systems to initialize
+    setTimeout(() => {
+        MessageZoomSystem.init();
+    }, 500);
+});
+
+// Also expose it globally for manual initialization if needed
+window.MessageZoomSystem = MessageZoomSystem;
+
+
+   document.addEventListener('DOMContentLoaded', () => {
+        const hint = document.getElementById('zoomFeatureHint');
+        const hasSeenHint = localStorage.getItem('hasSeenZoomHint');
+        
+        if (!hasSeenHint && hint) {
+            setTimeout(() => {
+                hint.style.opacity = '1';
+                hint.style.pointerEvents = 'auto';
+                
+                setTimeout(() => {
+                    hint.style.opacity = '0';
+                    hint.style.pointerEvents = 'none';
+                }, 5000);
+                
+                localStorage.setItem('hasSeenZoomHint', 'true');
+            }, 2000);
+        }
+    });
