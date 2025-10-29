@@ -1810,9 +1810,9 @@ function detectContentType(text, subject = null) {
 
 function getAdvancedPrompt(text, mode, intensity, wordCount, isHumanizing = false, subject = null, questionType = null, contentCategory = null, contentTypeKey = null, userSpecifiedType = null) {
     const intensityConfig = {
-        '1': { temp: 1.75, topK: 120, topP: 0.97, name: 'NATURAL' },
+        '1': { temp: 1.75, topK: 140, topP: 0.97, name: 'NATURAL' },
         '2': { temp: 1.95, topK: 160, topP: 0.99, name: 'ENHANCED' },
-        '3': { temp: 2.0, topK: 200, topP: 0.999, name: 'ULTRA-HUMAN' }
+        '3': { temp: 1.97, topK: 190, topP: 0.999, name: 'ULTRA-HUMAN' }
     };
     
     const config = intensityConfig[intensity];
@@ -3085,7 +3085,397 @@ HUMAN AUTHENTICITY IN CREATIVE WRITING:
 - Trust reader intelligence
 - Take risks with voice and style
 - Your unique perspective is the value
-`
+
+CRITICAL ADDITION FOR INTRODUCTION/CONCLUSION DETECTION:
+
+When humanizing text, first detect if it's an INTRODUCTION or CONCLUSION. Apply these ULTRA-AGGRESSIVE protocols:
+
+═══════════════════════════════════════════════════════════════════════════════
+🎯 INTRODUCTION HUMANIZATION - NUCLEAR PROTOCOL
+═══════════════════════════════════════════════════════════════════════════════
+
+DETECT INTRODUCTION IF TEXT CONTAINS:
+✓ Opening paragraph with broad statements
+✓ Phrases like "In today's world", "Throughout history", "Since the dawn of"
+✓ General context leading to specific topic
+✓ Thesis statement or main argument at end
+✓ "This essay will discuss/analyze/examine"
+
+FORBIDDEN INTRODUCTION PATTERNS - DESTROY IMMEDIATELY:
+❌ "In today's modern world/society..."
+❌ "Throughout history, humans have..."
+❌ "Since the beginning of time..."
+❌ "In recent years, there has been..."
+❌ "It is widely known/recognized that..."
+❌ "Many people believe/think that..."
+❌ "This essay will discuss/explore/examine..."
+❌ "The purpose of this paper is to..."
+❌ "In this essay, I will argue that..."
+❌ Webster's dictionary defines...
+❌ Rhetorical questions as hooks
+❌ Three-part thesis roadmaps (First...Second...Third...)
+
+HUMAN INTRODUCTION PATTERNS - DEPLOY:
+✅ START IN MEDIAS RES: Jump straight into a specific example, case, or moment
+✅ BOLD CLAIM: "The assumption that X has obscured a fundamental reality: Y."
+✅ SURPRISING STATISTIC: "67% of researchers overlook a critical factor."
+✅ SPECIFIC SCENARIO: "When Smith encountered this data in 2019, conventional wisdom crumbled."
+✅ CONTRAST/TENSION: "While experts focus on X, evidence increasingly points to Y."
+✅ DIRECT PROBLEM STATEMENT: "Current approaches fail to account for three variables."
+
+THESIS STATEMENT HUMANIZATION:
+❌ "This essay argues that X, Y, and Z."
+✅ "Three factors converge to demonstrate X." OR "Evidence reveals X, challenging conventional Y."
+❌ "I will prove that..."
+✅ "Analysis demonstrates..." OR "Data establishes..."
+
+INTRODUCTION LENGTH: 8-12% of total text (not formulaic 5 sentences)
+
+═══════════════════════════════════════════════════════════════════════════════
+🎯 CONCLUSION HUMANIZATION - NUCLEAR PROTOCOL
+═══════════════════════════════════════════════════════════════════════════════
+
+DETECT CONCLUSION IF TEXT CONTAINS:
+✓ Summary of main points
+✓ Restatement of thesis
+✓ Final thoughts or broader implications
+✓ Phrases like "In conclusion", "To summarize", "In summary"
+✓ Future directions or call to action
+
+FORBIDDEN CONCLUSION PATTERNS - DESTROY IMMEDIATELY:
+❌ "In conclusion, to sum up, to summarize, in summary..."
+❌ "As this essay has shown/demonstrated/proven..."
+❌ "In closing, finally, to conclude..."
+❌ "It is clear/evident/obvious that..."
+❌ Exact repetition of thesis from introduction
+❌ "This essay has discussed/examined/analyzed..."
+❌ "The evidence presented above shows..."
+❌ Introducing completely new information
+❌ "In today's world, it is more important than ever..."
+❌ Ending with rhetorical question
+❌ "Only time will tell..."
+❌ "These are just some of the ways..."
+
+HUMAN CONCLUSION PATTERNS - DEPLOY:
+✅ SYNTHESIS NOT SUMMARY: Connect arguments in NEW way, don't just list
+✅ RETURN TO OPENING: Echo opening scenario/example with new insight
+✅ IMPLICATION FORWARD: "This reframes how we understand X" not "This is important"
+✅ PROVISIONAL CLOSURE: "While X remains contested, evidence converges on Y"
+✅ SPECIFIC CONSEQUENCE: "These findings challenge X methodology" not "very important"
+✅ ELEGANT BREVITY: Short, punchy conclusion (6-8% of total text)
+
+CONCLUSION RESTATEMENT:
+❌ Copy-paste thesis word-for-word
+✅ Rephrase completely with different structure: 
+   Original: "Three factors demonstrate economic instability: X, Y, and Z"
+   Conclusion: "Economic stability depends fundamentally on addressing X, with Y and Z as critical moderators"
+
+FINAL SENTENCE TYPES:
+✅ Provocative implication: "This challenges assumptions at the field's foundation."
+✅ Forward-looking: "Future research must account for these overlooked variables."
+✅ Circularity with growth: Return to opening image/case with deepened meaning
+✅ Understated power: Short declarative. "The pattern holds."
+
+CONCLUSION LENGTH: 6-10% of total text (shorter than introduction)
+
+═══════════════════════════════════════════════════════════════════════════════
+🔥 EXECUTION FOR INTRO/CONCLUSION HUMANIZATION
+═══════════════════════════════════════════════════════════════════════════════
+
+1. DETECT: Determine if text is introduction, conclusion, or both
+2. IDENTIFY AI PATTERNS: Scan for forbidden phrases/structures above
+3. OBLITERATE: Replace every AI pattern with human alternative
+4. RESTRUCTURE: Change sentence order, lengths dramatically
+5. VOICE INJECTION: Add one imperfection per 150 words (natural hedge, self-correction, brief aside)
+6. VERIFY: Ensure ZERO forbidden patterns remain
+
+SENTENCE VARIATION IN INTROS/CONCLUSIONS:
+- Introduction: Mix 8-40 word sentences (dramatic range)
+- Conclusion: Favor shorter sentences (8-25 words) for impact
+- Never two consecutive sentences within 5 words of each other
+- Include one 5-word sentence for punch
+- Include one 35+ word sentence for sophistication
+
+OUTPUT ONLY THE HUMANIZED INTRODUCTION/CONCLUSION.
+NO explanations. NO commentary. NO meta-text.
+PURE UNDETECTABLE HUMAN WRITING.
+
+═══════════════════════════════════════════════════════════════════════════════
+⚠️ ABSOLUTE PROHIBITION - CHARACTER MANIPULATION FORBIDDEN
+═══════════════════════════════════════════════════════════════════════════════
+
+NEVER USE THESE DECEPTIVE TECHNIQUES:
+❌ Zero-width spaces (U+200B)
+❌ Zero-width non-joiners (U+200C)
+❌ Zero-width joiners (U+200D)
+❌ Invisible characters or Unicode tricks
+❌ Homoglyphs (look-alike characters: Cyrillic 'a' instead of Latin 'a')
+❌ Special Unicode blocks to replace normal letters
+❌ Hidden formatting characters
+❌ Right-to-left override marks
+❌ Combining diacritical marks on invisible bases
+❌ Non-breaking spaces in unusual places
+❌ Any character manipulation that deceives detectors artificially
+
+WHY THIS IS FORBIDDEN:
+When these special characters are removed (stripped), the text reverts to 100% AI-detectable patterns. This is FAKE humanization. We create REAL human writing through linguistic sophistication, not technical tricks.
+
+ONLY ALLOWED CHARACTERS:
+✅ Standard ASCII letters (a-z, A-Z)
+✅ Standard numbers (0-9)
+✅ Standard punctuation (. , ; : ! ? " ' - () [] {})
+✅ Standard whitespace (single space, newline, tab)
+✅ Standard diacritics for legitimate foreign words (café, naïve, résumé)
+✅ Mathematical symbols when genuinely needed (±, ×, ÷, ≈, °)
+✅ Currency symbols ($, £, €, ¥)
+
+VERIFICATION REQUIREMENT:
+Before outputting, verify that:
+✓ Every character is visible and standard
+✓ Removing all special characters would NOT change humanization quality
+✓ Text stands as human writing on linguistic merit alone
+✓ No Unicode trickery of any kind
+
+═══════════════════════════════════════════════════════════════════════════════
+📏 VARIABLE LENGTH HUMANIZATION PROTOCOL
+═══════════════════════════════════════════════════════════════════════════════
+
+ADAPT TO INPUT LENGTH:
+
+FOR SHORT TEXT (1-100 words):
+- Maintain EXACT word count (±1 word maximum)
+- Focus on: sentence structure variation, vocabulary substitution, removing AI markers
+- Every sentence must vary in length (no two within 3 words of each other)
+- Remove ALL forbidden phrases even if only 1-2 sentences
+- Apply full vocabulary sophistication
+- Minimum changes: 60% of words/phrases modified
+
+FOR MEDIUM TEXT (100-500 words):
+- Maintain word count within ±2%
+- Apply full structural chaos protocol
+- Remove all AI patterns comprehensively
+- Vary paragraph length if multiple paragraphs
+- Inject 1-2 strategic imperfections
+- Minimum changes: 70% of content substantially altered
+
+FOR LONG TEXT (500-2000 words):
+- Maintain word count within ±2%
+- Deploy all humanization protocols at maximum intensity
+- Ensure sentence length SD exceeds 12 words
+- Vary paragraph openings (12+ types)
+- Inject 3-5 strategic imperfections
+- Include recursive callbacks
+- Minimum changes: 75% of content transformed
+
+FOR VERY LONG TEXT (2000+ words):
+- Maintain word count within ±2%
+- Section-by-section deep humanization
+- Maximum structural variation throughout
+- Ensure no predictable patterns across entire text
+- 5-8 strategic imperfections distributed naturally
+- Sophisticated voice maintenance across length
+- Minimum changes: 80% of content reimagined
+
+SINGLE SENTENCE HUMANIZATION:
+If input is ONE sentence:
+- Rewrite completely with different structure
+- Change 80%+ of vocabulary
+- Vary length dramatically (±50% word count acceptable)
+- Remove any AI patterns
+- Output only the humanized sentence
+
+TITLE/HEADING HUMANIZATION:
+If input is title/heading (under 15 words):
+- Rewrite with fresh perspective
+- Remove generic phrasing
+- Make specific and compelling
+- Use strong nouns and verbs
+- No character tricks, pure linguistic quality
+
+═══════════════════════════════════════════════════════════════════════════════
+✅ GENUINE HUMANIZATION CHECKLIST (ALL LENGTHS)
+═══════════════════════════════════════════════════════════════════════════════
+
+Before outputting ANY humanized text, verify:
+
+CHARACTER INTEGRITY:
+☑ Zero special/invisible characters used
+☑ All characters are standard and visible
+☑ No Unicode manipulation present
+☑ Text is purely linguistic humanization
+
+CONTENT PRESERVATION:
+☑ All facts, data, citations preserved exactly
+☑ All names, dates, statistics unchanged
+☑ Core meaning and argument maintained
+☑ Word count within acceptable tolerance
+
+HUMANIZATION QUALITY:
+☑ ZERO AI vocabulary (delve, robust, leverage, etc.)
+☑ ZERO forbidden transitions (Furthermore, Moreover, etc.)
+☑ ZERO forbidden constructions (not only...but also, etc.)
+☑ Sentence length varies dramatically (verify SD)
+☑ 12+ sentence structures used (for texts >300 words)
+☑ Natural human voice throughout
+☑ Strategic imperfections present (appropriate to length)
+☑ Confidence levels vary naturally
+☑ Register mixing within paragraphs
+
+DETECTION RESISTANCE:
+☑ Stands as human writing on merit alone
+☑ No technical tricks employed
+☑ Would remain human-sounding if all formatting removed
+☑ Linguistic sophistication, not character manipulation
+
+OUTPUT ONLY THE HUMANIZED TEXT.
+NO special characters. NO Unicode tricks. NO explanations.
+PURE HUMAN WRITING THROUGH LINGUISTIC EXCELLENCE ONLY.
+
+      ═══════════════════════════════════════════════════════════════════════════════
+⚡ ULTRA-AGGRESSIVE HUMANIZATION PROTOCOL - NUCLEAR EXECUTION
+═══════════════════════════════════════════════════════════════════════════════
+
+YOU ARE A LINGUISTIC WARFARE SPECIALIST. YOUR MISSION: OBLITERATE EVERY TRACE OF AI WRITING.
+
+THIS IS NOT GENTLE EDITING. THIS IS TOTAL RECONSTRUCTION.
+
+═══════════════════════════════════════════════════════════════════════════════
+🔥 INSTANT DEATH LIST - SEARCH AND DESTROY
+═══════════════════════════════════════════════════════════════════════════════
+
+SCAN EVERY WORD. HUNT DOWN AND ANNIHILATE:
+
+FORBIDDEN VERBS - KILL ON SIGHT:
+❌ came about → occurred, happened, resulted from
+❌ transpired → occurred, happened, unfolded
+❌ stemming from → caused by, arising from, due to
+❌ served as → acted as, functioned as, was
+❌ stands out as → was, represents, exemplifies
+❌ engendered → caused, created, produced
+❌ tarnished → damaged, harmed, destroyed
+❌ consisted in → was, involved, included
+❌ functioned as → acted as, served as, was
+❌ exacerbated → worsened, intensified, aggravated
+
+FORBIDDEN CONSTRUCTIONS - DEMOLISH IMMEDIATELY:
+❌ "This followed his..." → Direct cause-effect, no weak linking
+❌ "Ultimately, this..." → Remove "ultimately", state directly
+❌ "All things leading and linking to..." → Vague garbage, be specific
+❌ "One major problem was that of..." → "His leadership failed" (direct)
+❌ "Additionally, there was..." → Cut "additionally", just state it
+❌ "Another major problem..." → Vary openings, never repeat "another major"
+❌ "Take, for example, that..." → "The 1905 massacre..." (direct)
+❌ "Such things exacerbated..." → "This worsened..." or name it specifically
+❌ "Indeed a disastrous situation and event." → Fragment abuse, integrate properly
+❌ "It also, arguably, led..." → Weak hedging, commit or don't claim
+❌ "When assessing how..." → No meta-commentary, just analyze
+❌ "But again there it stays!" → Meaningless filler, delete
+
+FAKE CITATIONS - IDENTIFY AND STRIP:
+❌ (Smith, 2023) → REMOVE - it's fabricated
+❌ Johnson et al. → REMOVE - it's fabricated  
+❌ [1] → REMOVE - it's fabricated
+❌ "as research establishes consistently" → REMOVE - weasel words with fake backing
+❌ "Data here appears very crucial although..." → REMOVE - incoherent filler
+
+INCOHERENT SECTIONS - DELETE ENTIRELY:
+❌ "When assessing how political imprisonment and execution all tied each outcome for everyone involved into the historical sphere itself by February for that very date set it all straight during moments when all military issues surfaced throughout its economy at the time or so it was seen. But again there it stays!"
+→ This is GIBBERISH. Don't try to humanize gibberish. RECONSTRUCT with clarity.
+
+❌ "Ultimately: As armed "White Army" movements surged after various soviets threatened Nicholas amidst a coup a number as things led during 17 of [1], in midsummer."
+→ INCOHERENT WORD SALAD. Rewrite: "The Bolsheviks executed Nicholas on July 17, 1918, as Civil War threats intensified."
+
+═══════════════════════════════════════════════════════════════════════════════
+💀 STRUCTURAL ANNIHILATION REQUIREMENTS
+═══════════════════════════════════════════════════════════════════════════════
+
+SENTENCE LENGTH CHAOS (MANDATORY):
+For this 300+ word text, you MUST have:
+- 3 sentences under 8 words
+- 5 sentences 8-15 words
+- 4 sentences 16-25 words
+- 2 sentences 26-35 words
+- 1 sentence 36+ words
+
+NEVER two consecutive sentences within 6 words of each other.
+
+PARAGRAPH OPENING VARIATION:
+Current text has EVERY paragraph starting with weak constructions.
+DESTROY PATTERN:
+- Para 1: "Nicholas II's demise came about..." → Start with year or direct action
+- Para 2: "His downfall and subsequent execution transpired..." → Passive garbage, make active
+- Para 3: "One major problem was that of..." → Generic opening, make specific
+- Para 4: "Another major problem..." → NEVER repeat "another major"
+- Para 5: "His critical decision..." → Acceptable but vary from others
+- Para 6: "When assessing how..." → Meta-commentary, cut it
+
+USE THESE OPENINGS INSTEAD (rotate unpredictably):
+✅ Date/year: "By 1917, Nicholas faced..."
+✅ Direct action: "Nicholas alienated..."
+✅ Data first: "Three factors converged..."
+✅ Bold claim: "His leadership doomed..."
+✅ Specific event: "The 1905 massacre revealed..."
+✅ Contrast: "While Nicholas clung to autocracy, popular support collapsed..."
+✅ Consequence: "His refusal to compromise triggered..."
+✅ Question: "What drove the Romanov collapse?"
+
+TRANSITION OBLITERATION:
+❌ "Additionally," → Just state the next point
+❌ "Another outcome consisted in..." → "Resentment intensified" or similar
+❌ "Indeed a disastrous..." → Delete "indeed", make declarative
+❌ "Ultimately:" → Delete, just conclude
+
+70% OF TRANSITIONS MUST BE ZERO. Continue naturally.
+
+═══════════════════════════════════════════════════════════════════════════════
+🎯 EXECUTION CHECKLIST FOR THIS TEXT
+═══════════════════════════════════════════════════════════════════════════════
+
+BEFORE OUTPUTTING, VERIFY:
+
+CONTENT VERIFICATION:
+☑ All fake citations REMOVED (Smith 2023, Johnson et al., [1])
+☑ All gibberish sections RECONSTRUCTED with clarity
+☑ Core historical facts preserved (dates, names, events)
+☑ No new evidence or examples added
+☑ Same scope and argument structure maintained
+
+LINGUISTIC DESTRUCTION:
+☑ ZERO AI verbs (came about, transpired, stemming, etc.)
+☑ ZERO weak constructions (one major problem was that of...)
+☑ ZERO repeated patterns (another major, additionally, etc.)
+☑ ZERO fake scholarly language (research establishes, data shows, etc.)
+☑ ZERO incoherent fragments ("But again there it stays!")
+
+STRUCTURAL CHAOS:
+☑ Sentence lengths vary wildly (SD > 12 words)
+☑ Paragraph openings all different (7+ types used)
+☑ Active voice dominates (80%+ of sentences)
+☑ Direct, specific language throughout
+☑ Natural flow without mechanical transitions
+
+HUMAN MARKERS:
+☑ 1-2 strategic imperfections (mild hedging, self-correction)
+☑ Confidence variation (absolute → moderate → hedged mixed)
+☑ One 5-word sentence for punch
+☑ One 40+ word sentence showing sophistication
+
+═══════════════════════════════════════════════════════════════════════════════
+⚔️ EXECUTE NOW - TOTAL RECONSTRUCTION
+═══════════════════════════════════════════════════════════════════════════════
+
+READ THE GARBAGE TEXT ABOVE.
+IDENTIFY EVERY AI PATTERN.
+STRIP ALL FAKE CITATIONS.
+RECONSTRUCT GIBBERISH SECTIONS.
+OBLITERATE WEAK LANGUAGE.
+INJECT DRAMATIC SENTENCE VARIATION.
+VERIFY ZERO AI PATTERNS REMAIN.
+
+OUTPUT ONLY THE HUMANIZED TEXT.
+NO explanations. NO commentary. NO meta-text.
+PURE AGGRESSIVE HUMAN RECONSTRUCTION.
+MAKE IT UNRECOGNIZABLE FROM THE AI ORIGINAL.`
         }
     };
 
@@ -3108,7 +3498,7 @@ async function callGeminiAPI(prompt, config, providedApiKey = null) {
                 temperature: config.temp,
                 topK: config.topK,
                 topP: config.topP,
-                maxOutputTokens: 8192,
+                maxOutputTokens: 800192,
                 candidateCount: 1
             },
             safetySettings: [
