@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1233,6 +1234,295 @@
 .zoom-btn-reset.has-changes {
     animation: pulse 2s infinite;
 }
+
+
+          #deepThinkBtn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    #deepThinkBtn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    
+    #deepThinkBtn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+    
+    #deepThinkBtn.active {
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+        }
+        50% {
+            box-shadow: 0 8px 48px rgba(236, 72, 153, 0.6);
+        }
+    }
+    
+    .thinking-stats span {
+        transition: all 0.2s;
+    }
+    
+    .thinking-stats span:hover {
+        transform: translateY(-2px);
+        color: #8b5cf6;
+    }
+
+
+        /* Canvas System Styles */
+.code-canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #1e1e1e;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+}
+
+.code-canvas-container.hidden {
+    display: none;
+}
+
+.canvas-header {
+    background: #252526;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #3e3e42;
+}
+
+.canvas-tabs {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+}
+
+.canvas-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.canvas-btn {
+    background: transparent;
+    border: none;
+    color: #cccccc;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.canvas-btn:hover {
+    background: #3e3e42;
+    color: white;
+}
+
+.canvas-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.canvas-sidebar {
+    width: 250px;
+    background: #252526;
+    border-right: 1px solid #3e3e42;
+    overflow-y: auto;
+}
+
+.file-tree {
+    padding: 12px;
+}
+
+.tree-file, .tree-folder {
+    padding: 6px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+    list-style: none;
+}
+
+.tree-file:hover, .tree-folder:hover {
+    background: #3e3e42;
+}
+
+.tree-file.active {
+    background: #667eea;
+    color: white;
+}
+
+.canvas-editor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-toolbar {
+    background: #2d2d30;
+    padding: 8px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    border-bottom: 1px solid #3e3e42;
+}
+
+.language-selector {
+    background: #3e3e42;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+.editor-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.editor-btn:hover {
+    background: #5568d3;
+    transform: translateY(-1px);
+}
+
+.code-editor {
+    flex: 1;
+    overflow: auto;
+}
+
+.canvas-preview {
+    width: 40%;
+    background: white;
+    border-left: 1px solid #3e3e42;
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-frame {
+    flex: 1;
+    border: none;
+    background: white;
+}
+
+.canvas-console {
+    height: 200px;
+    background: #1e1e1e;
+    border-top: 1px solid #3e3e42;
+    display: flex;
+    flex-direction: column;
+}
+
+.console-output {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #cccccc;
+}
+
+/* Massive Project Metrics */
+.massive-project-metrics {
+    margin: 20px 0;
+    animation: slideInUp 0.5s ease-out;
+}
+
+.metric-box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-badge {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+    background: #667eea;
+    color: white;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+        /* This could override the 'hidden' attribute */
+.w-12 .fas {
+    display: block !important; /* Or flex, etc. */
+}
+
+        /* In your global stylesheet (e.g., styles.css, app.css, or a <style> block in your HTML) */
+.hidden-via-css {
+    display: none !important;
+}
+
     </style>
 </head>
 <body>
@@ -1334,6 +1624,7 @@
                 </div>
             </div>
         </div>
+
         
         <!-- Main Content -->
         <div class="main-content">
@@ -1424,6 +1715,7 @@
         </div>
     </div>
 
+    
 <button class="memory-toggle-btn" id="memoryToggleBtn" title="Toggle Memory Panel (Tab)">
     <i class="fas fa-brain"></i>
 </button>
@@ -1483,8 +1775,7 @@
     </div>
 </div>
         <!-- Hidden Chat List for JavaScript compatibility -->
-<div id="chatList" style="display: none;"></div>
-<button id="newChatBtn" style="display: none;"></button>
+
     <!-- Custom Modal UI for Confirmations/Alerts -->
     <div id="customModal" class="modal-backdrop hidden">
         <div class="modal-content">
@@ -1496,6 +1787,43 @@
             </div>
         </div>
     </div>
+        <script>
+(function () {
+  const toggleBtn = document.getElementById('toggleSidebar');
+  const sidebar = document.getElementById('sidebar');
+  if (!toggleBtn || !sidebar) return;
+
+  const KEY = 'study_sidebar_collapsed';
+
+  function applyState(collapsed) {
+    if (collapsed) {
+      sidebar.classList.add('collapsed');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      toggleBtn.title = 'Open sidebar';
+    } else {
+      sidebar.classList.remove('collapsed');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      toggleBtn.title = 'Close sidebar';
+    }
+    try { localStorage.setItem(KEY, collapsed ? '1' : '0'); } catch (e) { /* ignore */ }
+  }
+
+  // Toggle on click
+  toggleBtn.addEventListener('click', () => {
+    const isCollapsed = sidebar.classList.contains('collapsed');
+    applyState(!isCollapsed);
+  });
+
+  // Initialize from saved state (default: open)
+  try {
+    const saved = localStorage.getItem(KEY);
+    applyState(saved === '1');
+  } catch (e) {
+    applyState(false);
+  }
+})();
+</script>
+
     <script src="script1.js"></script>
 
 </body>
