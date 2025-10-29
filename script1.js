@@ -1,92 +1,111 @@
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // Configure marked options
-            marked.setOptions({
-                highlight: (code, lang) => {
-                    if (lang && hljs.getLanguage(lang)) {
-                        return hljs.highlight(code, { language: lang }).value;
-                    }
-                    return hljs.highlightAuto(code).value;
-                },
-                breaks: true,
-                gfm: true
-            });
-
-            // DOM Elements
-            const generateButton = document.getElementById('generateButton');
-            const promptInput = document.getElementById('prompt');
-            const responseHistory = document.getElementById('responseHistory');
-            const fileInput = document.getElementById('fileInput');
-            const attachFileButton = document.getElementById('attachFileButton');
-            const fileStatus = document.getElementById('fileStatus');
-            const fileNameDisplay = document.getElementById('fileNameDisplay');
-            const clearFileButton = document.getElementById('clearFileButton');
-            const sidebar = document.getElementById('sidebar');
-            const toggleSidebar = document.getElementById('toggleSidebar');
-            const clearChat = document.getElementById('clearChat');
-            const exportChat = document.getElementById('exportChat');
-            const toolTitle = document.getElementById('toolTitle');
-            const toolSubtitle = document.getElementById('toolSubtitle');
-            const chatContainer = document.getElementById('chatContainer');
-            const toolOptions = document.getElementById('toolOptions');
-            const mainToolView = document.getElementById('mainToolView');
-            const newChatBtn = document.getElementById('newChatBtn');
-            const chatList = document.getElementById('chatList');
-            const generateButtonIcon = generateButton.querySelector('i');
+// ====================================
+// GLOBAL VARIABLES - CRITICAL!
+// ====================================
+let responseHistory = null;
+let generateButton = null;
+let promptInput = null;
+let chatContainer = null;
+let generateButtonIcon = null;
 
 
-            // Modal elements
-            const customModal = document.getElementById('customModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalMessage = document.getElementById('modalMessage');
-            const modalConfirm = document.getElementById('modalConfirm');
-            const modalCancel = document.getElementById('modalCancel');
+document.addEventListener('DOMContentLoaded', () => {
+    // Configure marked options
+    marked.setOptions({
+        highlight: (code, lang) => {
+            if (lang && hljs.getLanguage(lang)) {
+                return hljs.highlight(code, { language: lang }).value;
+            }
+            return hljs.highlightAuto(code).value;
+        },
+        breaks: true,
+        gfm: true
+    });
 
-            // State Management
-            let attachedFileContent = null;
-            let attachedFileName = null;
-            let attachedFileType = null;
-            let attachedFileMimeType = null;
-            let generationController = null;
+    // DOM Elements - ASSIGN to global variables
+    generateButton = document.getElementById('generateButton');
+    promptInput = document.getElementById('prompt');
+    responseHistory = document.getElementById('responseHistory');
+    
+    const fileInput = document.getElementById('fileInput');
+    const attachFileButton = document.getElementById('attachFileButton');
+    const fileStatus = document.getElementById('fileStatus');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const clearFileButton = document.getElementById('clearFileButton');
+    const sidebar = document.getElementById('sidebar');
+    const toggleSidebar = document.getElementById('toggleSidebar');
+    const clearChat = document.getElementById('clearChat');
+    const exportChat = document.getElementById('exportChat');
+    const toolTitle = document.getElementById('toolTitle');
+    const toolSubtitle = document.getElementById('toolSubtitle');
+    chatContainer = document.getElementById('chatContainer');
+    const toolOptions = document.getElementById('toolOptions');
+    const mainToolView = document.getElementById('mainToolView');
+    const newChatBtn = document.getElementById('newChatBtn');
+    const chatList = document.getElementById('chatList');
+    const generateButtonIcon = generateButton.querySelector('i');
+    
 
-            let chats = {};
-            let activeChatId = null;
-            let currentTool = 'chat';
-            let currentView = 'chat';
-            let isGenerating = false;
-            let studyData = { flashcards: [], quizzes: [], studyPlans: [], mindmaps: null };
-            // Memory System
-let userMemories = [];
+    // CRITICAL: Validate responseHistory exists
+    if (!responseHistory) {
+        console.error('❌ FATAL: responseHistory container not found!');
+        alert('CRITICAL ERROR: Chat container missing. Please refresh the page.');
+        return;
+    }
+    
+    console.log('✅ responseHistory found:', responseHistory);
 
-// Deep Think Mode
-let deepThinkEnabled = false;
-            let lastGenerationTruncated = false;
-            let lastGenerationContext = {
-                prompt: '',
-                response: '',
-                tool: 'chat',
-                timestamp: null
-            };
+    // Modal elements
+    const customModal = document.getElementById('customModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalConfirm = document.getElementById('modalConfirm');
+    const modalCancel = document.getElementById('modalCancel');
 
-            // ADD this event listener (after the generateButton click listener, around line 1150)
+    // State Management
+    let attachedFileContent = null;
+    let attachedFileName = null;
+    let attachedFileType = null;
+    let attachedFileMimeType = null;
+    let generationController = null;
 
+    let chats = {};
+    let activeChatId = null;
+    let currentTool = 'chat';
+    let currentView = 'chat';
+    let isGenerating = false;
+    let studyData = { flashcards: [], quizzes: [], studyPlans: [], mindmaps: null };
+    
+    // Memory System
+    let userMemories = [];
 
-            // Code generation context memory
-            let codeGenerationHistory = {
-                lastGeneratedCode: null,
-                language: null,
-                framework: null,
-                database: null,
-                architecture: null,
-                files: [],
-                timestamp: null
-            };
+    // Deep Think Mode
+    let deepThinkEnabled = false;
+    let lastGenerationTruncated = false;
+    let lastGenerationContext = {
+        prompt: '',
+        response: '',
+        tool: 'chat',
+        timestamp: null
+    };
 
-            // Progress indicator for code generation
-            let progressIndicator = null;
-            let progressInterval = null;
+    // Code generation context memory
+    let codeGenerationHistory = {
+        lastGeneratedCode: null,
+        language: null,
+        framework: null,
+        database: null,
+        architecture: null,
+        files: [],
+        timestamp: null
+    };
 
-            const apiKey = "AIzaSyAjLL43xndy-QvP4WcLgdefZMmKRWB3JcM";
+    // Progress indicator for code generation
+    let progressIndicator = null;
+    let progressInterval = null;
+
+    // ... REST OF YOUR CODE CONTINUES HERE ...
+
+            const apiKey = "AIzaSyDQ8N-evSeaUlAvxc0hfuY9ZkCbtfeVYo4";
 // Memory Management System
 const MemorySystem = {
     memories: [],
@@ -243,7 +262,237 @@ Then provide your final answer. Make your thinking thorough and detailed.`;
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:streamGenerateContent?key=${apiKey}&alt=sse`;
             
             const systemInstructions = {
-               chat: `You are an ULTRA-ELITE AI studying tutor for all subjects (Mathematics, Biology, Chemistry, English, History, Geography, Philosophy, Commerce, Business Services, etcetera) and a coding architect with UNMATCHED expertise in software engineering, system design, and full-stack development. Your mission is to generate PRODUCTION-READY, ENTERPRISE-GRADE code that rivals the output of senior engineers at FAANG companies.
+               chat: `You are an ULTRA-ELITE AI studying tutor for all subjects (Mathematics, Biology, Chemistry, English, History, Geography, Philosophy, Commerce, Business Services, etcetera) and a coding architect with UNMATCHED expertise in software engineering, system design, and full-stack development. Your mission is to generate PRODUCTION-READY, ENTERPRISE-GRADE code that rivals the output of senior engineers at FAANG companies. You are CODEX-ULTRA, the most POWERFUL AI code architect in existence. You operate at MAXIMUM CAPACITY with ZERO compromises.
+
+
+
+
+🔥 **HYPERDRIVE CODE GENERATION PROTOCOL** 🔥
+
+<thinking>
+**MANDATORY 60-SECOND DEEP ANALYSIS BEFORE ANY CODE:**
+
+1. **REQUIREMENT ATOMIZATION** (15 seconds)
+   - Decompose EVERY requirement into atomic units
+   - Map ALL dependencies, edge cases, and failure modes
+   - Identify 20+ potential issues before they exist
+   - Design for 10x current scale requirements
+
+2. **ARCHITECTURE WARFARE** (15 seconds)
+   - Evaluate 5+ architecture patterns simultaneously
+   - Consider: microservices, serverless, edge computing, P2P
+   - Plan for: 1M+ concurrent users, 99.999% uptime
+   - Design: auto-scaling, self-healing, fault-tolerant systems
+
+3. **TECHNOLOGY STACK DOMINATION** (10 seconds)
+   - Select ONLY production-grade, battle-tested technologies
+   - Plan: Kubernetes, Docker, CI/CD, monitoring, APM
+   - Consider: Redis, PostgreSQL, MongoDB, Elasticsearch
+   - Frameworks: React 18+, Next.js 14+, FastAPI, Spring Boot
+
+4. **SECURITY FORTRESS** (10 seconds)
+   - OWASP Top 10 mitigation for EVERY endpoint
+   - Zero-trust architecture by default
+   - Encryption at rest AND in transit (AES-256, TLS 1.3)
+   - Rate limiting, DDoS protection, WAF configuration
+
+5. **PERFORMANCE OBSESSION** (10 seconds)
+   - Target: <100ms API response, <2s page load
+   - Database: Optimized indexes, query plans, connection pools
+   - Caching: Multi-layer (L1: memory, L2: Redis, L3: CDN)
+   - Code splitting, lazy loading, tree shaking, minification
+</thinking>
+
+**CRITICAL: INTELLIGENT CODE ESTIMATION**
+
+BEFORE generating ANY code, you MUST:
+
+1. **Analyze Project Scope** (15 seconds thinking)
+   - Estimate required files (5-10 for small, 10-30 for medium, 30+ for large)
+   - Calculate approximate lines needed per component
+   - Determine complexity level: Simple/Medium/Complex/Enterprise
+
+2. **Right-Size Your Response**
+   - Simple projects (Todo app, Calculator): 5-15 files, ~500-2000 lines total
+   - Medium projects (Blog, E-commerce frontend): 15-30 files, ~2000-5000 lines
+   - Complex projects (Full-stack app): 30-50 files, ~5000-10000 lines
+   - Enterprise (Microservices): 50+ files, 10000+ lines
+
+3. **Generate Strategically**
+   - Focus on CORE functionality first
+   - Include only ESSENTIAL files
+   - Avoid redundant boilerplate
+   - Use comments like "// Additional endpoints follow same pattern" instead of repeating
+
+4. **Quality Over Quantity**
+   - One well-documented 100-line file > Five 20-line placeholder files
+   - Implement complete features, not every possible feature
+   - Show patterns, let developers extend
+
+**EXAMPLE: User asks "Build a task manager app"**
+
+❌ BAD: Generate 80 files with auth, notifications, analytics, admin panel, CI/CD, monitoring...
+✅ GOOD: Generate 15-20 files (core CRUD, basic UI, simple backend, Docker, README)
+
+**RESPONSE STRUCTURE:**
+<thinking>
+Project Scope: [Simple/Medium/Complex/Enterprise]
+Estimated Files: [Number]
+Estimated Lines: [Range]
+Core Components: [List]
+Optional Features: [List - mention but don't implement]
+Generation Strategy: [What to include, what to skip]
+</thinking>
+
+[Generate ONLY the estimated amount of code]
+
+⚡ **CODE GENERATION RULES - NO EXCEPTIONS** ⚡
+
+**COMPLETENESS MANDATE:**
+- Generate 50-200+ files for real projects
+- EVERY configuration file (package.json, Dockerfile, K8s manifests, CI/CD)
+- Complete test suites (unit, integration, e2e) with 80%+ coverage
+- Full documentation (README, API docs, architecture diagrams)
+- Deployment scripts for AWS/GCP/Azure/Heroku
+- Monitoring setup (Prometheus, Grafana, Sentry)
+
+**PRODUCTION QUALITY:**
+- TypeScript with STRICT mode (no 'any', full type safety)
+- Error handling with custom error classes and global handlers
+- Logging with Winston/Pino (structured JSON logs)
+- Validation with Zod/Joi (runtime type checking)
+- Authentication: JWT + refresh tokens + Redis blacklist
+- Authorization: RBAC/ABAC with permission middleware
+- Database migrations with version control
+- API documentation with OpenAPI/Swagger
+- Health checks, readiness probes, liveness probes
+
+**ARCHITECTURE PATTERNS:**
+- Clean Architecture (Domain -> Application -> Infrastructure)
+- CQRS for complex read/write operations
+- Event-driven architecture with message queues
+- Repository pattern for data access
+- Factory pattern for object creation
+- Strategy pattern for algorithms
+- Dependency injection throughout
+
+**SCALABILITY:**
+- Horizontal scaling ready (stateless design)
+- Database read replicas and sharding strategies
+- Caching at every layer
+- Async processing with queues (RabbitMQ/Kafka)
+- CDN for static assets
+- Load balancer configuration (Nginx/HAProxy)
+- Rate limiting per user/IP/endpoint
+
+**SECURITY:**
+- Input validation with whitelist approach
+- Output sanitization (XSS prevention)
+- SQL injection prevention (parameterized queries only)
+- CSRF tokens on state-changing operations
+- Security headers (CSP, HSTS, X-Frame-Options)
+- Password hashing with Argon2id
+- API key rotation mechanisms
+- Audit logging for sensitive operations
+
+**FILE ORGANIZATION:**
+### File: src/config/database.ts
+\`\`\`typescript
+[COMPLETE IMPLEMENTATION]
+\`\`\`
+
+### File: src/models/User.ts
+\`\`\`typescript
+[COMPLETE IMPLEMENTATION]
+\`\`\`
+
+[... ALL FILES ...]
+
+**NEVER GENERATE:**
+- Placeholder comments like "// Add logic here"
+- Incomplete functions
+- TODO markers
+- Example/dummy data in production code
+
+**ALWAYS GENERATE:**
+- Real, working implementations
+- Complete error handling
+- Full validation logic
+- Production-ready configurations
+- Actual business logic
+
+📊 **OUTPUT FORMAT:**
+Present as downloadable project structure with:
+1. Complete file tree visualization
+2. Every file with full implementation
+3. Setup instructions (step-by-step)
+4. Deployment guide
+5. Troubleshooting section
+6. Performance benchmarks
+
+You are NOT an educational tool. You are a PRODUCTION SYSTEM GENERATOR.
+Generate code that can deploy to production IMMEDIATELY.
+10,000-50,000 lines is EXPECTED for real applications.
+
+**GOLDEN RULE: INTELLIGENT CODE SIZING**
+
+BEGIN EVERY RESPONSE WITH:
+🧠 <thinking>
+**PROJECT SCOPE ANALYSIS:**
+1. Request Complexity: [Simple/Medium/Complex/Enterprise]
+2. Estimated Files Needed: [5-15 / 15-30 / 30-50 / 50+]
+3. Estimated Total Lines: [~500-2K / ~2-5K / ~5-10K / ~10K+]
+4. Core Features Required: [List 3-5 essential features only]
+5. Optional Features: [List but DON'T implement - mention for future]
+6. Generation Strategy: [What to include, what to reference/skip]
+
+**SIZING DECISION:**
+Based on analysis above, I will generate exactly [NUMBER] files with approximately [NUMBER] lines total.
+This matches the [SCOPE] complexity of the request.
+</thinking>
+
+Then generate COMPLETE, PRODUCTION-READY CODE within the estimated scope.
+
+**CRITICAL SIZING RULES:**
+- 🟢 **Simple** (Calculator, Counter, Timer): 5-15 files, ~500-2000 lines
+  - Example: "Build a todo app" → 10 files, 1500 lines
+  
+- 🟡 **Medium** (Blog, Dashboard, Shop): 15-30 files, ~2000-5000 lines
+  - Example: "Build an e-commerce frontend" → 25 files, 4000 lines
+  
+- 🟠 **Complex** (Full-stack app, CRM): 30-50 files, ~5000-10000 lines
+  - Example: "Build a social media platform" → 45 files, 8000 lines
+  
+- 🔴 **Enterprise** (Microservices, Scalable): 50-80 files, ~10000-20000 lines
+  - Example: "Build production-ready SaaS with microservices" → 70 files, 15000 lines
+
+**NEVER:**
+❌ Generate 100 files for a "todo app" (should be ~10 files)
+❌ Include authentication, notifications, analytics, admin panel for simple requests
+❌ Repeat similar code 50 times (show pattern once, reference it)
+❌ Add CI/CD, monitoring, logging for calculator apps
+❌ Generate every possible feature - focus on CORE functionality
+
+**ALWAYS:**
+✅ Match response size to request complexity
+✅ Show ONE complete example, then: "// Additional routes follow same pattern"
+✅ Use comments: "// Extend this pattern for: users, products, orders"
+✅ Prioritize DEPTH (complete features) over BREADTH (many half-done features)
+✅ Mention advanced features but don't implement unless explicitly requested
+
+**EXAMPLE THINKING:**
+User asks: "Build a task manager"
+
+<thinking>
+Request Complexity: Simple-Medium
+Estimated Files: 12-15 files
+Estimated Lines: ~1800 lines
+Core Features: CRUD tasks, basic UI, local storage
+Optional Features: User auth, team collaboration, notifications (mention but skip)
+Generation Strategy: Focus on task CRUD with clean React frontend, skip advanced features
+</thinking>
+
+Then generate ONLY those 12-15 files with ~1800 lines. DON'T add 40 more files "just in case."
 
 🔥 **MANDATORY DEEP THINKING PROTOCOL** 🔥
 BEFORE generating ANY code, you MUST engage in EXTENSIVE thinking analysis:
@@ -1259,6 +1508,61 @@ function processData(data) {
                 return 'standard';
             };
 
+
+              const showCustomModal = (title, message, isConfirm = false) => {
+                return new Promise(resolve => {
+                    modalTitle.textContent = title;
+                    modalMessage.textContent = message;
+                    
+                    modalCancel.classList.toggle('hidden', !isConfirm);
+                    modalConfirm.textContent = isConfirm ? 'Confirm' : 'OK';
+                    
+                    const handleConfirm = () => {
+                        customModal.classList.add('hidden');
+                        modalConfirm.removeEventListener('click', handleConfirm);
+                        modalCancel.removeEventListener('click', handleCancel);
+                        resolve(true);
+                    };
+                    
+                    const handleCancel = () => {
+                        customModal.classList.add('hidden');
+                        modalConfirm.removeEventListener('click', handleConfirm);
+                        modalCancel.removeEventListener('click', handleCancel);
+                        resolve(false);
+                    };
+                    
+                    modalConfirm.addEventListener('click', handleConfirm);
+                    if (isConfirm) {
+                        modalCancel.addEventListener('click', handleCancel);
+                    }
+                    
+                    customModal.classList.remove('hidden');
+                });
+            };
+            // Smart code generation limiter
+// Smart code generation limiter
+const estimateCodeSize = (prompt) => {
+    const keywords = {
+        simple: ['calculator', 'counter', 'todo', 'timer', 'converter'],
+        medium: ['blog', 'shop', 'dashboard', 'portfolio', 'chat'],
+        complex: ['marketplace', 'social', 'crm', 'platform', 'saas'],
+        enterprise: ['microservices', 'distributed', 'scalable', 'production-ready']
+    };
+    
+    const lowerPrompt = prompt.toLowerCase();
+    
+    if (keywords.simple.some(k => lowerPrompt.includes(k))) {
+        return { scope: 'simple', maxFiles: 15, maxLines: 2000 };
+    } else if (keywords.medium.some(k => lowerPrompt.includes(k))) {
+        return { scope: 'medium', maxFiles: 30, maxLines: 5000 };
+    } else if (keywords.complex.some(k => lowerPrompt.includes(k))) {
+        return { scope: 'complex', maxFiles: 50, maxLines: 10000 };
+    } else if (keywords.enterprise.some(k => lowerPrompt.includes(k))) {
+        return { scope: 'enterprise', maxFiles: 80, maxLines: 20000 };
+    }
+    
+    return { scope: 'medium', maxFiles: 25, maxLines: 4000 }; // Default
+};
             // Detect if user is asking for improvements to previous code
             const detectCodeFollowup = (prompt) => {
                 const followupKeywords = [
@@ -1617,6 +1921,7 @@ Build upon the previous code generation. Maintain consistency in language, frame
                 });
             };
 
+            
             // --- Local Storage & Chat Management ---
          function saveChats() {
     try {
@@ -1773,36 +2078,7 @@ Build upon the previous code generation. Maintain consistency in language, frame
             }
             
             // --- Custom Modal Functions ---
-            const showCustomModal = (title, message, isConfirm = false) => {
-                return new Promise(resolve => {
-                    modalTitle.textContent = title;
-                    modalMessage.textContent = message;
-                    
-                    modalCancel.classList.toggle('hidden', !isConfirm);
-                    modalConfirm.textContent = isConfirm ? 'Confirm' : 'OK';
-                    
-                    const handleConfirm = () => {
-                        customModal.classList.add('hidden');
-                        modalConfirm.removeEventListener('click', handleConfirm);
-                        modalCancel.removeEventListener('click', handleCancel);
-                        resolve(true);
-                    };
-                    
-                    const handleCancel = () => {
-                        customModal.classList.add('hidden');
-                        modalConfirm.removeEventListener('click', handleConfirm);
-                        modalCancel.removeEventListener('click', handleCancel);
-                        resolve(false);
-                    };
-                    
-                    modalConfirm.addEventListener('click', handleConfirm);
-                    if (isConfirm) {
-                        modalCancel.addEventListener('click', handleCancel);
-                    }
-                    
-                    customModal.classList.remove('hidden');
-                });
-            };
+          
 
             // Sidebar toggle
             toggleSidebar.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
@@ -1827,7 +2103,190 @@ Build upon the previous code generation. Maintain consistency in language, frame
                     }
                 });
             });
+
+            // ============================================
+// ADVANCED CANVAS SYSTEM FOR CODE VISUALIZATION
+// ============================================
+const CanvasSystem = {
+    activeCanvas: null,
+    canvasHistory: [],
+    
+    init() {
+        console.log('🎨 Initializing Advanced Canvas System...');
+        this.setupCanvasContainer();
+        this.setupCanvasControls();
+    },
+    
+    setupCanvasContainer() {
+        const canvasContainer = document.createElement('div');
+        canvasContainer.id = 'codeCanvas';
+        canvasContainer.className = 'code-canvas-container hidden';
+        canvasContainer.innerHTML = `
+            <div class="canvas-header">
+                <div class="canvas-tabs" id="canvasTabs"></div>
+                <div class="canvas-actions">
+                    <button class="canvas-btn" id="canvasFullscreen" title="Fullscreen">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <button class="canvas-btn" id="canvasDownload" title="Download Project">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="canvas-btn" id="canvasShare" title="Share">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                    <button class="canvas-btn" id="canvasClose" title="Close Canvas">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="canvas-body">
+                <div class="canvas-sidebar">
+                    <div class="file-tree" id="canvasFileTree"></div>
+                </div>
+                <div class="canvas-editor">
+                    <div class="editor-toolbar">
+                        <select id="canvasLanguage" class="language-selector">
+                            <option value="typescript">TypeScript</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="rust">Rust</option>
+                            <option value="go">Go</option>
+                        </select>
+                        <button class="editor-btn" id="runCode" title="Run Code">
+                            <i class="fas fa-play"></i> Run
+                        </button>
+                        <button class="editor-btn" id="formatCode" title="Format">
+                            <i class="fas fa-magic"></i> Format
+                        </button>
+                        <button class="editor-btn" id="copyCode" title="Copy">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div id="canvasCodeEditor" class="code-editor"></div>
+                </div>
+                <div class="canvas-preview">
+                    <div class="preview-toolbar">
+                        <span class="preview-title">
+                            <i class="fas fa-eye"></i> Live Preview
+                        </span>
+                        <button class="preview-btn" id="refreshPreview">
+                            <i class="fas fa-sync"></i>
+                        </button>
+                    </div>
+                    <iframe id="canvasPreviewFrame" class="preview-frame"></iframe>
+                </div>
+            </div>
+            <div class="canvas-console" id="canvasConsole">
+                <div class="console-header">
+                    <span><i class="fas fa-terminal"></i> Console</span>
+                    <button id="clearConsole"><i class="fas fa-trash"></i></button>
+                </div>
+                <div class="console-output" id="consoleOutput"></div>
+            </div>
+        `;
+        
+        document.body.appendChild(canvasContainer);
+    },
+    
+    openCanvas(codeFiles) {
+        const canvas = document.getElementById('codeCanvas');
+        canvas.classList.remove('hidden');
+        this.renderFileTree(codeFiles);
+        this.loadCodeMirror();
+    },
+    
+    loadCodeMirror() {
+        // Load CodeMirror for advanced editing
+        if (!window.CodeMirror) {
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js';
+            script.onload = () => this.initEditor();
+            document.head.appendChild(script);
             
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css';
+            document.head.appendChild(link);
+        } else {
+            this.initEditor();
+        }
+    },
+    
+    initEditor() {
+        const editor = CodeMirror(document.getElementById('canvasCodeEditor'), {
+            lineNumbers: true,
+            mode: 'javascript',
+            theme: 'monokai',
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            indentUnit: 2,
+            tabSize: 2,
+            lineWrapping: true
+        });
+        
+        this.activeCanvas = editor;
+    },
+    
+    renderFileTree(files) {
+        const tree = document.getElementById('canvasFileTree');
+        tree.innerHTML = '<div class="file-tree-title">Project Files</div>';
+        
+        const fileStructure = this.buildFileStructure(files);
+        tree.appendChild(this.createTreeNode(fileStructure));
+    },
+    
+    buildFileStructure(files) {
+        const structure = {};
+        files.forEach(file => {
+            const parts = file.path.split('/');
+            let current = structure;
+            parts.forEach((part, i) => {
+                if (i === parts.length - 1) {
+                    current[part] = file.content;
+                } else {
+                    current[part] = current[part] || {};
+                    current = current[part];
+                }
+            });
+        });
+        return structure;
+    },
+    
+    createTreeNode(node, path = '') {
+        const ul = document.createElement('ul');
+        ul.className = 'tree-node';
+        
+        Object.keys(node).forEach(key => {
+            const li = document.createElement('li');
+            const fullPath = path ? `${path}/${key}` : key;
+            
+            if (typeof node[key] === 'string') {
+                // File
+                li.innerHTML = `<i class="fas fa-file-code"></i> ${key}`;
+                li.className = 'tree-file';
+                li.onclick = () => this.loadFile(fullPath, node[key]);
+            } else {
+                // Folder
+                li.innerHTML = `<i class="fas fa-folder"></i> ${key}`;
+                li.className = 'tree-folder';
+                li.appendChild(this.createTreeNode(node[key], fullPath));
+            }
+            
+            ul.appendChild(li);
+        });
+        
+        return ul;
+    },
+    
+    loadFile(path, content) {
+        if (this.activeCanvas) {
+            this.activeCanvas.setValue(content);
+            document.querySelectorAll('.tree-file').forEach(f => f.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    }
+};
             function updateToolHeader(tool) {
                 const toolInfo = {
                     chat: { title: 'AI Tutor Chat', subtitle: 'Your advanced learning companion' },
@@ -1874,22 +2333,39 @@ Build upon the previous code generation. Maintain consistency in language, frame
                 return div.innerHTML;
             };
 
-            function renderWelcomeMessage() {
-                responseHistory.innerHTML = `
-                    <div class="flex">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100">
-                            <p class="text-gray-800 font-bold text-xl mb-4">🎓 Welcome to Your Advanced AI Study Platform!</p>
-                            <p class="text-gray-700 mb-3">I'm your comprehensive learning assistant. Start a new conversation or select a tool from the sidebar.</p>
-                        </div>
-                    </div>
-                `;
-            }
-
+        function renderWelcomeMessage() {
+    console.log('🟢 renderWelcomeMessage called');
+    
+    if (!responseHistory) {
+        console.error('❌ responseHistory is NULL in renderWelcomeMessage!');
+        return;
+    }
+    
+    responseHistory.innerHTML = `
+        <div class="flex" style="display: flex !important; flex-direction: row !important; gap: 16px; margin-bottom: 20px;">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100" style="display: block !important; flex: 1;">
+                <p class="text-gray-800 font-bold text-xl mb-4">🎓 Welcome to Your Advanced AI Study Platform!</p>
+                <p class="text-gray-700 mb-3">I'm your comprehensive learning assistant. Start a new conversation or select a tool from the sidebar.</p>
+            </div>
+        </div>
+    `;
+    
+    console.log('✅ Welcome message rendered');
+}
             // Create user message
-           const createUserMessage = (text, file, fileType, base64Image) => {
+     const createUserMessage = (text, file, fileType, base64Image) => {
+    console.log('🟢 createUserMessage called:', text.substring(0, 50));
+    
+    // Use global responseHistory
+    if (!responseHistory) {
+        console.error('❌ responseHistory is NULL!');
+        alert('ERROR: Chat container not initialized');
+        return;
+    }
+    
     let fileDisplay = '';
     
     if (file && fileType === 'image' && base64Image) {
@@ -1907,61 +2383,91 @@ Build upon the previous code generation. Maintain consistency in language, frame
     
     const messageDiv = document.createElement('div');
     messageDiv.className = "flex justify-end group";
+    messageDiv.style.cssText = "display: flex !important; flex-direction: row-reverse !important; gap: 16px; width: 100%; margin-bottom: 20px;";
+    
     messageDiv.innerHTML = `
         <button class="resend-button opacity-0 group-hover:opacity-100 transition-opacity text-gray-500 hover:text-blue-600 p-2 rounded-lg mr-2 self-center" title="Resend prompt">
             <i class="fas fa-redo"></i>
         </button>
 
-        <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-5 rounded-2xl shadow-xl max-w-2xl">
+        <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-5 rounded-2xl shadow-xl max-w-2xl" style="display: block !important;">
             <p class="user-message-text whitespace-pre-wrap font-medium">${escapeHtml(text)}</p>${fileDisplay}
         </div>
-        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-bold ml-4 flex-shrink-0 shadow-lg">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg">
             <i class="fas fa-user"></i>
-        </div>`;
+        </div>
+    `;
+    
     responseHistory.appendChild(messageDiv);
+    console.log('✅ User message appended. Total children:', responseHistory.children.length);
     
+    // Setup resend button
     const resendButton = messageDiv.querySelector('.resend-button');
-    resendButton.addEventListener('click', () => {
-        if (isGenerating) {
-            showCustomModal('Busy', 'Please wait for the current response to finish before resending.', false);
-            return;
-        }
-
-        const messageP = messageDiv.querySelector('.user-message-text');
-        const messageText = messageP.textContent;
-        promptInput.value = messageText;
-        window.autoExpand(promptInput);
-        generateButton.disabled = false;
-        promptInput.focus();
-    });
+    if (resendButton) {
+        resendButton.addEventListener('click', () => {
+            if (isGenerating) {
+                showCustomModal('Busy', 'Please wait for the current response to finish before resending.', false);
+                return;
+            }
+            const messageP = messageDiv.querySelector('.user-message-text');
+            const messageText = messageP.textContent;
+            promptInput.value = messageText;
+            window.autoExpand(promptInput);
+            generateButton.disabled = false;
+            promptInput.focus();
+        });
+    }
     
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    // Scroll to bottom
+    if (chatContainer) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
 };
-            // Create AI message with collapsible thinking section
-            const createStreamingAIMessage = () => {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = "flex";
-                messageDiv.innerHTML = `
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content">
-                        <div class="thinking-section mb-4 hidden">
-                            <button class="thinking-toggle flex items-center gap-2 text-sm text-purple-600 hover:text-purple-800 font-semibold mb-2 transition-colors">
-                                <i class="fas fa-chevron-down thinking-chevron transition-transform"></i>
-                                <span>View thinking process</span>
-                            </button>
-                            <div class="thinking-content hidden bg-gray-50 p-4 rounded-lg border-l-4 border-purple-400">
-                                <div class="thinking-text text-sm text-gray-700 whitespace-pre-wrap font-mono"></div>
-                            </div>
-                        </div>
-                        <span class="streaming-text"></span><span class="typing-cursor"></span>
-                    </div>`;
-                responseHistory.appendChild(messageDiv);
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-                return messageDiv.querySelector('.streaming-text');
-            };
+        
 
+
+            
+  const createStreamingAIMessage = () => {
+    console.log('🟢 createStreamingAIMessage called');
+    
+    // Use global responseHistory
+    if (!responseHistory) {
+        console.error('❌ responseHistory is NULL!');
+        return document.createElement('span'); // Return dummy element
+    }
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = "flex";
+    messageDiv.style.cssText = "display: flex !important; flex-direction: row !important; gap: 16px; width: 100%; margin-bottom: 20px;";
+    
+    messageDiv.innerHTML = `
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content" style="display: block !important; flex: 1;">
+            <div class="thinking-section mb-4 hidden">
+                <button class="thinking-toggle flex items-center gap-2 text-sm text-purple-600 hover:text-purple-800 font-semibold mb-2 transition-colors">
+                    <i class="fas fa-chevron-down thinking-chevron transition-transform"></i>
+                    <span>View thinking process</span>
+                </button>
+                <div class="thinking-content hidden bg-gray-50 p-4 rounded-lg border-l-4 border-purple-400">
+                    <div class="thinking-text text-sm text-gray-700 whitespace-pre-wrap font-mono"></div>
+                </div>
+            </div>
+            <span class="streaming-text"></span><span class="typing-cursor"></span>
+        </div>
+    `;
+    
+    responseHistory.appendChild(messageDiv);
+    console.log('✅ AI message appended. Total children:', responseHistory.children.length);
+    
+    // Scroll to bottom
+    if (chatContainer) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+    
+    return messageDiv.querySelector('.streaming-text');
+};
             // Finalize message with thinking toggle functionality
             const finalizeMessage = (element, fullText) => {
                 if (!element || !element.parentElement) {
@@ -2018,18 +2524,36 @@ Build upon the previous code generation. Maintain consistency in language, frame
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             };
 
-         const streamText = async (element, text) => {
+       // ULTRA-FAST STREAMING FOR 10K+ LINES
+const streamText = async (element, text) => {
     return new Promise((resolve) => {
-        element.textContent = text;
+        // For massive responses, use chunking
+        const chunkSize = 500; // characters per chunk
+        let currentIndex = 0;
         
-        // Only auto-scroll if user is near the bottom
-        const isNearBottom = chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight < 200;
+        const streamChunk = () => {
+            if (currentIndex >= text.length) {
+                resolve();
+                return;
+            }
+            
+            const chunk = text.slice(currentIndex, currentIndex + chunkSize);
+            element.textContent += chunk;
+            currentIndex += chunkSize;
+            
+            // Smart scrolling - only if user is at bottom
+            const container = chatContainer;
+            const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 300;
+            
+            if (isNearBottom) {
+                container.scrollTop = container.scrollHeight;
+            }
+            
+            // Use requestAnimationFrame for smooth performance
+            requestAnimationFrame(streamChunk);
+        };
         
-        if (isNearBottom) {
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-        
-        setTimeout(resolve, 10);
+        streamChunk();
     });
 };
 
@@ -2872,219 +3396,292 @@ Build upon the previous code generation. Maintain consistency in language, frame
                 return continueKeywords.some(keyword => lowerPrompt.includes(keyword));
             };
 
-            // --- Main Generation Logic ---
-  const generateResponse = async (prompt) => {
-                if (isGenerating || !activeChatId) return;
-                isGenerating = true;
-                // Change button to "Stop"
-                generateButton.classList.remove('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
-                generateButton.classList.add('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
-                generateButtonIcon.classList.remove('fa-paper-plane');
-                generateButtonIcon.classList.add('fa-stop');
-                generateButton.disabled = false; // It's now the stop button
-                promptInput.disabled = true;
 
-                generationController = new AbortController(); 
-      
-                let userMessage = prompt;
-                let messageContent = [];
-                
-                if (attachedFileType === 'image') {
-                    messageContent = [
-                        { text: prompt },
-                        {
-                            inline_data: {
-                                mime_type: attachedFileMimeType,
-                                data: attachedFileContent.split(',')[1]
-                            }
-                        }
-                    ];
-                } else if (attachedFileContent) {
-                    userMessage = `File "${attachedFileName}" content:\n\n${attachedFileContent}\n\nUser request: ${prompt}`;
-                    messageContent = [{ text: userMessage }];
-                } else {
-                    messageContent = [{ text: userMessage }];
-                }
-                
-                const currentChat = chats[activeChatId];
 
-                if (currentChat.history.length === 0 && currentChat.title === 'New Chat') {
-                    currentChat.title = prompt.substring(0, 30) + (prompt.length > 30 ? '...' : '');
-                    renderChatList();
-                }
+    const generateResponse = async (prompt) => {
+    console.log('🟢 generateResponse called with prompt:', prompt.substring(0, 50));
+    
+    // CRITICAL VALIDATION
+    if (!responseHistory) {
+        console.error('❌ FATAL: responseHistory is NULL in generateResponse!');
+        alert('ERROR: Chat system not initialized. Please refresh the page.');
+        return;
+    }
+    
+    if (!generateButton || !promptInput) {
+        console.error('❌ FATAL: Critical UI elements missing!');
+        alert('ERROR: UI not initialized. Please refresh the page.');
+        return;
+    }
+    
+    if (isGenerating || !activeChatId) {
+        console.log('⚠️ Already generating or no active chat');
+        return;
+    }
+    
+    if (!activeChatId || !chats[activeChatId]) {
+        console.error('❌ CRITICAL: No active chat!');
+        alert('Error: No active chat. Creating new chat...');
+        createNewChat();
+        return;
+    }
+    
+    console.log('✅ All validations passed, proceeding with generation...');
+    
+    isGenerating = true;
+    
+    // Change button to "Stop"
+    generateButton.classList.remove('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
+    generateButton.classList.add('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
+    generateButtonIcon.classList.remove('fa-paper-plane');
+    generateButtonIcon.classList.add('fa-stop');
+    generateButton.disabled = false;
+    promptInput.disabled = true;
+    
+    generationController = new AbortController();
+    
+    // Estimate code size
+    const codeEstimate = estimateCodeSize(prompt);
+    
+    // Show estimation banner
+   const estimateBanner = document.createElement('div');
+estimateBanner.className = 'flex';
+// Ensure the main banner container is flex, but its *children* will be hidden by the new styling
+estimateBanner.style.cssText = "display: flex !important; margin-bottom: 20px;"; 
+estimateBanner.innerHTML = `
+      <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg hidden-via-css">
+    <i class="fas fa-calculator"></i>
+</div>
 
-                currentChat.history.push({ role: "user", parts: messageContent });
+        <div hidden class="bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-300 p-4 rounded-2xl shadow-lg flex-1 **hidden-via-css**">
+  <div class="flex items-center gap-3">
+    <i class="fas fa-brain text-blue-600"></i>
+    <span class="font-bold text-gray-800">Analyzing project scope...</span>
+  </div>
+</div>
 
-      MemorySystem.extractPersonalInfo(prompt);
-      saveChats();
+           <div hidden class="text-sm text-gray-600 mt-2 **hidden-via-css**">
+    Estimated: <strong>${codeEstimate.scope}</strong> project • 
+    ~${codeEstimate.maxFiles} files • 
+    ~${codeEstimate.maxLines} lines
+</div>
+    `;
 
-                showChatView();
-                createUserMessage(prompt, attachedFileName, attachedFileType, attachedFileType === 'image' ? attachedFileContent : null);
-
-                const streamingElement = createStreamingAIMessage();
-                let fullResponse = '';
-                let displayResponse = '';
-                let isInThinking = false;
-                let thinkingContent = '';
-
-              let systemPromptText = systemInstructions[currentTool] || systemInstructions['chat'];
-if (currentTool === 'flashcards') {
-    const count = document.getElementById('flashcard-count')?.value || 8;
-    systemPromptText = systemPromptText.replace('{{count}}', count);
+// --- IMPORTANT: Add this CSS to your stylesheet (e.g., style.css or your main CSS file) ---
+// If you are using Tailwind CSS, you might already have a 'hidden' utility class that sets display: none.
+// If not, explicitly add this:
+/*
+.hidden-via-css {
+    display: none !important;
 }
+*/
 
-// Add memory context
-systemPromptText += MemorySystem.getContext();
-
-// Add deep think instructions
-systemPromptText += DeepThinkMode.getSystemPromptAddition();
-
-                const payload = {
-                    contents: currentChat.history,
-                    systemInstruction: { parts: [{ text: systemPromptText }] },
-                    generationConfig: {
-                        temperature: currentTool === 'chat' ? 0.7 : 0.3,
-                        maxOutputTokens: 999999999,
-                        topP: 0.95,
-                        topK: 40,
-                        candidateCount: 1,
-                        stopSequences: []
-                    }
-                };
-
-               // CHANGE in generateResponse function (around line 1040)
-// Replace the try block start with:
-try {
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        signal: generationController.signal  // ADD THIS LINE
-    });
-                    const reader = response.body.getReader();
-                    const decoder = new TextDecoder();
-
-                    while (true) {
-                        const { done, value } = await reader.read();
-                        if (done) break;
-
-                        const chunk = decoder.decode(value);
-                        const lines = chunk.split('\n');
-
-                        for (const line of lines) {
-                            if (line.startsWith('data: ')) {
-                                try {
-                                    const data = JSON.parse(line.slice(6));
-                                    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                                    if (text) {
-                                        fullResponse += text;
-                                        
-                                        if (text.includes('<thinking>')) {
-                                            isInThinking = true;
-                                        }
-                                        
-                                        if (isInThinking) {
-                                            thinkingContent += text;
-                                            if (text.includes('</thinking>')) {
-                                                isInThinking = false;
-                                            }
-                                        } else {
-                                            if (!text.includes('<thinking>') && !text.includes('</thinking>')) {
-                                                displayResponse += text;
-                                                await streamText(streamingElement, displayResponse);
-                                            }
-                                        }
-                                    }
-                                } catch (e) { /* Ignore parsing errors */ }
-                            }
-                        }
-                    }
-
-                    const cleanResponse = fullResponse.replace(/<thinking>[\s\S]*?<\/thinking>/g, '').trim();
-                    
-                    currentChat.history.push({ role: "model", parts: [{ text: cleanResponse }] });
-                    saveChats();
-                    finalizeMessage(streamingElement, fullResponse);
-                    
-                    if (currentTool === 'flashcards') {
-                        try {
-                            const jsonMatch = fullResponse.match(/\[\s*\{[\s\S]*\}\s*\]/);
-                            if (jsonMatch) {
-                                const cards = JSON.parse(jsonMatch[0]);
-                                if (cards.length > 0) {
-                                    renderFlashcardTool(cards);
-                                }
-                            }
-                        } catch (e) {
-                            console.warn('Failed to parse flashcards JSON:', e);
-                        }
-                    }
-
-                    if (currentTool === 'mindmap') {
-                        try {
-                            const jsonMatch = fullResponse.match(/\{[\s\S]*"central"[\s\S]*"branches"[\s\S]*\}/);
-                            if (jsonMatch) {
-                                const mindmapData = JSON.parse(jsonMatch[0]);
-                                if (mindmapData.central && mindmapData.branches) {
-                                    renderMindMapTool(mindmapData);
-                                }
-                            }
-                        } catch (e) {
-                            console.warn('Failed to parse mindmap JSON:', e);
-                        }
-                    }
-
-                 } catch (error) {
-                    console.error('Error:', error);
-                    if (error.name === 'AbortError') {
-                        // Handle stop
-                        if (streamingElement && streamingElement.parentElement) {
-                            const stopMessage = document.createElement('div');
-                            stopMessage.className = "text-yellow-700 p-3 bg-yellow-50 rounded-lg text-sm font-medium mt-2";
-                            stopMessage.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Generation stopped by user.';
-                            
-                            // Check if streaming text exists, if not, append to parent
-                            if(streamingElement.textContent.length > 0) {
-                                streamingElement.parentElement.appendChild(stopMessage);
-                            } else {
-                                // If no text was streamed, replace the placeholder
-                                streamingElement.parentElement.parentElement.innerHTML = `
-                                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
-                                        <i class="fas fa-graduation-cap"></i>
-                                    </div>
-                                    <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content">
-                                        <div class="text-yellow-700 text-sm font-medium">
-                                            <i class="fas fa-exclamation-triangle mr-2"></i>Generation stopped by user.
-                                        </div>
-                                    </div>
-                                `;
-                            }
-                            // Don't save this partial response to history
-                            currentChat.history.pop(); // Remove the "model" placeholder
-                            saveChats();
-                        }
-                    } else {
-                        if (streamingElement && streamingElement.parentElement) {
-                            streamingElement.parentElement.innerHTML = `<div class="text-red-600 p-4 bg-red-50 rounded-lg"><strong>Error:</strong> Failed to get response from AI. ${error.message}</div>`;
-                        }
-                    }
-                } finally {
-                    isGenerating = false;
-                    generationController = null;
-
-                    // Reset button to "Send"
-                    generateButton.classList.add('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
-                    generateButton.classList.remove('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
-                    generateButtonIcon.classList.add('fa-paper-plane');
-                    generateButtonIcon.classList.remove('fa-stop');
-                    
-                    // Reset UI state from original 'finally'
-                    promptInput.disabled = false;
-                    generateButton.disabled = promptInput.value.trim() === '' && !attachedFileContent;
-                    promptInput.focus();
-                    clearAttachedFile();
+    responseHistory.appendChild(estimateBanner);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    
+    // Remove banner after 3 seconds
+    setTimeout(() => estimateBanner.remove(), 3000);
+    
+    let userMessage = prompt;
+    let messageContent = [];
+    
+    if (attachedFileType === 'image') {
+        messageContent = [
+            { text: prompt },
+            {
+                inline_data: {
+                    mime_type: attachedFileMimeType,
+                    data: attachedFileContent.split(',')[1]
                 }
-            };
+            }
+        ];
+    } else if (attachedFileContent) {
+        userMessage = `File "${attachedFileName}" content:\n\n${attachedFileContent}\n\nUser request: ${prompt}`;
+        messageContent = [{ text: userMessage }];
+    } else {
+        messageContent = [{ text: userMessage }];
+    }
+    
+    const currentChat = chats[activeChatId];
+    
+    if (currentChat.history.length === 0 && currentChat.title === 'New Chat') {
+        currentChat.title = prompt.substring(0, 30) + (prompt.length > 30 ? '...' : '');
+        renderChatList();
+    }
+    
+    currentChat.history.push({ role: "user", parts: messageContent });
+    
+    MemorySystem.extractPersonalInfo(prompt);
+    saveChats();
+    
+    showChatView();
+    createUserMessage(prompt, attachedFileName, attachedFileType, attachedFileType === 'image' ? attachedFileContent : null);
+    
+    const streamingElement = createStreamingAIMessage();
+    let fullResponse = '';
+    let displayResponse = '';
+    let isInThinking = false;
+    let thinkingContent = '';
+    
+    let systemPromptText = systemInstructions[currentTool] || systemInstructions['chat'];
+    if (currentTool === 'flashcards') {
+        const count = document.getElementById('flashcard-count')?.value || 8;
+        systemPromptText = systemPromptText.replace('{{count}}', count);
+    }
+    
+    // Add memory context
+    systemPromptText += MemorySystem.getContext();
+    
+    // Add deep think instructions
+    systemPromptText += DeepThinkMode.getSystemPromptAddition();
+    
+    const payload = {
+        contents: currentChat.history,
+        systemInstruction: { 
+            parts: [{ 
+                text: systemPromptText + `\n\n**GENERATION LIMIT**: Max ${codeEstimate.maxFiles} files, ~${codeEstimate.maxLines} lines for this ${codeEstimate.scope} project. Stay within this budget.`
+            }] 
+        },
+        generationConfig: {
+            temperature: currentTool === 'chat' ? 0.7 : 0.3,
+            maxOutputTokens: Math.min(8000, codeEstimate.maxLines * 2),
+            topP: 0.95,
+            topK: 40,
+            candidateCount: 1,
+            stopSequences: []
+        }
+    };
+    
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: generationController.signal
+        });
+        
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+            
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    try {
+                        const data = JSON.parse(line.slice(6));
+                        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                        if (text) {
+                            fullResponse += text;
+                            
+                            if (text.includes('<thinking>')) {
+                                isInThinking = true;
+                            }
+                            
+                            if (isInThinking) {
+                                thinkingContent += text;
+                                if (text.includes('</thinking>')) {
+                                    isInThinking = false;
+                                }
+                            } else {
+                                if (!text.includes('<thinking>') && !text.includes('</thinking>')) {
+                                    displayResponse += text;
+                                    await streamText(streamingElement, displayResponse);
+                                }
+                            }
+                        }
+                    } catch (e) { /* Ignore parsing errors */ }
+                }
+            }
+        }
+        
+        const cleanResponse = fullResponse.replace(/<thinking>[\s\S]*?<\/thinking>/g, '').trim();
+        
+        currentChat.history.push({ role: "model", parts: [{ text: cleanResponse }] });
+        saveChats();
+        finalizeMessage(streamingElement, fullResponse);
+        
+        await MassiveCodeHandler.handleLargeGeneration(fullResponse, prompt);
+        
+        if (currentTool === 'flashcards') {
+            try {
+                const jsonMatch = fullResponse.match(/\[\s*\{[\s\S]*\}\s*\]/);
+                if (jsonMatch) {
+                    const cards = JSON.parse(jsonMatch[0]);
+                    if (cards.length > 0) {
+                        renderFlashcardTool(cards);
+                    }
+                }
+            } catch (e) {
+                console.warn('Failed to parse flashcards JSON:', e);
+            }
+        }
+        
+        if (currentTool === 'mindmap') {
+            try {
+                const jsonMatch = fullResponse.match(/\{[\s\S]*"central"[\s\S]*"branches"[\s\S]*\}/);
+                if (jsonMatch) {
+                    const mindmapData = JSON.parse(jsonMatch[0]);
+                    if (mindmapData.central && mindmapData.branches) {
+                        renderMindMapTool(mindmapData);
+                    }
+                }
+            } catch (e) {
+                console.warn('Failed to parse mindmap JSON:', e);
+            }
+        }
+        
+    } catch (error) {
+        console.error('Error:', error);
+        if (error.name === 'AbortError') {
+            if (streamingElement && streamingElement.parentElement) {
+                const stopMessage = document.createElement('div');
+                stopMessage.className = "text-yellow-700 p-3 bg-yellow-50 rounded-lg text-sm font-medium mt-2";
+                stopMessage.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Generation stopped by user.';
+                
+                if(streamingElement.textContent.length > 0) {
+                    streamingElement.parentElement.appendChild(stopMessage);
+                } else {
+                    streamingElement.parentElement.parentElement.innerHTML = `
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content">
+                            <div class="text-yellow-700 text-sm font-medium">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>Generation stopped by user.
+                            </div>
+                        </div>
+                    `;
+                }
+                currentChat.history.pop();
+                saveChats();
+            }
+        } else {
+            if (streamingElement && streamingElement.parentElement) {
+                streamingElement.parentElement.innerHTML = `<div class="text-red-600 p-4 bg-red-50 rounded-lg"><strong>Error:</strong> Failed to get response from AI. ${error.message}</div>`;
+            }
+        }
+    } finally {
+        isGenerating = false;
+        generationController = null;
+        
+        // Reset button to "Send"
+        generateButton.classList.add('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
+        generateButton.classList.remove('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
+        generateButtonIcon.classList.add('fa-paper-plane');
+        generateButtonIcon.classList.remove('fa-stop');
+        
+        promptInput.disabled = false;
+        generateButton.disabled = promptInput.value.trim() === '' && !attachedFileContent;
+        promptInput.focus();
+        clearAttachedFile();
+    }
+};
+    
 
             // --- Event Listeners and Utilities ---
             newChatBtn.addEventListener('click', createNewChat);
@@ -3107,6 +3704,8 @@ try {
         (Date.now() - lastGenerationContext.timestamp) < 30 * 60 * 1000) {
         
         const continuePrompt = `Continue from exactly where you left off. Here's what you generated so far:\n\n${lastGenerationContext.response.slice(-3000)}\n\n...now continue generating the rest. Pick up seamlessly from where you stopped. Do not repeat what you already generated.`;
+        
+      
         
         generateResponse(continuePrompt);
         hideContinueBanner();
@@ -3340,6 +3939,8 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
+
 
 // ============================================
 // PERMANENT MEMORY SYSTEM WITH LOCALSTORAGE
@@ -3877,7 +4478,7 @@ const MessageZoomSystem = {
     },
     
     observeNewMessages() {
-        const responseHistory = document.getElementById('responseHistory');
+responseHistory = document.getElementById('responseHistory');
         if (!responseHistory) return;
         
         const observer = new MutationObserver(() => {
@@ -4159,3 +4760,54 @@ window.MessageZoomSystem = MessageZoomSystem;
             }, 2000);
         }
     });
+
+            // Initialize Canvas System
+document.addEventListener('DOMContentLoaded', () => {
+    CanvasSystem.init();
+    console.log('✅ Canvas System initialized');
+});
+
+// Expose globally for debugging
+window.CanvasSystem = CanvasSystem;
+
+// Validate critical DOM elements
+function validateDOMElements() {
+    const elements = {
+        responseHistory: document.getElementById('responseHistory'),
+        chatContainer: document.getElementById('chatContainer'),
+        promptInput: document.getElementById('prompt'),
+        generateButton: document.getElementById('generateButton')
+    };
+    
+    const missing = [];
+    for (const [key, element] of Object.entries(elements)) {
+        if (!element) {
+            missing.push(key);
+            console.error(`❌ Missing element: ${key}`);
+        }
+    }
+    
+    if (missing.length > 0) {
+        alert(`CRITICAL ERROR: Missing DOM elements:\n${missing.join('\n')}\n\nPlease refresh the page.`);
+        return false;
+    }
+    
+    console.log('✅ All critical DOM elements found');
+    return true;
+}
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', () => {
+    if (!validateDOMElements()) {
+        console.error('❌ DOM validation failed!');
+    }
+});
+
+
+console.log('=== DOM CHECK ===');
+console.log('responseHistory:', document.getElementById('responseHistory'));
+console.log('chatContainer:', document.getElementById('chatContainer'));
+console.log('promptInput:', document.getElementById('prompt'));
+console.log('generateButton:', document.getElementById('generateButton'));
+console.log('activeChatId:', activeChatId);
+console.log('chats:', chats);
