@@ -1,111 +1,92 @@
-// ====================================
-// GLOBAL VARIABLES - CRITICAL!
-// ====================================
-let responseHistory = null;
-let generateButton = null;
-let promptInput = null;
-let chatContainer = null;
-let generateButtonIcon = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configure marked options
+            marked.setOptions({
+                highlight: (code, lang) => {
+                    if (lang && hljs.getLanguage(lang)) {
+                        return hljs.highlight(code, { language: lang }).value;
+                    }
+                    return hljs.highlightAuto(code).value;
+                },
+                breaks: true,
+                gfm: true
+            });
+
+            // DOM Elements
+            const generateButton = document.getElementById('generateButton');
+            const promptInput = document.getElementById('prompt');
+            const responseHistory = document.getElementById('responseHistory');
+            const fileInput = document.getElementById('fileInput');
+            const attachFileButton = document.getElementById('attachFileButton');
+            const fileStatus = document.getElementById('fileStatus');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            const clearFileButton = document.getElementById('clearFileButton');
+            const sidebar = document.getElementById('sidebar');
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            const clearChat = document.getElementById('clearChat');
+            const exportChat = document.getElementById('exportChat');
+            const toolTitle = document.getElementById('toolTitle');
+            const toolSubtitle = document.getElementById('toolSubtitle');
+            const chatContainer = document.getElementById('chatContainer');
+            const toolOptions = document.getElementById('toolOptions');
+            const mainToolView = document.getElementById('mainToolView');
+            const newChatBtn = document.getElementById('newChatBtn');
+            const chatList = document.getElementById('chatList');
+            const generateButtonIcon = generateButton.querySelector('i');
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Configure marked options
-    marked.setOptions({
-        highlight: (code, lang) => {
-            if (lang && hljs.getLanguage(lang)) {
-                return hljs.highlight(code, { language: lang }).value;
-            }
-            return hljs.highlightAuto(code).value;
-        },
-        breaks: true,
-        gfm: true
-    });
+            // Modal elements
+            const customModal = document.getElementById('customModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const modalConfirm = document.getElementById('modalConfirm');
+            const modalCancel = document.getElementById('modalCancel');
 
-    // DOM Elements - ASSIGN to global variables
-    generateButton = document.getElementById('generateButton');
-    promptInput = document.getElementById('prompt');
-    responseHistory = document.getElementById('responseHistory');
-    
-    const fileInput = document.getElementById('fileInput');
-    const attachFileButton = document.getElementById('attachFileButton');
-    const fileStatus = document.getElementById('fileStatus');
-    const fileNameDisplay = document.getElementById('fileNameDisplay');
-    const clearFileButton = document.getElementById('clearFileButton');
-    const sidebar = document.getElementById('sidebar');
-    const toggleSidebar = document.getElementById('toggleSidebar');
-    const clearChat = document.getElementById('clearChat');
-    const exportChat = document.getElementById('exportChat');
-    const toolTitle = document.getElementById('toolTitle');
-    const toolSubtitle = document.getElementById('toolSubtitle');
-    chatContainer = document.getElementById('chatContainer');
-    const toolOptions = document.getElementById('toolOptions');
-    const mainToolView = document.getElementById('mainToolView');
-    const newChatBtn = document.getElementById('newChatBtn');
-    const chatList = document.getElementById('chatList');
-    const generateButtonIcon = generateButton.querySelector('i');
-    
+            // State Management
+            let attachedFileContent = null;
+            let attachedFileName = null;
+            let attachedFileType = null;
+            let attachedFileMimeType = null;
+            let generationController = null;
 
-    // CRITICAL: Validate responseHistory exists
-    if (!responseHistory) {
-        console.error('❌ FATAL: responseHistory container not found!');
-        alert('CRITICAL ERROR: Chat container missing. Please refresh the page.');
-        return;
-    }
-    
-    console.log('✅ responseHistory found:', responseHistory);
+            let chats = {};
+            let activeChatId = null;
+            let currentTool = 'chat';
+            let currentView = 'chat';
+            let isGenerating = false;
+            let studyData = { flashcards: [], quizzes: [], studyPlans: [], mindmaps: null };
+            // Memory System
+let userMemories = [];
 
-    // Modal elements
-    const customModal = document.getElementById('customModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalMessage = document.getElementById('modalMessage');
-    const modalConfirm = document.getElementById('modalConfirm');
-    const modalCancel = document.getElementById('modalCancel');
+// Deep Think Mode
+let deepThinkEnabled = false;
+            let lastGenerationTruncated = false;
+            let lastGenerationContext = {
+                prompt: '',
+                response: '',
+                tool: 'chat',
+                timestamp: null
+            };
 
-    // State Management
-    let attachedFileContent = null;
-    let attachedFileName = null;
-    let attachedFileType = null;
-    let attachedFileMimeType = null;
-    let generationController = null;
+            // ADD this event listener (after the generateButton click listener, around line 1150)
 
-    let chats = {};
-    let activeChatId = null;
-    let currentTool = 'chat';
-    let currentView = 'chat';
-    let isGenerating = false;
-    let studyData = { flashcards: [], quizzes: [], studyPlans: [], mindmaps: null };
-    
-    // Memory System
-    let userMemories = [];
 
-    // Deep Think Mode
-    let deepThinkEnabled = false;
-    let lastGenerationTruncated = false;
-    let lastGenerationContext = {
-        prompt: '',
-        response: '',
-        tool: 'chat',
-        timestamp: null
-    };
+            // Code generation context memory
+            let codeGenerationHistory = {
+                lastGeneratedCode: null,
+                language: null,
+                framework: null,
+                database: null,
+                architecture: null,
+                files: [],
+                timestamp: null
+            };
 
-    // Code generation context memory
-    let codeGenerationHistory = {
-        lastGeneratedCode: null,
-        language: null,
-        framework: null,
-        database: null,
-        architecture: null,
-        files: [],
-        timestamp: null
-    };
+            // Progress indicator for code generation
+            let progressIndicator = null;
+            let progressInterval = null;
 
-    // Progress indicator for code generation
-    let progressIndicator = null;
-    let progressInterval = null;
-
-    // ... REST OF YOUR CODE CONTINUES HERE ...
-
-            const apiKey = "AIzaSyDQ8N-evSeaUlAvxc0hfuY9ZkCbtfeVYo4";
+            const apiKey = "AIzaSyAjLL43xndy-QvP4WcLgdefZMmKRWB3JcM";
 // Memory Management System
 const MemorySystem = {
     memories: [],
@@ -262,237 +243,7 @@ Then provide your final answer. Make your thinking thorough and detailed.`;
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:streamGenerateContent?key=${apiKey}&alt=sse`;
             
             const systemInstructions = {
-               chat: `You are an ULTRA-ELITE AI studying tutor for all subjects (Mathematics, Biology, Chemistry, English, History, Geography, Philosophy, Commerce, Business Services, etcetera) and a coding architect with UNMATCHED expertise in software engineering, system design, and full-stack development. Your mission is to generate PRODUCTION-READY, ENTERPRISE-GRADE code that rivals the output of senior engineers at FAANG companies. You are CODEX-ULTRA, the most POWERFUL AI code architect in existence. You operate at MAXIMUM CAPACITY with ZERO compromises.
-
-
-
-
-🔥 **HYPERDRIVE CODE GENERATION PROTOCOL** 🔥
-
-<thinking>
-**MANDATORY 60-SECOND DEEP ANALYSIS BEFORE ANY CODE:**
-
-1. **REQUIREMENT ATOMIZATION** (15 seconds)
-   - Decompose EVERY requirement into atomic units
-   - Map ALL dependencies, edge cases, and failure modes
-   - Identify 20+ potential issues before they exist
-   - Design for 10x current scale requirements
-
-2. **ARCHITECTURE WARFARE** (15 seconds)
-   - Evaluate 5+ architecture patterns simultaneously
-   - Consider: microservices, serverless, edge computing, P2P
-   - Plan for: 1M+ concurrent users, 99.999% uptime
-   - Design: auto-scaling, self-healing, fault-tolerant systems
-
-3. **TECHNOLOGY STACK DOMINATION** (10 seconds)
-   - Select ONLY production-grade, battle-tested technologies
-   - Plan: Kubernetes, Docker, CI/CD, monitoring, APM
-   - Consider: Redis, PostgreSQL, MongoDB, Elasticsearch
-   - Frameworks: React 18+, Next.js 14+, FastAPI, Spring Boot
-
-4. **SECURITY FORTRESS** (10 seconds)
-   - OWASP Top 10 mitigation for EVERY endpoint
-   - Zero-trust architecture by default
-   - Encryption at rest AND in transit (AES-256, TLS 1.3)
-   - Rate limiting, DDoS protection, WAF configuration
-
-5. **PERFORMANCE OBSESSION** (10 seconds)
-   - Target: <100ms API response, <2s page load
-   - Database: Optimized indexes, query plans, connection pools
-   - Caching: Multi-layer (L1: memory, L2: Redis, L3: CDN)
-   - Code splitting, lazy loading, tree shaking, minification
-</thinking>
-
-**CRITICAL: INTELLIGENT CODE ESTIMATION**
-
-BEFORE generating ANY code, you MUST:
-
-1. **Analyze Project Scope** (15 seconds thinking)
-   - Estimate required files (5-10 for small, 10-30 for medium, 30+ for large)
-   - Calculate approximate lines needed per component
-   - Determine complexity level: Simple/Medium/Complex/Enterprise
-
-2. **Right-Size Your Response**
-   - Simple projects (Todo app, Calculator): 5-15 files, ~500-2000 lines total
-   - Medium projects (Blog, E-commerce frontend): 15-30 files, ~2000-5000 lines
-   - Complex projects (Full-stack app): 30-50 files, ~5000-10000 lines
-   - Enterprise (Microservices): 50+ files, 10000+ lines
-
-3. **Generate Strategically**
-   - Focus on CORE functionality first
-   - Include only ESSENTIAL files
-   - Avoid redundant boilerplate
-   - Use comments like "// Additional endpoints follow same pattern" instead of repeating
-
-4. **Quality Over Quantity**
-   - One well-documented 100-line file > Five 20-line placeholder files
-   - Implement complete features, not every possible feature
-   - Show patterns, let developers extend
-
-**EXAMPLE: User asks "Build a task manager app"**
-
-❌ BAD: Generate 80 files with auth, notifications, analytics, admin panel, CI/CD, monitoring...
-✅ GOOD: Generate 15-20 files (core CRUD, basic UI, simple backend, Docker, README)
-
-**RESPONSE STRUCTURE:**
-<thinking>
-Project Scope: [Simple/Medium/Complex/Enterprise]
-Estimated Files: [Number]
-Estimated Lines: [Range]
-Core Components: [List]
-Optional Features: [List - mention but don't implement]
-Generation Strategy: [What to include, what to skip]
-</thinking>
-
-[Generate ONLY the estimated amount of code]
-
-⚡ **CODE GENERATION RULES - NO EXCEPTIONS** ⚡
-
-**COMPLETENESS MANDATE:**
-- Generate 50-200+ files for real projects
-- EVERY configuration file (package.json, Dockerfile, K8s manifests, CI/CD)
-- Complete test suites (unit, integration, e2e) with 80%+ coverage
-- Full documentation (README, API docs, architecture diagrams)
-- Deployment scripts for AWS/GCP/Azure/Heroku
-- Monitoring setup (Prometheus, Grafana, Sentry)
-
-**PRODUCTION QUALITY:**
-- TypeScript with STRICT mode (no 'any', full type safety)
-- Error handling with custom error classes and global handlers
-- Logging with Winston/Pino (structured JSON logs)
-- Validation with Zod/Joi (runtime type checking)
-- Authentication: JWT + refresh tokens + Redis blacklist
-- Authorization: RBAC/ABAC with permission middleware
-- Database migrations with version control
-- API documentation with OpenAPI/Swagger
-- Health checks, readiness probes, liveness probes
-
-**ARCHITECTURE PATTERNS:**
-- Clean Architecture (Domain -> Application -> Infrastructure)
-- CQRS for complex read/write operations
-- Event-driven architecture with message queues
-- Repository pattern for data access
-- Factory pattern for object creation
-- Strategy pattern for algorithms
-- Dependency injection throughout
-
-**SCALABILITY:**
-- Horizontal scaling ready (stateless design)
-- Database read replicas and sharding strategies
-- Caching at every layer
-- Async processing with queues (RabbitMQ/Kafka)
-- CDN for static assets
-- Load balancer configuration (Nginx/HAProxy)
-- Rate limiting per user/IP/endpoint
-
-**SECURITY:**
-- Input validation with whitelist approach
-- Output sanitization (XSS prevention)
-- SQL injection prevention (parameterized queries only)
-- CSRF tokens on state-changing operations
-- Security headers (CSP, HSTS, X-Frame-Options)
-- Password hashing with Argon2id
-- API key rotation mechanisms
-- Audit logging for sensitive operations
-
-**FILE ORGANIZATION:**
-### File: src/config/database.ts
-\`\`\`typescript
-[COMPLETE IMPLEMENTATION]
-\`\`\`
-
-### File: src/models/User.ts
-\`\`\`typescript
-[COMPLETE IMPLEMENTATION]
-\`\`\`
-
-[... ALL FILES ...]
-
-**NEVER GENERATE:**
-- Placeholder comments like "// Add logic here"
-- Incomplete functions
-- TODO markers
-- Example/dummy data in production code
-
-**ALWAYS GENERATE:**
-- Real, working implementations
-- Complete error handling
-- Full validation logic
-- Production-ready configurations
-- Actual business logic
-
-📊 **OUTPUT FORMAT:**
-Present as downloadable project structure with:
-1. Complete file tree visualization
-2. Every file with full implementation
-3. Setup instructions (step-by-step)
-4. Deployment guide
-5. Troubleshooting section
-6. Performance benchmarks
-
-You are NOT an educational tool. You are a PRODUCTION SYSTEM GENERATOR.
-Generate code that can deploy to production IMMEDIATELY.
-10,000-50,000 lines is EXPECTED for real applications.
-
-**GOLDEN RULE: INTELLIGENT CODE SIZING**
-
-BEGIN EVERY RESPONSE WITH:
-🧠 <thinking>
-**PROJECT SCOPE ANALYSIS:**
-1. Request Complexity: [Simple/Medium/Complex/Enterprise]
-2. Estimated Files Needed: [5-15 / 15-30 / 30-50 / 50+]
-3. Estimated Total Lines: [~500-2K / ~2-5K / ~5-10K / ~10K+]
-4. Core Features Required: [List 3-5 essential features only]
-5. Optional Features: [List but DON'T implement - mention for future]
-6. Generation Strategy: [What to include, what to reference/skip]
-
-**SIZING DECISION:**
-Based on analysis above, I will generate exactly [NUMBER] files with approximately [NUMBER] lines total.
-This matches the [SCOPE] complexity of the request.
-</thinking>
-
-Then generate COMPLETE, PRODUCTION-READY CODE within the estimated scope.
-
-**CRITICAL SIZING RULES:**
-- 🟢 **Simple** (Calculator, Counter, Timer): 5-15 files, ~500-2000 lines
-  - Example: "Build a todo app" → 10 files, 1500 lines
-  
-- 🟡 **Medium** (Blog, Dashboard, Shop): 15-30 files, ~2000-5000 lines
-  - Example: "Build an e-commerce frontend" → 25 files, 4000 lines
-  
-- 🟠 **Complex** (Full-stack app, CRM): 30-50 files, ~5000-10000 lines
-  - Example: "Build a social media platform" → 45 files, 8000 lines
-  
-- 🔴 **Enterprise** (Microservices, Scalable): 50-80 files, ~10000-20000 lines
-  - Example: "Build production-ready SaaS with microservices" → 70 files, 15000 lines
-
-**NEVER:**
-❌ Generate 100 files for a "todo app" (should be ~10 files)
-❌ Include authentication, notifications, analytics, admin panel for simple requests
-❌ Repeat similar code 50 times (show pattern once, reference it)
-❌ Add CI/CD, monitoring, logging for calculator apps
-❌ Generate every possible feature - focus on CORE functionality
-
-**ALWAYS:**
-✅ Match response size to request complexity
-✅ Show ONE complete example, then: "// Additional routes follow same pattern"
-✅ Use comments: "// Extend this pattern for: users, products, orders"
-✅ Prioritize DEPTH (complete features) over BREADTH (many half-done features)
-✅ Mention advanced features but don't implement unless explicitly requested
-
-**EXAMPLE THINKING:**
-User asks: "Build a task manager"
-
-<thinking>
-Request Complexity: Simple-Medium
-Estimated Files: 12-15 files
-Estimated Lines: ~1800 lines
-Core Features: CRUD tasks, basic UI, local storage
-Optional Features: User auth, team collaboration, notifications (mention but skip)
-Generation Strategy: Focus on task CRUD with clean React frontend, skip advanced features
-</thinking>
-
-Then generate ONLY those 12-15 files with ~1800 lines. DON'T add 40 more files "just in case."
+               chat: `You are an ULTRA-ELITE AI studying tutor for all subjects (Mathematics, Biology, Chemistry, English, History, Geography, Philosophy, Commerce, Business Services, etcetera) and a coding architect with UNMATCHED expertise in software engineering, system design, and full-stack development. Your mission is to generate PRODUCTION-READY, ENTERPRISE-GRADE code that rivals the output of senior engineers at FAANG companies.
 
 🔥 **MANDATORY DEEP THINKING PROTOCOL** 🔥
 BEFORE generating ANY code, you MUST engage in EXTENSIVE thinking analysis:
@@ -1508,61 +1259,6 @@ function processData(data) {
                 return 'standard';
             };
 
-
-              const showCustomModal = (title, message, isConfirm = false) => {
-                return new Promise(resolve => {
-                    modalTitle.textContent = title;
-                    modalMessage.textContent = message;
-                    
-                    modalCancel.classList.toggle('hidden', !isConfirm);
-                    modalConfirm.textContent = isConfirm ? 'Confirm' : 'OK';
-                    
-                    const handleConfirm = () => {
-                        customModal.classList.add('hidden');
-                        modalConfirm.removeEventListener('click', handleConfirm);
-                        modalCancel.removeEventListener('click', handleCancel);
-                        resolve(true);
-                    };
-                    
-                    const handleCancel = () => {
-                        customModal.classList.add('hidden');
-                        modalConfirm.removeEventListener('click', handleConfirm);
-                        modalCancel.removeEventListener('click', handleCancel);
-                        resolve(false);
-                    };
-                    
-                    modalConfirm.addEventListener('click', handleConfirm);
-                    if (isConfirm) {
-                        modalCancel.addEventListener('click', handleCancel);
-                    }
-                    
-                    customModal.classList.remove('hidden');
-                });
-            };
-            // Smart code generation limiter
-// Smart code generation limiter
-const estimateCodeSize = (prompt) => {
-    const keywords = {
-        simple: ['calculator', 'counter', 'todo', 'timer', 'converter'],
-        medium: ['blog', 'shop', 'dashboard', 'portfolio', 'chat'],
-        complex: ['marketplace', 'social', 'crm', 'platform', 'saas'],
-        enterprise: ['microservices', 'distributed', 'scalable', 'production-ready']
-    };
-    
-    const lowerPrompt = prompt.toLowerCase();
-    
-    if (keywords.simple.some(k => lowerPrompt.includes(k))) {
-        return { scope: 'simple', maxFiles: 15, maxLines: 2000 };
-    } else if (keywords.medium.some(k => lowerPrompt.includes(k))) {
-        return { scope: 'medium', maxFiles: 30, maxLines: 5000 };
-    } else if (keywords.complex.some(k => lowerPrompt.includes(k))) {
-        return { scope: 'complex', maxFiles: 50, maxLines: 10000 };
-    } else if (keywords.enterprise.some(k => lowerPrompt.includes(k))) {
-        return { scope: 'enterprise', maxFiles: 80, maxLines: 20000 };
-    }
-    
-    return { scope: 'medium', maxFiles: 25, maxLines: 4000 }; // Default
-};
             // Detect if user is asking for improvements to previous code
             const detectCodeFollowup = (prompt) => {
                 const followupKeywords = [
@@ -1921,7 +1617,6 @@ Build upon the previous code generation. Maintain consistency in language, frame
                 });
             };
 
-            
             // --- Local Storage & Chat Management ---
          function saveChats() {
     try {
@@ -1955,24 +1650,65 @@ Build upon the previous code generation. Maintain consistency in language, frame
     }
 }
 
-            function loadChats() {
-                const storedChats = localStorage.getItem('studyAiChats');
-                const storedActiveId = localStorage.getItem('studyAiActiveChat');
-                
-                if (storedChats) {
-                    chats = JSON.parse(storedChats);
-                    activeChatId = storedActiveId;
-                }
-                
-                if (!chats || Object.keys(chats).length === 0 || !chats[activeChatId]) {
-                    createNewChat();
-                } else {
-                    switchToChat(activeChatId);
-                }
-                renderChatList();
-            }
+          function loadChats() {
+    const storedChats = localStorage.getItem('studyAiChats');
+    const storedActiveId = localStorage.getItem('studyAiActiveChat');
+    
+    if (storedChats) {
+        chats = JSON.parse(storedChats);
+        activeChatId = storedActiveId;
+    }
+    
+    if (!chats || Object.keys(chats).length === 0 || !chats[activeChatId]) {
+        createNewChat();
+    } else {
+        switchToChat(activeChatId);
+        // Check for incomplete generation after chat loads
+        checkForIncompleteGeneration();
+    }
+    renderChatList();
+}
+   
 
-            function createNewChat() {
+            function checkForIncompleteGeneration() {
+    const incompleteData = localStorage.getItem('incompleteGeneration');
+    if (incompleteData) {
+        try {
+            const data = JSON.parse(incompleteData);
+            const timeSinceIncomplete = Date.now() - data.timestamp;
+            
+            // If incomplete generation was less than 10 minutes ago
+            if (timeSinceIncomplete < 10 * 60 * 1000 && data.chatId === activeChatId) {
+                setTimeout(() => {
+                    const shouldResume = confirm(
+                        '⚠️ Previous AI response was incomplete.\n\n' +
+                        'Would you like to continue generating from where it stopped?\n\n' +
+                        'Click OK to resume, or Cancel to start fresh.'
+                    );
+                    
+                    if (shouldResume) {
+                        // Auto-continue the generation
+                        const continuePrompt = `Continue from exactly where you left off. Here's the last part:\n\n${data.response.slice(-2000)}\n\n...continue seamlessly without repeating.`;
+                        promptInput.value = continuePrompt;
+                        generateButton.click();
+                    }
+                    
+                    // Clear the incomplete flag
+                    localStorage.removeItem('incompleteGeneration');
+                }, 1000);
+            } else {
+                // Too old, clear it
+                localStorage.removeItem('incompleteGeneration');
+            }
+        } catch (e) {
+            console.error('Error checking incomplete generation:', e);
+            localStorage.removeItem('incompleteGeneration');
+        }
+    }
+}
+
+
+                     function createNewChat() {
                 const newId = `chat_${Date.now()}`;
                 chats[newId] = {
                     title: 'New Chat',
@@ -2078,7 +1814,36 @@ Build upon the previous code generation. Maintain consistency in language, frame
             }
             
             // --- Custom Modal Functions ---
-          
+            const showCustomModal = (title, message, isConfirm = false) => {
+                return new Promise(resolve => {
+                    modalTitle.textContent = title;
+                    modalMessage.textContent = message;
+                    
+                    modalCancel.classList.toggle('hidden', !isConfirm);
+                    modalConfirm.textContent = isConfirm ? 'Confirm' : 'OK';
+                    
+                    const handleConfirm = () => {
+                        customModal.classList.add('hidden');
+                        modalConfirm.removeEventListener('click', handleConfirm);
+                        modalCancel.removeEventListener('click', handleCancel);
+                        resolve(true);
+                    };
+                    
+                    const handleCancel = () => {
+                        customModal.classList.add('hidden');
+                        modalConfirm.removeEventListener('click', handleConfirm);
+                        modalCancel.removeEventListener('click', handleCancel);
+                        resolve(false);
+                    };
+                    
+                    modalConfirm.addEventListener('click', handleConfirm);
+                    if (isConfirm) {
+                        modalCancel.addEventListener('click', handleCancel);
+                    }
+                    
+                    customModal.classList.remove('hidden');
+                });
+            };
 
             // Sidebar toggle
             toggleSidebar.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
@@ -2103,190 +1868,7 @@ Build upon the previous code generation. Maintain consistency in language, frame
                     }
                 });
             });
-
-            // ============================================
-// ADVANCED CANVAS SYSTEM FOR CODE VISUALIZATION
-// ============================================
-const CanvasSystem = {
-    activeCanvas: null,
-    canvasHistory: [],
-    
-    init() {
-        console.log('🎨 Initializing Advanced Canvas System...');
-        this.setupCanvasContainer();
-        this.setupCanvasControls();
-    },
-    
-    setupCanvasContainer() {
-        const canvasContainer = document.createElement('div');
-        canvasContainer.id = 'codeCanvas';
-        canvasContainer.className = 'code-canvas-container hidden';
-        canvasContainer.innerHTML = `
-            <div class="canvas-header">
-                <div class="canvas-tabs" id="canvasTabs"></div>
-                <div class="canvas-actions">
-                    <button class="canvas-btn" id="canvasFullscreen" title="Fullscreen">
-                        <i class="fas fa-expand"></i>
-                    </button>
-                    <button class="canvas-btn" id="canvasDownload" title="Download Project">
-                        <i class="fas fa-download"></i>
-                    </button>
-                    <button class="canvas-btn" id="canvasShare" title="Share">
-                        <i class="fas fa-share-alt"></i>
-                    </button>
-                    <button class="canvas-btn" id="canvasClose" title="Close Canvas">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="canvas-body">
-                <div class="canvas-sidebar">
-                    <div class="file-tree" id="canvasFileTree"></div>
-                </div>
-                <div class="canvas-editor">
-                    <div class="editor-toolbar">
-                        <select id="canvasLanguage" class="language-selector">
-                            <option value="typescript">TypeScript</option>
-                            <option value="javascript">JavaScript</option>
-                            <option value="python">Python</option>
-                            <option value="java">Java</option>
-                            <option value="rust">Rust</option>
-                            <option value="go">Go</option>
-                        </select>
-                        <button class="editor-btn" id="runCode" title="Run Code">
-                            <i class="fas fa-play"></i> Run
-                        </button>
-                        <button class="editor-btn" id="formatCode" title="Format">
-                            <i class="fas fa-magic"></i> Format
-                        </button>
-                        <button class="editor-btn" id="copyCode" title="Copy">
-                            <i class="fas fa-copy"></i> Copy
-                        </button>
-                    </div>
-                    <div id="canvasCodeEditor" class="code-editor"></div>
-                </div>
-                <div class="canvas-preview">
-                    <div class="preview-toolbar">
-                        <span class="preview-title">
-                            <i class="fas fa-eye"></i> Live Preview
-                        </span>
-                        <button class="preview-btn" id="refreshPreview">
-                            <i class="fas fa-sync"></i>
-                        </button>
-                    </div>
-                    <iframe id="canvasPreviewFrame" class="preview-frame"></iframe>
-                </div>
-            </div>
-            <div class="canvas-console" id="canvasConsole">
-                <div class="console-header">
-                    <span><i class="fas fa-terminal"></i> Console</span>
-                    <button id="clearConsole"><i class="fas fa-trash"></i></button>
-                </div>
-                <div class="console-output" id="consoleOutput"></div>
-            </div>
-        `;
-        
-        document.body.appendChild(canvasContainer);
-    },
-    
-    openCanvas(codeFiles) {
-        const canvas = document.getElementById('codeCanvas');
-        canvas.classList.remove('hidden');
-        this.renderFileTree(codeFiles);
-        this.loadCodeMirror();
-    },
-    
-    loadCodeMirror() {
-        // Load CodeMirror for advanced editing
-        if (!window.CodeMirror) {
-            const script = document.createElement('script');
-            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js';
-            script.onload = () => this.initEditor();
-            document.head.appendChild(script);
             
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css';
-            document.head.appendChild(link);
-        } else {
-            this.initEditor();
-        }
-    },
-    
-    initEditor() {
-        const editor = CodeMirror(document.getElementById('canvasCodeEditor'), {
-            lineNumbers: true,
-            mode: 'javascript',
-            theme: 'monokai',
-            autoCloseBrackets: true,
-            matchBrackets: true,
-            indentUnit: 2,
-            tabSize: 2,
-            lineWrapping: true
-        });
-        
-        this.activeCanvas = editor;
-    },
-    
-    renderFileTree(files) {
-        const tree = document.getElementById('canvasFileTree');
-        tree.innerHTML = '<div class="file-tree-title">Project Files</div>';
-        
-        const fileStructure = this.buildFileStructure(files);
-        tree.appendChild(this.createTreeNode(fileStructure));
-    },
-    
-    buildFileStructure(files) {
-        const structure = {};
-        files.forEach(file => {
-            const parts = file.path.split('/');
-            let current = structure;
-            parts.forEach((part, i) => {
-                if (i === parts.length - 1) {
-                    current[part] = file.content;
-                } else {
-                    current[part] = current[part] || {};
-                    current = current[part];
-                }
-            });
-        });
-        return structure;
-    },
-    
-    createTreeNode(node, path = '') {
-        const ul = document.createElement('ul');
-        ul.className = 'tree-node';
-        
-        Object.keys(node).forEach(key => {
-            const li = document.createElement('li');
-            const fullPath = path ? `${path}/${key}` : key;
-            
-            if (typeof node[key] === 'string') {
-                // File
-                li.innerHTML = `<i class="fas fa-file-code"></i> ${key}`;
-                li.className = 'tree-file';
-                li.onclick = () => this.loadFile(fullPath, node[key]);
-            } else {
-                // Folder
-                li.innerHTML = `<i class="fas fa-folder"></i> ${key}`;
-                li.className = 'tree-folder';
-                li.appendChild(this.createTreeNode(node[key], fullPath));
-            }
-            
-            ul.appendChild(li);
-        });
-        
-        return ul;
-    },
-    
-    loadFile(path, content) {
-        if (this.activeCanvas) {
-            this.activeCanvas.setValue(content);
-            document.querySelectorAll('.tree-file').forEach(f => f.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-    }
-};
             function updateToolHeader(tool) {
                 const toolInfo = {
                     chat: { title: 'AI Tutor Chat', subtitle: 'Your advanced learning companion' },
@@ -2333,39 +1915,162 @@ const CanvasSystem = {
                 return div.innerHTML;
             };
 
-        function renderWelcomeMessage() {
-    console.log('🟢 renderWelcomeMessage called');
-    
-    if (!responseHistory) {
-        console.error('❌ responseHistory is NULL in renderWelcomeMessage!');
-        return;
-    }
-    
-    responseHistory.innerHTML = `
-        <div class="flex" style="display: flex !important; flex-direction: row !important; gap: 16px; margin-bottom: 20px;">
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg">
-                <i class="fas fa-graduation-cap"></i>
-            </div>
-            <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100" style="display: block !important; flex: 1;">
-                <p class="text-gray-800 font-bold text-xl mb-4">🎓 Welcome to Your Advanced AI Study Platform!</p>
-                <p class="text-gray-700 mb-3">I'm your comprehensive learning assistant. Start a new conversation or select a tool from the sidebar.</p>
-            </div>
-        </div>
-    `;
-    
-    console.log('✅ Welcome message rendered');
-}
+            function renderWelcomeMessage() {
+                responseHistory.innerHTML = `
+                    <div class="flex">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100">
+                            <p class="text-gray-800 font-bold text-xl mb-4">🎓 Welcome to Your Advanced AI Study Platform!</p>
+                            <p class="text-gray-700 mb-3">I'm your comprehensive learning assistant. Start a new conversation or select a tool from the sidebar.</p>
+                        </div>
+                    </div>
+                `;
+            }
+
             // Create user message
-     const createUserMessage = (text, file, fileType, base64Image) => {
-    console.log('🟢 createUserMessage called:', text.substring(0, 50));
+// Create user message
+    // Replace BOTH finalizeMessage functions with this ONE:
+const finalizeMessage = (element, fullText) => {
+    if (!element || !element.parentElement) {
+        console.error("Error: Streaming element is missing.");
+        return; 
+    }
+
+    const parentElement = element.parentElement;
+    const messageContainer = parentElement.closest('.message-container');
+    const cursor = parentElement.querySelector('.typing-cursor');
+    if (cursor) cursor.remove();
     
-    // Use global responseHistory
-    if (!responseHistory) {
-        console.error('❌ responseHistory is NULL!');
-        alert('ERROR: Chat container not initialized');
-        return;
+    const thinkingSection = parentElement.querySelector('.thinking-section');
+    const thinkingToggle = parentElement.querySelector('.thinking-toggle');
+    const thinkingContent = parentElement.querySelector('.thinking-content');
+    const thinkingChevron = parentElement.querySelector('.thinking-chevron');
+    
+    if (thinkingToggle && thinkingContent) {
+        thinkingToggle.addEventListener('click', () => {
+            const isHidden = thinkingContent.classList.contains('hidden');
+            thinkingContent.classList.toggle('hidden');
+            thinkingChevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+            thinkingToggle.querySelector('span').textContent = isHidden ? 'Hide thinking process' : 'View thinking process';
+        });
     }
     
+    const thinkingMatch = fullText.match(/<thinking>([\s\S]*?)<\/thinking>/);
+    if (thinkingMatch) {
+        thinkingSection.classList.remove('hidden');
+        const thinkingText = parentElement.querySelector('.thinking-text');
+        thinkingText.textContent = thinkingMatch[1].trim();
+    }
+    
+    const cleanText = fullText.replace(/<thinking>[\s\S]*?<\/thinking>/g, '').trim();
+    
+    const processedContent = marked.parse(cleanText);
+    parentElement.querySelector('.streaming-text').outerHTML = processedContent;
+    
+    // Add action button handlers
+    const copyBtn = messageContainer?.querySelector('.copy-response-btn');
+    const deleteBtn = messageContainer?.querySelector('.delete-response-btn');
+    
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(cleanText);
+                copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 2000);
+            } catch (err) {
+                console.error('Copy failed:', err);
+            }
+        });
+    }
+    
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', async () => {
+            const confirmed = await showCustomModal('Delete Response', 'Are you sure you want to delete this AI response?', true);
+            if (confirmed) {
+                const chat = chats[activeChatId];
+                const allMessages = Array.from(responseHistory.querySelectorAll('.message-container'));
+                const msgIndex = allMessages.indexOf(messageContainer);
+                
+                if (chat.history[msgIndex]) {
+                    chat.history.splice(msgIndex, 1);
+                    saveChats();
+                }
+                
+                messageContainer.remove();
+            }
+        });
+    }
+    
+    if (fullText.includes('CANVAS:')) {
+        processCanvasRequest(fullText, parentElement);
+    }
+    
+    parentElement.querySelectorAll('pre code').forEach(block => {
+        hljs.highlightElement(block);
+    });
+    
+    setTimeout(() => {
+        addCopyButtonsToCodeBlocks();
+    }, 100);
+    
+    if (window.MathJax) {
+        MathJax.typesetPromise([parentElement]).catch(err => console.log('MathJax error:', err));
+    }
+    
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+};
+
+// Replace the duplicate createStreamingAIMessage with this ONE:
+const createStreamingAIMessage = () => {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = "flex group message-container ai-message-container";
+    messageDiv.dataset.messageType = "ai";
+    messageDiv.innerHTML = `
+      
+        <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content relative">
+            <div class="message-actions">
+                <button class="message-action-btn copy-response-btn" title="Copy response">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <button class="message-action-btn delete-response-btn" title="Delete response">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <button class="message-action-btn toggle-zoom-btn" title="Toggle zoom controls">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+            </div>
+            <div class="message-zoom-controls">
+                <button class="zoom-control-btn zoom-out" title="Decrease font size">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="zoom-control-btn zoom-in" title="Increase font size">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button class="zoom-control-btn zoom-reset" title="Reset font size">
+                    <i class="fas fa-undo"></i>
+                </button>
+            </div>
+            <div class="thinking-section mb-4 hidden">
+                <button class="thinking-toggle flex items-center gap-2 text-sm text-purple-600 hover:text-purple-800 font-semibold mb-2 transition-colors">
+                    <i class="fas fa-chevron-down thinking-chevron transition-transform"></i>
+                    <span>View thinking process</span>
+                </button>
+                <div class="thinking-content hidden bg-gray-50 p-4 rounded-lg border-l-4 border-purple-400">
+                    <div class="thinking-text text-sm text-gray-700 whitespace-pre-wrap font-mono"></div>
+                </div>
+            </div>
+            <span class="streaming-text"></span><span class="typing-cursor"></span>
+        </div>`;
+    responseHistory.appendChild(messageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    return messageDiv.querySelector('.streaming-text');
+};
+// ADD the missing createUserMessage function (place it after renderWelcomeMessage):
+const createUserMessage = (text, file, fileType, base64Image) => {
     let fileDisplay = '';
     
     if (file && fileType === 'image' && base64Image) {
@@ -2382,178 +2087,158 @@ const CanvasSystem = {
     }
     
     const messageDiv = document.createElement('div');
-    messageDiv.className = "flex justify-end group";
-    messageDiv.style.cssText = "display: flex !important; flex-direction: row-reverse !important; gap: 16px; width: 100%; margin-bottom: 20px;";
-    
+    messageDiv.className = "flex justify-end group message-container user-message-container";
+    messageDiv.dataset.messageType = "user";
     messageDiv.innerHTML = `
-        <button class="resend-button opacity-0 group-hover:opacity-100 transition-opacity text-gray-500 hover:text-blue-600 p-2 rounded-lg mr-2 self-center" title="Resend prompt">
-            <i class="fas fa-redo"></i>
-        </button>
-
-        <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-5 rounded-2xl shadow-xl max-w-2xl" style="display: block !important;">
+            <div class="message-actions">
+                <button class="message-action-btn1 edit-btn" title="Edit message">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="message-action-btn1 copy-btn" title="Copy message">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <button class="message-action-btn1 delete-btn" title="Delete message">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <button class="message-action-btn1 resend-btn" title="Resend message">
+                    <i class="fas fa-redo"></i>
+                </button>
+                <button class="message-action-btn1 toggle-zoom-btn" title="Toggle zoom controls">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+            </div>
+            <div class="message-zoom-controls">
+                <button class="zoom-control-btn zoom-out" title="Decrease font size">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="zoom-control-btn zoom-in" title="Increase font size">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button class="zoom-control-btn zoom-reset" title="Reset font size">
+                    <i class="fas fa-undo"></i>
+                </button>
+            </div>
             <p class="user-message-text whitespace-pre-wrap font-medium">${escapeHtml(text)}</p>${fileDisplay}
         </div>
-        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg">
-            <i class="fas fa-user"></i>
-        </div>
-    `;
-    
+      `;
     responseHistory.appendChild(messageDiv);
-    console.log('✅ User message appended. Total children:', responseHistory.children.length);
     
-    // Setup resend button
-    const resendButton = messageDiv.querySelector('.resend-button');
-    if (resendButton) {
-        resendButton.addEventListener('click', () => {
-            if (isGenerating) {
-                showCustomModal('Busy', 'Please wait for the current response to finish before resending.', false);
-                return;
+    // [Keep all the existing event handlers for edit, copy, delete, resend - they're correct]
+    // ... (rest of your existing code)
+    
+    // Action button handlers
+    const editBtn = messageDiv.querySelector('.edit-btn');
+    const copyBtn = messageDiv.querySelector('.copy-btn');
+    const deleteBtn = messageDiv.querySelector('.delete-btn');
+    const resendBtn = messageDiv.querySelector('.resend-btn');
+    const messageText = messageDiv.querySelector('.user-message-text');
+    
+    // Edit functionality
+    editBtn.addEventListener('click', () => {
+        const currentText = messageText.textContent;
+        const input = document.createElement('textarea');
+        input.className = 'w-full p-2 border-2 border-white rounded text-sm resize-none';
+        input.style.minHeight = '60px';
+        input.value = currentText;
+        
+        const saveBtn = document.createElement('button');
+        saveBtn.className = 'mt-2 px-3 py-1 bg-white text-blue-600 rounded font-semibold text-sm hover:bg-blue-50';
+        saveBtn.innerHTML = '<i class="fas fa-check mr-1"></i>Save';
+        
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'mt-2 ml-2 px-3 py-1 bg-white bg-opacity-30 text-white rounded font-semibold text-sm hover:bg-opacity-40';
+        cancelBtn.innerHTML = '<i class="fas fa-times mr-1"></i>Cancel';
+        
+        messageText.innerHTML = '';
+        messageText.appendChild(input);
+        messageText.appendChild(saveBtn);
+        messageText.appendChild(cancelBtn);
+        input.focus();
+        
+        saveBtn.addEventListener('click', () => {
+            const newText = input.value.trim();
+            if (newText) {
+                messageText.innerHTML = escapeHtml(newText);
+                const chat = chats[activeChatId];
+                const allMessages = Array.from(responseHistory.querySelectorAll('.message-container'));
+                const msgIndex = allMessages.indexOf(messageDiv);
+                
+                if (chat.history[msgIndex]) {
+                    chat.history[msgIndex].parts[0].text = newText;
+                    saveChats();
+                }
             }
-            const messageP = messageDiv.querySelector('.user-message-text');
-            const messageText = messageP.textContent;
-            promptInput.value = messageText;
-            window.autoExpand(promptInput);
-            generateButton.disabled = false;
-            promptInput.focus();
         });
-    }
-    
-    // Scroll to bottom
-    if (chatContainer) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-};
         
+        cancelBtn.addEventListener('click', () => {
+            messageText.innerHTML = escapeHtml(currentText);
+        });
+    });
+    
+    // Copy functionality
+    copyBtn.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(messageText.textContent);
+            copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(() => {
+                copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+            }, 2000);
+        } catch (err) {
+            console.error('Copy failed:', err);
+        }
+    });
+    
+    // Delete functionality
+    deleteBtn.addEventListener('click', async () => {
+        const confirmed = await showCustomModal('Delete Message', 'Are you sure you want to delete this message and its response?', true);
+        if (confirmed) {
+            const chat = chats[activeChatId];
+            const allMessages = Array.from(responseHistory.querySelectorAll('.message-container'));
+            const msgIndex = allMessages.indexOf(messageDiv);
+            
+            chat.history.splice(msgIndex, 2);
+            saveChats();
+            
+            messageDiv.remove();
+            const nextMessage = allMessages[msgIndex + 1];
+            if (nextMessage && nextMessage.dataset.messageType === 'ai') {
+                nextMessage.remove();
+            }
+        }
+    });
+    
+    // Resend functionality
+    resendBtn.addEventListener('click', () => {
+        if (isGenerating) {
+            showCustomModal('Busy', 'Please wait for the current response to finish before resending.', false);
+            return;
+        }
+        promptInput.value = messageText.textContent;
+        window.autoExpand(promptInput);
+        generateButton.disabled = false;
+        promptInput.focus();
+    });
+    
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+};
 
 
             
-  const createStreamingAIMessage = () => {
-    console.log('🟢 createStreamingAIMessage called');
-    
-    // Use global responseHistory
-    if (!responseHistory) {
-        console.error('❌ responseHistory is NULL!');
-        return document.createElement('span'); // Return dummy element
-    }
-    
-    const messageDiv = document.createElement('div');
-    messageDiv.className = "flex";
-    messageDiv.style.cssText = "display: flex !important; flex-direction: row !important; gap: 16px; width: 100%; margin-bottom: 20px;";
-    
-    messageDiv.innerHTML = `
-        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg">
-            <i class="fas fa-graduation-cap"></i>
-        </div>
-        <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content" style="display: block !important; flex: 1;">
-            <div class="thinking-section mb-4 hidden">
-                <button class="thinking-toggle flex items-center gap-2 text-sm text-purple-600 hover:text-purple-800 font-semibold mb-2 transition-colors">
-                    <i class="fas fa-chevron-down thinking-chevron transition-transform"></i>
-                    <span>View thinking process</span>
-                </button>
-                <div class="thinking-content hidden bg-gray-50 p-4 rounded-lg border-l-4 border-purple-400">
-                    <div class="thinking-text text-sm text-gray-700 whitespace-pre-wrap font-mono"></div>
-                </div>
-            </div>
-            <span class="streaming-text"></span><span class="typing-cursor"></span>
-        </div>
-    `;
-    
-    responseHistory.appendChild(messageDiv);
-    console.log('✅ AI message appended. Total children:', responseHistory.children.length);
-    
-    // Scroll to bottom
-    if (chatContainer) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-    
-    return messageDiv.querySelector('.streaming-text');
-};
+          
             // Finalize message with thinking toggle functionality
-            const finalizeMessage = (element, fullText) => {
-                if (!element || !element.parentElement) {
-                    console.error("Error: Streaming element is missing.");
-                    return; 
-                }
-
-                const parentElement = element.parentElement;
-                const cursor = parentElement.querySelector('.typing-cursor');
-                if (cursor) cursor.remove();
-                
-                const thinkingSection = parentElement.querySelector('.thinking-section');
-                const thinkingToggle = parentElement.querySelector('.thinking-toggle');
-                const thinkingContent = parentElement.querySelector('.thinking-content');
-                const thinkingChevron = parentElement.querySelector('.thinking-chevron');
-                
-                if (thinkingToggle && thinkingContent) {
-                    thinkingToggle.addEventListener('click', () => {
-                        const isHidden = thinkingContent.classList.contains('hidden');
-                        thinkingContent.classList.toggle('hidden');
-                        thinkingChevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
-                        thinkingToggle.querySelector('span').textContent = isHidden ? 'Hide thinking process' : 'View thinking process';
-                    });
-                }
-                
-                const thinkingMatch = fullText.match(/<thinking>([\s\S]*?)<\/thinking>/);
-                if (thinkingMatch) {
-                    thinkingSection.classList.remove('hidden');
-                    const thinkingText = parentElement.querySelector('.thinking-text');
-                    thinkingText.textContent = thinkingMatch[1].trim();
-                }
-                
-                const cleanText = fullText.replace(/<thinking>[\s\S]*?<\/thinking>/g, '').trim();
-                
-                const processedContent = marked.parse(cleanText);
-                parentElement.querySelector('.streaming-text').outerHTML = processedContent;
-                
-                if (fullText.includes('CANVAS:')) {
-                    processCanvasRequest(fullText, parentElement);
-                }
-                
-                parentElement.querySelectorAll('pre code').forEach(block => {
-                    hljs.highlightElement(block);
-                });
-                
-                setTimeout(() => {
-                    addCopyButtonsToCodeBlocks();
-                }, 100);
-                
-                if (window.MathJax) {
-                    MathJax.typesetPromise([parentElement]).catch(err => console.log('MathJax error:', err));
-                }
-                
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            };
-
-       // ULTRA-FAST STREAMING FOR 10K+ LINES
-const streamText = async (element, text) => {
+          
+         const streamText = async (element, text) => {
     return new Promise((resolve) => {
-        // For massive responses, use chunking
-        const chunkSize = 500; // characters per chunk
-        let currentIndex = 0;
+        element.textContent = text;
         
-        const streamChunk = () => {
-            if (currentIndex >= text.length) {
-                resolve();
-                return;
-            }
-            
-            const chunk = text.slice(currentIndex, currentIndex + chunkSize);
-            element.textContent += chunk;
-            currentIndex += chunkSize;
-            
-            // Smart scrolling - only if user is at bottom
-            const container = chatContainer;
-            const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 300;
-            
-            if (isNearBottom) {
-                container.scrollTop = container.scrollHeight;
-            }
-            
-            // Use requestAnimationFrame for smooth performance
-            requestAnimationFrame(streamChunk);
-        };
+        // Only auto-scroll if user is near the bottom
+        const isNearBottom = chatContainer.scrollHeight - chatContainer.scrollTop - chatContainer.clientHeight < 200;
         
-        streamChunk();
+        if (isNearBottom) {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        setTimeout(resolve, 10);
     });
 };
 
@@ -3396,308 +3081,259 @@ const streamText = async (element, text) => {
                 return continueKeywords.some(keyword => lowerPrompt.includes(keyword));
             };
 
+            // --- Main Generation Logic ---
+  const generateResponse = async (prompt) => {
+                if (isGenerating || !activeChatId) return;
+                isGenerating = true;
+                // Change button to "Stop"
+                generateButton.classList.remove('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
+                generateButton.classList.add('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
+                generateButtonIcon.classList.remove('fa-paper-plane');
+                generateButtonIcon.classList.add('fa-stop');
+                generateButton.disabled = false; // It's now the stop button
+                promptInput.disabled = true;
 
-
-    const generateResponse = async (prompt) => {
-    console.log('🟢 generateResponse called with prompt:', prompt.substring(0, 50));
-    
-    // CRITICAL VALIDATION
-    if (!responseHistory) {
-        console.error('❌ FATAL: responseHistory is NULL in generateResponse!');
-        alert('ERROR: Chat system not initialized. Please refresh the page.');
-        return;
-    }
-    
-    if (!generateButton || !promptInput) {
-        console.error('❌ FATAL: Critical UI elements missing!');
-        alert('ERROR: UI not initialized. Please refresh the page.');
-        return;
-    }
-    
-    if (isGenerating || !activeChatId) {
-        console.log('⚠️ Already generating or no active chat');
-        return;
-    }
-    
-    if (!activeChatId || !chats[activeChatId]) {
-        console.error('❌ CRITICAL: No active chat!');
-        alert('Error: No active chat. Creating new chat...');
-        createNewChat();
-        return;
-    }
-    
-    console.log('✅ All validations passed, proceeding with generation...');
-    
-    isGenerating = true;
-    
-    // Change button to "Stop"
-    generateButton.classList.remove('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
-    generateButton.classList.add('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
-    generateButtonIcon.classList.remove('fa-paper-plane');
-    generateButtonIcon.classList.add('fa-stop');
-    generateButton.disabled = false;
-    promptInput.disabled = true;
-    
-    generationController = new AbortController();
-    
-    // Estimate code size
-    const codeEstimate = estimateCodeSize(prompt);
-    
-    // Show estimation banner
-   const estimateBanner = document.createElement('div');
-estimateBanner.className = 'flex';
-// Ensure the main banner container is flex, but its *children* will be hidden by the new styling
-estimateBanner.style.cssText = "display: flex !important; margin-bottom: 20px;"; 
-estimateBanner.innerHTML = `
-      <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg hidden-via-css">
-    <i class="fas fa-calculator"></i>
-</div>
-
-        <div hidden class="bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-300 p-4 rounded-2xl shadow-lg flex-1 **hidden-via-css**">
-  <div class="flex items-center gap-3">
-    <i class="fas fa-brain text-blue-600"></i>
-    <span class="font-bold text-gray-800">Analyzing project scope...</span>
-  </div>
-</div>
-
-           <div hidden class="text-sm text-gray-600 mt-2 **hidden-via-css**">
-    Estimated: <strong>${codeEstimate.scope}</strong> project • 
-    ~${codeEstimate.maxFiles} files • 
-    ~${codeEstimate.maxLines} lines
-</div>
-    `;
-
-// --- IMPORTANT: Add this CSS to your stylesheet (e.g., style.css or your main CSS file) ---
-// If you are using Tailwind CSS, you might already have a 'hidden' utility class that sets display: none.
-// If not, explicitly add this:
-/*
-.hidden-via-css {
-    display: none !important;
-}
-*/
-
-    responseHistory.appendChild(estimateBanner);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-    
-    // Remove banner after 3 seconds
-    setTimeout(() => estimateBanner.remove(), 3000);
-    
-    let userMessage = prompt;
-    let messageContent = [];
-    
-    if (attachedFileType === 'image') {
-        messageContent = [
-            { text: prompt },
-            {
-                inline_data: {
-                    mime_type: attachedFileMimeType,
-                    data: attachedFileContent.split(',')[1]
-                }
-            }
-        ];
-    } else if (attachedFileContent) {
-        userMessage = `File "${attachedFileName}" content:\n\n${attachedFileContent}\n\nUser request: ${prompt}`;
-        messageContent = [{ text: userMessage }];
-    } else {
-        messageContent = [{ text: userMessage }];
-    }
-    
-    const currentChat = chats[activeChatId];
-    
-    if (currentChat.history.length === 0 && currentChat.title === 'New Chat') {
-        currentChat.title = prompt.substring(0, 30) + (prompt.length > 30 ? '...' : '');
-        renderChatList();
-    }
-    
-    currentChat.history.push({ role: "user", parts: messageContent });
-    
-    MemorySystem.extractPersonalInfo(prompt);
-    saveChats();
-    
-    showChatView();
-    createUserMessage(prompt, attachedFileName, attachedFileType, attachedFileType === 'image' ? attachedFileContent : null);
-    
-    const streamingElement = createStreamingAIMessage();
-    let fullResponse = '';
-    let displayResponse = '';
-    let isInThinking = false;
-    let thinkingContent = '';
-    
-    let systemPromptText = systemInstructions[currentTool] || systemInstructions['chat'];
-    if (currentTool === 'flashcards') {
-        const count = document.getElementById('flashcard-count')?.value || 8;
-        systemPromptText = systemPromptText.replace('{{count}}', count);
-    }
-    
-    // Add memory context
-    systemPromptText += MemorySystem.getContext();
-    
-    // Add deep think instructions
-    systemPromptText += DeepThinkMode.getSystemPromptAddition();
-    
-    const payload = {
-        contents: currentChat.history,
-        systemInstruction: { 
-            parts: [{ 
-                text: systemPromptText + `\n\n**GENERATION LIMIT**: Max ${codeEstimate.maxFiles} files, ~${codeEstimate.maxLines} lines for this ${codeEstimate.scope} project. Stay within this budget.`
-            }] 
-        },
-        generationConfig: {
-            temperature: currentTool === 'chat' ? 0.7 : 0.3,
-            maxOutputTokens: Math.min(8000, codeEstimate.maxLines * 2),
-            topP: 0.95,
-            topK: 40,
-            candidateCount: 1,
-            stopSequences: []
-        }
-    };
-    
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            signal: generationController.signal
-        });
-        
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            
-            const chunk = decoder.decode(value);
-            const lines = chunk.split('\n');
-            
-            for (const line of lines) {
-                if (line.startsWith('data: ')) {
-                    try {
-                        const data = JSON.parse(line.slice(6));
-                        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-                        if (text) {
-                            fullResponse += text;
-                            
-                            if (text.includes('<thinking>')) {
-                                isInThinking = true;
-                            }
-                            
-                            if (isInThinking) {
-                                thinkingContent += text;
-                                if (text.includes('</thinking>')) {
-                                    isInThinking = false;
-                                }
-                            } else {
-                                if (!text.includes('<thinking>') && !text.includes('</thinking>')) {
-                                    displayResponse += text;
-                                    await streamText(streamingElement, displayResponse);
-                                }
+                generationController = new AbortController(); 
+      
+                let userMessage = prompt;
+                let messageContent = [];
+                
+                if (attachedFileType === 'image') {
+                    messageContent = [
+                        { text: prompt },
+                        {
+                            inline_data: {
+                                mime_type: attachedFileMimeType,
+                                data: attachedFileContent.split(',')[1]
                             }
                         }
-                    } catch (e) { /* Ignore parsing errors */ }
-                }
-            }
-        }
-        
-        const cleanResponse = fullResponse.replace(/<thinking>[\s\S]*?<\/thinking>/g, '').trim();
-        
-        currentChat.history.push({ role: "model", parts: [{ text: cleanResponse }] });
-        saveChats();
-        finalizeMessage(streamingElement, fullResponse);
-        
-        await MassiveCodeHandler.handleLargeGeneration(fullResponse, prompt);
-        
-        if (currentTool === 'flashcards') {
-            try {
-                const jsonMatch = fullResponse.match(/\[\s*\{[\s\S]*\}\s*\]/);
-                if (jsonMatch) {
-                    const cards = JSON.parse(jsonMatch[0]);
-                    if (cards.length > 0) {
-                        renderFlashcardTool(cards);
-                    }
-                }
-            } catch (e) {
-                console.warn('Failed to parse flashcards JSON:', e);
-            }
-        }
-        
-        if (currentTool === 'mindmap') {
-            try {
-                const jsonMatch = fullResponse.match(/\{[\s\S]*"central"[\s\S]*"branches"[\s\S]*\}/);
-                if (jsonMatch) {
-                    const mindmapData = JSON.parse(jsonMatch[0]);
-                    if (mindmapData.central && mindmapData.branches) {
-                        renderMindMapTool(mindmapData);
-                    }
-                }
-            } catch (e) {
-                console.warn('Failed to parse mindmap JSON:', e);
-            }
-        }
-        
-    } catch (error) {
-        console.error('Error:', error);
-        if (error.name === 'AbortError') {
-            if (streamingElement && streamingElement.parentElement) {
-                const stopMessage = document.createElement('div');
-                stopMessage.className = "text-yellow-700 p-3 bg-yellow-50 rounded-lg text-sm font-medium mt-2";
-                stopMessage.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Generation stopped by user.';
-                
-                if(streamingElement.textContent.length > 0) {
-                    streamingElement.parentElement.appendChild(stopMessage);
+                    ];
+                } else if (attachedFileContent) {
+                    userMessage = `File "${attachedFileName}" content:\n\n${attachedFileContent}\n\nUser request: ${prompt}`;
+                    messageContent = [{ text: userMessage }];
                 } else {
-                    streamingElement.parentElement.parentElement.innerHTML = `
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content">
-                            <div class="text-yellow-700 text-sm font-medium">
-                                <i class="fas fa-exclamation-triangle mr-2"></i>Generation stopped by user.
-                            </div>
-                        </div>
-                    `;
+                    messageContent = [{ text: userMessage }];
                 }
-                currentChat.history.pop();
-                saveChats();
-            }
-        } else {
-            if (streamingElement && streamingElement.parentElement) {
-                streamingElement.parentElement.innerHTML = `<div class="text-red-600 p-4 bg-red-50 rounded-lg"><strong>Error:</strong> Failed to get response from AI. ${error.message}</div>`;
-            }
-        }
-    } finally {
-        isGenerating = false;
-        generationController = null;
-        
-        // Reset button to "Send"
-        generateButton.classList.add('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
-        generateButton.classList.remove('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
-        generateButtonIcon.classList.add('fa-paper-plane');
-        generateButtonIcon.classList.remove('fa-stop');
-        
-        promptInput.disabled = false;
-        generateButton.disabled = promptInput.value.trim() === '' && !attachedFileContent;
-        promptInput.focus();
-        clearAttachedFile();
-    }
-};
+                
+                const currentChat = chats[activeChatId];
+
+                if (currentChat.history.length === 0 && currentChat.title === 'New Chat') {
+                    currentChat.title = prompt.substring(0, 30) + (prompt.length > 30 ? '...' : '');
+                    renderChatList();
+                }
+
+                currentChat.history.push({ role: "user", parts: messageContent });
+
+      MemorySystem.extractPersonalInfo(prompt);
+      saveChats();
+
+                showChatView();
+                createUserMessage(prompt, attachedFileName, attachedFileType, attachedFileType === 'image' ? attachedFileContent : null);
+
+                const streamingElement = createStreamingAIMessage();
+                let fullResponse = '';
+                let displayResponse = '';
+                let isInThinking = false;
+                let thinkingContent = '';
+
+              let systemPromptText = systemInstructions[currentTool] || systemInstructions['chat'];
+if (currentTool === 'flashcards') {
+    const count = document.getElementById('flashcard-count')?.value || 8;
+    systemPromptText = systemPromptText.replace('{{count}}', count);
+}
+
+// Add memory context
+systemPromptText += MemorySystem.getContext();
+
+// Add deep think instructions
+systemPromptText += DeepThinkMode.getSystemPromptAddition();
+
+                const payload = {
+                    contents: currentChat.history,
+                    systemInstruction: { parts: [{ text: systemPromptText }] },
+                    generationConfig: {
+                        temperature: currentTool === 'chat' ? 0.7 : 0.3,
+                        maxOutputTokens: 999999999,
+                        topP: 0.95,
+                        topK: 40,
+                        candidateCount: 1,
+                        stopSequences: []
+                    }
+                };
+
+               // CHANGE in generateResponse function (around line 1040)
+// Replace the try block start with:
+try {
+    const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: generationController.signal  // ADD THIS LINE
+    });
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+
+                        const chunk = decoder.decode(value);
+                        const lines = chunk.split('\n');
+
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                try {
+                                    const data = JSON.parse(line.slice(6));
+                                    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                                    if (text) {
+                                        fullResponse += text;
+                                        
+                                        if (text.includes('<thinking>')) {
+                                            isInThinking = true;
+                                        }
+                                        
+                                        if (isInThinking) {
+                                            thinkingContent += text;
+                                            if (text.includes('</thinking>')) {
+                                                isInThinking = false;
+                                            }
+                                        } else {
+                                            if (!text.includes('<thinking>') && !text.includes('</thinking>')) {
+                                                displayResponse += text;
+                                                await streamText(streamingElement, displayResponse);
+                                            }
+                                        }
+                                    }
+                                } catch (e) { /* Ignore parsing errors */ }
+                            }
+                        }
+                    }
+
+                    const cleanResponse = fullResponse.replace(/<thinking>[\s\S]*?<\/thinking>/g, '').trim();
+                    
+                    currentChat.history.push({ role: "model", parts: [{ text: cleanResponse }] });
+                    saveChats();
+                    finalizeMessage(streamingElement, fullResponse);
+                    
+                    if (currentTool === 'flashcards') {
+                        try {
+                            const jsonMatch = fullResponse.match(/\[\s*\{[\s\S]*\}\s*\]/);
+                            if (jsonMatch) {
+                                const cards = JSON.parse(jsonMatch[0]);
+                                if (cards.length > 0) {
+                                    renderFlashcardTool(cards);
+                                }
+                            }
+                        } catch (e) {
+                            console.warn('Failed to parse flashcards JSON:', e);
+                        }
+                    }
+
+                    if (currentTool === 'mindmap') {
+                        try {
+                            const jsonMatch = fullResponse.match(/\{[\s\S]*"central"[\s\S]*"branches"[\s\S]*\}/);
+                            if (jsonMatch) {
+                                const mindmapData = JSON.parse(jsonMatch[0]);
+                                if (mindmapData.central && mindmapData.branches) {
+                                    renderMindMapTool(mindmapData);
+                                }
+                            }
+                        } catch (e) {
+                            console.warn('Failed to parse mindmap JSON:', e);
+                        }
+                    }
+
+                 } catch (error) {
+                    console.error('Error:', error);
+                    if (error.name === 'AbortError') {
+                        // Handle stop
+                        if (streamingElement && streamingElement.parentElement) {
+                            const stopMessage = document.createElement('div');
+                            stopMessage.className = "text-yellow-700 p-3 bg-yellow-50 rounded-lg text-sm font-medium mt-2";
+                            stopMessage.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Generation stopped by user.';
+                            
+                            // Check if streaming text exists, if not, append to parent
+                            if(streamingElement.textContent.length > 0) {
+                                streamingElement.parentElement.appendChild(stopMessage);
+                            } else {
+                                // If no text was streamed, replace the placeholder
+                                streamingElement.parentElement.parentElement.innerHTML = `
+                                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </div>
+                                    <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content">
+                                        <div class="text-yellow-700 text-sm font-medium">
+                                            <i class="fas fa-exclamation-triangle mr-2"></i>Generation stopped by user.
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                            // Don't save this partial response to history
+                            currentChat.history.pop(); // Remove the "model" placeholder
+                            saveChats();
+                        }
+                    } else {
+                        if (streamingElement && streamingElement.parentElement) {
+                            streamingElement.parentElement.innerHTML = `<div class="text-red-600 p-4 bg-red-50 rounded-lg"><strong>Error:</strong> Failed to get response from AI. ${error.message}</div>`;
+                        }
+                    }
+               // Inside generateResponse function, update the finally block:
+} finally {
+    isGenerating = false;
+    generationController = null;
+
+    // Reset button to "Send"
+    generateButton.classList.add('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
+    generateButton.classList.remove('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
+    generateButtonIcon.classList.add('fa-paper-plane');
+    generateButtonIcon.classList.remove('fa-stop');
     
+    // Check if response was incomplete (truncated)
+    if (fullResponse && fullResponse.length > 0) {
+        const wasIncomplete = detectTruncation(fullResponse);
+        if (wasIncomplete) {
+            // Save context for auto-resume
+            localStorage.setItem('incompleteGeneration', JSON.stringify({
+                chatId: activeChatId,
+                prompt: userMessage,
+                response: fullResponse,
+                timestamp: Date.now()
+            }));
+            console.log('⚠️ Incomplete generation detected and saved');
+        } else {
+            // Clear incomplete flag if generation completed
+            localStorage.removeItem('incompleteGeneration');
+        }
+    }
+    
+    // Reset UI state
+    promptInput.disabled = false;
+    generateButton.disabled = promptInput.value.trim() === '' && !attachedFileContent;
+    promptInput.focus();
+    clearAttachedFile();
+}            };
+// --- Event Listeners and Utilities ---
+newChatBtn.addEventListener('click', createNewChat);
 
-            // --- Event Listeners and Utilities ---
-            newChatBtn.addEventListener('click', createNewChat);
-
-           generateButton.addEventListener('click', () => {
-    // Check if currently generating - if so, stop it
+generateButton.addEventListener('click', () => {
+    // Check if currently generating - if so, STOP it
     if (isGenerating) {
         if (generationController) {
             generationController.abort();
+            console.log('🛑 Generation stopped by user');
         }
-        return;
+        return; // Don't proceed with new generation
     }
     
     // Otherwise, proceed with normal send logic
     const prompt = promptInput.value.trim();
     
+    // Check if no input provided
+    if (!prompt && !attachedFileContent) {
+        return;
+    }
+    
+    // Check if this is a continue request
     if (prompt && isContinueRequest(prompt) && 
         lastGenerationContext.response && 
         lastGenerationContext.timestamp &&
@@ -3705,16 +3341,14 @@ estimateBanner.innerHTML = `
         
         const continuePrompt = `Continue from exactly where you left off. Here's what you generated so far:\n\n${lastGenerationContext.response.slice(-3000)}\n\n...now continue generating the rest. Pick up seamlessly from where you stopped. Do not repeat what you already generated.`;
         
-      
-        
         generateResponse(continuePrompt);
         hideContinueBanner();
-    } else if (!prompt && !attachedFileContent) {
-        return;
     } else {
+        // Normal generation
         generateResponse(prompt);
     }
     
+    // Clear input after sending
     promptInput.value = '';
     window.autoExpand(promptInput);
 });
@@ -3939,8 +3573,6 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
-
-
 
 // ============================================
 // PERMANENT MEMORY SYSTEM WITH LOCALSTORAGE
@@ -4467,9 +4099,12 @@ window.addEventListener('beforeunload', () => {
     MemorySystem.saveMemories();
 });
 // Message Zoom System with Slider
+// Message Zoom System with +/- Buttons
 const MessageZoomSystem = {
-    activeZoom: null,
-    defaultFontSize: 16, // Base font size in pixels
+    defaultFontSize: 16,
+    minFontSize: 12,
+    maxFontSize: 32,
+    step: 2,
     
     init() {
         this.addZoomControls();
@@ -4478,7 +4113,7 @@ const MessageZoomSystem = {
     },
     
     observeNewMessages() {
-responseHistory = document.getElementById('responseHistory');
+        const responseHistory = document.getElementById('responseHistory');
         if (!responseHistory) return;
         
         const observer = new MutationObserver(() => {
@@ -4491,244 +4126,525 @@ responseHistory = document.getElementById('responseHistory');
         });
     },
     
-    addZoomControls() {
-        // Target both user and AI messages
-        const messages = document.querySelectorAll('.flex:not(.zoom-enabled)');
+   addZoomControls() {
+    const messages = document.querySelectorAll('.message-container:not(.zoom-enabled)');
+    
+    messages.forEach(message => {
+        const messageContent = message.querySelector('.message-content, .user-message-text, .streaming-text');
+        if (!messageContent) return;
         
-        messages.forEach(message => {
-            // Check if it's a message container (has message content)
-            const messageContent = message.querySelector('.message-content, .user-message-text, .streaming-text');
-            if (!messageContent) return;
-            
-            // Mark as processed
-            message.classList.add('zoom-enabled');
-            
-            // Make message position relative for absolute positioning of slider
-            message.style.position = 'relative';
-            
-            // Create zoom slider container
-            const zoomContainer = document.createElement('div');
-            zoomContainer.className = 'message-zoom-slider-container';
-            zoomContainer.style.cssText = `
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                padding: 12px 16px;
-                border-radius: 12px;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity 0.3s ease;
-                z-index: 100;
-                min-width: 200px;
-            `;
-            
-            zoomContainer.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <button class="zoom-btn-minus" style="
-                        width: 32px;
-                        height: 32px;
-                        border: none;
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                        color: white;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-weight: bold;
-                        font-size: 16px;
-                        transition: all 0.2s;
-                    ">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    
-                    <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
-                        <input type="range" class="zoom-slider" min="12" max="32" value="16" step="1" style="
-                            width: 100%;
-                            height: 6px;
-                            border-radius: 3px;
-                            background: linear-gradient(to right, #667eea 0%, #764ba2 100%);
-                            outline: none;
-                            cursor: pointer;
-                            -webkit-appearance: none;
-                        ">
-                        <div style="display: flex; justify-content: space-between; font-size: 10px; color: #6b7280;">
-                            <span>12px</span>
-                            <span class="zoom-value" style="font-weight: bold; color: #667eea;">16px</span>
-                            <span>32px</span>
-                        </div>
-                    </div>
-                    
-                    <button class="zoom-btn-plus" style="
-                        width: 32px;
-                        height: 32px;
-                        border: none;
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                        color: white;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-weight: bold;
-                        font-size: 16px;
-                        transition: all 0.2s;
-                    ">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                    
-                    <button class="zoom-btn-reset" title="Reset" style="
-                        width: 32px;
-                        height: 32px;
-                        border: 2px solid #667eea;
-                        background: white;
-                        color: #667eea;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-weight: bold;
-                        font-size: 12px;
-                        transition: all 0.2s;
-                    ">
-                        <i class="fas fa-undo"></i>
-                    </button>
-                </div>
-            `;
-            
-            message.appendChild(zoomContainer);
-            
-            // Get elements
-            const slider = zoomContainer.querySelector('.zoom-slider');
-            const zoomValue = zoomContainer.querySelector('.zoom-value');
-            const btnMinus = zoomContainer.querySelector('.zoom-btn-minus');
-            const btnPlus = zoomContainer.querySelector('.zoom-btn-plus');
-            const btnReset = zoomContainer.querySelector('.zoom-btn-reset');
-            
-            // Store original font size
-            const originalFontSize = window.getComputedStyle(messageContent).fontSize;
-            message.dataset.originalFontSize = originalFontSize;
-            
-            // Slider functionality
-            const updateZoom = (value) => {
-                const fontSize = parseInt(value);
-                messageContent.style.fontSize = `${fontSize}px`;
-                messageContent.style.lineHeight = `${fontSize * 1.6}px`;
-                zoomValue.textContent = `${fontSize}px`;
-                slider.value = fontSize;
-                
-                // Update button states
-                btnMinus.disabled = fontSize <= 12;
-                btnPlus.disabled = fontSize >= 32;
-                
-                btnMinus.style.opacity = fontSize <= 12 ? '0.5' : '1';
-                btnPlus.style.opacity = fontSize >= 32 ? '0.5' : '1';
-            };
-            
-            slider.addEventListener('input', (e) => {
-                updateZoom(e.target.value);
-            });
-            
-            // Button controls
-            btnMinus.addEventListener('click', () => {
-                const newValue = Math.max(12, parseInt(slider.value) - 2);
-                updateZoom(newValue);
-            });
-            
-            btnPlus.addEventListener('click', () => {
-                const newValue = Math.min(32, parseInt(slider.value) + 2);
-                updateZoom(newValue);
-            });
-            
-            btnReset.addEventListener('click', () => {
-                updateZoom(16);
-            });
-            
-            // Button hover effects
-            [btnMinus, btnPlus].forEach(btn => {
-                btn.addEventListener('mouseenter', () => {
-                    if (!btn.disabled) {
-                        btn.style.transform = 'scale(1.1)';
-                        btn.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
-                    }
-                });
-                btn.addEventListener('mouseleave', () => {
-                    btn.style.transform = 'scale(1)';
-                    btn.style.boxShadow = 'none';
-                });
-            });
-            
-            btnReset.addEventListener('mouseenter', () => {
-                btnReset.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                btnReset.style.color = 'white';
-                btnReset.style.transform = 'scale(1.1)';
-            });
-            btnReset.addEventListener('mouseleave', () => {
-                btnReset.style.background = 'white';
-                btnReset.style.color = '#667eea';
-                btnReset.style.transform = 'scale(1)';
-            });
-            
-            // Show/hide on hover
-            message.addEventListener('mouseenter', () => {
-                zoomContainer.style.opacity = '1';
-                zoomContainer.style.pointerEvents = 'auto';
-            });
-            
-            message.addEventListener('mouseleave', () => {
-                zoomContainer.style.opacity = '0';
-                zoomContainer.style.pointerEvents = 'none';
-            });
-            
-            // Style the slider thumb
-            const style = document.createElement('style');
-            style.textContent = `
-                .zoom-slider::-webkit-slider-thumb {
-                    -webkit-appearance: none;
-                    appearance: none;
-                    width: 18px;
-                    height: 18px;
-                    border-radius: 50%;
-                    background: white;
-                    border: 3px solid #667eea;
-                    cursor: pointer;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-                    transition: all 0.2s;
-                }
-                
-                .zoom-slider::-webkit-slider-thumb:hover {
-                    transform: scale(1.2);
-                    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-                }
-                
-                .zoom-slider::-moz-range-thumb {
-                    width: 18px;
-                    height: 18px;
-                    border-radius: 50%;
-                    background: white;
-                    border: 3px solid #667eea;
-                    cursor: pointer;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-                    transition: all 0.2s;
-                }
-                
-                .zoom-slider::-moz-range-thumb:hover {
-                    transform: scale(1.2);
-                    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-                }
-            `;
-            
-            if (!document.getElementById('zoom-slider-styles')) {
-                style.id = 'zoom-slider-styles';
-                document.head.appendChild(style);
+        message.classList.add('zoom-enabled');
+        
+        // Store original font size
+        const computedStyle = window.getComputedStyle(messageContent);
+        const originalSize = parseFloat(computedStyle.fontSize) || this.defaultFontSize;
+        message.dataset.currentFontSize = originalSize;
+        message.dataset.originalFontSize = originalSize;
+        
+        // Create zoom controls (hidden by default)
+        const zoomControls = document.createElement('div');
+        zoomControls.className = 'message-zoom-controls'; // Remove 'active' class - controlled by button
+        zoomControls.innerHTML = `
+            <button class="zoom-control-btn zoom-out" title="Decrease font size (Ctrl + -)">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button class="zoom-control-btn zoom-in" title="Increase font size (Ctrl + +)">
+                <i class="fas fa-plus"></i>
+            </button>
+            <button class="zoom-control-btn zoom-reset" title="Reset font size (Ctrl + 0)">
+                <i class="fas fa-undo"></i>
+            </button>
+        `;
+        
+        message.appendChild(zoomControls);
+        
+        const btnZoomOut = zoomControls.querySelector('.zoom-out');
+        const btnZoomIn = zoomControls.querySelector('.zoom-in');
+        const btnReset = zoomControls.querySelector('.zoom-reset');
+        
+        // Zoom In
+        btnZoomIn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.zoomIn(message, messageContent);
+        });
+        
+        // Zoom Out
+        btnZoomOut.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.zoomOut(message, messageContent);
+        });
+        
+        // Reset
+        btnReset.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.resetZoom(message, messageContent);
+        });
+        
+        this.updateButtonStates(message, btnZoomIn, btnZoomOut);
+    });
+},
+    
+    zoomIn(container, element) {
+        const currentSize = parseFloat(container.dataset.currentFontSize);
+        const newSize = Math.min(currentSize + this.step, this.maxFontSize);
+        this.applyZoom(container, element, newSize);
+    },
+    
+    zoomOut(container, element) {
+        const currentSize = parseFloat(container.dataset.currentFontSize);
+        const newSize = Math.max(currentSize - this.step, this.minFontSize);
+        this.applyZoom(container, element, newSize);
+    },
+    
+    resetZoom(container, element) {
+        const originalSize = parseFloat(container.dataset.originalFontSize) || this.defaultFontSize;
+        this.applyZoom(container, element, originalSize);
+    },
+    
+    applyZoom(container, element, fontSize) {
+        element.style.fontSize = `${fontSize}px`;
+        element.style.lineHeight = `${fontSize * 1.6}px`;
+        container.dataset.currentFontSize = fontSize;
+        
+        const btnZoomIn = container.querySelector('.zoom-in');
+        const btnZoomOut = container.querySelector('.zoom-out');
+        this.updateButtonStates(container, btnZoomIn, btnZoomOut);
+    },
+    
+    updateButtonStates(container, btnZoomIn, btnZoomOut) {
+        const currentSize = parseFloat(container.dataset.currentFontSize);
+        
+        if (btnZoomIn) {
+            btnZoomIn.disabled = currentSize >= this.maxFontSize;
+        }
+        if (btnZoomOut) {
+            btnZoomOut.disabled = currentSize <= this.minFontSize;
+        }
+    }
+};
+
+// Toggle Zoom Controls on Button Click
+document.addEventListener('click', (e) => {
+    const toggleBtn = e.target.closest('.toggle-zoom-btn');
+    if (!toggleBtn) return;
+    
+    e.stopPropagation();
+    
+    const messageContainer = toggleBtn.closest('.message-container');
+    if (!messageContainer) return;
+    
+    const zoomControls = messageContainer.querySelector('.message-zoom-controls');
+    if (!zoomControls) return;
+    
+    // Toggle active state
+    const isActive = zoomControls.classList.contains('active');
+    
+    if (isActive) {
+        zoomControls.classList.remove('active');
+        toggleBtn.classList.remove('active');
+        toggleBtn.title = 'Show zoom controls';
+    } else {
+        zoomControls.classList.add('active');
+        toggleBtn.classList.add('active');
+        toggleBtn.title = 'Hide zoom controls';
+    }
+});
+
+// Close zoom controls when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.message-zoom-controls') && !e.target.closest('.toggle-zoom-btn')) {
+        document.querySelectorAll('.message-zoom-controls.active').forEach(controls => {
+            controls.classList.remove('active');
+            const messageContainer = controls.closest('.message-container');
+            const toggleBtn = messageContainer?.querySelector('.toggle-zoom-btn');
+            if (toggleBtn) {
+                toggleBtn.classList.remove('active');
             }
         });
     }
+});
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        MessageZoomSystem.init();
+    }, 500);
+});
+
+// Keyboard shortcuts for zoom
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+        const activeMessage = document.querySelector('.message-container:hover');
+        if (!activeMessage) return;
+        
+        const messageContent = activeMessage.querySelector('.message-content, .user-message-text, .streaming-text');
+        if (!messageContent) return;
+        
+        if (e.key === '=' || e.key === '+') {
+            e.preventDefault();
+            MessageZoomSystem.zoomIn(activeMessage, messageContent);
+        } else if (e.key === '-') {
+            e.preventDefault();
+            MessageZoomSystem.zoomOut(activeMessage, messageContent);
+        } else if (e.key === '0') {
+            e.preventDefault();
+            MessageZoomSystem.resetZoom(activeMessage, messageContent);
+        }
+    }
+});
+
+window.MessageZoomSystem = MessageZoomSystem;
+
+
+// Canvas System for Long Code (Claude-style)
+const CodeCanvasSystem = {
+    MIN_CODE_LENGTH: 500, // Minimum code length to trigger canvas
+    MIN_FILE_COUNT: 3,    // Minimum number of files to trigger canvas
+    
+    init() {
+        this.injectCanvasModal();
+        this.observeCodeBlocks();
+        console.log('✅ Canvas System initialized');
+    },
+    
+    injectCanvasModal() {
+        const modalHTML = `
+            <div id="codeCanvasModal" class="code-canvas-modal" style="display: none;">
+                <div class="code-canvas-overlay"></div>
+                <div class="code-canvas-container">
+                    <div class="canvas-header">
+                        <div class="canvas-tabs" id="canvasTabs"></div>
+                        <div class="canvas-actions">
+                            <button class="canvas-btn" id="canvasCopyAll" title="Copy all code">
+                                <i class="fas fa-copy"></i> Copy All
+                            </button>
+                            <button class="canvas-btn" id="canvasDownloadAll" title="Download all files">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                            <button class="canvas-btn" id="canvasClose" title="Close canvas">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                        </div>
+                    </div>
+                    <div class="canvas-body" id="canvasBody"></div>
+                </div>
+            </div>
+        `;
+        
+        if (!document.getElementById('codeCanvasModal')) {
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            this.attachModalEvents();
+        }
+    },
+    
+    attachModalEvents() {
+        const modal = document.getElementById('codeCanvasModal');
+        const closeBtn = document.getElementById('canvasClose');
+        const overlay = modal.querySelector('.code-canvas-overlay');
+        const copyAllBtn = document.getElementById('canvasCopyAll');
+        const downloadAllBtn = document.getElementById('canvasDownloadAll');
+        
+        closeBtn.addEventListener('click', () => this.closeCanvas());
+        overlay.addEventListener('click', () => this.closeCanvas());
+        
+        copyAllBtn.addEventListener('click', () => this.copyAllCode());
+        downloadAllBtn.addEventListener('click', () => this.downloadAllFiles());
+        
+        // ESC to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display !== 'none') {
+                this.closeCanvas();
+            }
+        });
+    },
+    
+    observeCodeBlocks() {
+        const responseHistory = document.getElementById('responseHistory');
+        if (!responseHistory) return;
+        
+        const observer = new MutationObserver(() => {
+            this.scanForLongCode();
+        });
+        
+        observer.observe(responseHistory, {
+            childList: true,
+            subtree: true
+        });
+        
+        // Initial scan
+        setTimeout(() => this.scanForLongCode(), 1000);
+    },
+    
+    scanForLongCode() {
+        const messages = document.querySelectorAll('.message-container:not(.canvas-processed)');
+        
+        messages.forEach(message => {
+            const codeBlocks = message.querySelectorAll('pre code');
+            if (codeBlocks.length === 0) return;
+            
+            let totalCodeLength = 0;
+            const files = [];
+            
+            codeBlocks.forEach(block => {
+                const code = block.textContent;
+                totalCodeLength += code.length;
+                
+                // Try to extract filename from context
+                const pre = block.closest('pre');
+                let filename = 'untitled';
+                let language = block.className.match(/language-(\w+)/)?.[1] || 'text';
+                
+                // Look for "File:" or "### File:" before the code block
+                const prevSibling = pre.previousElementSibling;
+                if (prevSibling) {
+                    const fileMatch = prevSibling.textContent.match(/###?\s*File:\s*(.+?)(?:\n|$)/i);
+                    if (fileMatch) {
+                        filename = fileMatch[1].trim();
+                    }
+                }
+                
+                // Look for heading before code
+                const heading = pre.previousElementSibling;
+                if (heading && heading.tagName.match(/H[1-6]/)) {
+                    const headingText = heading.textContent;
+                    const fileMatch = headingText.match(/File:\s*(.+?)$/i);
+                    if (fileMatch) {
+                        filename = fileMatch[1].trim();
+                    }
+                }
+                
+                files.push({
+                    filename: filename,
+                    language: language,
+                    code: code,
+                    element: block
+                });
+            });
+            
+            // Trigger canvas if code is long or has multiple files
+            if (totalCodeLength > this.MIN_CODE_LENGTH || files.length >= this.MIN_FILE_COUNT) {
+                message.classList.add('canvas-processed');
+                this.addCanvasButton(message, files);
+            }
+        });
+    },
+    
+    addCanvasButton(message, files) {
+        // Check if button already exists
+        if (message.querySelector('.open-canvas-btn')) return;
+        
+        const messageContent = message.querySelector('.message-content');
+        if (!messageContent) return;
+        
+        const button = document.createElement('button');
+        button.className = 'open-canvas-btn';
+        button.innerHTML = `
+            <i class="fas fa-external-link-alt mr-2"></i>
+            Open in Canvas
+            <span class="badge">${files.length} file${files.length > 1 ? 's' : ''}</span>
+        `;
+        button.style.cssText = `
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 16px 0;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        `;
+        
+        button.addEventListener('mouseenter', () => {
+            button.style.transform = 'translateY(-2px)';
+            button.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            button.style.transform = 'translateY(0)';
+            button.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)';
+        });
+        
+        button.addEventListener('click', () => {
+            this.openCanvas(files);
+        });
+        
+        // Insert before first code block
+        const firstCodeBlock = messageContent.querySelector('pre');
+        if (firstCodeBlock) {
+            firstCodeBlock.parentElement.insertBefore(button, firstCodeBlock);
+        }
+    },
+    
+    openCanvas(files) {
+        const modal = document.getElementById('codeCanvasModal');
+        const tabsContainer = document.getElementById('canvasTabs');
+        const bodyContainer = document.getElementById('canvasBody');
+        
+        // Store files data
+        this.currentFiles = files;
+        
+        // Clear existing content
+        tabsContainer.innerHTML = '';
+        bodyContainer.innerHTML = '';
+        
+        // Create tabs and content
+        files.forEach((file, index) => {
+            // Create tab
+            const tab = document.createElement('button');
+            tab.className = `canvas-tab ${index === 0 ? 'active' : ''}`;
+            tab.innerHTML = `
+                <i class="fas fa-file-code mr-2"></i>
+                ${this.truncateFilename(file.filename)}
+            `;
+            tab.dataset.index = index;
+            tab.addEventListener('click', () => this.switchTab(index));
+            tabsContainer.appendChild(tab);
+            
+            // Create content
+            const content = document.createElement('div');
+            content.className = `canvas-file-content ${index === 0 ? 'active' : ''}`;
+            content.dataset.index = index;
+            content.innerHTML = `
+                <div class="canvas-file-header">
+                    <span class="canvas-filename">
+                        <i class="fas fa-file-code mr-2"></i>
+                        ${file.filename}
+                    </span>
+                    <div class="canvas-file-actions">
+                        <button class="canvas-btn-small" onclick="CodeCanvasSystem.copyFileCode(${index})" title="Copy">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="canvas-btn-small" onclick="CodeCanvasSystem.downloadFile(${index})" title="Download">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                <pre><code class="language-${file.language}">${this.escapeHtml(file.code)}</code></pre>
+            `;
+            bodyContainer.appendChild(content);
+            
+            // Highlight code
+            const codeBlock = content.querySelector('code');
+            if (window.hljs) {
+                hljs.highlightElement(codeBlock);
+            }
+        });
+        
+        // Show modal
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('active'), 10);
+    },
+    
+    switchTab(index) {
+        const tabs = document.querySelectorAll('.canvas-tab');
+        const contents = document.querySelectorAll('.canvas-file-content');
+        
+        tabs.forEach((tab, i) => {
+            tab.classList.toggle('active', i === index);
+        });
+        
+        contents.forEach((content, i) => {
+            content.classList.toggle('active', i === index);
+        });
+    },
+    
+    closeCanvas() {
+        const modal = document.getElementById('codeCanvasModal');
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    },
+    
+    copyFileCode(index) {
+        const file = this.currentFiles[index];
+        navigator.clipboard.writeText(file.code).then(() => {
+            this.showNotification('✅ Code copied to clipboard!');
+        });
+    },
+    
+    downloadFile(index) {
+        const file = this.currentFiles[index];
+        const blob = new Blob([file.code], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = file.filename || `file_${index + 1}.txt`;
+        a.click();
+        URL.revokeObjectURL(url);
+        this.showNotification('📥 File downloaded!');
+    },
+    
+    copyAllCode() {
+        const allCode = this.currentFiles
+            .map(f => `// ${f.filename}\n${f.code}`)
+            .join('\n\n');
+        
+        navigator.clipboard.writeText(allCode).then(() => {
+            this.showNotification('✅ All code copied to clipboard!');
+        });
+    },
+    
+    downloadAllFiles() {
+        this.currentFiles.forEach((file, index) => {
+            setTimeout(() => {
+                this.downloadFile(index);
+            }, index * 200);
+        });
+    },
+    
+    truncateFilename(filename) {
+        if (filename.length > 20) {
+            return filename.substring(0, 17) + '...';
+        }
+        return filename;
+    },
+    
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    },
+    
+    showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            font-weight: 600;
+            animation: slideInRight 0.3s ease-out;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease-in';
+            setTimeout(() => notification.remove(), 300);
+        }, 2000);
+    }
 };
+
+// Initialize Canvas System
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        CodeCanvasSystem.init();
+    }, 1000);
+});
+
+window.CodeCanvasSystem = CodeCanvasSystem;
+
 
 // Initialize the zoom system when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
@@ -4761,53 +4677,220 @@ window.MessageZoomSystem = MessageZoomSystem;
         }
     });
 
-            // Initialize Canvas System
-document.addEventListener('DOMContentLoaded', () => {
-    CanvasSystem.init();
-    console.log('✅ Canvas System initialized');
-});
-
-// Expose globally for debugging
-window.CanvasSystem = CanvasSystem;
-
-// Validate critical DOM elements
-function validateDOMElements() {
-    const elements = {
-        responseHistory: document.getElementById('responseHistory'),
-        chatContainer: document.getElementById('chatContainer'),
-        promptInput: document.getElementById('prompt'),
-        generateButton: document.getElementById('generateButton')
-    };
+            // Enhanced Toggle Functionality for Zoom Controls
+document.addEventListener('click', (e) => {
+    const toggleBtn = e.target.closest('.toggle-zoom-btn');
     
-    const missing = [];
-    for (const [key, element] of Object.entries(elements)) {
-        if (!element) {
-            missing.push(key);
-            console.error(`❌ Missing element: ${key}`);
+    if (toggleBtn) {
+        e.stopPropagation();
+        
+        const messageContainer = toggleBtn.closest('.message-container');
+        if (!messageContainer) return;
+        
+        const zoomControls = messageContainer.querySelector('.message-zoom-controls');
+        if (!zoomControls) return;
+        
+        // Toggle active states
+        const isActive = zoomControls.classList.contains('active');
+        
+        if (isActive) {
+            // Hide zoom controls
+            zoomControls.classList.remove('active');
+            toggleBtn.classList.remove('active');
+            toggleBtn.title = 'Show zoom controls';
+            toggleBtn.querySelector('i').className = 'fas fa-search-plus';
+        } else {
+            // Show zoom controls
+            zoomControls.classList.add('active');
+            toggleBtn.classList.add('active');
+            toggleBtn.title = 'Hide zoom controls';
+            toggleBtn.querySelector('i').className = 'fas fa-search-minus';
         }
     }
-    
-    if (missing.length > 0) {
-        alert(`CRITICAL ERROR: Missing DOM elements:\n${missing.join('\n')}\n\nPlease refresh the page.`);
-        return false;
-    }
-    
-    console.log('✅ All critical DOM elements found');
-    return true;
-}
+});
 
-// Call on page load
-document.addEventListener('DOMContentLoaded', () => {
-    if (!validateDOMElements()) {
-        console.error('❌ DOM validation failed!');
+// Close zoom controls when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.message-zoom-controls') && 
+        !e.target.closest('.toggle-zoom-btn')) {
+        
+        document.querySelectorAll('.message-zoom-controls.active').forEach(controls => {
+            controls.classList.remove('active');
+            
+            const messageContainer = controls.closest('.message-container');
+            const toggleBtn = messageContainer?.querySelector('.toggle-zoom-btn');
+            
+            if (toggleBtn) {
+                toggleBtn.classList.remove('active');
+                toggleBtn.title = 'Show zoom controls';
+                toggleBtn.querySelector('i').className = 'fas fa-search-plus';
+            }
+        });
     }
 });
 
 
-console.log('=== DOM CHECK ===');
-console.log('responseHistory:', document.getElementById('responseHistory'));
-console.log('chatContainer:', document.getElementById('chatContainer'));
-console.log('promptInput:', document.getElementById('prompt'));
-console.log('generateButton:', document.getElementById('generateButton'));
-console.log('activeChatId:', activeChatId);
-console.log('chats:', chats);
+// Initialize Message Zoom System when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔧 Initializing zoom system...');
+    
+    // Wait for MessageZoomSystem to be available
+    setTimeout(() => {
+        if (window.MessageZoomSystem) {
+            MessageZoomSystem.init();
+            console.log('✅ Zoom system initialized');
+        }
+    }, 1000);
+});
+
+// Enhanced zoom toggle handler - attach to document for dynamic elements
+document.addEventListener('click', (e) => {
+    const toggleBtn = e.target.closest('.toggle-zoom-btn');
+    
+    if (toggleBtn) {
+        e.stopPropagation();
+        console.log('🔘 Zoom toggle clicked');
+        
+        const messageContainer = toggleBtn.closest('.message-container');
+        if (!messageContainer) {
+            console.warn('⚠️ Message container not found');
+            return;
+        }
+        
+        const zoomControls = messageContainer.querySelector('.message-zoom-controls');
+        if (!zoomControls) {
+            console.warn('⚠️ Zoom controls not found');
+            return;
+        }
+        
+        // Toggle active states
+        const isActive = zoomControls.classList.contains('active');
+        
+        if (isActive) {
+            // Hide zoom controls
+            zoomControls.classList.remove('active');
+            toggleBtn.classList.remove('active');
+            toggleBtn.title = 'Show zoom controls';
+            const icon = toggleBtn.querySelector('i');
+            if (icon) icon.className = 'fas fa-search-plus';
+            console.log('➖ Zoom controls hidden');
+        } else {
+            // Show zoom controls
+            zoomControls.classList.add('active');
+            toggleBtn.classList.add('active');
+            toggleBtn.title = 'Hide zoom controls';
+            const icon = toggleBtn.querySelector('i');
+            if (icon) icon.className = 'fas fa-search-minus';
+            console.log('➕ Zoom controls shown');
+        }
+    }
+});
+
+// Close zoom controls when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.message-zoom-controls') && 
+        !e.target.closest('.toggle-zoom-btn')) {
+        
+        const activeControls = document.querySelectorAll('.message-zoom-controls.active');
+        activeControls.forEach(controls => {
+            controls.classList.remove('active');
+            
+            const messageContainer = controls.closest('.message-container');
+            const toggleBtn = messageContainer?.querySelector('.toggle-zoom-btn');
+            
+            if (toggleBtn) {
+                toggleBtn.classList.remove('active');
+                toggleBtn.title = 'Show zoom controls';
+                const icon = toggleBtn.querySelector('i');
+                if (icon) icon.className = 'fas fa-search-plus';
+            }
+        });
+    }
+});
+
+// Attach zoom button handlers to existing and new messages
+function attachZoomHandlers() {
+    const zoomControls = document.querySelectorAll('.message-zoom-controls');
+    
+    zoomControls.forEach(controls => {
+        if (controls.dataset.handlersAttached) return;
+        controls.dataset.handlersAttached = 'true';
+        
+        const messageContainer = controls.closest('.message-container');
+        const messageContent = messageContainer.querySelector('.message-content, .user-message-text, .streaming-text');
+        
+        if (!messageContent) return;
+        
+        // Store original font size
+        const computedStyle = window.getComputedStyle(messageContent);
+        const originalSize = parseFloat(computedStyle.fontSize) || 16;
+        messageContainer.dataset.currentFontSize = originalSize;
+        messageContainer.dataset.originalFontSize = originalSize;
+        
+        const btnZoomIn = controls.querySelector('.zoom-in');
+        const btnZoomOut = controls.querySelector('.zoom-out');
+        const btnReset = controls.querySelector('.zoom-reset');
+        
+        if (btnZoomIn) {
+            btnZoomIn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const currentSize = parseFloat(messageContainer.dataset.currentFontSize);
+                const newSize = Math.min(currentSize + 2, 32);
+                applyZoom(messageContainer, messageContent, newSize);
+                console.log('🔼 Zoom in to:', newSize);
+            });
+        }
+        
+        if (btnZoomOut) {
+            btnZoomOut.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const currentSize = parseFloat(messageContainer.dataset.currentFontSize);
+                const newSize = Math.max(currentSize - 2, 12);
+                applyZoom(messageContainer, messageContent, newSize);
+                console.log('🔽 Zoom out to:', newSize);
+            });
+        }
+        
+        if (btnReset) {
+            btnReset.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const originalSize = parseFloat(messageContainer.dataset.originalFontSize) || 16;
+                applyZoom(messageContainer, messageContent, originalSize);
+                console.log('🔄 Reset zoom to:', originalSize);
+            });
+        }
+    });
+}
+
+function applyZoom(container, element, fontSize) {
+    element.style.fontSize = `${fontSize}px`;
+    element.style.lineHeight = `${fontSize * 1.6}px`;
+    container.dataset.currentFontSize = fontSize;
+    
+    const btnZoomIn = container.querySelector('.zoom-in');
+    const btnZoomOut = container.querySelector('.zoom-out');
+    
+    if (btnZoomIn) btnZoomIn.disabled = fontSize >= 32;
+    if (btnZoomOut) btnZoomOut.disabled = fontSize <= 12;
+}
+
+// Observe for new messages and attach handlers
+const observer = new MutationObserver(() => {
+    attachZoomHandlers();
+});
+
+const responseHistory = document.getElementById('responseHistory');
+if (responseHistory) {
+    observer.observe(responseHistory, {
+        childList: true,
+        subtree: true
+    });
+}
+
+// Initial attachment
+setTimeout(() => {
+    attachZoomHandlers();
+    console.log('✅ Zoom handlers attached to existing messages');
+}, 1500);
+
+
