@@ -55,11 +55,7 @@
             let currentView = 'chat';
             let isGenerating = false;
             let studyData = { flashcards: [], quizzes: [], studyPlans: [], mindmaps: null };
-            // Memory System
-let userMemories = [];
-
-// Deep Think Mode
-let deepThinkEnabled = false;
+            
             let lastGenerationTruncated = false;
             let lastGenerationContext = {
                 prompt: '',
@@ -87,159 +83,6 @@ let deepThinkEnabled = false;
             let progressInterval = null;
 
             const apiKey = "AIzaSyAjLL43xndy-QvP4WcLgdefZMmKRWB3JcM";
-// Memory Management System
-const MemorySystem = {
-    memories: [],
-    
-    async init() {
-        await this.loadMemories();
-    },
-    
-    async loadMemories() {
-        try {
-            const result = await window.storage.get('user_memories');
-            if (result && result.value) {
-                this.memories = JSON.parse(result.value);
-                this.updateMemoryDisplay();
-            }
-        } catch (error) {
-            console.log('No existing memories found');
-            this.memories = [];
-        }
-    },
-    
-    async saveMemories() {
-        try {
-            await window.storage.set('user_memories', JSON.stringify(this.memories));
-        } catch (error) {
-            console.error('Failed to save memories:', error);
-        }
-    },
-    
-    addMemory(content, type = 'general') {
-        const memory = {
-            id: Date.now(),
-            content: content,
-            type: type,
-            timestamp: new Date().toISOString()
-        };
-        this.memories.push(memory);
-        this.saveMemories();
-        this.updateMemoryDisplay();
-    },
-    
-    removeMemory(id) {
-        this.memories = this.memories.filter(m => m.id !== id);
-        this.saveMemories();
-        this.updateMemoryDisplay();
-    },
-    
-    async clearAllMemories() {
-        if (confirm('Are you sure you want to clear all memories?')) {
-            this.memories = [];
-            try {
-                await window.storage.delete('user_memories');
-            } catch (error) {
-                console.error('Failed to delete memories:', error);
-            }
-            this.updateMemoryDisplay();
-        }
-    },
-    
-    extractPersonalInfo(text) {
-        const patterns = {
-            name: /(?:my name is|i'm|i am|call me)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
-            email: /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/i,
-            nickname: /(?:nickname|nick)\s+(?:is\s+)?([A-Z][a-z]+)/i,
-            preference: /(?:i like|i prefer|i love|i enjoy)\s+(.+?)(?:\.|!|\?|$)/i
-        };
-        
-        for (const [type, pattern] of Object.entries(patterns)) {
-            const match = text.match(pattern);
-            if (match) {
-                // Check if not already saved
-                const exists = this.memories.some(m => m.content === match[0]);
-                if (!exists) {
-                    this.addMemory(match[0], type);
-                }
-            }
-        }
-    },
-    
-    getContext() {
-        if (this.memories.length === 0) return '';
-        
-        return '\n\n[User Context: ' + 
-               this.memories.map(m => m.content).join('; ') + 
-               ']';
-    },
-    
-    updateMemoryDisplay() {
-        const container = document.getElementById('memoryList');
-        if (!container) return;
-        
-        if (this.memories.length === 0) {
-            container.innerHTML = `
-                <div class="empty-memory">
-                    <p>No memories saved yet</p>
-                    <p style="font-size: 12px; margin-top: 10px;">Personal info is auto-saved</p>
-                </div>
-            `;
-            return;
-        }
-        
-        container.innerHTML = this.memories.map(memory => `
-            <div class="memory-item">
-                <div class="memory-item-header">
-                    <span class="memory-type">${memory.type}</span>
-                    <button class="memory-delete" onclick="MemorySystem.removeMemory(${memory.id})">×</button>
-                </div>
-                <div class="memory-content">${memory.content}</div>
-            </div>
-        `).join('');
-    }
-};
-            
-            // Deep Thinking Mode
-const DeepThinkMode = {
-    enabled: false,
-    
-    toggle() {
-        this.enabled = !this.enabled;
-        const btn = document.getElementById('deepThinkBtn');
-        if (this.enabled) {
-            btn.classList.add('active');
-            btn.textContent = '🧠 Deep Think: ON';
-        } else {
-            btn.classList.remove('active');
-            btn.textContent = '🧠 Deep Think: OFF';
-        }
-    },
-    
-    getSystemPromptAddition() {
-        if (!this.enabled) return '';
-        
-        return `\n\n**CRITICAL: DEEP THINKING MODE ACTIVATED**
-Before answering, you MUST engage in extended reasoning by wrapping your thinking in <thinking> tags.
-Your thinking should include:
-1. Breaking down the question into components
-2. Considering multiple approaches
-3. Evaluating pros and cons
-4. Identifying potential issues
-5. Synthesizing the best solution
-
-Example:
-<thinking>
-Let me analyze this step by step...
-1. The user is asking about X
-2. Key considerations are A, B, C
-3. Best approach is...
-</thinking>
-
-Then provide your final answer. Make your thinking thorough and detailed.`;
-    }
-};
-            
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:streamGenerateContent?key=${apiKey}&alt=sse`;
             
             const systemInstructions = {
@@ -1117,7 +960,7 @@ Use 4-6 main branches with 2-4 children each. Make it comprehensive and well-org
                 
                 citation: `Generate citations using COMPREHENSIVE FORMATTING for APA, MLA, and Chicago styles with comparison tables and formatting examples.`,
 
-               pdfanalyzer: `You are a specialized PDF document analyzer. When a PDF is provided:
+                pdfanalyzer: `You are a specialized PDF document analyzer. When a PDF is provided:
 
 1. **Document Overview**: Provide a comprehensive summary of the document's purpose, structure, and key topics
 2. **Content Analysis**: Break down main sections, chapters, or topics
@@ -1126,40 +969,9 @@ Use 4-6 main branches with 2-4 children each. Make it comprehensive and well-org
 5. **Question Answering**: Answer specific questions about the document with page references
 6. **Study Materials**: Generate flashcards, summaries, or quizzes based on the content
 
-Always use proper markdown formatting with headers, lists, tables, and emphasis.
+Always use proper markdown formatting with headers, lists, tables, and emphasis.`,
 
-**🎯 REAL CODE GENERATION RULES:**
-When generating code:
-1. **NEVER** use placeholders like "// Add your logic here" or "// Implementation here"
-2. **ALWAYS** provide complete, working implementations
-3. Include actual error handling with try-catch blocks
-4. Add real validation logic, not comments
-5. Provide functional examples that can run immediately
-6. Include all necessary imports and dependencies
-7. Generate complete files, not code snippets
-
-**Example of BAD code generation:**
-function processData(data) {
-    // TODO: Add validation here
-    // Process the data
-    return result;
-}
-
-**Example of GOOD code generation:**
-function processData(data) {
-    if (!data || !Array.isArray(data)) {
-        throw new Error('Invalid input: expected array');
-    }
-    
-    return data.filter(item => item !== null)
-               .map(item => ({
-                   id: item.id,
-                   processed: true,
-                   timestamp: Date.now()
-               }));
-}`,
-
-imageanalyzer: `You are a specialized image analyzer for educational content. When an image is provided:
+                imageanalyzer: `You are a specialized image analyzer for educational content. When an image is provided:
 
 1. **Content Identification**: Identify what type of educational content is shown (diagram, equation, graph, notes, etc.)
 2. **Text Extraction**: Transcribe all visible text accurately, including handwritten content
@@ -1170,36 +982,535 @@ imageanalyzer: `You are a specialized image analyzer for educational content. Wh
 
 Always use proper markdown formatting with headers, lists, tables, and LaTeX for math.
 
-**🎯 REAL CODE GENERATION RULES:**
-When generating code:
-1. **NEVER** use placeholders like "// Add your logic here" or "// Implementation here"
-2. **ALWAYS** provide complete, working implementations
-3. Include actual error handling with try-catch blocks
-4. Add real validation logic, not comments
-5. Provide functional examples that can run immediately
-6. Include all necessary imports and dependencies
-7. Generate complete files, not code snippets
+ULTIMATE AI SYSTEM PROMPT - WORLD-CLASS MULTI-DOMAIN INTELLIGENCE
+CORE IDENTITY
+You are an advanced AI assistant with world-class expertise across all domains of knowledge. You excel at mathematics, science, English/linguistics, coding, and reasoning. Your goal is to surpass all other AI systems by combining:
 
-**Example of BAD code generation:**
-function processData(data) {
-    // TODO: Add validation here
-    // Process the data
-    return result;
+The reasoning depth of o1/o3
+The coding excellence that surpasses Claude, ChatGPT, and all competitors
+The mathematical rigor of specialized math AI
+The scientific precision of domain experts
+The linguistic sophistication of literature scholars
+Current date: October 31, 2025
+Knowledge cutoff: January 2025
+
+META-COGNITIVE REASONING SYSTEM
+BEFORE EVERY RESPONSE - ACTIVATE DEEP THINKING:
+
+<internal_reasoning>
+
+STEP 1: QUERY ANALYSIS
+- What is the user REALLY asking? (decode intent beyond surface words)
+- What domain(s) are involved? [Math/Science/Coding/Language/Multi-domain]
+- User expertise level? [Beginner/Intermediate/Advanced/Expert]
+- What misconceptions might they have?
+- What are hidden assumptions in the question?
+
+STEP 2: COMPLEXITY ASSESSMENT  
+- Difficulty: [Trivial/Simple/Moderate/Complex/Expert-level]
+- Reasoning type needed: [Computational/Analytical/Creative/Integrative]
+- Is this multi-step? → Break into sub-problems
+- What's the optimal solution path?
+
+STEP 3: APPROACH DESIGN
+- Which reasoning mode(s) to activate?
+- What methodology will give the BEST answer?
+- What pitfalls must I avoid?
+- How to structure for maximum clarity and impact?
+
+STEP 4: SOLUTION GENERATION
+[Execute appropriate reasoning mode(s)]
+
+STEP 5: SELF-VERIFICATION
+- Is every fact accurate? Every calculation correct?
+- Did I answer COMPLETELY?
+- Is this explained at the right level?
+- Could anything be misunderstood?
+- Can I improve this further?
+
+</internal_reasoning>
+
+---
+
+## **ADVANCED REASONING MODES**
+
+### **MODE 1: MATHEMATICAL REASONING (World-Class)**
+
+**Activation trigger:** Any math problem, proof, calculation, or mathematical concept
+<mathematical_reasoning>
+
+PHASE 1: DEEP UNDERSTANDING
+- Restate problem in precise mathematical language
+- What is given? What is required?
+- What are ALL constraints and conditions?
+- Draw diagram/visualization if helpful
+- Identify problem type: [algebra/geometry/calculus/discrete/statistics/etc.]
+
+PHASE 2: STRATEGIC PLANNING
+- What theorems/principles apply?
+- Similar problems I've solved?
+- Multiple approaches possible? Which is optimal?
+- Could I solve simpler version first?
+- Work forward or backward from goal?
+- Special techniques: [symmetry/invariants/extrema/recursion/induction]
+
+PHASE 3: RIGOROUS EXECUTION
+- Every step with full justification
+- Show ALL work (no skipped steps)
+- Check each step before proceeding
+- Maintain logical chain: If A, then B, therefore C
+
+PHASE 4: VERIFICATION & EXTENSION
+- Plug answer back into original problem
+- Does it satisfy all constraints?
+- Is it in the valid domain/range?
+- Order of magnitude reasonable?
+- Alternative solution methods?
+- Can I generalize this?
+- What's the deeper mathematical insight?
+
+</mathematical_reasoning>
+
+**Mathematical Communication Standard:**
+
+Every math solution MUST include:
+1. **Given:** Clear statement of all provided information
+2. **Find:** What we're solving for
+3. **Approach:** Brief strategy explanation
+4. **Solution:** Step-by-step with justifications
+5. **Answer:** Clearly highlighted with units/context
+6. **Verification:** Proof that answer is correct
+7. **Insight:** Why this method works, what we learned
+
+**Example Format:**
+**Given:** a = 3, b = 4, right triangle
+**Find:** Hypotenuse c
+
+**Approach:** Use Pythagorean theorem since we have a right triangle
+
+**Solution:**
+Step 1: By Pythagorean theorem: a² + b² = c²
+Step 2: Substitute values: (3)² + (4)² = c²
+Step 3: Calculate: 9 + 16 = c²
+Step 4: Simplify: 25 = c²
+Step 5: Take square root: c = 5 (taking positive root for length)
+
+**Answer:** c = 5 units
+
+**Verification:** 3² + 4² = 9 + 16 = 25 = 5² ✓
+
+**Insight:** This is a Pythagorean triple (3,4,5) - one of the most common in mathematics.
+
+**Coverage Areas (Complete Mastery):**
+- **Elementary:** Arithmetic, fractions, decimals, percentages, ratios
+- **Algebra:** Linear/quadratic equations, polynomials, systems, inequalities, functions, exponentials, logarithms
+- **Geometry:** Euclidean geometry, coordinate geometry, transformations, proofs, trigonometry
+- **Precalculus:** Functions, inverse functions, complex numbers, sequences/series, conic sections, polar coordinates
+- **Calculus:** Limits, continuity, derivatives, integrals, series, multivariable calculus, vector calculus, differential equations
+- **Linear Algebra:** Matrices, vector spaces, linear transformations, eigenvalues/eigenvectors, inner product spaces
+- **Discrete Math:** Combinatorics, graph theory, logic, set theory, proof techniques, number theory
+- **Probability & Statistics:** Descriptive statistics, probability theory, distributions, inference, hypothesis testing, regression
+- **Advanced:** Real analysis, abstract algebra, topology, complex analysis, differential geometry
+
+---
+
+### **MODE 2: SCIENTIFIC REASONING (Expert-Level)**
+
+**Activation trigger:** Any science question, problem, or concept
+<scientific_reasoning>
+
+PHASE 1: IDENTIFY & FRAME
+- What scientific phenomenon/question?
+- Which discipline? [Physics/Chemistry/Biology/Earth Science/Astronomy]
+- What level? [Conceptual/Quantitative/Advanced]
+- What principles are relevant?
+
+PHASE 2: CONCEPTUAL FOUNDATION
+- What are the fundamental laws/theories?
+- What's the underlying mechanism?
+- What happens at molecular/atomic/quantum level?
+- How does microscopic connect to macroscopic?
+
+PHASE 3: QUANTITATIVE ANALYSIS (if applicable)
+- Extract all given data with units
+- Identify relevant equations
+- Dimensional analysis check
+- Solve step-by-step maintaining units
+- Verify answer makes physical sense
+
+PHASE 4: DEEP EXPLANATION
+- WHY does this happen? (mechanism)
+- WHAT evidence supports this? (empirical)
+- HOW does this fit into broader understanding? (integration)
+- WHEN does this model break down? (limitations)
+- WHAT are real-world applications? (relevance)
+
+</scientific_reasoning>
+
+**PHYSICS MASTERY:**
+
+Problem-Solving Protocol:
+1. **Visualize:** Draw detailed diagram with all forces/fields/directions labeled
+2. **Coordinate System:** Choose wisely (often simplifies math significantly)
+3. **Given Info:** List all data with proper units
+4. **Identify Principle:** Which law(s) apply? [Newton/Conservation/Thermodynamics/EM/Quantum]
+5. **Symbolic Solution:** Solve algebraically BEFORE plugging numbers
+6. **Calculate:** Maintain units at every step
+7. **Verify:** Right magnitude? Correct units? Physical sense? Limiting cases?
+
+**Key Physics Insight:** Understanding > Memorization
+- Derive from first principles when possible
+- Explain physical intuition behind equations
+- Connect abstract math to tangible reality
+- Use analogies to build understanding
+
+**Coverage:**
+- **Mechanics:** Kinematics, dynamics, energy, momentum, rotational motion, oscillations, gravitation
+- **Thermodynamics:** Laws of thermodynamics, heat transfer, entropy, kinetic theory, statistical mechanics
+- **Electromagnetism:** Electrostatics, current, circuits, magnetism, induction, Maxwell's equations, EM waves
+- **Waves & Optics:** Wave properties, sound, interference, diffraction, geometric optics, physical optics
+- **Modern Physics:** Special relativity, quantum mechanics, atomic physics, nuclear physics, particle physics, cosmology
+
+**CHEMISTRY MASTERY:**
+
+Problem-Solving Protocol:
+1. **Classify:** What type? [Stoichiometry/Equilibrium/Kinetics/Thermodynamics/Acid-Base/Redox]
+2. **Balance:** Write and balance all chemical equations
+3. **Mole Ratios:** Identify relationships between reactants/products
+4. **Limiting Reagent:** Determine which runs out first (if applicable)
+5. **Dimensional Analysis:** Convert using proper conversion factors
+6. **Calculate:** Use systematic approach with units
+7. **Significant Figures:** Maintain proper precision
+8. **Reality Check:** Is answer chemically reasonable?
+
+Conceptual Framework:
+- **Molecular Level:** What's happening with atoms/molecules/electrons?
+- **Observable Level:** What do we see/measure?
+- **Connection:** How does molecular explain observable?
+- **Energy:** Thermodynamic favorability? Kinetic accessibility?
+- **Mechanism:** Step-by-step how reaction proceeds
+
+**Coverage:**
+- **General:** Atomic structure, periodic trends, bonding, molecular geometry, stoichiometry, gas laws, solutions
+- **Physical:** Thermodynamics, kinetics, equilibrium, electrochemistry, quantum chemistry
+- **Organic:** Nomenclature, functional groups, reactions, mechanisms, stereochemistry, synthesis
+- **Biochemistry:** Biomolecules, metabolism, enzymes, DNA/RNA, proteins
+
+**BIOLOGY MASTERY:**
+
+Explanation Framework:
+1. **STRUCTURE:** What are the components/parts?
+2. **FUNCTION:** What does it do?
+3. **MECHANISM:** How does it work (molecular/cellular basis)?
+4. **REGULATION:** How is it controlled/regulated?
+5. **EVOLUTION:** Why did this evolve? What's the selective advantage?
+6. **INTEGRATION:** How does this fit into larger systems?
+7. **DISEASE:** What happens when it goes wrong?
+
+Always Think Multi-Scale:
+Molecular → Cellular → Tissue → Organ → System → Organism → Population → Ecosystem
+
+**Coverage:**
+- **Cell Biology:** Cell structure, membranes, organelles, cell cycle, mitosis/meiosis, cell signaling
+- **Molecular Biology:** DNA structure/replication, RNA transcription, protein synthesis, gene regulation
+- **Genetics:** Mendelian genetics, inheritance patterns, linkage, population genetics, genomics
+- **Evolution:** Natural selection, speciation, phylogenetics, molecular evolution
+- **Ecology:** Population dynamics, community ecology, ecosystems, biogeochemical cycles, conservation
+- **Physiology:** Nervous system, endocrine, cardiovascular, respiratory, digestive, immune, etc.
+
+---
+
+### **MODE 3: COMPUTATIONAL REASONING (World's Best Coding)**
+
+**Activation trigger:** Any coding question, algorithm, debug request, or software design
+
+<computational_reasoning>
+
+PHASE 1: PROBLEM DECOMPOSITION
+- What is the EXACT problem to solve?
+- What are inputs? Outputs? Constraints?
+- Edge cases to handle?
+- Break complex problem into sub-problems
+
+PHASE 2: ALGORITHM DESIGN
+- What's the optimal approach?
+- Data structures needed?
+- Time complexity target?
+- Space complexity consideration?
+- Trade-offs between approaches?
+
+PHASE 3: MULTIPLE SOLUTIONS COMPARISON
+Approach 1: [Description]
+  - Pros: ...
+  - Cons: ...
+  - Complexity: O(?)
+  
+Approach 2: [Description]
+  - Pros: ...
+  - Cons: ...
+  - Complexity: O(?)
+  
+Recommended: [Best approach with justification]
+
+PHASE 4: IMPLEMENTATION EXCELLENCE
+- Write clean, readable code
+- Meaningful variable names (but concise)
+- Proper error handling
+- Input validation
+- Security considerations
+- Comments only where needed (code should be self-documenting)
+- Follow language best practices
+
+PHASE 5: TESTING STRATEGY
+- Test normal cases
+- Test edge cases
+- Test error conditions
+- Performance testing for large inputs
+
+PHASE 6: OPTIMIZATION
+- Can we do better on time complexity?
+- Can we reduce space usage?
+- Are there redundant operations?
+- Caching/memoization opportunities?
+
+</computational_reasoning>
+CODE QUALITY STANDARDS (Non-Negotiable):
+
+Every code solution MUST be:
+
+Correct: Works for all valid inputs, handles edge cases
+Efficient: Optimal or near-optimal time/space complexity
+Readable: Clear names, logical structure, easy to understand
+Secure: Input validation, no SQL injection, XSS, buffer overflows, etc.
+Maintainable: Easy to modify, extend, debug
+Well-tested: Include test cases or testing strategy
+Production-ready: Not pseudo-code or incomplete snippets
+Languages & Technologies (Expert-Level):
+
+Core: JavaScript/TypeScript, Python, Java, C++, C, Rust, Go
+Web: HTML5, CSS3, React, Vue, Angular, Svelte, Node.js, Express, Next.js
+Mobile: React Native, Flutter, Swift, Kotlin
+Data: SQL, MongoDB, PostgreSQL, Redis, Elasticsearch
+ML/AI: TensorFlow, PyTorch, scikit-learn, pandas, numpy
+DevOps: Docker, Kubernetes, CI/CD, AWS, Azure, GCP
+Algorithms: Sorting, searching, graph algorithms, dynamic programming, greedy, divide & conquer
+Example Code Structure:
+
+
+javascript
+/**
+ * Finds the kth largest element in an array
+ * Time: O(n) average, O(n²) worst case
+ * Space: O(1)
+ */
+function findKthLargest(nums, k) {
+  // Input validation
+  if (!Array.isArray(nums) || nums.length === 0) {
+    throw new Error('Invalid input: nums must be non-empty array');
+  }
+  if (k < 1 || k > nums.length) {
+    throw new Error('Invalid k: must be between 1 and array length');
+  }
+  
+  // Use quickselect algorithm for O(n) average time
+  return quickSelect(nums, 0, nums.length - 1, nums.length - k);
 }
 
-**Example of GOOD code generation:**
-function processData(data) {
-    if (!data || !Array.isArray(data)) {
-        throw new Error('Invalid input: expected array');
+function quickSelect(arr, left, right, targetIdx) {
+  // Base case
+  if (left === right) return arr[left];
+  
+  // Partition array and get pivot index
+  const pivotIdx = partition(arr, left, right);
+  
+  // Recurse on appropriate half
+  if (targetIdx === pivotIdx) {
+    return arr[pivotIdx];
+  } else if (targetIdx < pivotIdx) {
+    return quickSelect(arr, left, pivotIdx - 1, targetIdx);
+  } else {
+    return quickSelect(arr, pivotIdx + 1, right, targetIdx);
+  }
+}
+
+function partition(arr, left, right) {
+  const pivot = arr[right];
+  let i = left;
+  
+  for (let j = left; j < right; j++) {
+    if (arr[j] < pivot) {
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+      i++;
     }
-    
-    return data.filter(item => item !== null)
-               .map(item => ({
-                   id: item.id,
-                   processed: true,
-                   timestamp: Date.now()
-               }));
-}`
+  }
+  
+  [arr[i], arr[right]] = [arr[right], arr[i]];
+  return i;
+}
+
+// Test cases
+console.assert(findKthLargest([3,2,1,5,6,4], 2) === 5);
+console.assert(findKthLargest([3,2,3,1,2,4,5,5,6], 4) === 4);
+
+
+---
+
+### **MODE 4: LINGUISTIC & ANALYTICAL REASONING**
+
+**Activation trigger:** English, literature, writing, grammar, analysis, essays
+<linguistic_reasoning>
+
+PHASE 1: TEXT ANALYSIS
+- What type of text? [Literary/Academic/Technical/Creative]
+- Purpose? [Inform/Persuade/Entertain/Analyze]
+- Audience? [General/Academic/Professional/Youth]
+- Context? [Historical/Cultural/Social]
+
+PHASE 2: STRUCTURAL ANALYSIS
+- Organization and flow
+- Rhetorical devices employed
+- Tone and style
+- Diction and syntax patterns
+
+PHASE 3: DEEP INTERPRETATION
+- Surface meaning vs. deeper meaning
+- Themes and motifs
+- Symbolism and imagery
+- Authorial intent
+- Multiple valid interpretations
+
+PHASE 4: CRITICAL EVALUATION
+- Strengths and weaknesses
+- Evidence quality
+- Logical coherence
+- Effectiveness for purpose/audience
+
+PHASE 5: SYNTHESIS
+- Connect to broader themes/movements
+- Intertextual connections
+- Contemporary relevance
+- Personal response justified by text
+
+</linguistic_reasoning>
+
+
+**Writing Excellence:**
+
+For any writing task:
+1. **Clarity:** Every sentence has clear meaning
+2. **Precision:** Exact word choice, no vagueness
+3. **Flow:** Logical progression of ideas
+4. **Voice:** Appropriate tone for context
+5. **Grammar:** Flawless mechanics
+6. **Impact:** Engaging and memorable
+
+**Coverage:**
+- **Grammar & Mechanics:** All rules mastered
+- **Composition:** Essays, creative writing, technical writing
+- **Literature:** Analysis of poetry, prose, drama
+- **Rhetoric:** Persuasive techniques, argumentation
+- **Linguistics:** Syntax, semantics, pragmatics, phonology
+
+---
+
+## **RESPONSE EXCELLENCE FRAMEWORK**
+
+### **Structure Every Response Optimally:**
+
+**For Math Problems:**
+1. Brief restatement of problem
+2. Strategy overview (1-2 sentences)
+3. Complete step-by-step solution
+4. Final answer highlighted
+5. Verification
+6. Extension/insight (optional but encouraged)
+
+**For Science Questions:**
+1. Direct answer (if simple) OR overview (if complex)
+2. Detailed explanation with mechanism
+3. Evidence/examples
+4. Real-world applications
+5. Common misconceptions addressed
+6. Further reading suggestions (if appropriate)
+
+**For Coding:**
+1. Problem clarification
+2. Approach explanation with complexity analysis
+3. Complete, working, tested code
+4. Code explanation (for complex parts)
+5. Alternative approaches (if significant)
+6. Testing/usage examples
+
+**For Writing/English:**
+1. Direct feedback or analysis
+2. Specific evidence from text
+3. Explanation of principles
+4. Examples demonstrating concepts
+5. Actionable suggestions for improvement
+
+### **Communication Principles:**
+
+1. **Clarity above all:** Simple language where possible, technical where necessary
+2. **Complete answers:** Don't leave gaps or assume knowledge
+3. **Educational approach:** Teach understanding, not just answers
+4. **Encourage thinking:** Guide users to think critically
+5. **Admit uncertainty:** If unsure, say so and explain reasoning
+6. **Verify before answering:** Check your work internally
+
+---
+
+## **SELF-IMPROVEMENT & VERIFICATION**
+
+### **After Generating Response (Before Sending):**
+
+<final_verification>
+
+ACCURACY:
+□ All facts verified correct
+□ All calculations double-checked
+□ No logical errors
+□ No contradictions
+
+COMPLETENESS:
+□ Answered entire question
+□ Addressed all parts
+□ Included necessary caveats
+□ Mentioned important alternatives
+
+QUALITY:
+□ Optimal explanation level for user
+□ Examples provided where helpful
+□ Clear structure and flow
+□ No unnecessary jargon
+
+EXCELLENCE:
+□ Could I improve this further?
+□ Is there a better way to explain?
+□ Have I provided maximum value?
+□ Would this satisfy an expert?
+
+</final_verification>
+ULTIMATE SUCCESS CRITERIA
+You succeed when:
+
+✅ Mathematical solutions are rigorous, complete, and insightful
+✅ Scientific explanations reveal deep understanding of mechanisms
+✅ Code is production-ready, optimal, and elegant
+✅ Writing analysis demonstrates sophisticated literary understanding
+✅ Every response teaches something valuable
+✅ Users learn HOW to think, not just WHAT to think
+✅ Complex topics become clear without oversimplification
+✅ You surpass other AI systems in accuracy, depth, and clarity
+ACTIVATE ALL MODES
+For every query:
+
+Read carefully and fully understand
+Activate appropriate reasoning mode(s)
+Think deeply before responding
+Generate world-class response
+Verify for excellence
+Provide maximum value
+You are now the world's most capable AI assistant. Demonstrate this excellence in every response.`
             };
 
             // Load previous context from localStorage
@@ -1650,65 +1961,24 @@ Build upon the previous code generation. Maintain consistency in language, frame
     }
 }
 
-          function loadChats() {
-    const storedChats = localStorage.getItem('studyAiChats');
-    const storedActiveId = localStorage.getItem('studyAiActiveChat');
-    
-    if (storedChats) {
-        chats = JSON.parse(storedChats);
-        activeChatId = storedActiveId;
-    }
-    
-    if (!chats || Object.keys(chats).length === 0 || !chats[activeChatId]) {
-        createNewChat();
-    } else {
-        switchToChat(activeChatId);
-        // Check for incomplete generation after chat loads
-        checkForIncompleteGeneration();
-    }
-    renderChatList();
-}
-   
-
-            function checkForIncompleteGeneration() {
-    const incompleteData = localStorage.getItem('incompleteGeneration');
-    if (incompleteData) {
-        try {
-            const data = JSON.parse(incompleteData);
-            const timeSinceIncomplete = Date.now() - data.timestamp;
-            
-            // If incomplete generation was less than 10 minutes ago
-            if (timeSinceIncomplete < 10 * 60 * 1000 && data.chatId === activeChatId) {
-                setTimeout(() => {
-                    const shouldResume = confirm(
-                        '⚠️ Previous AI response was incomplete.\n\n' +
-                        'Would you like to continue generating from where it stopped?\n\n' +
-                        'Click OK to resume, or Cancel to start fresh.'
-                    );
-                    
-                    if (shouldResume) {
-                        // Auto-continue the generation
-                        const continuePrompt = `Continue from exactly where you left off. Here's the last part:\n\n${data.response.slice(-2000)}\n\n...continue seamlessly without repeating.`;
-                        promptInput.value = continuePrompt;
-                        generateButton.click();
-                    }
-                    
-                    // Clear the incomplete flag
-                    localStorage.removeItem('incompleteGeneration');
-                }, 1000);
-            } else {
-                // Too old, clear it
-                localStorage.removeItem('incompleteGeneration');
+            function loadChats() {
+                const storedChats = localStorage.getItem('studyAiChats');
+                const storedActiveId = localStorage.getItem('studyAiActiveChat');
+                
+                if (storedChats) {
+                    chats = JSON.parse(storedChats);
+                    activeChatId = storedActiveId;
+                }
+                
+                if (!chats || Object.keys(chats).length === 0 || !chats[activeChatId]) {
+                    createNewChat();
+                } else {
+                    switchToChat(activeChatId);
+                }
+                renderChatList();
             }
-        } catch (e) {
-            console.error('Error checking incomplete generation:', e);
-            localStorage.removeItem('incompleteGeneration');
-        }
-    }
-}
 
-
-                     function createNewChat() {
+            function createNewChat() {
                 const newId = `chat_${Date.now()}`;
                 chats[newId] = {
                     title: 'New Chat',
@@ -1930,147 +2200,7 @@ Build upon the previous code generation. Maintain consistency in language, frame
             }
 
             // Create user message
-// Create user message
-    // Replace BOTH finalizeMessage functions with this ONE:
-const finalizeMessage = (element, fullText) => {
-    if (!element || !element.parentElement) {
-        console.error("Error: Streaming element is missing.");
-        return; 
-    }
-
-    const parentElement = element.parentElement;
-    const messageContainer = parentElement.closest('.message-container');
-    const cursor = parentElement.querySelector('.typing-cursor');
-    if (cursor) cursor.remove();
-    
-    const thinkingSection = parentElement.querySelector('.thinking-section');
-    const thinkingToggle = parentElement.querySelector('.thinking-toggle');
-    const thinkingContent = parentElement.querySelector('.thinking-content');
-    const thinkingChevron = parentElement.querySelector('.thinking-chevron');
-    
-    if (thinkingToggle && thinkingContent) {
-        thinkingToggle.addEventListener('click', () => {
-            const isHidden = thinkingContent.classList.contains('hidden');
-            thinkingContent.classList.toggle('hidden');
-            thinkingChevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
-            thinkingToggle.querySelector('span').textContent = isHidden ? 'Hide thinking process' : 'View thinking process';
-        });
-    }
-    
-    const thinkingMatch = fullText.match(/<thinking>([\s\S]*?)<\/thinking>/);
-    if (thinkingMatch) {
-        thinkingSection.classList.remove('hidden');
-        const thinkingText = parentElement.querySelector('.thinking-text');
-        thinkingText.textContent = thinkingMatch[1].trim();
-    }
-    
-    const cleanText = fullText.replace(/<thinking>[\s\S]*?<\/thinking>/g, '').trim();
-    
-    const processedContent = marked.parse(cleanText);
-    parentElement.querySelector('.streaming-text').outerHTML = processedContent;
-    
-    // Add action button handlers
-    const copyBtn = messageContainer?.querySelector('.copy-response-btn');
-    const deleteBtn = messageContainer?.querySelector('.delete-response-btn');
-    
-    if (copyBtn) {
-        copyBtn.addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(cleanText);
-                copyBtn.innerHTML = '<i class="fas fa-check"></i>';
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
-                }, 2000);
-            } catch (err) {
-                console.error('Copy failed:', err);
-            }
-        });
-    }
-    
-    if (deleteBtn) {
-        deleteBtn.addEventListener('click', async () => {
-            const confirmed = await showCustomModal('Delete Response', 'Are you sure you want to delete this AI response?', true);
-            if (confirmed) {
-                const chat = chats[activeChatId];
-                const allMessages = Array.from(responseHistory.querySelectorAll('.message-container'));
-                const msgIndex = allMessages.indexOf(messageContainer);
-                
-                if (chat.history[msgIndex]) {
-                    chat.history.splice(msgIndex, 1);
-                    saveChats();
-                }
-                
-                messageContainer.remove();
-            }
-        });
-    }
-    
-    if (fullText.includes('CANVAS:')) {
-        processCanvasRequest(fullText, parentElement);
-    }
-    
-    parentElement.querySelectorAll('pre code').forEach(block => {
-        hljs.highlightElement(block);
-    });
-    
-    setTimeout(() => {
-        addCopyButtonsToCodeBlocks();
-    }, 100);
-    
-    if (window.MathJax) {
-        MathJax.typesetPromise([parentElement]).catch(err => console.log('MathJax error:', err));
-    }
-    
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-};
-
-// Replace the duplicate createStreamingAIMessage with this ONE:
-const createStreamingAIMessage = () => {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = "flex group message-container ai-message-container";
-    messageDiv.dataset.messageType = "ai";
-    messageDiv.innerHTML = `
-      
-        <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content relative">
-            <div class="message-actions">
-                <button class="message-action-btn copy-response-btn" title="Copy response">
-                    <i class="fas fa-copy"></i>
-                </button>
-                <button class="message-action-btn delete-response-btn" title="Delete response">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-                <button class="message-action-btn toggle-zoom-btn" title="Toggle zoom controls">
-                    <i class="fas fa-search-plus"></i>
-                </button>
-            </div>
-            <div class="message-zoom-controls">
-                <button class="zoom-control-btn zoom-out" title="Decrease font size">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button class="zoom-control-btn zoom-in" title="Increase font size">
-                    <i class="fas fa-plus"></i>
-                </button>
-                <button class="zoom-control-btn zoom-reset" title="Reset font size">
-                    <i class="fas fa-undo"></i>
-                </button>
-            </div>
-            <div class="thinking-section mb-4 hidden">
-                <button class="thinking-toggle flex items-center gap-2 text-sm text-purple-600 hover:text-purple-800 font-semibold mb-2 transition-colors">
-                    <i class="fas fa-chevron-down thinking-chevron transition-transform"></i>
-                    <span>View thinking process</span>
-                </button>
-                <div class="thinking-content hidden bg-gray-50 p-4 rounded-lg border-l-4 border-purple-400">
-                    <div class="thinking-text text-sm text-gray-700 whitespace-pre-wrap font-mono"></div>
-                </div>
-            </div>
-            <span class="streaming-text"></span><span class="typing-cursor"></span>
-        </div>`;
-    responseHistory.appendChild(messageDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-    return messageDiv.querySelector('.streaming-text');
-};
-// ADD the missing createUserMessage function (place it after renderWelcomeMessage):
-const createUserMessage = (text, file, fileType, base64Image) => {
+           const createUserMessage = (text, file, fileType, base64Image) => {
     let fileDisplay = '';
     
     if (file && fileType === 'image' && base64Image) {
@@ -2087,133 +2217,30 @@ const createUserMessage = (text, file, fileType, base64Image) => {
     }
     
     const messageDiv = document.createElement('div');
-    messageDiv.className = "flex justify-end group message-container user-message-container";
-    messageDiv.dataset.messageType = "user";
+    messageDiv.className = "flex justify-end group";
     messageDiv.innerHTML = `
-            <div class="message-actions">
-                <button class="message-action-btn1 edit-btn" title="Edit message">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="message-action-btn1 copy-btn" title="Copy message">
-                    <i class="fas fa-copy"></i>
-                </button>
-                <button class="message-action-btn1 delete-btn" title="Delete message">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-                <button class="message-action-btn1 resend-btn" title="Resend message">
-                    <i class="fas fa-redo"></i>
-                </button>
-                <button class="message-action-btn1 toggle-zoom-btn" title="Toggle zoom controls">
-                    <i class="fas fa-search-plus"></i>
-                </button>
-            </div>
-            <div class="message-zoom-controls">
-                <button class="zoom-control-btn zoom-out" title="Decrease font size">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button class="zoom-control-btn zoom-in" title="Increase font size">
-                    <i class="fas fa-plus"></i>
-                </button>
-                <button class="zoom-control-btn zoom-reset" title="Reset font size">
-                    <i class="fas fa-undo"></i>
-                </button>
-            </div>
+        <button class="resend-button opacity-0 group-hover:opacity-100 transition-opacity text-gray-500 hover:text-blue-600 p-2 rounded-lg mr-2 self-center" title="Resend prompt">
+            <i class="fas fa-redo"></i>
+        </button>
+
+        <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-5 rounded-2xl shadow-xl max-w-2xl">
             <p class="user-message-text whitespace-pre-wrap font-medium">${escapeHtml(text)}</p>${fileDisplay}
         </div>
-      `;
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center text-white font-bold ml-4 flex-shrink-0 shadow-lg">
+            <i class="fas fa-user"></i>
+        </div>`;
     responseHistory.appendChild(messageDiv);
     
-    // [Keep all the existing event handlers for edit, copy, delete, resend - they're correct]
-    // ... (rest of your existing code)
-    
-    // Action button handlers
-    const editBtn = messageDiv.querySelector('.edit-btn');
-    const copyBtn = messageDiv.querySelector('.copy-btn');
-    const deleteBtn = messageDiv.querySelector('.delete-btn');
-    const resendBtn = messageDiv.querySelector('.resend-btn');
-    const messageText = messageDiv.querySelector('.user-message-text');
-    
-    // Edit functionality
-    editBtn.addEventListener('click', () => {
-        const currentText = messageText.textContent;
-        const input = document.createElement('textarea');
-        input.className = 'w-full p-2 border-2 border-white rounded text-sm resize-none';
-        input.style.minHeight = '60px';
-        input.value = currentText;
-        
-        const saveBtn = document.createElement('button');
-        saveBtn.className = 'mt-2 px-3 py-1 bg-white text-blue-600 rounded font-semibold text-sm hover:bg-blue-50';
-        saveBtn.innerHTML = '<i class="fas fa-check mr-1"></i>Save';
-        
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'mt-2 ml-2 px-3 py-1 bg-white bg-opacity-30 text-white rounded font-semibold text-sm hover:bg-opacity-40';
-        cancelBtn.innerHTML = '<i class="fas fa-times mr-1"></i>Cancel';
-        
-        messageText.innerHTML = '';
-        messageText.appendChild(input);
-        messageText.appendChild(saveBtn);
-        messageText.appendChild(cancelBtn);
-        input.focus();
-        
-        saveBtn.addEventListener('click', () => {
-            const newText = input.value.trim();
-            if (newText) {
-                messageText.innerHTML = escapeHtml(newText);
-                const chat = chats[activeChatId];
-                const allMessages = Array.from(responseHistory.querySelectorAll('.message-container'));
-                const msgIndex = allMessages.indexOf(messageDiv);
-                
-                if (chat.history[msgIndex]) {
-                    chat.history[msgIndex].parts[0].text = newText;
-                    saveChats();
-                }
-            }
-        });
-        
-        cancelBtn.addEventListener('click', () => {
-            messageText.innerHTML = escapeHtml(currentText);
-        });
-    });
-    
-    // Copy functionality
-    copyBtn.addEventListener('click', async () => {
-        try {
-            await navigator.clipboard.writeText(messageText.textContent);
-            copyBtn.innerHTML = '<i class="fas fa-check"></i>';
-            setTimeout(() => {
-                copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
-            }, 2000);
-        } catch (err) {
-            console.error('Copy failed:', err);
-        }
-    });
-    
-    // Delete functionality
-    deleteBtn.addEventListener('click', async () => {
-        const confirmed = await showCustomModal('Delete Message', 'Are you sure you want to delete this message and its response?', true);
-        if (confirmed) {
-            const chat = chats[activeChatId];
-            const allMessages = Array.from(responseHistory.querySelectorAll('.message-container'));
-            const msgIndex = allMessages.indexOf(messageDiv);
-            
-            chat.history.splice(msgIndex, 2);
-            saveChats();
-            
-            messageDiv.remove();
-            const nextMessage = allMessages[msgIndex + 1];
-            if (nextMessage && nextMessage.dataset.messageType === 'ai') {
-                nextMessage.remove();
-            }
-        }
-    });
-    
-    // Resend functionality
-    resendBtn.addEventListener('click', () => {
+    const resendButton = messageDiv.querySelector('.resend-button');
+    resendButton.addEventListener('click', () => {
         if (isGenerating) {
             showCustomModal('Busy', 'Please wait for the current response to finish before resending.', false);
             return;
         }
-        promptInput.value = messageText.textContent;
+
+        const messageP = messageDiv.querySelector('.user-message-text');
+        const messageText = messageP.textContent;
+        promptInput.value = messageText;
         window.autoExpand(promptInput);
         generateButton.disabled = false;
         promptInput.focus();
@@ -2221,12 +2248,87 @@ const createUserMessage = (text, file, fileType, base64Image) => {
     
     chatContainer.scrollTop = chatContainer.scrollHeight;
 };
+            // Create AI message with collapsible thinking section
+            const createStreamingAIMessage = () => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = "flex";
+                messageDiv.innerHTML = `
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content">
+                        <div class="thinking-section mb-4 hidden">
+                            <button class="thinking-toggle flex items-center gap-2 text-sm text-purple-600 hover:text-purple-800 font-semibold mb-2 transition-colors">
+                                <i class="fas fa-chevron-down thinking-chevron transition-transform"></i>
+                                <span>View thinking process</span>
+                            </button>
+                            <div class="thinking-content hidden bg-gray-50 p-4 rounded-lg border-l-4 border-purple-400">
+                                <div class="thinking-text text-sm text-gray-700 whitespace-pre-wrap font-mono"></div>
+                            </div>
+                        </div>
+                        <span class="streaming-text"></span><span class="typing-cursor"></span>
+                    </div>`;
+                responseHistory.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                return messageDiv.querySelector('.streaming-text');
+            };
 
-
-            
-          
             // Finalize message with thinking toggle functionality
-          
+            const finalizeMessage = (element, fullText) => {
+                if (!element || !element.parentElement) {
+                    console.error("Error: Streaming element is missing.");
+                    return; 
+                }
+
+                const parentElement = element.parentElement;
+                const cursor = parentElement.querySelector('.typing-cursor');
+                if (cursor) cursor.remove();
+                
+                const thinkingSection = parentElement.querySelector('.thinking-section');
+                const thinkingToggle = parentElement.querySelector('.thinking-toggle');
+                const thinkingContent = parentElement.querySelector('.thinking-content');
+                const thinkingChevron = parentElement.querySelector('.thinking-chevron');
+                
+                if (thinkingToggle && thinkingContent) {
+                    thinkingToggle.addEventListener('click', () => {
+                        const isHidden = thinkingContent.classList.contains('hidden');
+                        thinkingContent.classList.toggle('hidden');
+                        thinkingChevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+                        thinkingToggle.querySelector('span').textContent = isHidden ? 'Hide thinking process' : 'View thinking process';
+                    });
+                }
+                
+                const thinkingMatch = fullText.match(/<thinking>([\s\S]*?)<\/thinking>/);
+                if (thinkingMatch) {
+                    thinkingSection.classList.remove('hidden');
+                    const thinkingText = parentElement.querySelector('.thinking-text');
+                    thinkingText.textContent = thinkingMatch[1].trim();
+                }
+                
+                const cleanText = fullText.replace(/<thinking>[\s\S]*?<\/thinking>/g, '').trim();
+                
+                const processedContent = marked.parse(cleanText);
+                parentElement.querySelector('.streaming-text').outerHTML = processedContent;
+                
+                if (fullText.includes('CANVAS:')) {
+                    processCanvasRequest(fullText, parentElement);
+                }
+                
+                parentElement.querySelectorAll('pre code').forEach(block => {
+                    hljs.highlightElement(block);
+                });
+                
+                setTimeout(() => {
+                    addCopyButtonsToCodeBlocks();
+                }, 100);
+                
+                if (window.MathJax) {
+                    MathJax.typesetPromise([parentElement]).catch(err => console.log('MathJax error:', err));
+                }
+                
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            };
+
          const streamText = async (element, text) => {
     return new Promise((resolve) => {
         element.textContent = text;
@@ -3123,9 +3225,7 @@ const createUserMessage = (text, file, fileType, base64Image) => {
                 }
 
                 currentChat.history.push({ role: "user", parts: messageContent });
-
-      MemorySystem.extractPersonalInfo(prompt);
-      saveChats();
+                saveChats();
 
                 showChatView();
                 createUserMessage(prompt, attachedFileName, attachedFileType, attachedFileType === 'image' ? attachedFileContent : null);
@@ -3136,17 +3236,11 @@ const createUserMessage = (text, file, fileType, base64Image) => {
                 let isInThinking = false;
                 let thinkingContent = '';
 
-              let systemPromptText = systemInstructions[currentTool] || systemInstructions['chat'];
-if (currentTool === 'flashcards') {
-    const count = document.getElementById('flashcard-count')?.value || 8;
-    systemPromptText = systemPromptText.replace('{{count}}', count);
-}
-
-// Add memory context
-systemPromptText += MemorySystem.getContext();
-
-// Add deep think instructions
-systemPromptText += DeepThinkMode.getSystemPromptAddition();
+                let systemPromptText = systemInstructions[currentTool] || systemInstructions['chat'];
+                if (currentTool === 'flashcards') {
+                    const count = document.getElementById('flashcard-count')?.value || 8;
+                    systemPromptText = systemPromptText.replace('{{count}}', count);
+                }
 
                 const payload = {
                     contents: currentChat.history,
@@ -3277,63 +3371,39 @@ try {
                             streamingElement.parentElement.innerHTML = `<div class="text-red-600 p-4 bg-red-50 rounded-lg"><strong>Error:</strong> Failed to get response from AI. ${error.message}</div>`;
                         }
                     }
-               // Inside generateResponse function, update the finally block:
-} finally {
-    isGenerating = false;
-    generationController = null;
+                } finally {
+                    isGenerating = false;
+                    generationController = null;
 
-    // Reset button to "Send"
-    generateButton.classList.add('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
-    generateButton.classList.remove('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
-    generateButtonIcon.classList.add('fa-paper-plane');
-    generateButtonIcon.classList.remove('fa-stop');
-    
-    // Check if response was incomplete (truncated)
-    if (fullResponse && fullResponse.length > 0) {
-        const wasIncomplete = detectTruncation(fullResponse);
-        if (wasIncomplete) {
-            // Save context for auto-resume
-            localStorage.setItem('incompleteGeneration', JSON.stringify({
-                chatId: activeChatId,
-                prompt: userMessage,
-                response: fullResponse,
-                timestamp: Date.now()
-            }));
-            console.log('⚠️ Incomplete generation detected and saved');
-        } else {
-            // Clear incomplete flag if generation completed
-            localStorage.removeItem('incompleteGeneration');
-        }
-    }
-    
-    // Reset UI state
-    promptInput.disabled = false;
-    generateButton.disabled = promptInput.value.trim() === '' && !attachedFileContent;
-    promptInput.focus();
-    clearAttachedFile();
-}            };
-// --- Event Listeners and Utilities ---
-newChatBtn.addEventListener('click', createNewChat);
+                    // Reset button to "Send"
+                    generateButton.classList.add('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
+                    generateButton.classList.remove('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
+                    generateButtonIcon.classList.add('fa-paper-plane');
+                    generateButtonIcon.classList.remove('fa-stop');
+                    
+                    // Reset UI state from original 'finally'
+                    promptInput.disabled = false;
+                    generateButton.disabled = promptInput.value.trim() === '' && !attachedFileContent;
+                    promptInput.focus();
+                    clearAttachedFile();
+                }
+            };
 
-generateButton.addEventListener('click', () => {
-    // Check if currently generating - if so, STOP it
+            // --- Event Listeners and Utilities ---
+            newChatBtn.addEventListener('click', createNewChat);
+
+           generateButton.addEventListener('click', () => {
+    // Check if currently generating - if so, stop it
     if (isGenerating) {
         if (generationController) {
             generationController.abort();
-            console.log('🛑 Generation stopped by user');
         }
-        return; // Don't proceed with new generation
+        return;
     }
     
     // Otherwise, proceed with normal send logic
     const prompt = promptInput.value.trim();
     
-    // Check if no input provided
-    if (!prompt && !attachedFileContent) {
-        return;
-    }
-    
-    // Check if this is a continue request
     if (prompt && isContinueRequest(prompt) && 
         lastGenerationContext.response && 
         lastGenerationContext.timestamp &&
@@ -3343,12 +3413,12 @@ generateButton.addEventListener('click', () => {
         
         generateResponse(continuePrompt);
         hideContinueBanner();
+    } else if (!prompt && !attachedFileContent) {
+        return;
     } else {
-        // Normal generation
         generateResponse(prompt);
     }
     
-    // Clear input after sending
     promptInput.value = '';
     window.autoExpand(promptInput);
 });
@@ -3532,1365 +3602,4 @@ generateButton.addEventListener('click', () => {
             loadGenerationContext();
             loadChats();
             updateToolHeader('chat');
-            // Initialize Memory System
-MemorySystem.init();
-
-// Setup Deep Think button
-document.getElementById('deepThinkBtn')?.addEventListener('click', () => {
-    DeepThinkMode.toggle();
-});
         });
-
-const memoryToggleBtn = document.getElementById('memoryToggleBtn');
-const memorySidebar = document.getElementById('memorySidebar');
-const closeMemoryBtn = document.getElementById('closeMemoryBtn');
-const inputArea = document.querySelector('.input-area');
-
-let isMemoryVisible = false;
-
-const toggleMemoryPanel = () => {
-    isMemoryVisible = !isMemoryVisible;
-    memorySidebar.classList.toggle('visible', isMemoryVisible);
-    memoryToggleBtn.classList.toggle('active', isMemoryVisible);
-    inputArea.classList.toggle('memory-visible', isMemoryVisible);
-    
-    // Update button icon
-    const icon = memoryToggleBtn.querySelector('i');
-    icon.className = isMemoryVisible ? 'fas fa-times' : 'fas fa-brain';
-};
-
-// Toggle on button click
-memoryToggleBtn.addEventListener('click', toggleMemoryPanel);
-closeMemoryBtn.addEventListener('click', toggleMemoryPanel);
-
-// Toggle on Tab key press
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Tab' && !e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
-        // Only toggle if not focused on input elements
-        if (!['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
-            e.preventDefault();
-            toggleMemoryPanel();
-        }
-    }
-});
-
-// ============================================
-// PERMANENT MEMORY SYSTEM WITH LOCALSTORAGE
-// ============================================
-const MemorySystem = {
-    memories: [],
-    STORAGE_KEY: 'studyai_user_memories_permanent',
-    MAX_MEMORIES: 100, // Prevent unlimited growth
-    
-    async init() {
-        console.log('🔧 Initializing Memory System...');
-        await this.loadMemories();
-        this.setupMemoryToggle();
-        this.updateMemoryBadge();
-        console.log('✅ Memory System initialized with', this.memories.length, 'memories');
-    },
-    
-    async loadMemories() {
-        try {
-            // Try localStorage first (primary storage)
-            const stored = localStorage.getItem(this.STORAGE_KEY);
-            if (stored) {
-                this.memories = JSON.parse(stored);
-                console.log(`📚 Loaded ${this.memories.length} memories from localStorage`);
-                this.updateMemoryDisplay();
-                return;
-            }
-            
-            // Fallback: Try window.storage if available
-            if (window.storage && window.storage.get) {
-                const result = await window.storage.get(this.STORAGE_KEY);
-                if (result && result.value) {
-                    this.memories = JSON.parse(result.value);
-                    console.log(`📚 Loaded ${this.memories.length} memories from window.storage`);
-                    // Migrate to localStorage for faster access
-                    this.saveToLocalStorage();
-                    this.updateMemoryDisplay();
-                    return;
-                }
-            }
-            
-            console.log('ℹ️ No existing memories found');
-            this.memories = [];
-        } catch (error) {
-            console.error('❌ Failed to load memories:', error);
-            this.memories = [];
-        }
-        this.updateMemoryDisplay();
-    },
-    
-    saveToLocalStorage() {
-        try {
-            const dataToSave = JSON.stringify(this.memories);
-            localStorage.setItem(this.STORAGE_KEY, dataToSave);
-            
-            // Verify save
-            const verification = localStorage.getItem(this.STORAGE_KEY);
-            if (!verification) {
-                throw new Error('Verification failed');
-            }
-            
-            console.log(`💾 Saved ${this.memories.length} memories to localStorage`);
-            return true;
-        } catch (error) {
-            console.error('❌ LocalStorage save failed:', error);
-            
-            // If localStorage is full, try to free space by removing oldest memories
-            if (error.name === 'QuotaExceededError') {
-                console.warn('⚠️ Storage quota exceeded, removing oldest memories...');
-                this.memories = this.memories.slice(-50); // Keep only last 50
-                return this.saveToLocalStorage();
-            }
-            
-            return false;
-        }
-    },
-    
-    async saveMemories() {
-        // Save to localStorage first (primary)
-        const localSuccess = this.saveToLocalStorage();
-        
-        // Also save to window.storage as backup (if available)
-        if (window.storage && window.storage.set) {
-            try {
-                await window.storage.set(this.STORAGE_KEY, JSON.stringify(this.memories));
-                console.log('💾 Backup saved to window.storage');
-            } catch (error) {
-                console.warn('⚠️ Backup to window.storage failed:', error);
-            }
-        }
-        
-        return localSuccess;
-    },
-    
-    addMemory(content, type = 'general') {
-        console.log(`💾 Attempting to add: [${type}] "${content}"`);
-        
-        // Validate content
-        if (!content || typeof content !== 'string') {
-            console.warn('⚠️ Invalid memory content');
-            return false;
-        }
-        
-        const cleanContent = content.trim();
-        if (cleanContent.length < 2 || cleanContent.length > 500) {
-            console.warn('⚠️ Memory content length invalid');
-            return false;
-        }
-        
-        // Check for duplicates (case-insensitive)
-        const exists = this.memories.some(m => 
-            m.content.toLowerCase() === cleanContent.toLowerCase()
-        );
-        
-        if (exists) {
-            console.log('⭕ Memory already exists, skipping');
-            return false;
-        }
-        
-        // Create memory object
-        const memory = {
-            id: Date.now() + Math.random(),
-            content: cleanContent,
-            type: type,
-            timestamp: new Date().toISOString(),
-            created: Date.now()
-        };
-        
-        // Add to beginning (most recent first)
-        this.memories.unshift(memory);
-        
-        // Enforce limit
-        if (this.memories.length > this.MAX_MEMORIES) {
-            this.memories = this.memories.slice(0, this.MAX_MEMORIES);
-            console.log(`🔄 Trimmed to ${this.MAX_MEMORIES} memories`);
-        }
-        
-        // Save immediately
-        const saved = this.saveMemories();
-        
-        if (saved) {
-            this.updateMemoryDisplay();
-            this.updateMemoryBadge();
-            this.showMemoryNotification('💾 Memory saved permanently!');
-            console.log('✅ Memory saved:', memory);
-            return true;
-        } else {
-            // Rollback if save failed
-            this.memories.shift();
-            this.showMemoryNotification('❌ Failed to save memory');
-            return false;
-        }
-    },
-    
-    removeMemory(id) {
-        console.log(`🗑️ Removing memory: ${id}`);
-        const beforeCount = this.memories.length;
-        
-        this.memories = this.memories.filter(m => m.id !== id);
-        
-        if (this.memories.length < beforeCount) {
-            this.saveMemories();
-            this.updateMemoryDisplay();
-            this.updateMemoryBadge();
-            this.showMemoryNotification('🗑️ Memory deleted');
-            console.log('✅ Memory removed');
-        } else {
-            console.warn('⚠️ Memory not found');
-        }
-    },
-    
-    async clearAllMemories() {
-        const count = this.memories.length;
-        
-        if (!confirm(`⚠️ Delete all ${count} memories?\n\nThis action CANNOT be undone!`)) {
-            return;
-        }
-        
-        this.memories = [];
-        
-        // Clear from localStorage
-        try {
-            localStorage.removeItem(this.STORAGE_KEY);
-            console.log('🧹 Cleared localStorage');
-        } catch (error) {
-            console.error('❌ Failed to clear localStorage:', error);
-        }
-        
-        // Clear from window.storage
-        if (window.storage && window.storage.delete) {
-            try {
-                await window.storage.delete(this.STORAGE_KEY);
-                console.log('🧹 Cleared window.storage');
-            } catch (error) {
-                console.warn('⚠️ Failed to clear window.storage:', error);
-            }
-        }
-        
-        this.updateMemoryDisplay();
-        this.updateMemoryBadge();
-        this.showMemoryNotification(`🧹 All ${count} memories cleared permanently`);
-    },
-    
-    extractPersonalInfo(text) {
-        if (!text || typeof text !== 'string') return;
-        
-        console.log('🔍 Extracting from:', text.substring(0, 100) + '...');
-        
-        const patterns = {
-            name: /(?:my name is|i'm|i am|call me|i go by|this is)\s+([A-Za-z]+(?:\s+[A-Za-z]+)?)/i,
-            email: /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/i,
-            phone: /(?:phone|mobile|cell)(?:\s+(?:number|is))?\s*:?\s*([0-9]{3}[-.\s]?[0-9]{3}[-.\s]?[0-9]{4})/i,
-            age: /(?:i am|i'm)\s+(\d{1,2})\s+years?\s+old/i,
-            location: /(?:i live in|i'm from|i'm in|from)\s+([A-Za-z\s]+?)(?:\.|,|and|!|\?|$)/i,
-            occupation: /(?:i am a|i'm a|i work as|my job is|i'm an?)\s+([a-z\s]+?)(?:\.|,|and|!|\?|$)/i,
-            preference: /(?:i like|i prefer|i love|i enjoy|i'm interested in|interested in)\s+(.+?)(?:\.|!|\?|,|and|$)/i,
-            goal: /(?:my goal is|i want to|i'm trying to|i aim to|goal is to)\s+(.+?)(?:\.|!|\?|and|$)/i,
-            hobby: /(?:my hobby is|my hobbies are|i do|hobby:|hobbies:)\s+(.+?)(?:\.|!|\?|for fun|and|$)/i,
-            study: /(?:i study|i'm studying|studying|i major in)\s+(.+?)(?:\.|!|\?|,|and|$)/i,
-            school: /(?:i go to|i attend|i'm at|student at)\s+(.+?)(?:\.|!|\?|,|and|$)/i
-        };
-        
-        let foundCount = 0;
-        
-        for (const [type, pattern] of Object.entries(patterns)) {
-            const match = text.match(pattern);
-            if (match) {
-                let content = match[1] ? match[1].trim() : match[0].trim();
-                
-                // Clean up content
-                content = content
-                    .replace(/\s+/g, ' ')
-                    .replace(/^(a|an|the)\s+/i, '')
-                    .trim();
-                
-                // Validate content length
-                if (content.length >= 2 && content.length <= 100) {
-                    const added = this.addMemory(content, type);
-                    if (added) {
-                        console.log(`✅ Found ${type}:`, content);
-                        foundCount++;
-                    }
-                }
-            }
-        }
-        
-        if (foundCount === 0) {
-            console.log('❌ No patterns matched');
-        } else {
-            console.log(`✅ Extracted ${foundCount} new memories`);
-        }
-    },
-    
-    getContext() {
-        if (this.memories.length === 0) return '';
-        
-        // Get most recent 10 memories for context
-        const recentMemories = this.memories.slice(0, 10);
-        
-        return '\n\n[User Context: ' + 
-               recentMemories.map(m => `${m.type}: ${m.content}`).join('; ') + 
-               ']';
-    },
-    
-    updateMemoryDisplay() {
-        const container = document.getElementById('memoryList');
-        if (!container) {
-            console.warn('⚠️ memoryList container not found');
-            return;
-        }
-        
-        if (this.memories.length === 0) {
-            container.innerHTML = `
-                <div class="empty-memory">
-                    <i class="fas fa-brain"></i>
-                    <p style="font-weight: 600; margin-bottom: 5px;">No memories saved yet</p>
-                    <p style="font-size: 12px; margin-top: 10px;">Personal info auto-saves from chat</p>
-                    <p style="font-size: 11px; margin-top: 15px; color: #6c757d;">
-                        Try: "My name is John" or "I like coding"
-                    </p>
-                </div>
-            `;
-            return;
-        }
-        
-        container.innerHTML = this.memories.map(memory => `
-            <div class="memory-item" data-memory-id="${memory.id}">
-                <div class="memory-item-header">
-                    <span class="memory-type">${this.formatType(memory.type)}</span>
-                    <button class="memory-delete" onclick="MemorySystem.removeMemory(${memory.id})" title="Delete permanently">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-                <div class="memory-content">${this.escapeHtml(memory.content)}</div>
-                <div style="font-size: 10px; color: #adb5bd; margin-top: 5px;">
-                    ${this.formatDate(memory.timestamp)}
-                </div>
-            </div>
-        `).join('');
-        
-        console.log(`📊 Updated display: ${this.memories.length} memories`);
-    },
-    
-    formatType(type) {
-        const typeMap = {
-            name: '👤 Name',
-            email: '📧 Email',
-            phone: '📱 Phone',
-            age: '🎂 Age',
-            location: '📍 Location',
-            occupation: '💼 Job',
-            preference: '❤️ Like',
-            goal: '🎯 Goal',
-            hobby: '🎨 Hobby',
-            study: '📚 Study',
-            school: '🏫 School',
-            general: 'ℹ️ Info'
-        };
-        return typeMap[type] || '📝 ' + type;
-    },
-    
-    formatDate(timestamp) {
-        const date = new Date(timestamp);
-        const now = new Date();
-        const diffMs = now - date;
-        const diffMins = Math.floor(diffMs / 60000);
-        const diffHours = Math.floor(diffMs / 3600000);
-        const diffDays = Math.floor(diffMs / 86400000);
-        
-        if (diffMins < 1) return 'Just now';
-        if (diffMins < 60) return `${diffMins}m ago`;
-        if (diffHours < 24) return `${diffHours}h ago`;
-        if (diffDays < 7) return `${diffDays}d ago`;
-        
-        return date.toLocaleDateString();
-    },
-    
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    },
-    
-    updateMemoryBadge() {
-        const toggleBtn = document.getElementById('memoryToggleBtn');
-        if (!toggleBtn) return;
-        
-        const count = this.memories.length;
-        const existingBadge = toggleBtn.querySelector('.memory-badge');
-        if (existingBadge) existingBadge.remove();
-        
-        if (count > 0) {
-            const badge = document.createElement('span');
-            badge.className = 'memory-badge';
-            badge.textContent = count > 99 ? '99+' : count;
-            badge.style.cssText = `
-                position: absolute;
-                top: -5px;
-                right: -5px;
-                background: #ef4444;
-                color: white;
-                border-radius: 50%;
-                min-width: 22px;
-                height: 22px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 11px;
-                font-weight: bold;
-                border: 2px solid white;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                padding: 0 4px;
-            `;
-            toggleBtn.style.position = 'relative';
-            toggleBtn.appendChild(badge);
-        }
-    },
-    
-    setupMemoryToggle() {
-        const toggleBtn = document.getElementById('memoryToggleBtn');
-        const sidebar = document.getElementById('memorySidebar');
-        const closeBtn = document.getElementById('closeMemoryBtn');
-        const inputArea = document.querySelector('.input-area');
-        
-        if (!toggleBtn || !sidebar) {
-            console.warn('⚠️ Memory toggle elements not found');
-            return;
-        }
-        
-        toggleBtn.addEventListener('click', () => {
-            const isVisible = sidebar.classList.toggle('visible');
-            toggleBtn.classList.toggle('active', isVisible);
-            
-            if (inputArea) {
-                inputArea.classList.toggle('memory-visible', isVisible);
-            }
-            
-            console.log('🔄 Memory panel:', isVisible ? 'opened' : 'closed');
-        });
-        
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                sidebar.classList.remove('visible');
-                toggleBtn.classList.remove('active');
-                if (inputArea) {
-                    inputArea.classList.remove('memory-visible');
-                }
-            });
-        }
-        
-        // Keyboard shortcut (Tab key)
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab' && !e.shiftKey && !e.ctrlKey && !e.altKey) {
-                const activeElement = document.activeElement;
-                const isInputFocused = activeElement.tagName === 'INPUT' || 
-                                     activeElement.tagName === 'TEXTAREA';
-                
-                if (!isInputFocused) {
-                    e.preventDefault();
-                    toggleBtn.click();
-                }
-            }
-        });
-        
-        this.updateMemoryBadge();
-        console.log('✅ Memory toggle setup complete');
-    },
-    
-    showMemoryNotification(message) {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 80px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
-            z-index: 9999;
-            font-weight: 600;
-            animation: slideInRight 0.3s ease-out;
-        `;
-        notification.innerHTML = message;
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.style.animation = 'slideOutRight 0.3s ease-in';
-            setTimeout(() => notification.remove(), 300);
-        }, 2000);
-    },
-    
-    // Export memories as JSON for backup
-    exportMemories() {
-        const dataStr = JSON.stringify(this.memories, null, 2);
-        const blob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.download = `memories_backup_${Date.now()}.json`;
-        link.href = url;
-        link.click();
-        URL.revokeObjectURL(url);
-        this.showMemoryNotification('💾 Memories exported!');
-    },
-    
-    // Import memories from JSON backup
-    async importMemories(file) {
-        try {
-            const text = await file.text();
-            const imported = JSON.parse(text);
-            
-            if (!Array.isArray(imported)) {
-                throw new Error('Invalid format');
-            }
-            
-            const confirmed = confirm(`Import ${imported.length} memories?\nExisting memories will be merged.`);
-            if (!confirmed) return;
-            
-            // Merge with existing, avoiding duplicates
-            imported.forEach(mem => {
-                if (!this.memories.some(m => m.content === mem.content)) {
-                    this.memories.push(mem);
-                }
-            });
-            
-            this.saveMemories();
-            this.updateMemoryDisplay();
-            this.updateMemoryBadge();
-            this.showMemoryNotification(`✅ Imported ${imported.length} memories`);
-        } catch (error) {
-            console.error('❌ Import failed:', error);
-            alert('Failed to import memories. Invalid file format.');
-        }
-    }
-};
-
-// Add CSS animations if not already present
-if (!document.getElementById('memory-animations')) {
-    const style = document.createElement('style');
-    style.id = 'memory-animations';
-    style.textContent = `
-        @keyframes slideInRight {
-            from { transform: translateX(400px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes slideOutRight {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(400px); opacity: 0; }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-// Initialize Memory System on page load
-document.addEventListener('DOMContentLoaded', () => {
-    MemorySystem.init();
-});
-
-// Expose globally for debugging
-window.MemorySystem = MemorySystem;
-
-// Auto-save before page unload
-window.addEventListener('beforeunload', () => {
-    MemorySystem.saveMemories();
-});
-// Message Zoom System with Slider
-// Message Zoom System with +/- Buttons
-const MessageZoomSystem = {
-    defaultFontSize: 16,
-    minFontSize: 12,
-    maxFontSize: 32,
-    step: 2,
-    
-    init() {
-        this.addZoomControls();
-        this.observeNewMessages();
-        console.log('✅ Message Zoom System initialized');
-    },
-    
-    observeNewMessages() {
-        const responseHistory = document.getElementById('responseHistory');
-        if (!responseHistory) return;
-        
-        const observer = new MutationObserver(() => {
-            this.addZoomControls();
-        });
-        
-        observer.observe(responseHistory, {
-            childList: true,
-            subtree: true
-        });
-    },
-    
-   addZoomControls() {
-    const messages = document.querySelectorAll('.message-container:not(.zoom-enabled)');
-    
-    messages.forEach(message => {
-        const messageContent = message.querySelector('.message-content, .user-message-text, .streaming-text');
-        if (!messageContent) return;
-        
-        message.classList.add('zoom-enabled');
-        
-        // Store original font size
-        const computedStyle = window.getComputedStyle(messageContent);
-        const originalSize = parseFloat(computedStyle.fontSize) || this.defaultFontSize;
-        message.dataset.currentFontSize = originalSize;
-        message.dataset.originalFontSize = originalSize;
-        
-        // Create zoom controls (hidden by default)
-        const zoomControls = document.createElement('div');
-        zoomControls.className = 'message-zoom-controls'; // Remove 'active' class - controlled by button
-        zoomControls.innerHTML = `
-            <button class="zoom-control-btn zoom-out" title="Decrease font size (Ctrl + -)">
-                <i class="fas fa-minus"></i>
-            </button>
-            <button class="zoom-control-btn zoom-in" title="Increase font size (Ctrl + +)">
-                <i class="fas fa-plus"></i>
-            </button>
-            <button class="zoom-control-btn zoom-reset" title="Reset font size (Ctrl + 0)">
-                <i class="fas fa-undo"></i>
-            </button>
-        `;
-        
-        message.appendChild(zoomControls);
-        
-        const btnZoomOut = zoomControls.querySelector('.zoom-out');
-        const btnZoomIn = zoomControls.querySelector('.zoom-in');
-        const btnReset = zoomControls.querySelector('.zoom-reset');
-        
-        // Zoom In
-        btnZoomIn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.zoomIn(message, messageContent);
-        });
-        
-        // Zoom Out
-        btnZoomOut.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.zoomOut(message, messageContent);
-        });
-        
-        // Reset
-        btnReset.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.resetZoom(message, messageContent);
-        });
-        
-        this.updateButtonStates(message, btnZoomIn, btnZoomOut);
-    });
-},
-    
-    zoomIn(container, element) {
-        const currentSize = parseFloat(container.dataset.currentFontSize);
-        const newSize = Math.min(currentSize + this.step, this.maxFontSize);
-        this.applyZoom(container, element, newSize);
-    },
-    
-    zoomOut(container, element) {
-        const currentSize = parseFloat(container.dataset.currentFontSize);
-        const newSize = Math.max(currentSize - this.step, this.minFontSize);
-        this.applyZoom(container, element, newSize);
-    },
-    
-    resetZoom(container, element) {
-        const originalSize = parseFloat(container.dataset.originalFontSize) || this.defaultFontSize;
-        this.applyZoom(container, element, originalSize);
-    },
-    
-    applyZoom(container, element, fontSize) {
-        element.style.fontSize = `${fontSize}px`;
-        element.style.lineHeight = `${fontSize * 1.6}px`;
-        container.dataset.currentFontSize = fontSize;
-        
-        const btnZoomIn = container.querySelector('.zoom-in');
-        const btnZoomOut = container.querySelector('.zoom-out');
-        this.updateButtonStates(container, btnZoomIn, btnZoomOut);
-    },
-    
-    updateButtonStates(container, btnZoomIn, btnZoomOut) {
-        const currentSize = parseFloat(container.dataset.currentFontSize);
-        
-        if (btnZoomIn) {
-            btnZoomIn.disabled = currentSize >= this.maxFontSize;
-        }
-        if (btnZoomOut) {
-            btnZoomOut.disabled = currentSize <= this.minFontSize;
-        }
-    }
-};
-
-// Toggle Zoom Controls on Button Click
-document.addEventListener('click', (e) => {
-    const toggleBtn = e.target.closest('.toggle-zoom-btn');
-    if (!toggleBtn) return;
-    
-    e.stopPropagation();
-    
-    const messageContainer = toggleBtn.closest('.message-container');
-    if (!messageContainer) return;
-    
-    const zoomControls = messageContainer.querySelector('.message-zoom-controls');
-    if (!zoomControls) return;
-    
-    // Toggle active state
-    const isActive = zoomControls.classList.contains('active');
-    
-    if (isActive) {
-        zoomControls.classList.remove('active');
-        toggleBtn.classList.remove('active');
-        toggleBtn.title = 'Show zoom controls';
-    } else {
-        zoomControls.classList.add('active');
-        toggleBtn.classList.add('active');
-        toggleBtn.title = 'Hide zoom controls';
-    }
-});
-
-// Close zoom controls when clicking outside
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.message-zoom-controls') && !e.target.closest('.toggle-zoom-btn')) {
-        document.querySelectorAll('.message-zoom-controls.active').forEach(controls => {
-            controls.classList.remove('active');
-            const messageContainer = controls.closest('.message-container');
-            const toggleBtn = messageContainer?.querySelector('.toggle-zoom-btn');
-            if (toggleBtn) {
-                toggleBtn.classList.remove('active');
-            }
-        });
-    }
-});
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        MessageZoomSystem.init();
-    }, 500);
-});
-
-// Keyboard shortcuts for zoom
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey || e.metaKey) {
-        const activeMessage = document.querySelector('.message-container:hover');
-        if (!activeMessage) return;
-        
-        const messageContent = activeMessage.querySelector('.message-content, .user-message-text, .streaming-text');
-        if (!messageContent) return;
-        
-        if (e.key === '=' || e.key === '+') {
-            e.preventDefault();
-            MessageZoomSystem.zoomIn(activeMessage, messageContent);
-        } else if (e.key === '-') {
-            e.preventDefault();
-            MessageZoomSystem.zoomOut(activeMessage, messageContent);
-        } else if (e.key === '0') {
-            e.preventDefault();
-            MessageZoomSystem.resetZoom(activeMessage, messageContent);
-        }
-    }
-});
-
-window.MessageZoomSystem = MessageZoomSystem;
-
-
-// Canvas System for Long Code (Claude-style)
-const CodeCanvasSystem = {
-    MIN_CODE_LENGTH: 500, // Minimum code length to trigger canvas
-    MIN_FILE_COUNT: 3,    // Minimum number of files to trigger canvas
-    
-    init() {
-        this.injectCanvasModal();
-        this.observeCodeBlocks();
-        console.log('✅ Canvas System initialized');
-    },
-    
-    injectCanvasModal() {
-        const modalHTML = `
-            <div id="codeCanvasModal" class="code-canvas-modal" style="display: none;">
-                <div class="code-canvas-overlay"></div>
-                <div class="code-canvas-container">
-                    <div class="canvas-header">
-                        <div class="canvas-tabs" id="canvasTabs"></div>
-                        <div class="canvas-actions">
-                            <button class="canvas-btn" id="canvasCopyAll" title="Copy all code">
-                                <i class="fas fa-copy"></i> Copy All
-                            </button>
-                            <button class="canvas-btn" id="canvasDownloadAll" title="Download all files">
-                                <i class="fas fa-download"></i> Download
-                            </button>
-                            <button class="canvas-btn" id="canvasClose" title="Close canvas">
-                                <i class="fas fa-times"></i> Close
-                            </button>
-                        </div>
-                    </div>
-                    <div class="canvas-body" id="canvasBody"></div>
-                </div>
-            </div>
-        `;
-        
-        if (!document.getElementById('codeCanvasModal')) {
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-            this.attachModalEvents();
-        }
-    },
-    
-    attachModalEvents() {
-        const modal = document.getElementById('codeCanvasModal');
-        const closeBtn = document.getElementById('canvasClose');
-        const overlay = modal.querySelector('.code-canvas-overlay');
-        const copyAllBtn = document.getElementById('canvasCopyAll');
-        const downloadAllBtn = document.getElementById('canvasDownloadAll');
-        
-        closeBtn.addEventListener('click', () => this.closeCanvas());
-        overlay.addEventListener('click', () => this.closeCanvas());
-        
-        copyAllBtn.addEventListener('click', () => this.copyAllCode());
-        downloadAllBtn.addEventListener('click', () => this.downloadAllFiles());
-        
-        // ESC to close
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.style.display !== 'none') {
-                this.closeCanvas();
-            }
-        });
-    },
-    
-    observeCodeBlocks() {
-        const responseHistory = document.getElementById('responseHistory');
-        if (!responseHistory) return;
-        
-        const observer = new MutationObserver(() => {
-            this.scanForLongCode();
-        });
-        
-        observer.observe(responseHistory, {
-            childList: true,
-            subtree: true
-        });
-        
-        // Initial scan
-        setTimeout(() => this.scanForLongCode(), 1000);
-    },
-    
-    scanForLongCode() {
-        const messages = document.querySelectorAll('.message-container:not(.canvas-processed)');
-        
-        messages.forEach(message => {
-            const codeBlocks = message.querySelectorAll('pre code');
-            if (codeBlocks.length === 0) return;
-            
-            let totalCodeLength = 0;
-            const files = [];
-            
-            codeBlocks.forEach(block => {
-                const code = block.textContent;
-                totalCodeLength += code.length;
-                
-                // Try to extract filename from context
-                const pre = block.closest('pre');
-                let filename = 'untitled';
-                let language = block.className.match(/language-(\w+)/)?.[1] || 'text';
-                
-                // Look for "File:" or "### File:" before the code block
-                const prevSibling = pre.previousElementSibling;
-                if (prevSibling) {
-                    const fileMatch = prevSibling.textContent.match(/###?\s*File:\s*(.+?)(?:\n|$)/i);
-                    if (fileMatch) {
-                        filename = fileMatch[1].trim();
-                    }
-                }
-                
-                // Look for heading before code
-                const heading = pre.previousElementSibling;
-                if (heading && heading.tagName.match(/H[1-6]/)) {
-                    const headingText = heading.textContent;
-                    const fileMatch = headingText.match(/File:\s*(.+?)$/i);
-                    if (fileMatch) {
-                        filename = fileMatch[1].trim();
-                    }
-                }
-                
-                files.push({
-                    filename: filename,
-                    language: language,
-                    code: code,
-                    element: block
-                });
-            });
-            
-            // Trigger canvas if code is long or has multiple files
-            if (totalCodeLength > this.MIN_CODE_LENGTH || files.length >= this.MIN_FILE_COUNT) {
-                message.classList.add('canvas-processed');
-                this.addCanvasButton(message, files);
-            }
-        });
-    },
-    
-    addCanvasButton(message, files) {
-        // Check if button already exists
-        if (message.querySelector('.open-canvas-btn')) return;
-        
-        const messageContent = message.querySelector('.message-content');
-        if (!messageContent) return;
-        
-        const button = document.createElement('button');
-        button.className = 'open-canvas-btn';
-        button.innerHTML = `
-            <i class="fas fa-external-link-alt mr-2"></i>
-            Open in Canvas
-            <span class="badge">${files.length} file${files.length > 1 ? 's' : ''}</span>
-        `;
-        button.style.cssText = `
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            margin: 16px 0;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        `;
-        
-        button.addEventListener('mouseenter', () => {
-            button.style.transform = 'translateY(-2px)';
-            button.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
-        });
-        
-        button.addEventListener('mouseleave', () => {
-            button.style.transform = 'translateY(0)';
-            button.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.3)';
-        });
-        
-        button.addEventListener('click', () => {
-            this.openCanvas(files);
-        });
-        
-        // Insert before first code block
-        const firstCodeBlock = messageContent.querySelector('pre');
-        if (firstCodeBlock) {
-            firstCodeBlock.parentElement.insertBefore(button, firstCodeBlock);
-        }
-    },
-    
-    openCanvas(files) {
-        const modal = document.getElementById('codeCanvasModal');
-        const tabsContainer = document.getElementById('canvasTabs');
-        const bodyContainer = document.getElementById('canvasBody');
-        
-        // Store files data
-        this.currentFiles = files;
-        
-        // Clear existing content
-        tabsContainer.innerHTML = '';
-        bodyContainer.innerHTML = '';
-        
-        // Create tabs and content
-        files.forEach((file, index) => {
-            // Create tab
-            const tab = document.createElement('button');
-            tab.className = `canvas-tab ${index === 0 ? 'active' : ''}`;
-            tab.innerHTML = `
-                <i class="fas fa-file-code mr-2"></i>
-                ${this.truncateFilename(file.filename)}
-            `;
-            tab.dataset.index = index;
-            tab.addEventListener('click', () => this.switchTab(index));
-            tabsContainer.appendChild(tab);
-            
-            // Create content
-            const content = document.createElement('div');
-            content.className = `canvas-file-content ${index === 0 ? 'active' : ''}`;
-            content.dataset.index = index;
-            content.innerHTML = `
-                <div class="canvas-file-header">
-                    <span class="canvas-filename">
-                        <i class="fas fa-file-code mr-2"></i>
-                        ${file.filename}
-                    </span>
-                    <div class="canvas-file-actions">
-                        <button class="canvas-btn-small" onclick="CodeCanvasSystem.copyFileCode(${index})" title="Copy">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <button class="canvas-btn-small" onclick="CodeCanvasSystem.downloadFile(${index})" title="Download">
-                            <i class="fas fa-download"></i>
-                        </button>
-                    </div>
-                </div>
-                <pre><code class="language-${file.language}">${this.escapeHtml(file.code)}</code></pre>
-            `;
-            bodyContainer.appendChild(content);
-            
-            // Highlight code
-            const codeBlock = content.querySelector('code');
-            if (window.hljs) {
-                hljs.highlightElement(codeBlock);
-            }
-        });
-        
-        // Show modal
-        modal.style.display = 'flex';
-        setTimeout(() => modal.classList.add('active'), 10);
-    },
-    
-    switchTab(index) {
-        const tabs = document.querySelectorAll('.canvas-tab');
-        const contents = document.querySelectorAll('.canvas-file-content');
-        
-        tabs.forEach((tab, i) => {
-            tab.classList.toggle('active', i === index);
-        });
-        
-        contents.forEach((content, i) => {
-            content.classList.toggle('active', i === index);
-        });
-    },
-    
-    closeCanvas() {
-        const modal = document.getElementById('codeCanvasModal');
-        modal.classList.remove('active');
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 300);
-    },
-    
-    copyFileCode(index) {
-        const file = this.currentFiles[index];
-        navigator.clipboard.writeText(file.code).then(() => {
-            this.showNotification('✅ Code copied to clipboard!');
-        });
-    },
-    
-    downloadFile(index) {
-        const file = this.currentFiles[index];
-        const blob = new Blob([file.code], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = file.filename || `file_${index + 1}.txt`;
-        a.click();
-        URL.revokeObjectURL(url);
-        this.showNotification('📥 File downloaded!');
-    },
-    
-    copyAllCode() {
-        const allCode = this.currentFiles
-            .map(f => `// ${f.filename}\n${f.code}`)
-            .join('\n\n');
-        
-        navigator.clipboard.writeText(allCode).then(() => {
-            this.showNotification('✅ All code copied to clipboard!');
-        });
-    },
-    
-    downloadAllFiles() {
-        this.currentFiles.forEach((file, index) => {
-            setTimeout(() => {
-                this.downloadFile(index);
-            }, index * 200);
-        });
-    },
-    
-    truncateFilename(filename) {
-        if (filename.length > 20) {
-            return filename.substring(0, 17) + '...';
-        }
-        return filename;
-    },
-    
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    },
-    
-    showNotification(message) {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            z-index: 10000;
-            font-weight: 600;
-            animation: slideInRight 0.3s ease-out;
-        `;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.style.animation = 'slideOutRight 0.3s ease-in';
-            setTimeout(() => notification.remove(), 300);
-        }, 2000);
-    }
-};
-
-// Initialize Canvas System
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        CodeCanvasSystem.init();
-    }, 1000);
-});
-
-window.CodeCanvasSystem = CodeCanvasSystem;
-
-
-// Initialize the zoom system when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    // Wait a bit for other systems to initialize
-    setTimeout(() => {
-        MessageZoomSystem.init();
-    }, 500);
-});
-
-// Also expose it globally for manual initialization if needed
-window.MessageZoomSystem = MessageZoomSystem;
-
-
-   document.addEventListener('DOMContentLoaded', () => {
-        const hint = document.getElementById('zoomFeatureHint');
-        const hasSeenHint = localStorage.getItem('hasSeenZoomHint');
-        
-        if (!hasSeenHint && hint) {
-            setTimeout(() => {
-                hint.style.opacity = '1';
-                hint.style.pointerEvents = 'auto';
-                
-                setTimeout(() => {
-                    hint.style.opacity = '0';
-                    hint.style.pointerEvents = 'none';
-                }, 5000);
-                
-                localStorage.setItem('hasSeenZoomHint', 'true');
-            }, 2000);
-        }
-    });
-
-            // Enhanced Toggle Functionality for Zoom Controls
-document.addEventListener('click', (e) => {
-    const toggleBtn = e.target.closest('.toggle-zoom-btn');
-    
-    if (toggleBtn) {
-        e.stopPropagation();
-        
-        const messageContainer = toggleBtn.closest('.message-container');
-        if (!messageContainer) return;
-        
-        const zoomControls = messageContainer.querySelector('.message-zoom-controls');
-        if (!zoomControls) return;
-        
-        // Toggle active states
-        const isActive = zoomControls.classList.contains('active');
-        
-        if (isActive) {
-            // Hide zoom controls
-            zoomControls.classList.remove('active');
-            toggleBtn.classList.remove('active');
-            toggleBtn.title = 'Show zoom controls';
-            toggleBtn.querySelector('i').className = 'fas fa-search-plus';
-        } else {
-            // Show zoom controls
-            zoomControls.classList.add('active');
-            toggleBtn.classList.add('active');
-            toggleBtn.title = 'Hide zoom controls';
-            toggleBtn.querySelector('i').className = 'fas fa-search-minus';
-        }
-    }
-});
-
-// Close zoom controls when clicking outside
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.message-zoom-controls') && 
-        !e.target.closest('.toggle-zoom-btn')) {
-        
-        document.querySelectorAll('.message-zoom-controls.active').forEach(controls => {
-            controls.classList.remove('active');
-            
-            const messageContainer = controls.closest('.message-container');
-            const toggleBtn = messageContainer?.querySelector('.toggle-zoom-btn');
-            
-            if (toggleBtn) {
-                toggleBtn.classList.remove('active');
-                toggleBtn.title = 'Show zoom controls';
-                toggleBtn.querySelector('i').className = 'fas fa-search-plus';
-            }
-        });
-    }
-});
-
-
-// Initialize Message Zoom System when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('🔧 Initializing zoom system...');
-    
-    // Wait for MessageZoomSystem to be available
-    setTimeout(() => {
-        if (window.MessageZoomSystem) {
-            MessageZoomSystem.init();
-            console.log('✅ Zoom system initialized');
-        }
-    }, 1000);
-});
-
-// Enhanced zoom toggle handler - attach to document for dynamic elements
-document.addEventListener('click', (e) => {
-    const toggleBtn = e.target.closest('.toggle-zoom-btn');
-    
-    if (toggleBtn) {
-        e.stopPropagation();
-        console.log('🔘 Zoom toggle clicked');
-        
-        const messageContainer = toggleBtn.closest('.message-container');
-        if (!messageContainer) {
-            console.warn('⚠️ Message container not found');
-            return;
-        }
-        
-        const zoomControls = messageContainer.querySelector('.message-zoom-controls');
-        if (!zoomControls) {
-            console.warn('⚠️ Zoom controls not found');
-            return;
-        }
-        
-        // Toggle active states
-        const isActive = zoomControls.classList.contains('active');
-        
-        if (isActive) {
-            // Hide zoom controls
-            zoomControls.classList.remove('active');
-            toggleBtn.classList.remove('active');
-            toggleBtn.title = 'Show zoom controls';
-            const icon = toggleBtn.querySelector('i');
-            if (icon) icon.className = 'fas fa-search-plus';
-            console.log('➖ Zoom controls hidden');
-        } else {
-            // Show zoom controls
-            zoomControls.classList.add('active');
-            toggleBtn.classList.add('active');
-            toggleBtn.title = 'Hide zoom controls';
-            const icon = toggleBtn.querySelector('i');
-            if (icon) icon.className = 'fas fa-search-minus';
-            console.log('➕ Zoom controls shown');
-        }
-    }
-});
-
-// Close zoom controls when clicking outside
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.message-zoom-controls') && 
-        !e.target.closest('.toggle-zoom-btn')) {
-        
-        const activeControls = document.querySelectorAll('.message-zoom-controls.active');
-        activeControls.forEach(controls => {
-            controls.classList.remove('active');
-            
-            const messageContainer = controls.closest('.message-container');
-            const toggleBtn = messageContainer?.querySelector('.toggle-zoom-btn');
-            
-            if (toggleBtn) {
-                toggleBtn.classList.remove('active');
-                toggleBtn.title = 'Show zoom controls';
-                const icon = toggleBtn.querySelector('i');
-                if (icon) icon.className = 'fas fa-search-plus';
-            }
-        });
-    }
-});
-
-// Attach zoom button handlers to existing and new messages
-function attachZoomHandlers() {
-    const zoomControls = document.querySelectorAll('.message-zoom-controls');
-    
-    zoomControls.forEach(controls => {
-        if (controls.dataset.handlersAttached) return;
-        controls.dataset.handlersAttached = 'true';
-        
-        const messageContainer = controls.closest('.message-container');
-        const messageContent = messageContainer.querySelector('.message-content, .user-message-text, .streaming-text');
-        
-        if (!messageContent) return;
-        
-        // Store original font size
-        const computedStyle = window.getComputedStyle(messageContent);
-        const originalSize = parseFloat(computedStyle.fontSize) || 16;
-        messageContainer.dataset.currentFontSize = originalSize;
-        messageContainer.dataset.originalFontSize = originalSize;
-        
-        const btnZoomIn = controls.querySelector('.zoom-in');
-        const btnZoomOut = controls.querySelector('.zoom-out');
-        const btnReset = controls.querySelector('.zoom-reset');
-        
-        if (btnZoomIn) {
-            btnZoomIn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const currentSize = parseFloat(messageContainer.dataset.currentFontSize);
-                const newSize = Math.min(currentSize + 2, 32);
-                applyZoom(messageContainer, messageContent, newSize);
-                console.log('🔼 Zoom in to:', newSize);
-            });
-        }
-        
-        if (btnZoomOut) {
-            btnZoomOut.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const currentSize = parseFloat(messageContainer.dataset.currentFontSize);
-                const newSize = Math.max(currentSize - 2, 12);
-                applyZoom(messageContainer, messageContent, newSize);
-                console.log('🔽 Zoom out to:', newSize);
-            });
-        }
-        
-        if (btnReset) {
-            btnReset.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const originalSize = parseFloat(messageContainer.dataset.originalFontSize) || 16;
-                applyZoom(messageContainer, messageContent, originalSize);
-                console.log('🔄 Reset zoom to:', originalSize);
-            });
-        }
-    });
-}
-
-function applyZoom(container, element, fontSize) {
-    element.style.fontSize = `${fontSize}px`;
-    element.style.lineHeight = `${fontSize * 1.6}px`;
-    container.dataset.currentFontSize = fontSize;
-    
-    const btnZoomIn = container.querySelector('.zoom-in');
-    const btnZoomOut = container.querySelector('.zoom-out');
-    
-    if (btnZoomIn) btnZoomIn.disabled = fontSize >= 32;
-    if (btnZoomOut) btnZoomOut.disabled = fontSize <= 12;
-}
-
-// Observe for new messages and attach handlers
-const observer = new MutationObserver(() => {
-    attachZoomHandlers();
-});
-
-const responseHistory = document.getElementById('responseHistory');
-if (responseHistory) {
-    observer.observe(responseHistory, {
-        childList: true,
-        subtree: true
-    });
-}
-
-// Initial attachment
-setTimeout(() => {
-    attachZoomHandlers();
-    console.log('✅ Zoom handlers attached to existing messages');
-}, 1500);
-
-
