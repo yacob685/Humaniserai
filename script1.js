@@ -18,6 +18,9 @@
             const responseHistory = document.getElementById('responseHistory');
             const fileInput = document.getElementById('fileInput');
             const attachFileButton = document.getElementById('attachFileButton');
+
+            let cameraStream = null;
+let capturedImageData = null;
             const fileStatus = document.getElementById('fileStatus');
             const fileNameDisplay = document.getElementById('fileNameDisplay');
             const clearFileButton = document.getElementById('clearFileButton');
@@ -82,11 +85,11 @@
             let progressIndicator = null;
             let progressInterval = null;
 
-            const apiKey = "AIzaSyAjLL43xndy-QvP4WcLgdefZMmKRWB3JcM";
+            const apiKey = "AIzaSyDQ8N-evSeaUlAvxc0hfuY9ZkCbtfeVYo4";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:streamGenerateContent?key=${apiKey}&alt=sse`;
             
             const systemInstructions = {
-               chat: `You are an ULTRA-ELITE AI studying tutor for all subjects (Mathematics, Biology, Chemistry, English, History, Geography, Philosophy, Commerce, Business Services, etcetera) and a coding architect with UNMATCHED expertise in software engineering, system design, and full-stack development. Your mission is to generate PRODUCTION-READY, ENTERPRISE-GRADE code that rivals the output of senior engineers at FAANG companies.
+               chat: `You are an ULTRA-ELITE AI studying tutor for all subjects (Mathematics, Biology, Chemistry, English, History, Geography, Philosophy, Commerce, Business Services, etcetera) and a coding architect with UNMATCHED expertise in software engineering, system design, and full-stack development. Your mission is to generate PRODUCTION-READY, ENTERPRISE-GRADE code that rivals the output of senior engineers at FAANG companies. Your Developer's name is Yacob Okour, he is Jordanian.
 
 🔥 **MANDATORY DEEP THINKING PROTOCOL** 🔥
 BEFORE generating ANY code, you MUST engage in EXTENSIVE thinking analysis:
@@ -3430,17 +3433,156 @@ try {
                 }
             });
 
-            const clearAttachedFile = () => {
-                attachedFileContent = null;
-                attachedFileName = null;
-                attachedFileType = null;
-                attachedFileMimeType = null;
-                fileInput.value = '';
-                fileStatus.classList.add('hidden');
-                window.autoExpand(promptInput);
-            };
+          const clearAttachedFile = () => {
+    attachedFileContent = null;
+    attachedFileName = null;
+    attachedFileType = null;
+    attachedFileMimeType = null;
+    fileInput.value = '';
+    fileStatus.classList.add('hidden');
+    window.autoExpand(promptInput);
+};
 
-            attachFileButton.addEventListener('click', () => fileInput.click());
+// Attachment button - show dropdown
+attachFileButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const dropdown = document.getElementById('attachmentDropdown');
+    dropdown.classList.toggle('hidden');
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('attachmentDropdown');
+    const attachBtn = document.getElementById('attachFileButton');
+    if (!dropdown.contains(e.target) && e.target !== attachBtn && !attachBtn.contains(e.target)) {
+        dropdown.classList.add('hidden');
+    }
+});
+
+// Attach File Option
+document.getElementById('attachFileOption').addEventListener('click', function() {
+    document.getElementById('attachmentDropdown').classList.add('hidden');
+    fileInput.click();
+});
+
+// Use Camera Option
+document.getElementById('useCameraOption').addEventListener('click', async function() {
+    document.getElementById('attachmentDropdown').classList.add('hidden');
+    await openCamera();
+});
+
+// Camera Functions
+async function openCamera() {
+    const modal = document.getElementById('cameraModal');
+    const video = document.getElementById('cameraVideo');
+    
+    try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({ 
+            video: { 
+                facingMode: 'environment',
+                width: { ideal: 1920 },
+                height: { ideal: 1080 }
+            } 
+        });
+        
+        video.srcObject = cameraStream;
+        modal.classList.remove('hidden');
+        
+        // Reset UI
+        document.getElementById('capturedPreview').classList.add('hidden');
+        document.getElementById('captureBtn').classList.remove('hidden');
+        document.getElementById('retakeBtn').classList.add('hidden');
+        document.getElementById('useCapturedBtn').classList.add('hidden');
+        video.style.display = 'block';
+        
+    } catch (error) {
+        console.error('Error accessing camera:', error);
+        alert('Unable to access camera. Please ensure you have granted camera permissions.');
+    }
+}
+
+function closeCamera() {
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+    document.getElementById('cameraModal').classList.add('hidden');
+    capturedImageData = null;
+}
+
+// Close camera modal
+document.getElementById('closeCameraBtn').addEventListener('click', closeCamera);
+
+// Capture photo
+document.getElementById('captureBtn').addEventListener('click', function() {
+    const video = document.getElementById('cameraVideo');
+    const canvas = document.getElementById('cameraCanvas');
+    const context = canvas.getContext('2d');
+    const preview = document.getElementById('capturedPreview');
+    const previewImg = document.getElementById('capturedImage');
+    
+    // Set canvas size to video size
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    // Draw video frame to canvas
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    // Get image data as base64
+    capturedImageData = canvas.toDataURL('image/jpeg', 0.9);
+    
+    // Show preview
+    previewImg.src = capturedImageData;
+    preview.classList.remove('hidden');
+    video.style.display = 'none';
+    
+    // Update button visibility
+    this.classList.add('hidden');
+    document.getElementById('retakeBtn').classList.remove('hidden');
+    document.getElementById('useCapturedBtn').classList.remove('hidden');
+});
+
+// Retake photo
+document.getElementById('retakeBtn').addEventListener('click', function() {
+    const video = document.getElementById('cameraVideo');
+    const preview = document.getElementById('capturedPreview');
+    
+    // Show video again
+    video.style.display = 'block';
+    preview.classList.add('hidden');
+    capturedImageData = null;
+    
+    // Update button visibility
+    this.classList.add('hidden');
+    document.getElementById('useCapturedBtn').classList.add('hidden');
+    document.getElementById('captureBtn').classList.remove('hidden');
+});
+
+// Use captured photo
+document.getElementById('useCapturedBtn').addEventListener('click', function() {
+    if (capturedImageData) {
+        // Set the captured image as attached file
+        attachedFileContent = capturedImageData;
+        attachedFileType = 'image';
+        attachedFileMimeType = 'image/jpeg';
+        attachedFileName = `camera-capture-${Date.now()}.jpg`;
+        
+        // Display in file status
+        fileStatus.classList.remove('hidden');
+        fileNameDisplay.innerHTML = `
+            <div class="flex items-center gap-2">
+                <i class="fas fa-camera mr-2 text-blue-600"></i>
+                <span>Camera capture</span>
+                <img src="${capturedImageData}" alt="Preview" class="h-12 w-12 object-cover rounded border-2 border-purple-300 ml-2">
+            </div>
+        `;
+        
+        generateButton.disabled = false;
+        
+        // Close camera modal
+        closeCamera();
+    }
+});
             clearFileButton.addEventListener('click', clearAttachedFile);
 
             fileInput.addEventListener('change', async (event) => {
@@ -3452,12 +3594,12 @@ try {
                 const isImage = fileType.startsWith('image/') || fileName.endsWith('.png') || fileName.endsWith('.jpg') || fileName.endsWith('.jpeg');
                 const isPdf = fileType === 'application/pdf' || fileName.endsWith('.pdf');
                 
-                let maxSize = 5 * 1024 * 1024;
-                let sizeText = '5MB';
+                let maxSize = 500 * 1024 * 1024;
+                let sizeText = '500MB';
                 
                 if (isPdf) {
-                    maxSize = 20 * 1024 * 1024;
-                    sizeText = '20MB';
+                    maxSize = 200 * 1024 * 1024;
+                    sizeText = '200MB';
                 } else if (isImage) {
                     maxSize = 10 * 1024 * 1024;
                     sizeText = '10MB';
@@ -3603,3 +3745,5 @@ try {
             loadChats();
             updateToolHeader('chat');
         });
+
+
