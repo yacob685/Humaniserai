@@ -544,6 +544,179 @@
         .badge-stage.active {
             transform: scale(1.1);
         }
+
+        /* Attachment Dropdown */
+.attachment-dropdown {
+    position: absolute;
+    bottom: 70px;
+    left: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    z-index: 100;
+    min-width: 180px;
+    border: 2px solid #e5e7eb;
+}
+
+.attachment-option {
+    width: 100%;
+    padding: 12px 16px;
+    background: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.attachment-option:hover {
+    background: #f3f4f6;
+}
+
+.attachment-option:first-child {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.attachment-option i {
+    font-size: 18px;
+}
+
+/* Camera Modal */
+.camera-modal-content {
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 700px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.camera-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-camera-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 18px;
+}
+
+.close-camera-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.camera-container {
+    position: relative;
+    background: #000;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#cameraVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.captured-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.captured-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.camera-controls {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    background: #f9fafb;
+}
+
+.camera-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.capture-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.capture-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.retake-btn {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.retake-btn:hover {
+    background: #e5e7eb;
+}
+
+.use-btn {
+    background: #10b981;
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+.use-btn:hover {
+    background: #059669;
+    transform: translateY(-2px);
+}
     </style>
 </head>
 <body>
@@ -745,6 +918,51 @@
         </div>
     </div>
     <script src="script1.js"></script>
+<!-- Camera Modal -->
+<div id="cameraModal" class="modal-backdrop hidden">
+    <div class="camera-modal-content">
+        <div class="camera-header">
+            <h3 class="text-xl font-bold text-white">
+                <i class="fas fa-camera mr-2"></i>Take Photo
+            </h3>
+            <button id="closeCameraBtn" class="close-camera-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="camera-container">
+            <video id="cameraVideo" autoplay playsinline></video>
+            <canvas id="cameraCanvas" style="display: none;"></canvas>
+            
+            <div id="capturedPreview" class="captured-preview hidden">
+                <img id="capturedImage" alt="Captured photo">
+            </div>
+        </div>
+        
+        <div class="camera-controls">
+            <button id="retakeBtn" class="camera-btn retake-btn hidden">
+                <i class="fas fa-redo mr-2"></i>Retake
+            </button>
+            <button id="captureBtn" class="camera-btn capture-btn">
+                <i class="fas fa-camera mr-2"></i>Capture
+            </button>
+            <button id="useCapturedBtn" class="camera-btn use-btn hidden">
+                <i class="fas fa-check mr-2"></i>Use Photo
+            </button>
+        </div>
+    </div>
+</div>
 
+<!-- Attachment Options Dropdown -->
+<div id="attachmentDropdown" class="attachment-dropdown hidden">
+    <button class="attachment-option" id="attachFileOption">
+        <i class="fas fa-paperclip text-purple-600"></i>
+        <span>Attach File</span>
+    </button>
+    <button class="attachment-option" id="useCameraOption">
+        <i class="fas fa-camera text-blue-600"></i>
+        <span>Use Camera</span>
+    </button>
+</div>
 </body>
 </html>
