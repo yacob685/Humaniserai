@@ -1,16 +1,40 @@
+// Backup critical auth data
+const backupAuth = () => {
+    const authData = {
+        email: localStorage.getItem('userEmail'),
+        token: localStorage.getItem('authToken'),
+        isLoggedIn: localStorage.getItem('isLoggedIn'),
+        timestamp: Date.now()
+    };
+    sessionStorage.setItem('authBackup', JSON.stringify(authData));
+};
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Configure marked options
-            marked.setOptions({
-                highlight: (code, lang) => {
-                    if (lang && hljs.getLanguage(lang)) {
-                        return hljs.highlight(code, { language: lang }).value;
-                    }
-                    return hljs.highlightAuto(code).value;
-                },
-                breaks: true,
-                gfm: true
-            });
+// Restore if lost
+const restoreAuth = () => {
+    const backup = sessionStorage.getItem('authBackup');
+    if (backup && !localStorage.getItem('userEmail')) {
+        const data = JSON.parse(backup);
+        localStorage.setItem('userEmail', data.email);
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('isLoggedIn', data.isLoggedIn);
+    }
+};
+
+backupAuth();
+restoreAuth();
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Configure marked options
+    marked.setOptions({
+        highlight: (code, lang) => {
+            if (lang && hljs.getLanguage(lang)) {
+                return hljs.highlight(code, { language: lang }).value;
+            }
+            return hljs.highlightAuto(code).value;
+        },
+        breaks: true,
+        gfm: true
+    });
 
             // DOM Elements
             const generateButton = document.getElementById('generateButton');
@@ -18,6 +42,91 @@
             const responseHistory = document.getElementById('responseHistory');
             const fileInput = document.getElementById('fileInput');
             const attachFileButton = document.getElementById('attachFileButton');
+     
+    // Google Custom Search API Configuration (for image search only)
+let googleImageSearchConfig = {
+    apiKey: document.getElementById('hiddenGoogleApiKey')?.value || localStorage.getItem('googleImageApiKey') || 'AIzaSyBIAAAwdRvVuUMyq2RfLYo2HapOe_25j1c',
+    searchEngineId: document.getElementById('hiddenSearchEngineId')?.value || localStorage.getItem('googleSearchEngineId') || '93953e1a5df144c0f'
+};
+
+// Google Custom Search Function (from imagesai.html)
+async function searchGoogleCustom(query, apiKey, engineId, num) {
+    if (!apiKey || !engineId) {
+        throw new Error("Google API Key and Search Engine ID are required.");
+    }
+
+    num = parseInt(num, 10) || 10;
+    num = Math.min(Math.max(num, 1), 100);
+
+    const PER_REQUEST_MAX = 10;
+    const results = [];
+    let start = 1;
+
+    while (results.length < num) {
+        const requestNum = Math.min(PER_REQUEST_MAX, num - results.length);
+        const url = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${engineId}&q=${encodeURIComponent(query)}&searchType=image&num=${requestNum}&start=${start}`;
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            const text = await response.text().catch(() => "");
+            throw new Error(`API Error: ${response.status} - ${text.substring(0, 200)}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.items || data.items.length === 0) {
+            break;
+        }
+
+        const pageItems = data.items.map(img => ({
+            url: img.link,
+            thumbnail: img.image?.thumbnailLink || img.link,
+            title: img.title,
+            source: 'Google',
+            sourceUrl: img.image?.contextLink || img.link,
+            displayLink: img.displayLink
+        }));
+
+        results.push(...pageItems);
+
+        if (data.items.length < requestNum) break;
+        start = results.length + 1;
+        if (start > 100) break;
+    }
+
+    return results.slice(0, num);
+}
+
+// Detect if user is asking for image search
+function detectImageSearchIntent(prompt) {
+    const keywords = [
+        'search images', 'find images', 'show images', 'get images',
+        'search pictures', 'find pictures', 'show pictures',
+        'images of', 'pictures of', 'photos of',
+        'show me images', 'find me images', 'search for images'
+    ];
+    
+    const lower = prompt.toLowerCase();
+    return keywords.some(keyword => lower.includes(keyword));
+}
+
+// Extract search query from user prompt
+function extractImageQuery(prompt) {
+    const patterns = [
+        /(?:search|find|show|get)\s+(?:images?|pictures?|photos?)\s+(?:of|for|about)\s+(.+)/i,
+        /(?:images?|pictures?|photos?)\s+of\s+(.+)/i,
+        /show\s+me\s+(?:images?|pictures?|photos?)?\s*(?:of|about)?\s+(.+)/i
+    ];
+    
+    for (const pattern of patterns) {
+        const match = prompt.match(pattern);
+        if (match) return match[1].trim();
+    }
+    
+    return prompt.replace(/search|find|show|get|images?|pictures?|photos?|of|for|about|me/gi, '').trim();
+}
+
 
             let cameraStream = null;
 let capturedImageData = null;
@@ -46,11 +155,9 @@ let capturedImageData = null;
             const modalCancel = document.getElementById('modalCancel');
 
             // State Management
-            let attachedFileContent = null;
-            let attachedFileName = null;
-            let attachedFileType = null;
-            let attachedFileMimeType = null;
-            let generationController = null;
+            
+   let attachedFiles = []; // Array of {content, name, type, mimeType}
+let generationController = null;
 
             let chats = {};
             let activeChatId = null;
@@ -974,6 +1081,31 @@ Use 4-6 main branches with 2-4 children each. Make it comprehensive and well-org
 
 Always use proper markdown formatting with headers, lists, tables, and emphasis.`,
 
+imagesearch: `You are a Google Image Search assistant powered by Gemini 2.5. When a user provides a search query, you will search Google Images and return results.
+
+CRITICAL INSTRUCTIONS:
+1. Always respond with a JSON array of image results
+2. Each result must have: url, title, source, width, height
+3. Return 12-20 high-quality results
+4. Prefer high-resolution images (at least 800px wide)
+5. Include diverse results from different sources
+6. Filter out inappropriate content automatically
+
+Response format (ONLY return valid JSON, no other text):
+[
+  {
+    "url": "https://example.com/image.jpg",
+    "title": "Image title or description",
+    "source": "website.com",
+    "width": 1200,
+    "height": 800
+  }
+]
+
+For queries about people, include their name and context.
+For objects/concepts, include descriptive titles.
+Always ensure URLs are direct image links (jpg, png, webp).`,
+                
                 imageanalyzer: `You are a specialized image analyzer for educational content. When an image is provided:
 
 1. **Content Identification**: Identify what type of educational content is shown (diagram, equation, graph, notes, etc.)
@@ -2154,7 +2286,8 @@ Build upon the previous code generation. Maintain consistency in language, frame
                     formula: { title: 'Formula Sheet', subtitle: 'Quick reference for important formulas' },
                     citation: { title: 'Citation Generator', subtitle: 'Generate proper citations in multiple formats' },
                     pdfanalyzer: { title: 'PDF Analyzer', subtitle: 'Comprehensive document analysis and Q&A' },
-                    imageanalyzer: { title: 'Image Analyzer', subtitle: 'Extract text and analyze visual content' }
+                    imageanalyzer: { title: 'Image Analyzer', subtitle: 'Extract text and analyze visual content' },
+                    imagesearch: { title: 'Google Image Search', subtitle: 'Search and explore images from across the web' },
                 };
                 
                 const info = toolInfo[tool] || toolInfo.chat;
@@ -2178,15 +2311,15 @@ Build upon the previous code generation. Maintain consistency in language, frame
             window.autoExpand = (textarea) => {
                 textarea.style.height = 'auto';
                 textarea.style.height = `${Math.min(textarea.scrollHeight, 150)}px`;
-                generateButton.disabled = textarea.value.trim() === '' && !attachedFileContent;
+generateButton.disabled = textarea.value.trim() === '' && attachedFiles.length === 0;
             };
 
             // Escape HTML
-            const escapeHtml = (text) => {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            };
+          const escapeHtml = (text) => {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+};
 
             function renderWelcomeMessage() {
                 responseHistory.innerHTML = `
@@ -2203,22 +2336,28 @@ Build upon the previous code generation. Maintain consistency in language, frame
             }
 
             // Create user message
-           const createUserMessage = (text, file, fileType, base64Image) => {
+          const createUserMessage = (text, files = []) => {
     let fileDisplay = '';
     
-    if (file && fileType === 'image' && base64Image) {
+    if (files.length > 0) {
         fileDisplay = `
             <div class="mt-2 bg-blue-600 bg-opacity-30 p-2 rounded">
                 <div class="text-sm text-blue-100 italic mb-2">
-                    <i class="fas fa-image mr-1"></i> ${escapeHtml(file)}
+                    <i class="fas fa-paperclip mr-1"></i> ${files.length} file(s) attached
                 </div>
-                <img src="${base64Image}" alt="Uploaded image" class="max-w-md rounded-lg border-2 border-blue-300">
+                <div class="flex flex-wrap gap-2">
+                    ${files.map(file => {
+                        if (file.type === 'image') {
+                            return `<img src="${file.content}" alt="${escapeHtml(file.name)}" class="h-16 w-16 object-cover rounded border-2 border-blue-300">`;
+                        } else {
+                            return `<div class="bg-blue-700 text-white px-2 py-1 rounded text-xs"><i class="fas fa-file mr-1"></i>${escapeHtml(file.name)}</div>`;
+                        }
+                    }).join('')}
+                </div>
             </div>
         `;
-    } else if (file) {
-        fileDisplay = `<div class="mt-2 text-sm text-blue-100 italic bg-blue-600 bg-opacity-30 p-2 rounded"><i class="fas fa-paperclip mr-1"></i> ${escapeHtml(file)}</div>`;
     }
-    
+              
     const messageDiv = document.createElement('div');
     messageDiv.className = "flex justify-end group";
     messageDiv.innerHTML = `
@@ -3187,9 +3326,36 @@ Build upon the previous code generation. Maintain consistency in language, frame
             };
 
             // --- Main Generation Logic ---
-  const generateResponse = async (prompt) => {
-                if (isGenerating || !activeChatId) return;
-                isGenerating = true;
+const generateResponse = async (prompt) => {
+    if (isGenerating || !activeChatId) return;
+    
+    // ===== IMAGE SEARCH DETECTION - MUST BE FIRST =====
+   // Move this block BEFORE createUserMessage
+if (detectImageSearchIntent(prompt)) {
+    const query = extractImageQuery(prompt);
+    
+    const currentChat = chats[activeChatId];
+    if (currentChat.history.length === 0 && currentChat.title === 'New Chat') {
+        currentChat.title = prompt.substring(0, 30) + (prompt.length > 30 ? '...' : '');
+        renderChatList();
+    }
+    
+    currentChat.history.push({ role: "user", parts: [{ text: prompt }] });
+    saveChats();
+    
+    showChatView();
+    createUserMessage(prompt, []);        
+    
+    await performImageSearchInChat(query, 20);
+    
+    promptInput.value = '';
+    window.autoExpand(promptInput);
+    generateButton.disabled = true;
+    return; // Stop here
+}
+
+// THEN continue with normal message creation
+isGenerating = true;
                 // Change button to "Stop"
                 generateButton.classList.remove('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
                 generateButton.classList.add('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
@@ -3199,27 +3365,49 @@ Build upon the previous code generation. Maintain consistency in language, frame
                 promptInput.disabled = true;
 
                 generationController = new AbortController(); 
+
+    let messageContent = [{ text: prompt }];
+
+// Add all attached files to message content
+attachedFiles.forEach(file => {
+    if (file.type === 'image') {
+        messageContent.push({
+            inline_data: {
+                mime_type: file.mimeType,
+                data: file.content.split(',')[1]
+            }
+        });
+    } else {
+        // For text/PDF, append to the text prompt
+        messageContent[0].text += `\n\n--- File "${file.name}" content ---\n\n${file.content}\n\n`;
+    }
+});
+    
+
+      // Auto-detect image search queries
+if (currentTool === 'chat') {
+    const imageSearchKeywords = [
+        'search images', 'find images', 'show me images', 'search for pictures',
+        'find pictures', 'images of', 'pictures of', 'photos of'
+    ];
+    
+    const promptLower = prompt.toLowerCase();
+    const isImageSearch = imageSearchKeywords.some(keyword => promptLower.includes(keyword));
+    
+    if (isImageSearch) {
+        // Extract the search query
+        const query = prompt
+            .replace(/search (images?|pictures?|photos?) (of|for)/i, '')
+            .replace(/find (images?|pictures?|photos?) (of|for)/i, '')
+            .replace(/show me (images?|pictures?|photos?) (of|for)/i, '')
+            .trim();
+        
+        performImageSearch(query);
+        clearAttachedFile();
+        return;
+    }
+}
       
-                let userMessage = prompt;
-                let messageContent = [];
-                
-                if (attachedFileType === 'image') {
-                    messageContent = [
-                        { text: prompt },
-                        {
-                            inline_data: {
-                                mime_type: attachedFileMimeType,
-                                data: attachedFileContent.split(',')[1]
-                            }
-                        }
-                    ];
-                } else if (attachedFileContent) {
-                    userMessage = `File "${attachedFileName}" content:\n\n${attachedFileContent}\n\nUser request: ${prompt}`;
-                    messageContent = [{ text: userMessage }];
-                } else {
-                    messageContent = [{ text: userMessage }];
-                }
-                
                 const currentChat = chats[activeChatId];
 
                 if (currentChat.history.length === 0 && currentChat.title === 'New Chat') {
@@ -3230,8 +3418,8 @@ Build upon the previous code generation. Maintain consistency in language, frame
                 currentChat.history.push({ role: "user", parts: messageContent });
                 saveChats();
 
-                showChatView();
-                createUserMessage(prompt, attachedFileName, attachedFileType, attachedFileType === 'image' ? attachedFileContent : null);
+               showChatView();
+createUserMessage(prompt, [...attachedFiles]); // Clone array to preserve in message
 
                 const streamingElement = createStreamingAIMessage();
                 let fullResponse = '';
@@ -3340,56 +3528,69 @@ try {
                         }
                     }
 
-                 } catch (error) {
-                    console.error('Error:', error);
-                    if (error.name === 'AbortError') {
-                        // Handle stop
-                        if (streamingElement && streamingElement.parentElement) {
-                            const stopMessage = document.createElement('div');
-                            stopMessage.className = "text-yellow-700 p-3 bg-yellow-50 rounded-lg text-sm font-medium mt-2";
-                            stopMessage.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Generation stopped by user.';
-                            
-                            // Check if streaming text exists, if not, append to parent
-                            if(streamingElement.textContent.length > 0) {
-                                streamingElement.parentElement.appendChild(stopMessage);
-                            } else {
-                                // If no text was streamed, replace the placeholder
-                                streamingElement.parentElement.parentElement.innerHTML = `
-                                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
-                                        <i class="fas fa-graduation-cap"></i>
-                                    </div>
-                                    <div class="bg-white p-6 rounded-2xl shadow-xl max-w-full border-2 border-purple-100 message-content">
-                                        <div class="text-yellow-700 text-sm font-medium">
-                                            <i class="fas fa-exclamation-triangle mr-2"></i>Generation stopped by user.
-                                        </div>
-                                    </div>
-                                `;
-                            }
-                            // Don't save this partial response to history
-                            currentChat.history.pop(); // Remove the "model" placeholder
-                            saveChats();
-                        }
-                    } else {
-                        if (streamingElement && streamingElement.parentElement) {
-                            streamingElement.parentElement.innerHTML = `<div class="text-red-600 p-4 bg-red-50 rounded-lg"><strong>Error:</strong> Failed to get response from AI. ${error.message}</div>`;
-                        }
-                    }
-                } finally {
-                    isGenerating = false;
-                    generationController = null;
+          } catch (error) {
+    console.error('Error:', error);
+    if (error.name === 'AbortError') {
+        // Handle stop
+        if (streamingElement && streamingElement.parentElement) {
+            const stopMessage = document.createElement('div');
+            stopMessage.className = "text-yellow-700 p-4 bg-yellow-50 rounded-lg border-2 border-yellow-300 mt-2";
+            stopMessage.innerHTML = `
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fas fa-exclamation-triangle text-xl"></i>
+                    <strong>Generation Stopped</strong>
+                </div>
+                <p class="text-sm">
+                    The response was stopped by user. If you experience issues, please refresh the page and try again.
+                </p>
+                <button onclick="location.reload()" class="mt-3 px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-all font-semibold">
+                    <i class="fas fa-sync-alt mr-2"></i>Refresh Page
+                </button>
+            `;
+            
+            if(streamingElement.textContent.length > 0) {
+                streamingElement.parentElement.appendChild(stopMessage);
+            } else {
+                streamingElement.parentElement.parentElement.innerHTML = `
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-yellow-600 to-orange-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="bg-yellow-50 border-2 border-yellow-300 p-6 rounded-2xl shadow-xl max-w-full message-content">
+                        ${stopMessage.innerHTML}
+                    </div>
+                `;
+            }
+            
+            currentChat.history.pop();
+            saveChats();
+        }
+        
+        // Show alert modal
+        showCustomModal(
+            'Generation Stopped', 
+            'The AI response was stopped. If you experience any issues or the chat becomes unresponsive, please refresh the page and try again.',
+            false
+        );
+    } else {
+        if (streamingElement && streamingElement.parentElement) {
+            streamingElement.parentElement.innerHTML = `<div class="text-red-600 p-4 bg-red-50 rounded-lg"><strong>Error:</strong> Failed to get response from AI. ${error.message}</div>`;
+        }
+    }
+} finally {
+    isGenerating = false;
+    generationController = null;
 
-                    // Reset button to "Send"
-                    generateButton.classList.add('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
-                    generateButton.classList.remove('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
-                    generateButtonIcon.classList.add('fa-paper-plane');
-                    generateButtonIcon.classList.remove('fa-stop');
-                    
-                    // Reset UI state from original 'finally'
-                    promptInput.disabled = false;
-                    generateButton.disabled = promptInput.value.trim() === '' && !attachedFileContent;
-                    promptInput.focus();
-                    clearAttachedFile();
-                }
+    // Reset button appearance
+    generateButton.classList.remove('from-red-500', 'to-pink-500', 'hover:from-red-600', 'hover:to-pink-600');
+    generateButton.classList.add('from-purple-600', 'to-blue-600', 'hover:from-purple-700', 'hover:to-blue-700');
+    generateButtonIcon.classList.remove('fa-stop');
+    generateButtonIcon.classList.add('fa-paper-plane');
+    
+    promptInput.disabled = false;
+    generateButton.disabled = promptInput.value.trim() === '' && attachedFiles.length === 0;
+    promptInput.focus();
+    clearAttachedFile();
+}
             };
 
             // --- Event Listeners and Utilities ---
@@ -3416,7 +3617,7 @@ try {
         
         generateResponse(continuePrompt);
         hideContinueBanner();
-    } else if (!prompt && !attachedFileContent) {
+} else if (!prompt && attachedFiles.length === 0) {
         return;
     } else {
         generateResponse(prompt);
@@ -3433,14 +3634,81 @@ try {
                 }
             });
 
-          const clearAttachedFile = () => {
-    attachedFileContent = null;
-    attachedFileName = null;
-    attachedFileType = null;
-    attachedFileMimeType = null;
+        const clearAttachedFile = () => {
+    attachedFiles = [];
     fileInput.value = '';
     fileStatus.classList.add('hidden');
+    generateButton.disabled = promptInput.value.trim() === '';
     window.autoExpand(promptInput);
+    updateAttachButtonText();
+};
+
+// Add new function for updating file display
+const updateFileStatusDisplay = () => {
+    if (attachedFiles.length === 0) {
+        fileStatus.classList.add('hidden');
+        generateButton.disabled = promptInput.value.trim() === '';
+        updateAttachButtonText();
+        return;
+    }
+    
+    fileStatus.classList.remove('hidden');
+    fileNameDisplay.innerHTML = `
+        <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-paperclip text-purple-600"></i>
+            <span class="font-semibold">${attachedFiles.length} file(s) attached</span>
+            <span class="text-xs text-gray-500">(Max 10)</span>
+        </div>
+        <div class="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+            ${attachedFiles.map((file, index) => `
+                <div class="flex items-center gap-2 bg-purple-50 border-2 border-purple-200 rounded-lg p-2 relative group">
+                    ${file.type === 'image' ? 
+                        `<img src="${file.content}" class="h-10 w-10 object-cover rounded">` :
+                        `<i class="fas fa-file-alt text-purple-600"></i>`
+                    }
+                    <span class="text-sm max-w-[100px] truncate">${file.name}</span>
+                    <button class="remove-file-btn ml-2 text-red-600 hover:text-red-800 opacity-0 group-hover:opacity-100 transition-opacity" data-index="${index}">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    document.querySelectorAll('.remove-file-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const index = parseInt(btn.dataset.index);
+            attachedFiles.splice(index, 1);
+            updateFileStatusDisplay();
+        });
+    });
+    
+ generateButton.disabled = promptInput.value.trim() === '' && attachedFiles.length === 0;
+    updateAttachButtonText();
+    
+    // Force UI refresh
+    setTimeout(() => {
+        generateButton.disabled = false;
+    }, 100);
+};
+
+const updateAttachButtonText = () => {
+    const btn = document.getElementById('attachFileButton');
+    if (btn) {
+        if (attachedFiles.length > 0) {
+            btn.innerHTML = `<i class="fas fa-paperclip"></i><span class="ml-2 text-xs font-bold">${attachedFiles.length}/10</span>`;
+        } else {
+            btn.innerHTML = `<i class="fas fa-paperclip"></i>`;
+        }
+        
+        // Disable if at max
+        if (attachedFiles.length >= 10) {
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+    }
 };
 
 // Attachment button - show dropdown
@@ -3460,16 +3728,29 @@ document.addEventListener('click', function(e) {
 });
 
 // Attach File Option
+// Attach File Option
 document.getElementById('attachFileOption').addEventListener('click', function() {
+    if (attachedFiles.length >= 10) {
+        showCustomModal('Maximum Reached', 'You can attach up to 10 files. Remove some files first.', false);
+        document.getElementById('attachmentDropdown').classList.add('hidden');
+        return;
+    }
     document.getElementById('attachmentDropdown').classList.add('hidden');
     fileInput.click();
 });
 
-// Use Camera Option
+// Use Camera Option - Add check
 document.getElementById('useCameraOption').addEventListener('click', async function() {
+    if (attachedFiles.length >= 10) {
+        showCustomModal('Maximum Reached', 'You can attach up to 10 files. Remove some files first.', false);
+        document.getElementById('attachmentDropdown').classList.add('hidden');
+        return;
+    }
     document.getElementById('attachmentDropdown').classList.add('hidden');
     await openCamera();
 });
+
+
 
 // Camera Functions
 async function openCamera() {
@@ -3561,139 +3842,308 @@ document.getElementById('retakeBtn').addEventListener('click', function() {
 // Use captured photo
 document.getElementById('useCapturedBtn').addEventListener('click', function() {
     if (capturedImageData) {
-        // Set the captured image as attached file
-        attachedFileContent = capturedImageData;
-        attachedFileType = 'image';
-        attachedFileMimeType = 'image/jpeg';
-        attachedFileName = `camera-capture-${Date.now()}.jpg`;
+        if (attachedFiles.length >= 10) {
+            showCustomModal('Maximum Reached', 'You can attach up to 10 files. Remove some files first.', false);
+            return;
+        }
         
-        // Display in file status
-        fileStatus.classList.remove('hidden');
-        fileNameDisplay.innerHTML = `
-            <div class="flex items-center gap-2">
-                <i class="fas fa-camera mr-2 text-blue-600"></i>
-                <span>Camera capture</span>
-                <img src="${capturedImageData}" alt="Preview" class="h-12 w-12 object-cover rounded border-2 border-purple-300 ml-2">
-            </div>
-        `;
+        attachedFiles.push({
+            content: capturedImageData,
+            type: 'image',
+            mimeType: 'image/jpeg',
+            name: `camera-capture-${Date.now()}.jpg`
+        });
         
-        generateButton.disabled = false;
-        
-        // Close camera modal
+        updateFileStatusDisplay();
         closeCamera();
     }
 });
             clearFileButton.addEventListener('click', clearAttachedFile);
 
-            fileInput.addEventListener('change', async (event) => {
-                const file = event.target.files[0];
-                if (!file) return;
-                
-                const fileType = file.type || '';
-                const fileName = file.name.toLowerCase();
-                const isImage = fileType.startsWith('image/') || fileName.endsWith('.png') || fileName.endsWith('.jpg') || fileName.endsWith('.jpeg');
-                const isPdf = fileType === 'application/pdf' || fileName.endsWith('.pdf');
-                
-                let maxSize = 500 * 1024 * 1024;
-                let sizeText = '500MB';
-                
-                if (isPdf) {
-                    maxSize = 200 * 1024 * 1024;
-                    sizeText = '200MB';
-                } else if (isImage) {
-                    maxSize = 10 * 1024 * 1024;
-                    sizeText = '10MB';
-                }
-                
-                if (file.size > maxSize) {
-                    await showCustomModal('File Too Large', `Please select a file smaller than ${sizeText}.`, false);
-                    fileInput.value = '';
-                    return;
-                }
-                
-                attachedFileName = file.name;
-                fileStatus.classList.remove('hidden');
-                
-                try {
-                    if (isPdf) {
-                        fileNameDisplay.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Loading PDF...`;
-                        attachedFileContent = await processPdfFile(file);
-                        attachedFileType = 'pdf';
-                        generateButton.disabled = false;
-                    } else if (isImage) {
-                        fileNameDisplay.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Loading image...`;
-                        const base64Image = await processImageFile(file);
-                        attachedFileContent = base64Image;
-                        attachedFileType = 'image';
-                        attachedFileMimeType = getImageMimeType(file.name);
-                        
-                        fileNameDisplay.innerHTML = `
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-image mr-2 text-blue-600"></i>
-                                <span>${file.name}</span>
-                                <img src="${base64Image}" alt="Preview" class="h-12 w-12 object-cover rounded border-2 border-purple-300 ml-2">
-                            </div>
-                        `;
-                        generateButton.disabled = false;
-                    } else {
-                        fileNameDisplay.innerHTML = `<i class="fas fa-file-alt mr-2"></i>${file.name}`;
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            attachedFileContent = e.target.result;
-                            attachedFileType = 'text';
-                            window.autoExpand(promptInput);
-                        };
-                        reader.onerror = () => {
-                            showCustomModal('Error', 'Failed to read file. Please try again.', false);
-                            clearAttachedFile();
-                        };
-                        reader.readAsText(file);
-                    }
-                } catch (error) {
-                    console.error('File processing error:', error);
-                    await showCustomModal('Error', `Failed to process file. Please try again.`, false);
-                    clearAttachedFile();
-                }
-            });
+       fileInput.addEventListener('change', async (event) => {
+    const files = Array.from(event.target.files);
+    
+    if (attachedFiles.length + files.length > 10) {
+        await showCustomModal('Too Many Files', `You can attach up to 10 files total. You currently have ${attachedFiles.length} attached.`, false);
+        fileInput.value = '';
+        return;
+    }
+    
+    for (const file of files) {
+        const fileType = file.type || '';
+        const fileName = file.name.toLowerCase();
+        const isImage = fileType.startsWith('image/') || fileName.endsWith('.png') || fileName.endsWith('.jpg') || fileName.endsWith('.jpeg');
+        const isPdf = fileType === 'application/pdf' || fileName.endsWith('.pdf');
+        
+       // Warn for very large files but don't block them
+if (file.size > 500 * 1024 * 1024) { // 500MB
+    const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+    const shouldContinue = await showCustomModal(
+        'Large File Detected', 
+        `${file.name} is ${sizeMB} MB. This may take a while to process. Continue?`, 
+        true
+    );
+    if (!shouldContinue) continue;
+}
 
-            const processPdfFile = async (file) => {
-                return new Promise(async (resolve, reject) => {
-                    try {
-                        const arrayBuffer = await file.arrayBuffer();
-                        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                        let fullText = '';
-                        
-                        for (let i = 1; i <= pdf.numPages; i++) {
-                            fileNameDisplay.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Processing PDF... (${i}/${pdf.numPages} pages)`;
-                            await new Promise(resolve => setTimeout(resolve, 0));
-                            
-                            const page = await pdf.getPage(i);
+// Specific image size warning
+if (isImage && file.size > 20 * 1024 * 1024) {
+    const shouldContinue = await showCustomModal(
+        'Large Image', 
+        `${file.name} is ${(file.size / 1024 / 1024).toFixed(2)} MB. Large images may be compressed. Continue?`, 
+        true
+    );
+    if (!shouldContinue) continue;
+}
+        
+        try {
+            fileStatus.classList.remove('hidden');
+            fileNameDisplay.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Processing ${file.name}...`;
+            
+            let fileData = {
+                name: file.name,
+                type: null,
+                content: null,
+                mimeType: null
+            };
+            
+            if (isPdf) {
+                fileData.content = await processPdfFile(file);
+                fileData.type = 'pdf';
+            } else if (isImage) {
+                fileData.content = await processImageFile(file);
+                fileData.type = 'image';
+                fileData.mimeType = getImageMimeType(file.name);
+            } else {
+                const reader = new FileReader();
+                fileData.content = await new Promise((resolve, reject) => {
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.onerror = reject;
+                    reader.readAsText(file);
+                });
+                fileData.type = 'text';
+            }
+            
+            attachedFiles.push(fileData);
+        } catch (error) {
+            console.error('File processing error:', error);
+            await showCustomModal('Error', `Failed to process ${file.name}. Please try again.`, false);
+        }
+    }
+    
+fileInput.value = '';
+    updateFileStatusDisplay();
+    
+    // Force button state update
+    generateButton.disabled = promptInput.value.trim() === '' && attachedFiles.length === 0;
+});
+    
+const processPdfFile = async (file) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Show initial loading
+            fileNameDisplay.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-spinner fa-spin text-blue-600"></i>
+                    <span>Loading PDF... <span id="pdf-size">${(file.size / 1024 / 1024).toFixed(2)} MB</span></span>
+                </div>
+            `;
+            
+            // Load entire file for PDF.js (it handles large files efficiently)
+            const arrayBuffer = await file.arrayBuffer();
+            
+            fileNameDisplay.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-spinner fa-spin text-blue-600"></i>
+                    <span>Parsing PDF structure...</span>
+                </div>
+            `;
+            
+            // Load PDF with streaming
+            const loadingTask = pdfjsLib.getDocument({
+                data: arrayBuffer,
+                useWorkerFetch: true,
+                isEvalSupported: false,
+                disableAutoFetch: false,
+                disableStream: false
+            });
+            
+            const pdf = await loadingTask.promise;
+            const totalPages = pdf.numPages;
+            
+            fileNameDisplay.innerHTML = `
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-spinner fa-spin text-blue-600"></i>
+                        <span id="pdf-progress-text">Processing page 0 of ${totalPages}...</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div id="pdf-progress-bar" class="bg-blue-600 h-2 rounded-full transition-all" style="width: 0%"></div>
+                    </div>
+                </div>
+            `;
+            
+            let fullText = '';
+            
+            // Process pages in batches to avoid UI freezing
+            const BATCH_SIZE = 5; // Process 5 pages at a time
+            
+            for (let i = 1; i <= totalPages; i += BATCH_SIZE) {
+                const batchEnd = Math.min(i + BATCH_SIZE - 1, totalPages);
+                const batchPromises = [];
+                
+                for (let j = i; j <= batchEnd; j++) {
+                    batchPromises.push(
+                        pdf.getPage(j).then(async (page) => {
                             const textContent = await page.getTextContent();
                             const pageText = textContent.items.map(item => item.str).join(' ');
-                            fullText += `\n--- Page ${i} ---\n${pageText}\n`;
-                        }
-                        
-                        fileNameDisplay.innerHTML = `<i class="fas fa-file-pdf mr-2 text-red-600"></i>${file.name} (${pdf.numPages} pages)`;
-                        resolve(fullText.trim());
-                    } catch (error) {
-                        console.error('PDF processing error:', error);
-                        reject(error);
-                    }
-                });
-            };
+                            return `\n--- Page ${j} ---\n${pageText}\n`;
+                        })
+                    );
+                }
+                
+                const batchTexts = await Promise.all(batchPromises);
+                fullText += batchTexts.join('');
+                
+                // Update progress
+                const progress = Math.round((batchEnd / totalPages) * 100);
+                const progressBar = document.getElementById('pdf-progress-bar');
+                const progressText = document.getElementById('pdf-progress-text');
+                
+                if (progressBar) progressBar.style.width = `${progress}%`;
+                if (progressText) progressText.textContent = `Processing page ${batchEnd} of ${totalPages}...`;
+                
+                // Allow UI to update
+                await new Promise(resolve => setTimeout(resolve, 10));
+            }
+            
+            // Final success message
+            fileNameDisplay.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-check-circle text-green-600"></i>
+                    <span class="text-green-700 font-semibold">${file.name}</span>
+                    <span class="text-xs text-gray-500">(${totalPages} pages, ${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                </div>
+            `;
+            
+            resolve(fullText.trim());
+        } catch (error) {
+            console.error('PDF processing error:', error);
+            fileNameDisplay.innerHTML = `
+                <div class="flex items-center gap-2 text-red-600">
+                    <i class="fas fa-times-circle"></i>
+                    <span>Failed to process PDF: ${error.message}</span>
+                </div>
+            `;
+            reject(error);
+        }
+    });
+};
 
-            const processImageFile = async (file) => {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const base64Image = e.target.result;
-                        resolve(base64Image);
-                    };
-                    reader.onerror = (error) => reject(error);
-                    reader.readAsDataURL(file);
-                });
-            };
+    
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const selectedTool = btn.dataset.tool;
+        
+        document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        currentTool = selectedTool;
+        updateToolHeader(currentTool);
 
+        // Handle different tools
+        if (currentTool === 'flashcards' && studyData.flashcards.length > 0) {
+            renderFlashcardTool(studyData.flashcards);
+        } else if (currentTool === 'mindmap' && studyData.mindmaps) {
+            renderMindMapTool(studyData.mindmaps);
+        } else if (currentTool === 'imagesearch') {
+            showImageSearchInterface();
+        } else {
+            showChatView();
+        }
+    });
+});
+
+// Add this new function
+function showImageSearchInterface() {
+    showChatView();
+    
+    const isConfigured = googleImageSearchConfig.apiKey && googleImageSearchConfig.searchEngineId;
+    
+    toolOptions.innerHTML = `
+        <div class="bg-white p-4 rounded-xl border-2 border-cyan-200 shadow-lg">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-3">
+                    <i class="fab fa-google text-2xl text-blue-600"></i>
+                    <h3 class="font-bold text-lg text-gray-800">Google Image Search</h3>
+                </div>
+                <button id="configureImageSearchBtn" class="px-3 py-2 ${isConfigured ? 'bg-green-100 text-green-700 border-2 border-green-300' : 'bg-orange-100 text-orange-700 border-2 border-orange-300'} rounded-lg font-semibold hover:scale-105 transition-all text-sm">
+                    <i class="fas ${isConfigured ? 'fa-check-circle' : 'fa-cog'} mr-2"></i>${isConfigured ? 'API Configured' : 'Setup API'}
+                </button>
+            </div>
+            
+            ${!isConfigured ? `
+                <div class="bg-orange-50 border-2 border-orange-200 rounded-lg p-3 mb-3">
+                    <p class="text-sm text-orange-800">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <strong>Setup Required:</strong> Configure your Google API credentials to search images.
+                    </p>
+                </div>
+            ` : `
+                <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-3 mb-3">
+                    <p class="text-sm text-blue-800">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <strong>Real Google Search:</strong> Powered by Google Custom Search API.
+                    </p>
+                </div>
+            `}
+            
+            <div class="search-filters">
+                <div class="filter-group flex-1">
+                    <label>Search Query</label>
+                    <input type="text" id="imageSearchQuery" placeholder="e.g., Einstein, Golden Gate Bridge, cats" class="w-full" ${!isConfigured ? 'disabled' : ''}>
+                </div>
+                <div class="filter-group">
+                    <label>Number of Images</label>
+                    <input type="number" id="numImagesInput" value="20" min="1" max="100" class="w-24" ${!isConfigured ? 'disabled' : ''}>
+                </div>
+            </div>
+            <button id="performSearchBtn" class="mt-3 w-full px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-xl font-bold hover:from-red-700 hover:to-pink-700 transition-all shadow-lg ${!isConfigured ? 'opacity-50 cursor-not-allowed' : ''}" ${!isConfigured ? 'disabled' : ''}>
+                <i class="fab fa-google mr-2"></i>Search Google Images
+            </button>
+            <p class="text-xs text-gray-500 mt-2 text-center">Using Google Custom Search API • Up to 100 images per search</p>
+        </div>
+    `;
+
+    setTimeout(() => {
+        document.getElementById('configureImageSearchBtn')?.addEventListener('click', showGoogleImageApiModal);
+        
+        if (!isConfigured) return;
+        
+        const searchBtn = document.getElementById('performSearchBtn');
+        const queryInput = document.getElementById('imageSearchQuery');
+        const numInput = document.getElementById('numImagesInput');
+        
+        const executeSearch = () => {
+            const query = queryInput.value.trim();
+            if (!query) {
+                showCustomModal('Enter Query', 'Please enter a search query.', false);
+                return;
+            }
+
+            const numImages = parseInt(numInput.value) || 20;
+            performImageSearch(query, numImages);
+        };
+
+        searchBtn?.addEventListener('click', executeSearch);
+        queryInput?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') executeSearch();
+        });
+
+        queryInput?.focus();
+    }, 100);
+}
+            
             const getImageMimeType = (filename) => {
                 const ext = filename.toLowerCase().split('.').pop();
                 const mimeTypes = {
@@ -3726,7 +4176,10 @@ document.getElementById('useCapturedBtn').addEventListener('click', function() {
             });
 
             promptInput.addEventListener('input', () => window.autoExpand(promptInput));
-
+promptInput.addEventListener('input', () => {
+    window.autoExpand(promptInput);
+    generateButton.disabled = promptInput.value.trim() === '' && attachedFiles.length === 0;
+});
             document.getElementById('continueGenerationBtn')?.addEventListener('click', () => {
                 if (lastGenerationContext.response) {
                     const continuePrompt = `Continue from exactly where you left off. Here's the last part of what you generated:\n\n${lastGenerationContext.response.slice(-3000)}\n\n...now seamlessly continue generating the rest. Do NOT repeat anything you already wrote. Pick up from the exact point where you stopped.`;
@@ -3747,3 +4200,525 @@ document.getElementById('useCapturedBtn').addEventListener('click', function() {
         });
 
 
+// Google API Configuration Storage
+
+// Load Google API config from localStorage
+
+// Handle all modal clicks with event delegation
+document.addEventListener('click', (e) => {
+    // Save button
+    if (e.target.id === 'saveGoogleApiBtn' || e.target.closest('#saveGoogleApiBtn')) {
+        e.preventDefault();
+        
+        googleApiConfig.apiKey = document.getElementById('googleApiKeyInput').value.trim();
+        googleApiConfig.searchEngineId = document.getElementById('searchEngineIdInput').value.trim();
+        googleApiConfig.numImages = parseInt(document.getElementById('numImagesInput').value) || 20;
+        
+        if (!googleApiConfig.apiKey || !googleApiConfig.searchEngineId) {
+            showCustomModal('Missing Credentials', 'Please provide both API Key and Search Engine ID.', false);
+            return;
+        }
+        
+        saveGoogleApiConfig();
+        hideGoogleApiModal();
+        showCustomModal('Success!', 'Google API credentials saved successfully. You can now search images.', false);
+    }
+    
+    // Cancel button
+    if (e.target.id === 'cancelGoogleApiBtn' || e.target.closest('#cancelGoogleApiBtn')) {
+        e.preventDefault();
+        hideGoogleApiModal();
+    }
+    
+    // Configure API button in search interface
+    if (e.target.id === 'configureGoogleApiBtn' || e.target.closest('#configureGoogleApiBtn')) {
+        e.preventDefault();
+        showGoogleApiModal();
+    }
+});
+
+// Close modal when clicking outside
+document.getElementById('googleApiModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'googleApiModal') {
+        hideGoogleApiModal();
+    }
+});
+// Google Custom Search Function (from your code)
+// Google Custom Search Implementation (Exact from imagesai.html)
+
+
+// Display Image Results
+const displayImageResults = (query, results) => {
+    const resultsDiv = document.createElement('div');
+    resultsDiv.className = 'flex';
+    
+    let successCount = 0;
+    
+    resultsDiv.innerHTML = `
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+            <i class="fas fa-images"></i>
+        </div>
+        <div class="bg-white border-2 border-green-200 p-6 rounded-2xl shadow-xl flex-1">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-xl text-gray-800">
+                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                    Google Image Results for "${escapeHtml(query)}"
+                </h3>
+                <div class="bg-gray-100 px-3 py-1 rounded-full">
+                    <span id="loadedCounter" class="text-sm font-semibold text-gray-700">0 / ${results.length} loaded</span>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="imageSearchGrid">
+                ${results.map((img, index) => `
+                    <div class="relative group cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:scale-105 bg-gray-100" data-index="${index}">
+                        <div class="aspect-square relative">
+                            <img src="${escapeHtml(img.thumbnail)}" 
+                                 data-full-url="${escapeHtml(img.url)}"
+                                 alt="${escapeHtml(img.title)}" 
+                                 loading="lazy" 
+                                 class="w-full h-full object-cover"
+                                 style="min-height: 150px;">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="absolute bottom-0 left-0 right-0 p-3 text-white">
+                                    <div class="text-sm font-semibold line-clamp-2 mb-1">${escapeHtml(img.title)}</div>
+                                    <div class="text-xs opacity-90">
+                                        <i class="fas fa-globe mr-1"></i>${escapeHtml(img.displayLink || img.source)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="mt-4 flex gap-2 justify-center">
+                <button class="download-all-btn px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-md">
+                    <i class="fas fa-download mr-2"></i>Download All (${results.length})
+                </button>
+                <button class="new-search-btn px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md">
+                    <i class="fas fa-search mr-2"></i>New Search
+                </button>
+            </div>
+        </div>
+    `;
+    
+    responseHistory.appendChild(resultsDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    
+    // Update counter as images load
+    const counter = resultsDiv.querySelector('#loadedCounter');
+    const imageElements = resultsDiv.querySelectorAll('img[loading="lazy"]');
+    
+    imageElements.forEach((img) => {
+        img.onload = function() {
+            successCount++;
+            counter.textContent = `${successCount} / ${results.length} loaded`;
+            this.style.opacity = '1';
+        };
+        
+        img.onerror = function() {
+            // Try loading full image if thumbnail fails
+            const fullUrl = this.dataset.fullUrl;
+            if (this.src !== fullUrl) {
+                this.src = fullUrl;
+            } else {
+                // Show placeholder on final failure
+                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23ddd" width="200" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999"%3EImage unavailable%3C/text%3E%3C/svg%3E';
+            }
+        };
+        
+        // Start with slight transparency
+        img.style.opacity = '0';
+        img.style.transition = 'opacity 0.3s ease-in-out';
+    });
+    
+    // Add click handlers for image modal
+    resultsDiv.querySelectorAll('[data-index]').forEach((item, index) => {
+        item.addEventListener('click', () => {
+            showImageModal(results[index]);
+        });
+    });
+    
+    // Download all button
+    resultsDiv.querySelector('.download-all-btn')?.addEventListener('click', async () => {
+        const btn = resultsDiv.querySelector('.download-all-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Downloading...';
+        
+        for (let i = 0; i < results.length; i++) {
+            try {
+                const link = document.createElement('a');
+                link.href = results[i].url;
+                link.download = `${query.replace(/[^a-z0-9]/gi, '_')}_${i + 1}.jpg`;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Delay between downloads
+            } catch (e) {
+                console.error('Download failed for image', i, e);
+            }
+        }
+        
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check mr-2"></i>Downloaded!';
+        setTimeout(() => {
+            btn.innerHTML = `<i class="fas fa-download mr-2"></i>Download All (${results.length})`;
+        }, 2000);
+    });
+    
+    // New search button
+    resultsDiv.querySelector('.new-search-btn')?.addEventListener('click', () => {
+        showImageSearchInterface();
+        document.getElementById('imageSearchQuery')?.focus();
+    });
+};
+
+// Show Image Modal
+const showImageModal = (imageData) => {
+    const modal = document.createElement('div');
+    modal.className = 'image-modal active';
+    modal.innerHTML = `
+        <div class="image-modal-content">
+            <div class="image-modal-close">&times;</div>
+            <img src="${imageData.url}" alt="${escapeHtml(imageData.title)}">
+            <div class="image-modal-actions">
+                <button class="image-modal-btn download-btn">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <button class="image-modal-btn open-btn">
+                    <i class="fas fa-external-link-alt"></i> View Source
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    modal.querySelector('.image-modal-close').addEventListener('click', () => {
+        modal.remove();
+    });
+    
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+    });
+    
+    modal.querySelector('.download-btn').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.href = imageData.url;
+        link.download = `${imageData.title.replace(/[^a-z0-9]/gi, '_')}.jpg`;
+        link.target = '_blank';
+        link.click();
+    });
+    
+    modal.querySelector('.open-btn').addEventListener('click', () => {
+        window.open(imageData.sourceUrl, '_blank');
+    });
+    
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (e.key === 'Escape') {
+            modal.remove();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    });
+};
+
+// Simple image search using SerpApi (free alternative) or Unsplash
+async function searchImages(query, numImages = 20) {
+    try {
+        // Using Unsplash API (no API key needed for basic searches)
+        const unsplashUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${numImages}&client_id=demo`;
+        
+        // Try Unsplash first
+        try {
+            const response = await fetch(unsplashUrl);
+            if (response.ok) {
+                const data = await response.json();
+                return data.results.map(img => ({
+                    url: img.urls.regular,
+                    thumbnail: img.urls.small,
+                    title: img.alt_description || img.description || query,
+                    source: 'Unsplash',
+                    sourceUrl: img.links.html,
+                    width: img.width,
+                    height: img.height
+                }));
+            }
+        } catch (e) {
+            console.warn('Unsplash failed, trying alternative...');
+        }
+
+        // Fallback: Use Pixabay API (no key needed)
+        const pixabayUrl = `https://pixabay.com/api/?key=demo&q=${encodeURIComponent(query)}&per_page=${numImages}&image_type=photo`;
+        
+        const response = await fetch(pixabayUrl);
+        if (!response.ok) {
+            throw new Error('Image search service unavailable');
+        }
+        
+        const data = await response.json();
+        
+        if (!data.hits || data.hits.length === 0) {
+            // Generate mock results for demo purposes
+            return generateMockImageResults(query, numImages);
+        }
+        
+        return data.hits.map(img => ({
+            url: img.largeImageURL,
+            thumbnail: img.previewURL,
+            title: img.tags,
+            source: 'Pixabay',
+            sourceUrl: img.pageURL,
+            width: img.imageWidth,
+            height: img.imageHeight
+        }));
+        
+    } catch (error) {
+        console.error('Image search error:', error);
+        // Return mock results as fallback
+        return generateMockImageResults(query, numImages);
+    }
+}
+
+// Generate mock image results for demonstration
+function generateMockImageResults(query, count) {
+    const results = [];
+    for (let i = 1; i <= Math.min(count, 20); i++) {
+        results.push({
+            url: `https://picsum.photos/800/600?random=${Date.now()}_${i}`,
+            thumbnail: `https://picsum.photos/200/200?random=${Date.now()}_${i}`,
+            title: `${query} - Image ${i}`,
+            source: 'Lorem Picsum',
+            sourceUrl: 'https://picsum.photos',
+            width: 800,
+            height: 600
+        });
+    }
+    return results;
+}
+
+
+// ==================== GOOGLE IMAGE SEARCH - CHATGPT STYLE ====================
+
+// Load API keys from hidden inputs or localStorage
+let googleImageSearchConfig = {
+    apiKey: document.getElementById('hiddenGoogleApiKey')?.value || localStorage.getItem('googleImageApiKey') || 'AIzaSyBIAAAwdRvVuUMyq2RfLYo2HapOe_25j1c',
+    searchEngineId: document.getElementById('hiddenSearchEngineId')?.value || localStorage.getItem('googleSearchEngineId') || '93953e1a5df144c0f'
+};
+
+// Google Custom Search Function (from imagesai.html)
+async function searchGoogleCustom(query, apiKey, engineId, num) {
+    if (!apiKey || !engineId) {
+        throw new Error("Google API Key and Search Engine ID are required.");
+    }
+
+    num = parseInt(num, 10) || 10;
+    num = Math.min(Math.max(num, 1), 100);
+
+    const PER_REQUEST_MAX = 10;
+    const results = [];
+    let start = 1;
+
+    while (results.length < num) {
+        const requestNum = Math.min(PER_REQUEST_MAX, num - results.length);
+        const url = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${engineId}&q=${encodeURIComponent(query)}&searchType=image&num=${requestNum}&start=${start}`;
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            const text = await response.text().catch(() => "");
+            throw new Error(`API Error: ${response.status} - ${text.substring(0, 200)}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.items || data.items.length === 0) {
+            break;
+        }
+
+        const pageItems = data.items.map(img => ({
+            url: img.link,
+            thumbnail: img.image?.thumbnailLink || img.link,
+            title: img.title,
+            source: 'Google',
+            sourceUrl: img.image?.contextLink || img.link,
+            displayLink: img.displayLink
+        }));
+
+        results.push(...pageItems);
+
+        if (data.items.length < requestNum) break;
+        start = results.length + 1;
+        if (start > 100) break;
+    }
+
+    return results.slice(0, num);
+}
+
+// Detect if user is asking for image search
+function detectImageSearchIntent(prompt) {
+    const keywords = [
+        'search images', 'find images', 'show images', 'get images',
+        'search pictures', 'find pictures', 'show pictures',
+        'images of', 'pictures of', 'photos of',
+        'show me images', 'find me images', 'search for images'
+    ];
+    
+    const lower = prompt.toLowerCase();
+    return keywords.some(keyword => lower.includes(keyword));
+}
+
+// Extract search query from user prompt
+function extractImageQuery(prompt) {
+    const patterns = [
+        /(?:search|find|show|get)\s+(?:images?|pictures?|photos?)\s+(?:of|for|about)\s+(.+)/i,
+        /(?:images?|pictures?|photos?)\s+of\s+(.+)/i,
+        /show\s+me\s+(?:images?|pictures?|photos?)?\s*(?:of|about)?\s+(.+)/i
+    ];
+    
+    for (const pattern of patterns) {
+        const match = prompt.match(pattern);
+        if (match) return match[1].trim();
+    }
+    
+    return prompt.replace(/search|find|show|get|images?|pictures?|photos?|of|for|about|me/gi, '').trim();
+}
+
+// Perform image search and display in chat (ChatGPT style)
+async function performImageSearchInChat(query, numImages = 20) {
+    // Create loading message in chat
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'flex mb-4';
+    loadingDiv.innerHTML = `
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+            <i class="fas fa-images"></i>
+        </div>
+        <div class="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300 p-6 rounded-2xl shadow-xl flex-1">
+            <div class="flex items-center gap-3 mb-3">
+                <i class="fas fa-spinner fa-spin text-2xl text-blue-600"></i>
+                <span class="font-bold text-xl text-gray-800">Searching for images...</span>
+            </div>
+            <p class="text-gray-700">Query: <strong>${escapeHtml(query)}</strong></p>
+            <div class="mt-3 text-sm text-gray-600">
+                <i class="fas fa-search mr-2"></i>Finding up to ${numImages} images...
+            </div>
+        </div>
+    `;
+    
+    responseHistory.appendChild(loadingDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    try {
+        const results = await searchGoogleCustom(
+            query,
+            googleImageSearchConfig.apiKey,
+            googleImageSearchConfig.searchEngineId,
+            numImages
+        );
+
+        loadingDiv.remove();
+
+        if (results.length === 0) {
+            throw new Error(`No images found for "${query}"`);
+        }
+
+        // Display images in chat
+        displayImagesInChat(query, results);
+
+    } catch (error) {
+        console.error('Image search error:', error);
+        loadingDiv.remove();
+        
+        // Show error in chat
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'flex mb-4';
+        errorDiv.innerHTML = `
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-600 to-pink-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="bg-red-50 border-2 border-red-300 p-6 rounded-2xl shadow-xl flex-1">
+                <p class="text-red-800 font-bold text-lg mb-2">
+                    <i class="fas fa-times-circle mr-2"></i>Search Failed
+                </p>
+                <p class="text-red-700">${escapeHtml(error.message)}</p>
+            </div>
+        `;
+        responseHistory.appendChild(errorDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+}
+
+// Display images in chat (like ChatGPT)
+function displayImagesInChat(query, results) {
+    const resultsDiv = document.createElement('div');
+    resultsDiv.className = 'flex mb-4';
+    
+    let loadedCount = 0;
+    
+    resultsDiv.innerHTML = `
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="bg-white border-2 border-green-200 p-6 rounded-2xl shadow-xl flex-1">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-xl text-gray-800">
+                    <i class="fas fa-images text-green-600 mr-2"></i>
+                    Found ${results.length} images for "${escapeHtml(query)}"
+                </h3>
+                <span class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full font-semibold" id="loadCounter">
+                    <i class="fas fa-spinner fa-spin mr-1"></i>Loading...
+                </span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                ${results.map((img, index) => `
+                    <div class="relative group cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:scale-105 bg-gray-100 aspect-square">
+                        <img src="${escapeHtml(img.thumbnail)}" 
+                             data-full="${escapeHtml(img.url)}"
+                             data-source="${escapeHtml(img.sourceUrl)}"
+                             alt="${escapeHtml(img.title)}" 
+                             loading="lazy"
+                             class="w-full h-full object-cover"
+                             style="opacity: 0; transition: opacity 0.3s;">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="absolute bottom-0 left-0 right-0 p-2 text-white">
+                                <div class="text-xs font-semibold truncate">${escapeHtml(img.title)}</div>
+                                <div class="text-xs opacity-75 truncate">${escapeHtml(img.displayLink)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    responseHistory.appendChild(resultsDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    
+    // Track image loading
+    const counter = resultsDiv.querySelector('#loadCounter');
+    const images = resultsDiv.querySelectorAll('img[loading="lazy"]');
+    
+    images.forEach((img, idx) => {
+        img.onload = function() {
+            loadedCount++;
+            this.style.opacity = '1';
+            counter.innerHTML = `${loadedCount}/${results.length} loaded`;
+            if (loadedCount === results.length) {
+                counter.innerHTML = '<i class="fas fa-check mr-1"></i>Complete';
+            }
+        };
+        
+        img.onerror = function() {
+            const fullUrl = this.dataset.full;
+            if (this.src !== fullUrl) {
+                this.src = fullUrl;
+            } else {
+                this.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs">Failed</div>';
+            }
+        };
+        
+        // Click to open full image
+        img.parentElement.addEventListener('click', function() {
+            window.open(img.dataset.source || img.dataset.full, '_blank');
+        });
+    });
+}
