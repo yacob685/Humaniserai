@@ -18,6 +18,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="firebase-config.js"></script>
+    <!-- Excel/CSV Processing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+<!-- Word Document Processing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+
 <script>
     // Configure PDF.js worker
     if (typeof pdfjsLib !== 'undefined') {
@@ -717,7 +726,435 @@
     background: #059669;
     transform: translateY(-2px);
 }
+
+        /* ==================== ARTIFACTS PANEL ==================== */
+.artifact-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 45%;
+    min-width: 400px;
+    max-width: 800px;
+    background: white;
+    border-left: 3px solid #667eea;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease-in-out;
+}
+
+.artifact-panel.hidden {
+    transform: translateX(100%);
+}
+
+.artifact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.artifact-control-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.artifact-control-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.artifact-content {
+    flex: 1;
+    overflow: auto;
+    background: #f8f9fa;
+    padding: 1.5rem;
+}
+
+/* Artifact iframe styling */
+.artifact-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* React artifact container */
+.artifact-react-container {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow: auto;
+}
+
+/* Code artifact styling */
+.artifact-code-container {
+    background: #1e1e1e;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.artifact-code-container pre {
+    margin: 0;
+    padding: 1.5rem;
+    overflow: auto;
+    max-height: calc(100vh - 200px);
+}
+
+.artifact-code-container code {
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Markdown artifact */
+.artifact-markdown-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.artifact-markdown-container h1,
+.artifact-markdown-container h2,
+.artifact-markdown-container h3 {
+    color: #1f2937;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.artifact-markdown-container p {
+    color: #374151;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+/* SVG artifact */
+.artifact-svg-container {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+
+.artifact-svg-container svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mermaid diagram */
+.artifact-mermaid-container {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    overflow: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .artifact-panel {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+}
+
+/* When artifact is open, adjust main content */
+body.artifact-open #chatContainer {
+    margin-right: 45%;
+    transition: margin-right 0.3s ease-in-out;
+}
+
+@media (max-width: 1024px) {
+    body.artifact-open #chatContainer {
+        margin-right: 0;
+    }
+}
+
+        /* ==================== WEB SEARCH MODAL ==================== */
+.search-provider-option {
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: all 0.2s;
+    background: white;
+}
+
+.search-provider-option:hover {
+    border-color: #667eea;
+    background: #f8f9ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.search-provider-option input[type="radio"] {
+    display: none;
+}
+
+.search-provider-option input[type="radio"]:checked + label {
+    color: #667eea;
+}
+
+.search-provider-option input[type="radio"]:checked ~ * {
+    border-color: #667eea;
+}
+
+.search-provider-option:has(input[type="radio"]:checked) {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #f8f9ff 0%, #eff0ff 100%);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.badge-recommended {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.config-section {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Search result cards in chat */
+.search-result-card {
+    background: white;
+    border: 2px solid #e0e7ff;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.search-result-card:hover {
+    border-color: #667eea;
+    background: #f8f9ff;
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.search-result-title {
+    color: #1e40af;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-result-url {
+    color: #059669;
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.search-result-snippet {
+    color: #4b5563;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.search-source-badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    background: #dbeafe;
+    color: #1e40af;
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+
+        /* ==================== CODE EXECUTION ==================== */
+.execution-provider-option {
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: all 0.2s;
+    background: white;
+}
+
+.execution-provider-option:hover {
+    border-color: #10b981;
+    background: #f0fdf4;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+}
+
+.execution-provider-option input[type="radio"] {
+    display: none;
+}
+
+.execution-provider-option:has(input[type="radio"]:checked) {
+    border-color: #10b981;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.lang-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Code execution output in chat */
+.code-execution-output {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.875rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border-left: 4px solid #10b981;
+}
+
+.code-execution-error {
+    background: #2d1e1e;
+    color: #ef4444;
+    border-left-color: #ef4444;
+}
+
+.code-execution-card {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border: 2px solid #10b981;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.execution-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.execution-stat {
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    border: 1px solid #d1fae5;
+}
+
+.execution-stat strong {
+    color: #059669;
+}
+
+/* Humanize Toggle Button */
+.humanize-toggle-btn {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 9999;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    transition: all 0.3s ease;
+}
+
+.humanize-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.humanize-toggle-btn.active {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    animation: pulse 2s infinite;
+}
+
+.humanize-toggle-btn.active:hover {
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.6);
+    }
+}
+
+.humanize-label {
+    font-size: 14px;
+}
+
+/* Humanize Badge */
+.humanize-badge {
+    animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+        
     </style>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
 </head>
 <body>
     <div class="app-container">
@@ -859,6 +1296,10 @@
                         <button id="attachFileButton" class="text-gray-500 hover:text-purple-600 p-2 rounded-lg mr-2 transition-colors" title="Attach File">
                             <i class="fas fa-paperclip text-xl"></i>
                         </button>
+
+<button id="humanizeButton" class="text-gray-500 hover:text-green-600 p-2 rounded-lg mr-2 transition-colors" title="Humanize Text">
+    <i class="fas fa-user-edit text-xl"></i>
+</button>
                         <button id="voiceButton" class="text-gray-500 hover:text-purple-600 p-2 rounded-lg mr-2 transition-colors" title="Voice Input">
                             <i class="fas fa-microphone text-xl"></i>
                         </button>
@@ -968,5 +1409,49 @@
     <!-- Add these hidden inputs somewhere in your HTML -->
 <input type="hidden" id="hiddenGoogleApiKey" value="AIzaSyAKxxK7SmC_O6V9iagIienXW3YSxVamP3g">
 <input type="hidden" id="hiddenSearchEngineId" value="93953e1a5df144c0f">
+
+
+    <!-- ARTIFACTS PANEL -->
+<div id="artifactPanel" class="artifact-panel hidden">
+    <div class="artifact-header">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-cube text-purple-600 text-xl"></i>
+            <div>
+                <h3 class="font-bold text-lg" id="artifactTitle">Artifact</h3>
+                <p class="text-xs text-gray-500" id="artifactType">Interactive Content</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button id="artifactFullscreenBtn" class="artifact-control-btn" title="Fullscreen">
+                <i class="fas fa-expand"></i>
+            </button>
+            <button id="artifactCopyBtn" class="artifact-control-btn" title="Copy Code">
+                <i class="fas fa-copy"></i>
+            </button>
+            <button id="artifactDownloadBtn" class="artifact-control-btn" title="Download">
+                <i class="fas fa-download"></i>
+            </button>
+            <button id="artifactCloseBtn" class="artifact-control-btn" title="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <div class="artifact-content" id="artifactContent">
+        <!-- Dynamic artifact content loads here -->
+    </div>
+</div>
+
+<!-- ARTIFACT FULLSCREEN OVERLAY -->
+<div id="artifactFullscreenOverlay" class="hidden fixed inset-0 bg-black bg-opacity-95 z-[10000] flex flex-col">
+    <div class="flex justify-between items-center p-4 bg-gray-900 text-white">
+        <h3 class="text-lg font-bold" id="fullscreenArtifactTitle">Artifact</h3>
+        <button id="exitFullscreenBtn" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-all">
+            <i class="fas fa-times mr-2"></i>Exit Fullscreen
+        </button>
+    </div>
+    <div class="flex-1 overflow-auto" id="fullscreenArtifactContent">
+        <!-- Fullscreen artifact content -->
+    </div>
+</div>
 </body>
 </html>
