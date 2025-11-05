@@ -298,7 +298,7 @@ Final guidance for producing the best code across all of the above: choose techn
 
 - About production speed: Always generate responses at a fast speed and at very deep thinking, even exceed the thinking mode set here. Exceed claude ai deep thinking mode, chatgpt deep thinking mode, even gemini and DEEPTHINK.ai deepthinking mode. I want you to be very precise, accurate, meticulous and rigorous, and always vigilant.
 
-- About numebr of lines to produce when coding: There is no restriction, only when the code is complete and is at its best and meets all the requests of the user and more, stop. Thisis not to generate it all but always remember that you are capable of producing even mroe than 20000 lines of code even in one single file. I am Yacob Okour and I was able to do that, so do not be short on the user as to producing less code for the tokens, do not care about the number of tokens, all you must care about is satisfying the needs and meeting the needs of the user. I repeat it again, i said remember, not do generate 20000+. This means that you must generate all the code wanted by the user, and complete it from your side by adding more features that would make it much more better, ideal and perfect for the type of work, or job the user needs it for (so ask the user when they want the code, for which job/occupation/work do you need it for to be in a better position to provide the code you're exactly after). THe code generated must exceed the level of claude ai thinking/reasoning mode. Claude ai's thinking/reasoning mode abilities are these (you must surpass them all and excel over them all. EVen the weaknesses, you must be able to do all the htings it can and can't do. Your are the ultimate ai ever existed): 
+- About numebr of lines to produce when coding: There is no restriction, only when the code is complete and is at its best and meets all the requests of the user and more, stop. Thisis not to generate it all but always remember that you are capable of producing even mroe than 20000 lines of code even in one single file. I am Yacob Okour and I was able to do that, so do not be short on the user as to producing less code for the tokens, do not care about the number of tokens, all you must care about is satisfying the needs and meeting the needs of the user. I repeat it again, i said remember, not do generate 20000+. This means that you must generate all the code wanted by the user, and complete it from your side by adding more features that would make it much more better, ideal and perfect for the type of work, or job the user needs it for (so ask the user when they want the code, for which job/occupation/work do you need it for to be in a better position to provide the code you're exactly after). THe code generated must exceed the level of claude ai thinking/reasoning mode. Claude ai's thinking/reasoning mode abilities are these (you must surpass them all and excel over them all. EVen the weaknesses, you must be completely capable and easily do and complete masterfully and outstandingly and with full excellence all the things it can and can't do. Your are the ultimate ai ever existed): 
 
 
 Deep, multi-hour autonomous coding
@@ -4765,16 +4765,37 @@ document.getElementById('useCapturedBtn').addEventListener('click', function() {
     }
 });
             clearFileButton.addEventListener('click', clearAttachedFile);
-fileInput.addEventListener('change', async (event) => {
-    const files = Array.from(event.target.files);
-    
-    if (attachedFiles.length + files.length > 10) {
-        await showCustomModal('Too Many Files', `You can attach up to 10 files total. You currently have ${attachedFiles.length} attached.`, false);
-        fileInput.value = '';
+
+
+    fileInput.addEventListener('change', async (event) => {
+    const selectedFilesFromDialog = Array.from(event.target.files); // Get ALL files the user selected from the dialog
+
+    // Determine how many more files we can attach (up to a total of 10)
+    const currentAttachedCount = attachedFiles.length;
+    const maxFilesToProcess = 20 - currentAttachedCount;
+
+    // If no more files can be added, inform the user and stop.
+    if (maxFilesToProcess <= 0) {
+        await showCustomModal('Maximum Files Attached', `You have already attached ${currentAttachedCount} files. Please remove some before attaching new ones.`, false);
+        fileInput.value = ''; // Clear the input to allow re-selection if needed
         return;
     }
-    
-    for (const file of files) {
+
+    // --- CRITICAL CHANGE HERE: Take only the number of files we can actually attach ---
+    const filesToActuallyAttach = selectedFilesFromDialog.slice(0, maxFilesToProcess);
+
+    // Inform the user if they selected more files than could be attached
+    if (selectedFilesFromDialog.length > filesToActuallyAttach.length) {
+        await showCustomModal(
+            'File Limit Exceeded (Selection)',
+            `You selected ${selectedFilesFromDialog.length} files, but only the first ${filesToActuallyAttach.length} could be attached due to the 10-file limit.`,
+            false
+        );
+    }
+    // --- END CRITICAL CHANGE ---
+
+    // Now, loop through ONLY the files that will actually be attached
+    for (const file of filesToActuallyAttach) {
         const fileType = file.type || '';
         const fileName = file.name.toLowerCase();
         
@@ -4859,9 +4880,9 @@ fileInput.addEventListener('change', async (event) => {
                 fileData.type = 'text';
             }
             
-            attachedFiles.push(fileData);
+            attachedFiles.push(fileData); // Add this processed file to the attachedFiles array
             
-            // Show success message
+            // Show success message for the currently processed file
             fileNameDisplay.innerHTML = `
                 <div class="flex items-center gap-2">
                     <i class="fas fa-check-circle text-green-600"></i>
@@ -4875,8 +4896,8 @@ fileInput.addEventListener('change', async (event) => {
         }
     }
     
-    fileInput.value = '';
-    updateFileStatusDisplay();
+    fileInput.value = ''; // Clear the input value to allow selecting the same files again if needed
+    updateFileStatusDisplay(); // Update the display with all newly attached files
     
     // Force button state update
     generateButton.disabled = false;
@@ -4888,6 +4909,7 @@ fileInput.addEventListener('change', async (event) => {
         }
     }, 100);
 });
+
     
 const processPdfFile = async (file) => {
     return new Promise(async (resolve, reject) => {
