@@ -1149,6 +1149,39 @@ body.artifact-open #chatContainer {
         transform: translateX(0);
     }
 }
+
+    /* responsive table wrapper */
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 0.5rem;
+  border-radius: 8px;
+}
+
+/* basic AI table styles */
+.ai-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background: white;
+}
+.ai-table th,
+.ai-table td {
+  border: 1px solid #e6e6e6;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+.ai-table thead th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+.ai-table tbody tr:nth-child(even) {
+  background: #fbfbfb;
+}
+.table-responsive code, .table-responsive pre {
+  white-space: normal; /* allow code to wrap within table cells */
+}
+
         
     </style>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
