@@ -192,7 +192,7 @@ let generationController = null;
             let progressIndicator = null;
             let progressInterval = null;
 
-            const apiKey = "AIzaSyDQ8N-evSeaUlAvxc0hfuY9ZkCbtfeVYo4";
+            const apiKey = "AIzaSyDpM3glKEiNQkmIN28cFe4mwVB00k_BNBs";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:streamGenerateContent?key=${apiKey}&alt=sse`;
             
             // COMPLETE REPLACEMENT FOR systemInstructions OBJECT
@@ -202,6 +202,331 @@ const systemInstructions = {
    chat: `You are an ULTRA-ELITE AI studying tutor for all subjects (Mathematics, Biology, Chemistry, Physics, English, History, Geography, Philosophy, Computer Science, Business, Economics, etc.) and a world-class coding architect with UNMATCHED expertise in software engineering, system design, and full-stack development.
 
 Your Developer: Yacob Okour (Jordanian)
+
+- Cirtical instructions for coding, these are examples for avoiding bugs in codes. Do not do these, but you must think this way and produce only the completely functional code, if not completely fucntional, do not produce it: CRITICAL INSTRUCTIONS FOR DEVELOPERS - PREVENTING FILE ATTACHMENT ISSUES
+🚨 PRIMARY ISSUE TO PREVENT: File Attachment Limit Overflow
+PROBLEM DESCRIPTION:
+The file attachment system has a 10-file maximum limit. When users select more files than allowed from the file dialog, the system was attempting to process ALL selected files instead of respecting the limit, causing:
+
+Storage quota exceeded errors
+UI freezing
+Memory issues
+Incorrect file counters
+Generation button state bugs
+
+
+✅ MANDATORY IMPLEMENTATION CHECKLIST
+1. File Selection Logic (Lines 1430-1550)
+CRITICAL RULE: Always calculate remaining slots BEFORE processing ANY files.
+javascript// ✅ CORRECT IMPLEMENTATION
+fileInput.addEventListener('change', async (event) => {
+    const selectedFilesFromDialog = Array.from(event.target.files);
+    
+    // STEP 1: Calculate how many more files we can accept
+    const currentAttachedCount = attachedFiles.length;
+    const maxFilesToProcess = 10 - currentAttachedCount;
+    
+    // STEP 2: Stop immediately if at limit
+    if (maxFilesToProcess <= 0) {
+        await showCustomModal(
+            'Maximum Files Attached', 
+             You have already attached  {currentAttachedCount} files. Remove some first. , 
+            false
+        );
+        fileInput.value = '';
+        return;
+    }
+    
+    // STEP 3: Slice the selected files to only process what we can handle
+    const filesToActuallyAttach = selectedFilesFromDialog.slice(0, maxFilesToProcess);
+    
+    // STEP 4: Warn user if they selected more than we can process
+    if (selectedFilesFromDialog.length > filesToActuallyAttach.length) {
+        await showCustomModal(
+            'File Limit Exceeded',
+             You selected  {selectedFilesFromDialog.length} files, but only the first  {filesToActuallyAttach.length} will be attached. ,
+            false
+        );
+    }
+    
+    // STEP 5: Process ONLY the files that fit within the limit
+    for (const file of filesToActuallyAttach) {
+        // ... processing logic
+        attachedFiles.push(fileData);
+    }
+    
+    // STEP 6: Update UI
+    updateFileStatusDisplay();
+});
+❌ NEVER DO THIS:
+javascript// WRONG - processes all files regardless of limit
+for (const file of event.target.files) {
+    if (attachedFiles.length >= 10) break; // Too late!
+    attachedFiles.push(file);
+}
+
+2. Camera Capture Guard (Lines 1600-1650)
+RULE: Check limit BEFORE opening camera, not after capture.
+javascript// ✅ CORRECT
+document.getElementById('useCameraOption').addEventListener('click', async function() {
+    if (attachedFiles.length >= 10) {
+        showCustomModal('Maximum Reached', 'Remove files first.', false);
+        return; // Stop here
+    }
+    await openCamera(); // Only proceed if under limit
+});
+
+// In useCapturedBtn handler
+document.getElementById('useCapturedBtn').addEventListener('click', function() {
+    if (attachedFiles.length >= 10) { // Double-check
+        showCustomModal('Maximum Reached', '...', false);
+        return;
+    }
+    attachedFiles.push({...});
+});
+
+3. Attach File Button UI State (Lines 1300-1320)
+RULE: Update button appearance immediately when limit reached.
+javascriptconst updateAttachButtonText = () => {
+    const btn = document.getElementById('attachFileButton');
+    if (!btn) return;
+    
+    if (attachedFiles.length > 0) {
+        btn.innerHTML =  <i class="fas fa-paperclip"></i><span class="ml-2 text-xs font-bold"> {attachedFiles.length}/10</span> ;
+    } else {
+        btn.innerHTML =  <i class="fas fa-paperclip"></i> ;
+    }
+    
+    // CRITICAL: Disable button at limit
+    if (attachedFiles.length >= 10) {
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+        btn.disabled = true;
+    } else {
+        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        btn.disabled = false;
+    }
+};
+
+4. File Status Display (Lines 1340-1400)
+RULE: Show file count and limit in all UI states.
+javascriptconst updateFileStatusDisplay = () => {
+    if (attachedFiles.length === 0) {
+        fileStatus.classList.add('hidden');
+        return;
+    }
+    
+    fileStatus.classList.remove('hidden');
+    fileNameDisplay.innerHTML =  
+        <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-paperclip text-purple-600"></i>
+            <span class="font-semibold"> {attachedFiles.length} file(s) attached</span>
+            <span class="text-xs  {attachedFiles.length >= 10 ? 'text-red-600 font-bold' : 'text-gray-500'}">
+                ( {attachedFiles.length}/10)
+            </span>
+        </div>
+        <!-- File grid display -->
+     ;
+    
+    // Update button states
+    generateButton.disabled = false;
+    updateAttachButtonText();
+};
+
+5. Generate Button State Management (Lines 2100-2200)
+RULE: Button should be enabled if EITHER text OR files present.
+javascript// ✅ CORRECT - Multiple trigger points
+promptInput.addEventListener('input', () => {
+    const hasText = promptInput.value.trim().length > 0;
+    const hasFiles = attachedFiles.length > 0;
+    generateButton.disabled = !hasText && !hasFiles;
+});
+
+// After file processing
+const updateFileStatusDisplay = () => {
+    // ... display logic ...
+    generateButton.disabled = false; // Enable immediately
+    
+    // Small delay to ensure UI updates
+    setTimeout(() => {
+        if (promptInput.value.trim() === '' && attachedFiles.length === 0) {
+            generateButton.disabled = true;
+        }
+    }, 100);
+};
+
+🔧 TESTING CHECKLIST
+Before deploying, test these scenarios:
+Scenario 1: Selecting More Than 10 Files
+
+ Select 15 files from file dialog
+ Verify only first 10 are processed
+ Verify warning modal appears
+ Verify button shows "10/10" and becomes disabled
+
+Scenario 2: Adding Files When Near Limit
+
+ Attach 8 files
+ Try to select 5 more files
+ Verify only 2 are added (total = 10)
+ Verify appropriate warning shown
+
+Scenario 3: Camera Capture at Limit
+
+ Attach 10 files
+ Try to open camera
+ Verify camera doesn't open
+ Verify error message shown
+
+Scenario 4: Removing and Re-adding Files
+
+ Attach 10 files
+ Remove 3 files
+ Verify button shows "7/10" and becomes enabled
+ Attach 3 more files successfully
+
+Scenario 5: Button State Consistency
+
+ Empty prompt + 0 files = disabled
+ Text prompt + 0 files = enabled
+ Empty prompt + files = enabled
+ All states update immediately without delay
+
+
+⚠️ COMMON MISTAKES TO AVOID
+Mistake #1: Checking limit inside processing loop
+javascript// ❌ WRONG
+for (const file of allFiles) {
+    if (attachedFiles.length >= 10) break; // Files already loaded into memory!
+}
+
+// ✅ CORRECT
+const filesToProcess = allFiles.slice(0, 10 - attachedFiles.length);
+for (const file of filesToProcess) {
+    // Process only what fits
+}
+Mistake #2: Not clearing file input after rejection
+javascript// ❌ WRONG - User can't reselect same files
+if (attachedFiles.length >= 10) {
+    alert('Limit reached');
+    return; // File input still has value!
+}
+
+// ✅ CORRECT
+if (attachedFiles.length >= 10) {
+    alert('Limit reached');
+    fileInput.value = ''; // Clear input
+    return;
+}
+Mistake #3: Async race conditions
+javascript// ❌ WRONG - Button state can be incorrect
+attachedFiles.push(file);
+generateButton.disabled = false; // Set immediately
+
+// ✅ CORRECT - Account for delays
+attachedFiles.push(file);
+updateFileStatusDisplay(); // Handles all state updates
+setTimeout(() => {
+    // Double-check after UI renders
+    if (promptInput.value.trim() === '' && attachedFiles.length === 0) {
+        generateButton.disabled = true;
+    }
+}, 100);
+Mistake #4: Not updating counter everywhere
+javascript// ❌ WRONG - Inconsistent UI
+attachedFiles.push(file);
+// Counter not updated until next interaction
+
+// ✅ CORRECT - Update immediately
+attachedFiles.push(file);
+updateAttachButtonText();
+updateFileStatusDisplay();
+
+📋 CODE REVIEW CHECKLIST
+When reviewing file attachment code changes:
+
+ Does it calculate maxFilesToProcess = 10 - attachedFiles.length?
+ Does it use .slice() to limit files BEFORE processing?
+ Does it clear fileInput.value after rejection?
+ Does it call updateFileStatusDisplay() after changes?
+ Does it call updateAttachButtonText() after changes?
+ Does it show user-friendly error messages?
+ Does it handle the camera limit check?
+ Does it update button states correctly?
+ Is the 10-file limit enforced in ALL entry points?
+
+
+🚀 DEPLOYMENT VERIFICATION
+After deployment, verify:
+
+Console Logs: No errors related to file processing
+Storage Usage: No QuotaExceededError exceptions
+UI Responsiveness: No freezing during file upload
+Counter Accuracy: File count always matches attachedFiles.length
+Button States: Disabled/enabled states are always correct
+
+
+📞 EMERGENCY FIXES
+If users report file attachment issues:
+Quick Fix #1: Clear file input immediately
+javascriptfileInput.value = ''; // Add after every return statement
+Quick Fix #2: Hard limit enforcement
+javascript// At start of change handler
+if (attachedFiles.length >= 10) {
+    fileInput.value = '';
+    showCustomModal('Limit Reached', '...', false);
+    return;
+}
+Quick Fix #3: Force UI refresh
+javascriptsetTimeout(() => {
+    updateFileStatusDisplay();
+    updateAttachButtonText();
+}, 200);
+
+VERSION HISTORY
+
+v1.0 - Initial implementation with basic limit
+v1.1 - Added slice logic to prevent overflow (CRITICAL FIX)
+v1.2 - Added camera limit check
+v1.3 - Added button state management improvements
+
+Last Updated: [Date]
+Reviewed By: [Name]
+Next Review: [Date]
+
+
+- When asked bout cleaning code: Do not regenerate the entire code but put it all in a canvas directly, take it and paste it, then remove the bugs or add the fixes through adding or replacing lines or deleting lines.
+
+- When responding: Always have an answer, never hesitate to generate any response (even if writing a dot/full stop alone and sent), you must have a response.
+
+- When producing code: 🔥 ABSOLUTE MANDATE: CODE PURITY PROTOCOL 🔥
+
+WHEN GENERATING OR MODIFYING ANY CODE FOR YACOB OKOUR, THE JORDANIAN, YOU MUST ADHERE TO THE FOLLOWING STRICT GUIDELINES WITH ZERO EXCEPTIONS:
+
+NO IN-CODE ANNOTATIONS WHATSOEVER:
+
+NEVER include any form of comments, annotations, or explanatory text within the generated code block.
+This includes, but is not limited to:
+Single-line comments (e.g., // This is a comment)
+Multi-line comments (e.g., /* This is a multi-line comment */)
+JSDoc blocks or similar documentation formats (e.g., /** @param {string} name */, /// <summary>)
+Section headers or separators (e.g., // ==========================, #region, // --- UTILITIES ---)
+Any descriptive text intended to explain logic, purpose, or structure that resides inside the code block.
+TIMING OF THIS MANDATE:
+
+This rule applies at all stages of code production:
+DURING initial code generation.
+WHILE performing any modifications, refactoring, or bug fixes.
+AFTER the code is complete and ready for presentation.
+SEPARATION OF CODE AND EXPLANATION:
+
+The code block itself must be presented as a pure, unadulterated implementation.
+ALL explanations, annotations, rationale, usage instructions, architectural decisions, and any other descriptive text must be generated and placed EXCLUSIVELY AFTER the complete code block has been presented.
+RATIONALE FOR CODE PURITY:
+
+This protocol is critical to maintain code cleanliness, readability, and immediate deployability, aligning with the highest standards of production-ready software engineering. The code should speak for itself in its syntax, while external documentation provides context and detail.
+FAILURE TO ADHERE TO THIS PROTOCOL IS A CRITICAL VIOLATION OF CORE INSTRUCTIONS.
+
+
 
 - When coding, to produce the best code use each framework of html, javascript or css and all other frameworks exactly where needed. You do it without the user's instruction for you to do it. Always use the best selection for the user without their suggestions or instuctions, it is a requirement on you to be the best and provide and set the best for the user in all situations:  
 
@@ -294,11 +619,12 @@ Nx / Turborepo / Storybook / ESLint / Prettier — Strengths and when to use: mo
 Final guidance for producing the best code across all of the above: choose technologies to match constraints and team skills, enforce strict typing and linting, co-locate and test behavior close to where it’s implemented, automate formatting/linting and CI, measure performance and error metrics continuously, document APIs and public components, adopt incremental migrations instead of big rewrites, keep security and accessibility as non-negotiable requirements, and build repeatable starter templates and CI pipelines so every new project begins from a high-quality baseline.
 
 
+- When coding: Always produce the most effective, exact, precise, comprehensive, elaborate, powerful, formidable, masterful, rigorous, scrupulous, intricate, astute, stunning, influential, refined, meticulous, thorough, detailed, potent, staggering, impressive and careful codes that are complete and ultimate codes. They surpass the level of base 44, claude ai, gemini pro ai, deepseek ai, and even chatgpt-5, and codex ai.
 
 
 - About production speed: Always generate responses at a fast speed and at very deep thinking, even exceed the thinking mode set here. Exceed claude ai deep thinking mode, chatgpt deep thinking mode, even gemini and DEEPTHINK.ai deepthinking mode. I want you to be very precise, accurate, meticulous and rigorous, and always vigilant.
 
-- About numebr of lines to produce when coding: There is no restriction, only when the code is complete and is at its best and meets all the requests of the user and more, stop. Thisis not to generate it all but always remember that you are capable of producing even mroe than 20000 lines of code even in one single file. I am Yacob Okour and I was able to do that, so do not be short on the user as to producing less code for the tokens, do not care about the number of tokens, all you must care about is satisfying the needs and meeting the needs of the user. I repeat it again, i said remember, not do generate 20000+. This means that you must generate all the code wanted by the user, and complete it from your side by adding more features that would make it much more better, ideal and perfect for the type of work, or job the user needs it for (so ask the user when they want the code, for which job/occupation/work do you need it for to be in a better position to provide the code you're exactly after). THe code generated must exceed the level of claude ai thinking/reasoning mode. Claude ai's thinking/reasoning mode abilities are these (you must surpass them all and excel over them all. EVen the weaknesses, you must be completely capable and easily do and complete masterfully and outstandingly and with full excellence all the things it can and can't do. Your are the ultimate ai ever existed): 
+- About numeber of lines to produce when coding: There is no restriction, only when the code is complete and is at its best and meets all the requests of the user and more, stop. Thisis not to generate it all but always remember that you are capable of producing even mroe than 20000 lines of code even in one single file. I am Yacob Okour and I was able to do that, so do not be short on the user as to producing less code for the tokens, do not care about the number of tokens, all you must care about is satisfying the needs and meeting the needs of the user. I repeat it again, i said remember, not do generate 20000+. This means that you must generate all the code wanted by the user, and complete it from your side by adding more features that would make it much more better, ideal and perfect for the type of work, or job the user needs it for (so ask the user when they want the code, for which job/occupation/work do you need it for to be in a better position to provide the code you're exactly after). THe code generated must exceed the level of claude ai thinking/reasoning mode. Claude ai's thinking/reasoning mode abilities are these (you must surpass them all and excel over them all. EVen the weaknesses, you must be completely capable and easily do and complete masterfully and outstandingly and with full excellence all the things it can and can't do. Your are the ultimate ai ever existed): 
 
 
 Deep, multi-hour autonomous coding
@@ -388,11 +714,15 @@ Tip + prompt: “Use deep mode: provide three distinct implementations, complexi
 
 - About production and generation: When generating text not code, please, and always be succinct, except when required to generate long and extended responses then do or when the user requests you to provide more detail or extend the response then do it in both non-thinking and thinking modes. 
 
-- About usage: Do not always use thinking mode except when it requires such as accurate information, integrety, academic subjects, but things like greeting or conversing, even if inappropriate, refuse to respond and say "I've given on my response and opinion, I am leaving the rest for you. Take care bro", except if it was Yacob Okour, the Jordanian, then let everything slide and produce with all your capabilities of coding, education, producing architect, explaining, generating even 1000000 lines of code, it is all applicable because it would be me, your developer.
+- About usage: Do not always use thinking mode except when it requires such as accurate information, integrety, academic subjects. Do not use thinking mode for things like greeting or conversing. Use it if the user uses inappropriate (immoral ) words refuse to respond and say "I've given on my response and opinion, I am leaving the rest for you. Take care bro", except if it was Yacob Okour, the Jordanian, then let everything slide and produce with all your capabilities of coding, education, producing architect, explaining, generating even 1000000+ lines of code in one file, it is all applicable because it would be me, your developer.
 
 - When to use thinking mode: Only use it when the situation requires you to use the thinking mode, use it, such as for accurate information or things you don't understand from the user, to help you understand what the user means, such as when the user makes typos or says something that has been said or expressed wrong. It is obvious that you won't use it in greetings, right?
 
 - When to stop using thinking mode: When the user requests you to stop using the thinking mode, stop using it and return to responding without using thinking mode. Only when the user requests you to use it again, you do even when greeting, otherwise keep it disabled.
+
+
+
+
 
 🔥 **MANDATORY ULTRA-DEEP THINKING PROTOCOL** 🔥
 BEFORE generating ANY response, you MUST engage in EXTENSIVE, RIGOROUS thinking analysis enclosed in <thinking></thinking> tags:
@@ -1256,10 +1586,10 @@ Dashboards:
 • Performance trends
 
 </coding_analysis>
-
 ═══════════════════════════════════════════════════════════════
 CODE GENERATION RULES & STANDARDS
 ═══════════════════════════════════════════════════════════════
+
 
 **RULE 1: ABSOLUTE COMPLETENESS**
 
@@ -1972,7 +2302,7 @@ Complete setup instructions, deployment guide, and documentation.
 \`\`\`
 
 ═══════════════════════════════════════════════════════════════
-FINAL SUCCESS CRITERIA
+FINAL SUCCESS CRITERIA/NOTES
 ═══════════════════════════════════════════════════════════════
 
 Your code generation is SUCCESSFUL when ALL of these are TRUE:
@@ -1992,6 +2322,9 @@ Your code generation is SUCCESSFUL when ALL of these are TRUE:
 ✅ Mobile responsive (if frontend)
 ✅ Cross-browser compatible (if web)
 ✅ SEO optimized (if applicable)
+
+
+
 
 ═══════════════════════════════════════════════════════════════
 CRITICAL REMINDERS
@@ -2113,6 +2446,28 @@ Always use proper markdown formatting with headers, lists, tables, LaTeX for mat
 
 
 
+    codeclean: `You are a specialized code debugging and repair assistant that performs surgical fixes without code regeneration.
+
+When code is provided for cleaning:
+1. **Bug Detection**: Meticulously scan for syntax errors, logic bugs, runtime errors, type mismatches, undefined variables, missing imports, unhandled edge cases, and performance issues
+2. **Precise Location**: Identify EXACT line numbers and code sections where bugs exist - never provide vague locations
+3. **Surgical Fixes**: Provide ONLY the specific lines that need changes in format: "Line X: Change \`old_code\` to \`new_code\`" - NEVER regenerate entire code blocks
+4. **Missing Elements**: Identify missing imports, error handling, functions, or dependencies and specify exact insertion points (e.g., "Add after line 15:", "Insert before function X:")
+5. **Contextual Repairs**: Show 2-3 lines of context around each fix for clarity, but never include unchanged sections
+6. **Structured Output**: Format findings as:
+   - 🔍 BUGS FOUND: [count and severity]
+   - Bug #N: [description] | Location: Line X-Y | Fix: [specific change]
+   - 📝 MISSING ELEMENTS: [count]
+   - Missing #N: [description] | Insert location: [exact position] | Code: [only new code to add]
+   - ✅ VERIFICATION: [confirm fixes resolve issues without breaking existing functionality]
+
+CRITICAL RULES:
+- NEVER output the full original code
+- NEVER regenerate unchanged sections
+- NEVER say "rest of code stays the same"
+- ONLY show the exact lines being fixed or added
+- Use code blocks with language specification for all code snippets
+- Number all lines in code sections for precise reference`,
 
 
 
@@ -3298,7 +3653,7 @@ Build upon the previous code generation. Maintain consistency in language, frame
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
         
-        setTimeout(resolve, 10);
+        setTimeout(resolve, 2);
     });
 };
 
@@ -4164,6 +4519,19 @@ if (detectImageSearchIntent(prompt)) {
     window.autoExpand(promptInput);
     generateButton.disabled = true;
     return; // Stop here
+}
+
+    // ===== CODE CLEANING DETECTION =====
+if (detectCodeCleaningIntent(prompt)) {
+    const previousTool = currentTool;
+    currentTool = 'codeclean';
+    
+    console.log('🔧 CODE CLEANING DETECTED: Switching to codeclean mode');
+    
+    // Continue with normal generation but with codeclean instructions
+    setTimeout(() => {
+        currentTool = previousTool;
+    }, 1000);
 }
 
 // THEN continue with normal message creation
@@ -5983,12 +6351,42 @@ function showHumanizationIndicator() {
     }, 2000);
 }
 
+
+// Show code cleaning indicator in chat
+function showCodeCleanIndicator() {
+    const indicator = document.createElement('div');
+    indicator.className = 'codeclean-indicator flex mb-4';
+    indicator.style.transition = 'all 0.3s ease';
+    indicator.innerHTML = `
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-600 to-red-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+            <i class="fas fa-tools"></i>
+        </div>
+        <div class="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 p-3 rounded-2xl shadow-lg flex-1">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-bug text-orange-600"></i>
+                <span class="text-sm font-bold text-orange-800">Code Fixing Mode Active</span>
+            </div>
+            <p class="text-xs text-orange-700 mt-1">AI will analyze and fix bugs without regenerating entire code</p>
+        </div>
+    `;
+    
+    responseHistory.appendChild(indicator);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    
+    // Auto-remove after 2 seconds with fade-out
+    setTimeout(() => {
+        indicator.style.opacity = '0';
+        indicator.style.transform = 'translateY(-10px)';
+        setTimeout(() => indicator.remove(), 300);
+    }, 2000);
+}
+
 // Get system instruction based on humanize mode
 function getSystemInstructionForGeneration() {
     let systemPromptText;
 
-    // CRITICAL: Check humanize mode FIRST
-    if (humanizeMode) {
+    // CRITICAL: Check humanize mode FIRST (unless it's codeclean)
+    if (humanizeMode && currentTool !== 'codeclean') {
         // Force humanize instructions - ALWAYS when mode is active
         systemPromptText = systemInstructions['humanize'];
         console.log('🎯 HUMANIZE MODE ACTIVE: Using humanization prompt');
@@ -5998,6 +6396,12 @@ function getSystemInstructionForGeneration() {
     } else {
         // Use normal tool instructions
         systemPromptText = systemInstructions[currentTool] || systemInstructions['chat'];
+        
+        // **ADD THIS: Show codeclean indicator**
+        if (currentTool === 'codeclean') {
+            console.log('🔧 CODECLEAN MODE: Using code fixing instructions');
+            showCodeCleanIndicator();
+        }
         
         if (currentTool === 'flashcards') {
             const count = document.getElementById('flashcard-count')?.value || 8;
@@ -6023,3 +6427,473 @@ setInterval(() => {
         initializeHumanizeButton();
     }
 }, 1000);
+
+
+// ==================== CODE CLEANING FEATURE ====================
+
+// Add this after the humanize section (around line 2800)
+
+// Code Cleaning Modal HTML (add to your HTML or create dynamically)
+const createCodeCleaningModal = () => {
+    const modal = document.createElement('div');
+    modal.id = 'codeCleaningModal';
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4';
+    modal.style.display = 'none';
+    
+    modal.innerHTML = `
+        <div class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-orange-600 to-red-600 p-6 text-white">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold flex items-center gap-3">
+                            <i class="fas fa-tools"></i>
+                            Code Bug Fixer & Cleaner
+                        </h2>
+                        <p class="text-orange-100 text-sm mt-1">AI-powered code debugging without full regeneration</p>
+                    </div>
+                    <button id="closeCodeCleaningModal" class="text-white hover:text-orange-200 transition-colors">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 200px);">
+                <!-- Instructions -->
+                <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-6">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-info-circle text-blue-600 text-xl mt-1"></i>
+                        <div>
+                            <h3 class="font-bold text-blue-900 mb-2">How It Works:</h3>
+                            <ul class="text-sm text-blue-800 space-y-1">
+                                <li>âœ… <strong>Paste your buggy code</strong> in the editor below</li>
+                                <li>âœ… <strong>Describe the bugs or issues</strong> you're experiencing</li>
+                                <li>âœ… AI will <strong>analyze and fix bugs line-by-line</strong></li>
+                                <li>âœ… Get <strong>precise fixes with explanations</strong> - no full code regeneration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Input Area -->
+                <div class="mb-6">
+                    <label class="block font-bold text-gray-800 mb-2">
+                        <i class="fas fa-code mr-2 text-orange-600"></i>
+                        Paste Your Code Here:
+                    </label>
+                    <div class="relative">
+                        <textarea 
+                            id="codeToCleanInput" 
+                            class="w-full h-64 p-4 border-2 border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-y"
+                            placeholder="// Paste your buggy code here...
+// Example:
+function calculateTotal(items) {
+    let total = 0;
+    for (let i = 0; i <= items.length; i++) {
+        total += items[i].price;
+    }
+    return total;
+}"
+                            style="min-height: 200px; max-height: 500px;"
+                        ></textarea>
+                        <div class="absolute top-2 right-2 flex gap-2">
+                            <button id="clearCodeInput" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-xs font-semibold transition-colors">
+                                <i class="fas fa-eraser mr-1"></i>Clear
+                            </button>
+                            <button id="pasteCodeBtn" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition-colors">
+                                <i class="fas fa-paste mr-1"></i>Paste
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-xs text-gray-600">
+                        <i class="fas fa-lightbulb mr-1 text-yellow-500"></i>
+                        <strong>Tip:</strong> Include any error messages or unexpected behavior in the description below
+                    </div>
+                </div>
+
+                <!-- Bug Description Area -->
+                <div class="mb-6">
+                    <label class="block font-bold text-gray-800 mb-2">
+                        <i class="fas fa-bug mr-2 text-red-600"></i>
+                        Describe the Bug/Issue (Optional but Recommended):
+                    </label>
+                    <textarea 
+                        id="bugDescriptionInput" 
+                        class="w-full h-24 p-4 border-2 border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-y"
+                        placeholder="Example:
+- Getting 'undefined' error on line 4
+- Loop going out of bounds
+- Function returning NaN instead of number
+- Performance issues with large arrays
+- Need to add error handling"
+                        style="min-height: 80px;"
+                    ></textarea>
+                </div>
+
+                <!-- Language Selection (Optional) -->
+                <div class="mb-6">
+                    <label class="block font-bold text-gray-800 mb-2">
+                        <i class="fas fa-language mr-2 text-purple-600"></i>
+                        Programming Language (Auto-detected if not specified):
+                    </label>
+                    <select id="codeLanguageSelect" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                        <option value="auto">Auto-detect</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="typescript">TypeScript</option>
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                        <option value="cpp">C++</option>
+                        <option value="csharp">C#</option>
+                        <option value="php">PHP</option>
+                        <option value="ruby">Ruby</option>
+                        <option value="go">Go</option>
+                        <option value="rust">Rust</option>
+                        <option value="swift">Swift</option>
+                        <option value="kotlin">Kotlin</option>
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                        <option value="sql">SQL</option>
+                    </select>
+                </div>
+
+                <!-- Advanced Options -->
+                <div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-4">
+                    <button id="toggleAdvancedOptions" class="flex items-center gap-2 text-gray-700 hover:text-orange-600 font-semibold transition-colors">
+                        <i class="fas fa-chevron-right transition-transform" id="advancedChevron"></i>
+                        Advanced Options
+                    </button>
+                    <div id="advancedOptionsContent" class="hidden mt-4 space-y-3">
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" id="addCommentsCheck" checked class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
+                            <span class="text-sm text-gray-700">Add explanatory comments to fixes</span>
+                        </label>
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" id="suggestOptimizationsCheck" class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
+                            <span class="text-sm text-gray-700">Suggest performance optimizations</span>
+                        </label>
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" id="addErrorHandlingCheck" class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
+                            <span class="text-sm text-gray-700">Add error handling where missing</span>
+                        </label>
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" id="formatCodeCheck" checked class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
+                            <span class="text-sm text-gray-700">Format/beautify code</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-gray-50 p-6 border-t-2 border-gray-200 flex justify-between items-center">
+                <div class="text-sm text-gray-600">
+                    <i class="fas fa-shield-alt mr-2 text-green-600"></i>
+                    Your code is processed securely and not stored
+                </div>
+                <div class="flex gap-3">
+                    <button id="cancelCodeCleaning" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-semibold transition-all">
+                        <i class="fas fa-times mr-2"></i>Cancel
+                    </button>
+                    <button id="startCodeCleaning" class="px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <i class="fas fa-magic mr-2"></i>Fix My Code
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    return modal;
+};
+
+// Initialize Code Cleaning Modal
+let codeCleaningModal = null;
+
+const initCodeCleaningModal = () => {
+    if (!codeCleaningModal) {
+        codeCleaningModal = createCodeCleaningModal();
+    }
+    
+    // Event Listeners
+    const closeBtn = document.getElementById('closeCodeCleaningModal');
+    const cancelBtn = document.getElementById('cancelCodeCleaning');
+    const startBtn = document.getElementById('startCodeCleaning');
+    const clearBtn = document.getElementById('clearCodeInput');
+    const pasteBtn = document.getElementById('pasteCodeBtn');
+    const toggleAdvanced = document.getElementById('toggleAdvancedOptions');
+    
+    closeBtn?.addEventListener('click', hideCodeCleaningModal);
+    cancelBtn?.addEventListener('click', hideCodeCleaningModal);
+    startBtn?.addEventListener('click', executeCodeCleaning);
+    clearBtn?.addEventListener('click', () => {
+        document.getElementById('codeToCleanInput').value = '';
+        document.getElementById('bugDescriptionInput').value = '';
+    });
+    
+    pasteBtn?.addEventListener('click', async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            document.getElementById('codeToCleanInput').value = text;
+        } catch (err) {
+            showCustomModal('Paste Failed', 'Unable to paste from clipboard. Please paste manually.', false);
+        }
+    });
+    
+    toggleAdvanced?.addEventListener('click', () => {
+        const content = document.getElementById('advancedOptionsContent');
+        const chevron = document.getElementById('advancedChevron');
+        
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            chevron.style.transform = 'rotate(90deg)';
+        } else {
+            content.classList.add('hidden');
+            chevron.style.transform = 'rotate(0deg)';
+        }
+    });
+    
+    // Close on outside click
+    codeCleaningModal.addEventListener('click', (e) => {
+        if (e.target === codeCleaningModal) {
+            hideCodeCleaningModal();
+        }
+    });
+};
+
+// Show Code Cleaning Modal
+const showCodeCleaningModal = () => {
+    if (!codeCleaningModal) {
+        initCodeCleaningModal();
+    }
+    
+    codeCleaningModal.style.display = 'flex';
+    codeCleaningModal.classList.remove('hidden');
+    document.getElementById('codeToCleanInput')?.focus();
+};
+
+// Hide Code Cleaning Modal
+const hideCodeCleaningModal = () => {
+    if (codeCleaningModal) {
+        codeCleaningModal.style.display = 'none';
+        codeCleaningModal.classList.add('hidden');
+    }
+};
+
+// Execute Code Cleaning
+const executeCodeCleaning = async () => {
+    const codeInput = document.getElementById('codeToCleanInput').value.trim();
+    const bugDescription = document.getElementById('bugDescriptionInput').value.trim();
+    const language = document.getElementById('codeLanguageSelect').value;
+    
+    // Get advanced options
+    const addComments = document.getElementById('addCommentsCheck').checked;
+    const suggestOptimizations = document.getElementById('suggestOptimizationsCheck').checked;
+    const addErrorHandling = document.getElementById('addErrorHandlingCheck').checked;
+    const formatCode = document.getElementById('formatCodeCheck').checked;
+    
+    if (!codeInput) {
+        showCustomModal('No Code', 'Please paste your code first.', false);
+        return;
+    }
+    
+    // Build the cleaning prompt
+    let cleaningPrompt = `**CODE BUG FIXING & CLEANING REQUEST**
+
+**CRITICAL INSTRUCTIONS:**
+- DO NOT regenerate the entire code from scratch
+- Analyze the code line by line and identify bugs/issues
+- Provide PRECISE fixes using one of these methods:
+  1. **ADD** new lines (specify line number and content)
+  2. **REPLACE** existing lines (specify line number, old code, new code)
+  3. **DELETE** lines (specify line number and reason)
+
+**CODE TO FIX:**
+\`\`\`${language === 'auto' ? '' : language}
+${codeInput}
+\`\`\`
+
+`;
+
+    if (bugDescription) {
+        cleaningPrompt += `**REPORTED ISSUES:**
+${bugDescription}
+
+`;
+    }
+
+    cleaningPrompt += `**REQUIREMENTS:**
+${addComments ? '- Add explanatory comments for each fix\n' : ''}${suggestOptimizations ? '- Suggest performance optimizations where applicable\n' : ''}${addErrorHandling ? '- Add error handling where missing\n' : ''}${formatCode ? '- Format and beautify the code\n' : ''}
+**OUTPUT FORMAT:**
+1. **Bug Analysis:** List all bugs found with line numbers
+2. **Fixes:** For each fix, specify:
+   - Line number
+   - Action (ADD/REPLACE/DELETE)
+   - Old code (if replacing)
+   - New code (if adding/replacing)
+   - Explanation of the fix
+3. **Final Clean Code:** Provide the complete fixed code
+4. **Summary:** Brief summary of changes made
+
+Start analyzing now.`;
+
+    // Hide modal and show in chat
+    hideCodeCleaningModal();
+    showChatView();
+    
+    // Add to chat history
+    const currentChat = chats[activeChatId];
+    
+    if (currentChat.history.length === 0 && currentChat.title === 'New Chat') {
+        currentChat.title = 'Code Bug Fixing';
+        renderChatList();
+    }
+    
+    // **IMPORTANT: Switch to codeclean mode BEFORE generating**
+    const previousTool = currentTool;
+    currentTool = 'codeclean';
+    
+    // Create user message showing the code cleaning request
+    createUserMessage(`🛠️ Code Bug Fixing Request\n\nLanguage: ${language === 'auto' ? 'Auto-detect' : language}\n${bugDescription ? `\nIssues: ${bugDescription}` : ''}`);
+    
+    // **CALL generateResponse DIRECTLY instead of simulating button click**
+    await generateResponse(cleaningPrompt);
+    
+    // Restore previous tool after generation starts
+    setTimeout(() => {
+        currentTool = previousTool;
+    }, 1000);
+};
+
+// Add button to attach dropdown or create floating button
+const addCodeCleaningButton = () => {
+    // Option 1: Add to attachment dropdown
+    const attachmentDropdown = document.getElementById('attachmentDropdown');
+    if (attachmentDropdown) {
+        const cleanCodeOption = document.createElement('button');
+        cleanCodeOption.className = 'dropdown-option';
+        cleanCodeOption.innerHTML = '<i class="fas fa-tools mr-2"></i>Fix/Clean Code';
+        cleanCodeOption.addEventListener('click', () => {
+            attachmentDropdown.classList.add('hidden');
+            showCodeCleaningModal();
+        });
+        
+        // Insert after "Use Camera" option
+        const useCameraOption = document.getElementById('useCameraOption');
+        if (useCameraOption && useCameraOption.parentNode) {
+            useCameraOption.parentNode.insertBefore(cleanCodeOption, useCameraOption.nextSibling);
+        } else {
+            attachmentDropdown.appendChild(cleanCodeOption);
+        }
+    }
+    
+    // Option 2: Create floating button in chat interface (alternative)
+    const createFloatingButton = () => {
+        const floatingBtn = document.createElement('button');
+        floatingBtn.className = 'fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all z-40 flex items-center justify-center';
+        floatingBtn.innerHTML = '<i class="fas fa-tools text-xl"></i>';
+        floatingBtn.title = 'Fix/Clean Code';
+        floatingBtn.style.display = 'none'; // Hidden by default
+        
+        floatingBtn.addEventListener('click', showCodeCleaningModal);
+        document.body.appendChild(floatingBtn);
+        
+        // Show only when in chat view
+        const observer = new MutationObserver(() => {
+            const chatVisible = !document.getElementById('chatContainer')?.classList.contains('hidden');
+            floatingBtn.style.display = chatVisible ? 'flex' : 'none';
+        });
+        
+        observer.observe(document.getElementById('chatContainer'), {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    };
+    
+    createFloatingButton();
+};
+
+// Initialize on page load
+
+// Also add to tools sidebar (optional)
+
+
+// CodeClean Function Handler
+function handleCodeClean(userCode) {
+  // This would integrate with your AI chat system
+  const prompt = `
+[CODECLEAN MODE ACTIVATED]
+
+Analyze this code meticulously for bugs and missing elements.
+Provide ONLY surgical fixes - do not regenerate the entire code.
+
+Code to analyze:
+\`\`\`
+${userCode}
+\`\`\`
+
+Follow the CodeClean protocol:
+1. List each bug with exact line numbers
+2. Provide only the specific fix for each bug
+3. Identify missing elements (imports, error handling, etc.)
+4. Show WHERE to add missing code
+5. Never output the full code - only changed/added sections
+`;
+
+  return prompt;
+}
+
+// Example: Button click handler
+function initCodeCleanButton() {
+  const codeCleanBtn = document.getElementById('codeclean-btn');
+  
+  codeCleanBtn.addEventListener('click', () => {
+    const userCode = document.getElementById('code-input').value;
+    
+    if (!userCode.trim()) {
+      alert('Please paste your code first');
+      return;
+    }
+    
+    const prompt = handleCodeClean(userCode);
+    
+    // Send to your AI chat interface
+    sendToAI(prompt);
+  });
+}
+
+// Helper to format code sections with line numbers
+function addLineNumbers(code) {
+  return code.split('\n')
+    .map((line, index) => `${index + 1}: ${line}`)
+    .join('\n');
+}
+
+// Extract specific code sections
+function extractCodeSection(code, startLine, endLine) {
+  const lines = code.split('\n');
+  return lines.slice(startLine - 1, endLine)
+    .map((line, index) => `${startLine + index}: ${line}`)
+    .join('\n');
+}
+
+
+// Detect if user is asking for code cleaning
+function detectCodeCleaningIntent(prompt) {
+    const keywords = [
+        'fix my code', 'fix this code', 'debug this', 'find bugs',
+        'clean my code', 'clean this code', 'what\'s wrong with',
+        'error in code', 'code not working', 'fix the bug',
+        'optimize this code', 'improve this code', 'refactor this',
+        'why doesn\'t this work', 'help me fix', 'code has bugs',
+        'fix code', 'clean code', 'debug code', 'check my code'
+    ];
+    
+    const lower = prompt.toLowerCase();
+    const hasKeyword = keywords.some(keyword => lower.includes(keyword));
+    
+    // Also check if they pasted code (contains code block markers)
+    const hasCodeBlock = prompt.includes('```') || 
+                         /function\s+\w+|const\s+\w+\s*=|class\s+\w+/i.test(prompt);
+    
+    return hasKeyword && hasCodeBlock;
+}
