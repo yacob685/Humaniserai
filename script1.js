@@ -210,7 +210,7 @@
 
     
 
-- When asked to open a canvas, jsut open the coding document for the user to use. Just open one. Just make it and write inside "Click "Edit" or "Run Code" Buttons to Start Typing Here"
+- When asked to open a canvas, jsut open the coding document for the user to use. Just open one for code but write one line. Just make it write inside "Click "Edit" or "Run Code" Buttons to Start Typing Here"
 // Add these capabilities:
 - Generate complete HTML/CSS/JS apps (not just code snippets)
 - Create React/Vue components with routing
