@@ -119,10 +119,206 @@
         @media (max-width: 1024px) {
             .chat-history-sidebar { display: none; }
             .input-area { right: 0 !important; }
+
+            /* Main sidebar becomes fixed and collapsed by default on tablet */
+            .sidebar {
+                position: fixed;
+                height: 100vh;
+                z-index: 15;
+                transform: translateX(-280px); /* Collapsed by default */
+            }
+            .sidebar.active { /* Use 'active' class to show it */
+                transform: translateX(0);
+            }
+            .toggle-sidebar {
+                display: flex; /* Show the toggle button */
+            }
+            /* When artifact panel is open on tablet, main content does not shrink */
+            body.artifact-open #chatContainer {
+                margin-right: 0;
+            }
+            /* Artifact panel goes full width on tablet */
+            .artifact-panel {
+                width: 100%;
+                max-width: 100%;
+                min-width: 100%;
+            }
         }
         @media (max-width: 768px) {
             .sidebar { position: fixed; z-index: 15; height: 100vh; }
             .input-area { left: 0 !important; }
+
+            /* Code Canvas Modal */
+            .code-canvas-container {
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+                max-width: 100%;
+                max-height: 100%;
+                border-radius: 0;
+            }
+            .code-canvas-body {
+                flex-direction: column;
+            }
+            .code-editor-panel,
+            .code-preview-panel {
+                height: 50%;
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+            .code-canvas-resizer {
+                width: 100%;
+                height: 8px;
+                cursor: row-resize;
+            }
+
+            /* Code block buttons adjustment for 768px and below */
+            .message-content pre {
+                padding-top: 6rem; /* Ensure enough space for stacked buttons */
+            }
+            .edit-code-button, .run-code-btn, .copy-code-btn {
+                top: 0.5rem; /* Start from the top */
+                right: 0.5rem; /* Align to the right */
+                margin-right: 0; /* Remove any previous right margins */
+                opacity: 1; /* Always show buttons on small screens */
+            }
+            .run-code-btn {
+                top: 2.5rem; /* Stack below edit button */
+            }
+            .copy-code-btn {
+                top: 4.5rem; /* Stack below run button */
+            }
+
+            /* Mind map controls position adjustment for smaller screens */
+            .mindmap-controls {
+                position: static; /* Remove absolute positioning */
+                flex-direction: row;
+                justify-content: flex-start;
+                gap: 0.5rem;
+                margin-top: 1rem;
+                margin-left: 1rem;
+            }
+            .mindmap-zoom-controls {
+                position: static; /* Remove absolute positioning */
+                flex-direction: row;
+                justify-content: flex-end;
+                gap: 0.5rem;
+                margin-top: 1rem;
+                margin-right: 1rem;
+            }
+            .mindmap-canvas {
+                height: 400px; /* Reduce height for better fit on mobile screens */
+            }
+            /* Edit panel for mind map */
+            .mindmap-edit-panel {
+                width: 90%; /* Make it wider */
+                bottom: 1rem; /* Bring it closer to the bottom */
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            /* Continue generation banner */
+            .continue-generation-banner {
+                bottom: 180px; /* Adjust if input area shifts */
+                width: 90%;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 0.75rem 1rem;
+                flex-direction: column; /* Stack items */
+                text-align: center;
+            }
+            .continue-btn {
+                width: 100%; /* Make button full width */
+                margin-top: 0.5rem;
+            }
+
+            /* Camera modal goes full screen */
+            .camera-modal-content {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+            }
+            .camera-header {
+                padding: 15px;
+            }
+            .camera-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .camera-btn {
+                width: 100%;
+            }
+
+            /* Table fullscreen modal */
+            .table-fullscreen-modal {
+                padding: 1rem;
+            }
+            .table-wrapper {
+                max-height: 400px;
+            }
+            .ai-generated-table {
+                font-size: 0.8rem;
+            }
+            .ai-generated-table th,
+            .ai-generated-table td {
+                padding: 0.5rem;
+            }
+            .table-action-btn {
+                padding: 0.3rem 0.5rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Very small screens (e.g., iPhone SE) */
+        @media (max-width: 480px) {
+            /* Adjust general padding for main content to be less */
+            .chat-container, #mainToolView {
+                padding: 1rem;
+                padding-bottom: 200px; /* Keep input area space */
+            }
+            .input-area {
+                padding: 1rem;
+            }
+
+            /* Adjust font sizes for readability on tiny screens */
+            .message-content h1 { font-size: 1.5rem; }
+            .message-content h2 { font-size: 1.3rem; }
+            .message-content h3 { font-size: 1.1rem; }
+            .message-content p, .message-content ul, .message-content ol, .message-content blockquote, .message-content table { font-size: 0.9rem; }
+
+            /* Adjust table padding and font size further */
+            .ai-generated-table {
+                font-size: 0.75rem;
+            }
+            .ai-generated-table th,
+            .ai-generated-table td {
+                padding: 0.4rem;
+            }
+
+            /* Mind map nodes might need smaller text */
+            .mindmap-node {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+                min-width: 100px;
+            }
+            .mindmap-node.central {
+                font-size: 1.1rem;
+                padding: 12px 20px;
+            }
+            /* Adjust modal content width for smaller screens */
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            .header-bar {
+                padding: 0.75rem 1rem;
+            }
+        }
+
+        /* Ensure the toggle sidebar button is hidden by default on large screens */
+        .toggle-sidebar {
+            display: none;
         }
 
         /* Mind Map Canvas Styling */
@@ -1862,16 +2058,26 @@ code.is-editing {
         cursor: row-resize;
     }
 
-    .copy-code-btn, .run-code-btn, .edit-code-button {
-        position: static; /* Stack buttons on small screens */
-        margin-top: 0.5rem;
-        margin-left: 0.5rem;
-        right: auto;
+    /* Stack buttons on code blocks vertically on small screens */
+    .message-content pre {
+        padding-top: 6rem; /* Ensure enough space for stacked buttons */
+    }
+    .edit-code-button, .run-code-btn, .copy-code-btn {
+        position: absolute;
+        top: 0.5rem; /* Start from the top */
+        right: 0.5rem; /* Align to the right */
+        margin-right: 0; /* Remove any previous right margins */
+        opacity: 1; /* Always show buttons on small screens */
+    }
+    .run-code-btn {
+        top: 2.5rem; /* Stack below edit button */
+    }
+    .copy-code-btn {
+        top: 4.5rem; /* Stack below run button */
     }
 }
+</style>
 
-        
-    </style>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -2024,7 +2230,7 @@ code.is-editing {
                 <div class="max-w-5xl mx-auto">
                     <div id="toolOptions" class="mb-2"></div>
                     <div class="flex items-end bg-white border-3 border-purple-300 rounded-2xl p-4 shadow-2xl focus-within:border-purple-500 transition-all">
-                        <input type="file" id="fileInput" class="hidden" accept=".txt,.md,.csv,.html,.js,.py,.css,.pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                        <input type="file" id="fileInput" class="hidden" accept=".txt,.md,.csv,.html,.js,.py,.css,.pdf,.doc,.docx,.png,.jpg,.jpeg, .mp3, .mp4" multiple>
 
                         <button id="attachFileButton" class="text-gray-500 hover:text-purple-600 p-2 rounded-lg mr-2 transition-colors" title="Attach File">
                             <i class="fas fa-paperclip text-xl"></i>
