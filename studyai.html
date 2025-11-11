@@ -34,6 +34,7 @@
     }
 </script>
     <style>
+/* Existing styles provided by the user */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #1f2937; min-height: 100vh; }
         .app-container { display: flex; height: 100vh; }
@@ -272,7 +273,7 @@
             background: white;
             padding: 1rem 1.5rem;
             border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 44px 20px rgba(0,0,0,0.2);
             border: 2px solid #667eea;
             display: none;
             z-index: 200;
@@ -1117,10 +1118,6 @@ body.artifact-open #chatContainer {
     animation: pulse 2s infinite;
 }
 
-.humanize-toggle-btn.active:hover {
-    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
-}
-
 @keyframes pulse {
     0%, 100% {
         box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
@@ -1880,10 +1877,216 @@ code.is-editing {
         top: 4.5rem; /* Stack below run button */
     }
 }
+</style>
 
+<!-- ======================================================================================================= -->
+<!-- NEW MEDIA QUERIES FOR MOBILE RESPONSIVENESS (ADDED WITHOUT MODIFYING EXISTING STYLES) -->
+<!-- ======================================================================================================= -->
 
-        
-    </style>
+<style>
+/* Tablet and smaller desktops (up to 1024px) */
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed;
+        height: 100vh;
+        z-index: 15;
+        transform: translateX(-280px); /* Collapsed by default */
+    }
+    .sidebar.active { /* Use 'active' class to show it */
+        transform: translateX(0);
+    }
+    .toggle-sidebar {
+        display: flex; /* Show the toggle button */
+    }
+    /* When artifact panel is open on tablet, main content does not shrink */
+    body.artifact-open #chatContainer {
+        margin-right: 0;
+    }
+    /* Artifact panel goes full width on tablet */
+    .artifact-panel {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+    /* Mind map controls position adjustment for smaller screens */
+    .mindmap-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-left: 1rem;
+    }
+    .mindmap-zoom-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-right: 1rem;
+    }
+    .mindmap-canvas {
+        height: 400px; /* Reduce height for better fit on tablet screens */
+    }
+}
+
+/* Mobile devices (up to 768px) */
+@media (max-width: 768px) {
+    /* Main content padding */
+    .chat-container, #mainToolView {
+        padding: 1rem;
+        padding-bottom: 180px; /* Ensure space for input area */
+    }
+
+    /* Code Canvas Modal - Fullscreen behavior */
+    .code-canvas-container {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        transform: scale(1); /* Ensure full scale */
+    }
+    .code-canvas-body {
+        flex-direction: column; /* Stack editor and preview vertically */
+    }
+    .code-editor-panel,
+    .code-preview-panel {
+        height: 50%;
+        width: 100%;
+        border-right: none; /* Remove vertical border */
+        border-bottom: 1px solid #ddd; /* Add horizontal border */
+    }
+    .code-canvas-resizer {
+        width: 100%;
+        height: 8px; /* Horizontal resizer */
+        cursor: row-resize;
+    }
+
+    /* Code block buttons - Stacked positioning */
+    .message-content pre {
+        padding-top: 6rem; /* Ensure enough space for 3 stacked buttons */
+    }
+    .edit-code-button, .run-code-btn, .copy-code-btn {
+        position: absolute;
+        right: 0.5rem; /* Align to the right edge */
+        margin-right: 0; /* Reset any specific margins */
+        opacity: 1; /* Always visible on mobile */
+    }
+    .edit-code-button {
+        top: 0.5rem;
+    }
+    .run-code-btn {
+        top: 2.5rem; /* Stack below edit button */
+    }
+    .copy-code-btn {
+        top: 4.5rem; /* Stack below run button */
+    }
+
+    /* Mind map specific adjustments for small screens */
+    .mindmap-node {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        min-width: 100px;
+    }
+    .mindmap-node.central {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+    }
+    .mindmap-edit-panel {
+        width: 90%; /* Make it wider */
+        bottom: 1rem; /* Bring it closer to the bottom */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Continue generation banner */
+    .continue-generation-banner {
+        bottom: 180px; /* Adjust if input area shifts */
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.75rem 1rem;
+        flex-direction: column; /* Stack items */
+        text-align: center;
+    }
+    .continue-btn {
+        width: 100%; /* Make button full width */
+        margin-top: 0.5rem;
+    }
+
+    /* Camera modal goes full screen */
+    .camera-modal-content {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+    .camera-header {
+        padding: 15px;
+    }
+    .camera-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .camera-btn {
+        width: 100%;
+    }
+
+    /* Table fullscreen modal */
+    .table-fullscreen-modal {
+        padding: 0; /* Remove padding to maximize space */
+    }
+    .table-fullscreen-content {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+    .table-wrapper {
+        max-height: calc(100vh - 120px); /* Adjust based on header/footer height */
+    }
+}
+
+/* New styles for the preview canvas, optimized for phones (max-width: 768px) */
+@media (max-width: 768px) {
+    .canvas-visualization {
+        /* Take up full width with some minimal side spacing */
+        width: calc(100% - 1rem); /* 0.5rem padding on each side */
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        padding: 0.75rem; /* Reduced padding inside the container */
+        border-radius: 0.75rem; /* Slightly smaller border-radius */
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Lighter shadow */
+        border: 1px solid #e5e7eb; /* More subtle border */
+    }
+
+    .canvas-visualization canvas {
+        width: 100%; /* Make the canvas fill its container width */
+        height: auto; /* Maintain aspect ratio */
+        max-height: 350px; /* Cap the height to prevent it from being too tall on some phones */
+        display: block; /* Ensure it behaves as a block element */
+        border-radius: 0.5rem; /* Slightly rounded corners for the canvas itself */
+        background-color: #fcfdff; /* A clean, light background for the canvas */
+    }
+}
+
+/* Further refinements for very small phones (max-width: 480px) */
+@media (max-width: 480px) {
+    .canvas-visualization {
+        width: calc(100% - 0.5rem); /* Even tighter to edges */
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
+        padding: 0.5rem; /* Further reduced padding */
+        border-radius: 0.5rem;
+    }
+    .canvas-visualization canvas {
+        max-height: 250px; /* Further cap height for very small screens */
+        border-radius: 0.3rem;
+    }
+}
+</style>
+
 
 <!-- ======================================================================================================= -->
 <!-- NEW MEDIA QUERIES FOR MOBILE RESPONSIVENESS (ADDED WITHOUT MODIFYING EXISTING STYLES) -->
