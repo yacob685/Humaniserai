@@ -2091,6 +2091,213 @@ code.is-editing {
 }
 </style>
 
+
+<!-- ======================================================================================================= -->
+<!-- NEW MEDIA QUERIES FOR MOBILE RESPONSIVENESS (ADDED WITHOUT MODIFYING EXISTING STYLES) -->
+<!-- ======================================================================================================= -->
+
+<style>
+/* Tablet and smaller desktops (up to 1024px) */
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed;
+        height: 100vh;
+        z-index: 15;
+        transform: translateX(-280px); /* Collapsed by default */
+    }
+    .sidebar.active { /* Use 'active' class to show it */
+        transform: translateX(0);
+    }
+    .toggle-sidebar {
+        display: flex; /* Show the toggle button */
+    }
+    /* When artifact panel is open on tablet, main content does not shrink */
+    body.artifact-open #chatContainer {
+        margin-right: 0;
+    }
+    /* Artifact panel goes full width on tablet */
+    .artifact-panel {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+    /* Mind map controls position adjustment for smaller screens */
+    .mindmap-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-left: 1rem;
+    }
+    .mindmap-zoom-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-right: 1rem;
+    }
+    .mindmap-canvas {
+        height: 400px; /* Reduce height for better fit on tablet screens */
+    }
+}
+
+/* Mobile devices (up to 768px) */
+@media (max-width: 768px) {
+    /* Main content padding */
+    .chat-container, #mainToolView {
+        padding: 1rem;
+        padding-bottom: 180px; /* Ensure space for input area */
+    }
+
+    /* Code Canvas Modal - Fullscreen behavior */
+    .code-canvas-container {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        transform: scale(1); /* Ensure full scale */
+    }
+    .code-canvas-body {
+        flex-direction: column; /* Stack editor and preview vertically */
+    }
+    .code-editor-panel,
+    .code-preview-panel {
+        height: 50%;
+        width: 100%;
+        border-right: none; /* Remove vertical border */
+        border-bottom: 1px solid #ddd; /* Add horizontal border */
+    }
+    .code-canvas-resizer {
+        width: 100%;
+        height: 8px; /* Horizontal resizer */
+        cursor: row-resize;
+    }
+
+    /* Code block buttons - Stacked positioning */
+    .message-content pre {
+        padding-top: 6rem; /* Ensure enough space for 3 stacked buttons */
+    }
+    .edit-code-button, .run-code-btn, .copy-code-btn {
+        position: absolute;
+        right: 0.5rem; /* Align to the right edge */
+        margin-right: 0; /* Reset any specific margins */
+        opacity: 1; /* Always visible on mobile */
+    }
+    .edit-code-button {
+        top: 0.5rem;
+    }
+    .run-code-btn {
+        top: 2.5rem; /* Stack below edit button */
+    }
+    .copy-code-btn {
+        top: 4.5rem; /* Stack below run button */
+    }
+
+    /* Mind map specific adjustments for small screens */
+    .mindmap-node {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        min-width: 100px;
+    }
+    .mindmap-node.central {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+    }
+    .mindmap-edit-panel {
+        width: 90%; /* Make it wider */
+        bottom: 1rem; /* Bring it closer to the bottom */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Continue generation banner */
+    .continue-generation-banner {
+        bottom: 180px; /* Adjust if input area shifts */
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.75rem 1rem;
+        flex-direction: column; /* Stack items */
+        text-align: center;
+    }
+    .continue-btn {
+        width: 100%; /* Make button full width */
+        margin-top: 0.5rem;
+    }
+
+    /* Camera modal goes full screen */
+    .camera-modal-content {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+    .camera-header {
+        padding: 15px;
+    }
+    .camera-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .camera-btn {
+        width: 100%;
+    }
+
+    /* Table fullscreen modal */
+    .table-fullscreen-modal {
+        padding: 0; /* Remove padding to maximize space */
+    }
+    .table-fullscreen-content {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+    .table-wrapper {
+        max-height: calc(100vh - 120px); /* Adjust based on header/footer height */
+    }
+}
+
+/* Very small mobile devices (up to 480px) */
+@media (max-width: 480px) {
+    /* Adjust general padding for main content to be less */
+    .chat-container, #mainToolView {
+        padding: 0.75rem;
+        padding-bottom: 150px; /* Keep input area space */
+    }
+    .input-area {
+        padding: 0.75rem;
+    }
+
+    /* Adjust font sizes for readability on tiny screens */
+    .message-content h1 { font-size: 1.4rem; }
+    .message-content h2 { font-size: 1.2rem; }
+    .message-content h3 { font-size: 1rem; }
+    .message-content p, .message-content ul, .message-content ol, .message-content blockquote, .message-content table { font-size: 0.85rem; }
+
+    /* Adjust table padding and font size further */
+    .ai-generated-table {
+        font-size: 0.7rem;
+    }
+    .ai-generated-table th,
+    .ai-generated-table td {
+        padding: 0.3rem;
+    }
+
+    /* Adjust modal content width for smaller screens */
+    .modal-content {
+        width: 98%;
+        padding: 1rem;
+    }
+    .header-bar {
+        padding: 0.5rem 0.75rem;
+    }
+}
+</style>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
