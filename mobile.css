@@ -1,4 +1,4 @@
-/* ==================== MOBILE RESPONSIVE CSS (ChatGPT Style) ==================== */
+/* ==================== MOBILE RESPONSIVE CSS (ChatGPT Style - Refined by AI) ==================== */
 /* Apply ONLY on screens 768px and below */
 
 /* ===== GLOBAL MOBILE OVERRIDES ===== */
@@ -6,11 +6,15 @@
     * {
         -webkit-tap-highlight-color: transparent;
         -webkit-touch-callout: none;
+        box-sizing: border-box; /* Ensure consistent box model */
     }
 
     body {
         overflow-x: hidden;
         position: relative;
+        /* Prevent font size adjustment on orientation change */
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
     }
 
     /* ===== HIDE DESKTOP ELEMENTS ===== */
@@ -18,17 +22,24 @@
         display: none !important;
     }
 
+    /* Toggle button for mobile sidebar */
     .toggle-sidebar {
         display: flex !important;
+        justify-content: center;
+        align-items: center;
         position: fixed;
         top: 1rem;
         left: 1rem;
-        z-index: 1000;
+        z-index: 1000; /* High z-index to always be on top */
         background: white;
         box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         border-radius: 12px;
         width: 48px;
         height: 48px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        /* Performance hint for animations */
+        will-change: transform, opacity;
     }
 
     /* ===== SIDEBAR - FULL SCREEN OVERLAY ===== */
@@ -36,15 +47,18 @@
         position: fixed !important;
         top: 0;
         left: 0;
-        width: 85% !important;
+        width: 85% !important; /* Slightly more space than 80% for content */
         max-width: 320px;
         height: 100vh !important;
-        z-index: 999 !important;
+        z-index: 999; /* Below toggle, above main content */
         transform: translateX(-100%) !important;
         transition: transform 0.3s ease-in-out !important;
-        box-shadow: none;
+        box-shadow: none; /* No shadow when collapsed */
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        background-color: var(--sidebar-bg-color, #f7f7f8); /* Ensure background color matches desktop theme */
+        /* Performance hint for animations */
+        will-change: transform, box-shadow;
     }
 
     .sidebar.active {
@@ -65,8 +79,10 @@
         right: 0;
         bottom: 0;
         background: rgba(0,0,0,0.5);
-        z-index: -1;
+        z-index: -1; /* Behind the sidebar */
         animation: fadeIn 0.3s ease;
+        /* Performance hint for animations */
+        will-change: opacity;
     }
 
     @keyframes fadeIn {
@@ -81,36 +97,47 @@
         gap: 0.5rem;
         position: sticky;
         top: 0;
-        z-index: 10;
+        z-index: 10; /* Below sidebar and modals */
         background: rgba(255, 255, 255, 0.98) !important;
         backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px); /* For Safari */
+        border-bottom: 1px solid var(--border-color, #e0e0e0); /* Subtle separator */
     }
 
     .header-bar h1 {
         font-size: 1.25rem !important;
         line-height: 1.2;
+        margin: 0;
     }
 
     .header-bar p {
         font-size: 0.75rem !important;
-        display: none; /* Hide subtitle on very small screens */
+        display: none; /* Hide subtitle on very small screens for brevity */
     }
 
     .header-bar button {
         padding: 0.5rem 0.75rem !important;
         font-size: 0.85rem !important;
+        min-height: 38px; /* Ensure touch friendliness */
     }
 
     /* ===== CHAT CONTAINER - FULL WIDTH ===== */
     .chat-container {
         padding: 1rem 0.75rem !important;
-        padding-bottom: 200px !important; /* Space for input area */
+        /* Adjusted for fixed input area + some buffer */
+        padding-bottom: 160px !important;
         width: 100% !important;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
     }
 
     #mainToolView {
         padding: 1rem 0.75rem !important;
-        padding-bottom: 200px !important;
+        padding-bottom: 160px !important; /* Adjusted for fixed input area */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
     }
 
     #responseHistory {
@@ -123,6 +150,7 @@
         max-width: 100% !important;
         padding: 1rem 0.75rem !important;
         font-size: 0.95rem !important;
+        line-height: 1.5;
         border-radius: 12px !important;
     }
 
@@ -132,9 +160,9 @@
     }
 
     .flex.justify-end > div:last-child {
-        max-width: 85% !important;
+        max-width: 88% !important; /* Slightly wider for user messages */
         padding: 0.875rem 1rem !important;
-        border-radius: 18px 18px 4px 18px !important;
+        border-radius: 18px 18px 4px 18px !important; /* ChatGPT's specific user bubble corner */
     }
 
     /* AI messages */
@@ -149,6 +177,7 @@
         height: 36px !important;
         min-width: 36px !important;
         min-height: 36px !important;
+        flex-shrink: 0; /* Prevent avatar from shrinking */
     }
 
     /* ===== INPUT AREA - FIXED BOTTOM ===== */
@@ -160,25 +189,37 @@
         width: 100% !important;
         padding: 0.75rem 1rem !important;
         box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
-        z-index: 100 !important;
+        z-index: 100 !important; /* Above chat content, below modals */
         background: rgba(255, 255, 255, 0.98) !important;
         backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important; /* For Safari */
+        border-top: 1px solid var(--border-color, #e0e0e0); /* Subtle separator */
+        /* Performance hint for animations */
+        will-change: transform, box-shadow;
     }
 
     .input-area > div {
         max-width: 100% !important;
+        margin: 0 auto; /* Center content within the fixed area */
     }
 
     .input-area .flex {
         padding: 0.75rem !important;
         border-radius: 24px !important;
         gap: 0.5rem;
+        align-items: flex-end; /* Align items to the bottom, useful for growing textarea */
+        background-color: var(--input-bg-color, #f0f0f0); /* Ensure input background */
+        border: 1px solid var(--input-border-color, #e0e0e0);
     }
 
     #prompt {
         font-size: 1rem !important;
         padding: 0.5rem 0.75rem !important;
         max-height: 120px !important;
+        min-height: 44px; /* Ensure touch friendliness */
+        resize: none; /* Disable manual resizing, let JS handle it */
+        line-height: 1.5;
+        overflow-y: auto; /* Allow scrolling for long inputs */
     }
 
     #generateButton {
@@ -187,6 +228,7 @@
         min-width: 42px !important;
         border-radius: 50% !important;
         padding: 0 !important;
+        flex-shrink: 0; /* Prevent button from shrinking */
     }
 
     /* File attachment buttons */
@@ -198,22 +240,31 @@
         min-width: 42px !important;
         padding: 0 !important;
         border-radius: 12px !important;
+        flex-shrink: 0;
     }
 
     #fileStatus {
         padding: 0.5rem !important;
         font-size: 0.85rem !important;
         margin-top: 0.5rem !important;
+        border-radius: 8px;
+        background-color: var(--file-status-bg, #f0f0f0);
     }
 
     /* ===== CODE BLOCKS - MOBILE OPTIMIZED ===== */
     .message-content pre {
+        position: relative; /* For absolute positioning of buttons */
         padding: 0.75rem !important;
-        padding-top: 3.5rem !important;
+        padding-top: 3.5rem !important; /* Space for buttons */
         border-radius: 12px !important;
         font-size: 0.8rem !important;
+        line-height: 1.4 !important;
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch;
+        white-space: pre-wrap; /* Allow long lines to wrap if needed, still allow horizontal scroll */
+        word-wrap: break-word;
+        background-color: var(--code-bg-color, #2d2d2d); /* Ensure dark background for code */
+        color: var(--code-text-color, #f8f8f2);
     }
 
     .message-content pre code {
@@ -230,7 +281,13 @@
         padding: 0.4rem 0.75rem !important;
         font-size: 0.75rem !important;
         opacity: 1 !important; /* Always visible on mobile */
-        z-index: 10 !important;
+        z-index: 10 !important; /* Ensure buttons are above code content */
+        border-radius: 8px; /* Consistent button rounding */
+        min-width: 70px; /* Give a bit more width for better tap target */
+        text-align: center;
+        background-color: rgba(255,255,255,0.1); /* Subtle background */
+        color: rgba(255,255,255,0.8);
+        border: 1px solid rgba(255,255,255,0.2);
     }
 
     .copy-code-btn {
@@ -238,17 +295,19 @@
     }
 
     .run-code-btn {
-        top: 2.25rem !important;
+        top: 2.25rem !important; /* Adjusted spacing */
     }
 
     .edit-code-button {
-        top: 4rem !important;
+        top: 4rem !important; /* Adjusted spacing */
     }
 
     /* ===== TABLES - HORIZONTAL SCROLL ===== */
     .table-container {
-        margin: 1rem -0.75rem !important;
+        margin: 1rem -0.75rem !important; /* Extend to screen edges */
         border-radius: 0 !important;
+        background-color: var(--table-bg-color, #ffffff);
+        border: 1px solid var(--border-color, #e0e0e0);
     }
 
     .table-wrapper {
@@ -258,29 +317,56 @@
     }
 
     .ai-generated-table {
+        width: 100%; /* Ensure table takes full width of wrapper */
+        min-width: 600px; /* Minimum width for horizontal scroll */
+        border-collapse: collapse;
         font-size: 0.8rem !important;
-        min-width: 600px;
     }
 
     .ai-generated-table th,
     .ai-generated-table td {
         padding: 0.5rem !important;
-        white-space: nowrap;
+        white-space: nowrap; /* Prevent content from wrapping */
+        border: 1px solid var(--table-border-color, #e0e0e0);
+        text-align: left;
+    }
+
+    .ai-generated-table th {
+        background-color: var(--table-header-bg, #f0f0f0);
+        font-weight: bold;
     }
 
     .table-action-btn {
         padding: 0.4rem 0.6rem !important;
         font-size: 0.75rem !important;
+        min-height: 32px; /* Touch friendly */
     }
 
     .table-header-bar {
         padding: 0.75rem !important;
+        background-color: var(--table-header-bar-bg, #f7f7f8);
+        border-bottom: 1px solid var(--border-color, #e0e0e0);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    /* ===== MODALS - FULLSCREEN ON MOBILE ===== */
+    /* ===== MODALS - FULLSCREEN ON MOBILE (Bottom Sheet style) ===== */
     .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.6);
+        display: flex;
+        justify-content: center;
+        align-items: flex-end; /* Align content to bottom */
+        z-index: 1010 !important; /* Higher than sidebar and input */
         padding: 0 !important;
-        align-items: flex-end;
+        animation: fadeIn 0.3s ease;
+        /* Performance hint for animations */
+        will-change: opacity;
     }
 
     .modal-content {
@@ -289,7 +375,11 @@
         border-radius: 20px 20px 0 0 !important;
         max-height: 90vh !important;
         overflow-y: auto;
+        background-color: var(--modal-bg-color, #ffffff);
         animation: slideUp 0.3s ease !important;
+        /* Performance hint for animations */
+        will-change: transform;
+        position: relative; /* For internal positioning */
     }
 
     @keyframes slideUp {
@@ -308,21 +398,34 @@
         max-width: 100% !important;
         max-height: 100% !important;
         border-radius: 0 !important;
+        background-color: var(--camera-bg-color, #000000); /* Dark background for camera */
+        display: flex;
+        flex-direction: column;
     }
 
     .camera-header {
         padding: 1rem !important;
+        background-color: var(--camera-header-bg, #222222);
+        color: var(--camera-text-color, #ffffff);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
     }
 
     .camera-controls {
         flex-direction: column !important;
         gap: 0.75rem !important;
         padding: 1rem !important;
+        background-color: var(--camera-controls-bg, #222222);
+        flex-shrink: 0;
     }
 
     .camera-btn {
         width: 100% !important;
         padding: 1rem !important;
+        min-height: 50px; /* Larger touch target */
+        font-size: 1.1rem !important;
     }
 
     /* ===== ATTACHMENT DROPDOWN - BOTTOM SHEET ===== */
@@ -335,38 +438,68 @@
         border-radius: 20px 20px 0 0 !important;
         box-shadow: 0 -4px 20px rgba(0,0,0,0.2) !important;
         min-width: 100% !important;
+        background-color: var(--dropdown-bg-color, #ffffff);
+        z-index: 1005 !important; /* Above input, below modals */
+        animation: slideUp 0.3s ease !important;
+        /* Performance hint for animations */
+        will-change: transform;
     }
 
     .attachment-option {
         padding: 1rem 1.5rem !important;
         font-size: 1rem !important;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+    }
+
+    .attachment-option:hover {
+        background-color: var(--hover-bg-color, #f0f0f0);
     }
 
     /* ===== FLASHCARD VIEWER - MOBILE ===== */
     .flashcard-viewer {
         max-width: 100% !important;
         padding: 0 0.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .flashcard-flip-container {
         height: 280px !important;
+        width: 100%;
+        max-width: 400px; /* Constrain max width for better readability */
+        margin-bottom: 1rem;
     }
 
     .flashcard-nav-btn {
         width: 44px !important;
         height: 44px !important;
+        min-width: 44px;
+        min-height: 44px;
     }
 
     .flashcard-front,
     .flashcard-back {
         font-size: 1.1rem !important;
         padding: 1.5rem !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
 
     /* ===== MIND MAP - MOBILE OPTIMIZED ===== */
     .mindmap-canvas {
         height: 350px !important;
         border-radius: 12px !important;
+        width: 100%;
+        margin: 0.75rem 0;
+        background-color: var(--canvas-bg-color, #f0f0f0);
+        border: 1px solid var(--border-color, #e0e0e0);
     }
 
     .mindmap-controls {
@@ -376,6 +509,7 @@
         gap: 0.5rem;
         margin-bottom: 0.75rem;
         justify-content: center;
+        width: 100%;
     }
 
     .mindmap-zoom-controls {
@@ -384,30 +518,40 @@
         justify-content: center;
         gap: 0.5rem;
         margin-top: 0.75rem;
+        width: 100%;
     }
 
     .mindmap-control-btn,
     .zoom-btn {
         width: 44px !important;
         height: 44px !important;
+        min-width: 44px;
+        min-height: 44px;
+        border-radius: 50%; /* Rounded controls */
     }
 
     .mindmap-node {
         font-size: 0.85rem !important;
         padding: 0.5rem 0.75rem !important;
         min-width: 90px !important;
+        border-radius: 8px;
     }
 
     .mindmap-edit-panel {
         width: 90% !important;
+        max-width: 400px; /* Constrain edit panel width */
         bottom: 1rem !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
+        border-radius: 12px;
+        background-color: var(--edit-panel-bg, #ffffff);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        z-index: 95; /* Above chat, below input/modals */
     }
 
     /* ===== CONTINUE BANNER - MOBILE ===== */
     .continue-generation-banner {
-        bottom: 160px !important;
+        bottom: 140px !important; /* Adjusted to sit above input area */
         left: 0.5rem !important;
         right: 0.5rem !important;
         width: auto !important;
@@ -415,11 +559,16 @@
         flex-direction: column !important;
         text-align: center;
         padding: 1rem !important;
+        border-radius: 12px;
+        background-color: var(--banner-bg-color, #ffffff);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        z-index: 90; /* Above chat, below input area */
     }
 
     .continue-btn {
         width: 100% !important;
         margin-top: 0.5rem !important;
+        min-height: 44px;
     }
 
     /* ===== ARTIFACT PANEL - FULLSCREEN ===== */
@@ -429,6 +578,22 @@
         min-width: 100% !important;
         border-left: none !important;
         border-radius: 0 !important;
+        background-color: var(--artifact-panel-bg, #f7f7f8);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        position: fixed; /* Make it an overlay if needed, or adjust its display */
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 990; /* Below sidebar, above main content */
+        transform: translateX(100%); /* Start off-screen */
+        transition: transform 0.3s ease-in-out;
+        will-change: transform;
+    }
+
+    /* Example class to show artifact panel (needs JS to toggle) */
+    .artifact-panel.active {
+        transform: translateX(0);
     }
 
     /* ===== CODE CANVAS - MOBILE LAYOUT ===== */
@@ -437,52 +602,82 @@
         height: 100% !important;
         max-width: 100% !important;
         border-radius: 0 !important;
+        background-color: var(--canvas-bg-color, #ffffff);
+        display: flex;
+        flex-direction: column;
     }
 
     .code-canvas-body {
         flex-direction: column !important;
+        flex-grow: 1; /* Allow body to take available space */
+        overflow: hidden; /* Prevent internal scrollbars from messing up layout */
     }
 
     .code-editor-panel,
     .code-preview-panel {
         width: 100% !important;
-        height: 50% !important;
+        height: 50% !important; /* Split vertically */
         border-right: none !important;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid var(--border-color, #ddd);
+        overflow: hidden; /* Ensure content inside can scroll */
+        display: flex;
+        flex-direction: column;
     }
 
     .code-canvas-resizer {
         width: 100% !important;
         height: 8px !important;
         cursor: row-resize !important;
+        background-color: var(--resizer-bg-color, #e0e0e0);
     }
 
     #codeEditorTextarea {
         font-size: 0.85rem !important;
+        flex-grow: 1; /* Allow textarea to fill panel */
+        border: none;
+        padding: 0.75rem;
+        background-color: var(--code-editor-bg, #f5f5f5);
+        color: var(--code-editor-text, #333);
+        font-family: monospace;
+        resize: none;
     }
 
     .code-canvas-header {
         padding: 0.75rem 1rem !important;
+        background-color: var(--canvas-header-bg, #f7f7f8);
+        border-bottom: 1px solid var(--border-color, #e0e0e0);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
     }
 
     .canvas-header-btn {
         padding: 0.4rem 0.6rem !important;
         font-size: 0.85rem !important;
+        min-height: 36px;
     }
 
     #canvasLanguageSelect {
         font-size: 0.85rem !important;
         padding: 0.4rem 0.6rem !important;
+        min-height: 36px;
     }
 
     /* ===== TOOL OPTIONS - MOBILE ===== */
     #toolOptions {
         margin-bottom: 0.75rem !important;
+        padding: 0.75rem;
+        border-radius: 12px;
+        background-color: var(--tool-options-bg, #ffffff);
+        box-shadow: 0 1px 5px rgba(0,0,0,0.05);
     }
 
-    #toolOptions .bg-white {
+    #toolOptions .bg-white { /* Assuming this targets specific option cards */
         padding: 0.75rem !important;
         font-size: 0.9rem !important;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
     }
 
     #toolOptions input,
@@ -490,6 +685,8 @@
     #toolOptions button {
         font-size: 0.9rem !important;
         padding: 0.5rem 0.75rem !important;
+        min-height: 38px;
+        border-radius: 8px;
     }
 
     /* ===== BUTTONS - TOUCH FRIENDLY ===== */
@@ -498,37 +695,56 @@
     .flashcard-nav-btn,
     .quiz-option {
         min-height: 44px !important; /* iOS touch target size */
+        min-width: 44px; /* Ensure width is also sufficient */
         touch-action: manipulation;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
     }
 
     /* ===== TOOLTIPS - HIDE ON MOBILE ===== */
     [title] {
-        pointer-events: auto !important;
+        pointer-events: none !important; /* Disable hover interaction */
+        cursor: default !important;
     }
 
-    [title]:hover::after {
+    /* Ensure no visual tooltip appears */
+    [title]:hover::after,
+    [title]::before {
         display: none !important;
     }
 
     /* ===== CANVAS VISUALIZATIONS - MOBILE ===== */
     .canvas-visualization {
-        width: calc(100% - 0.5rem) !important;
-        margin: 0.5rem 0.25rem !important;
+        width: calc(100% - 1rem) !important; /* Account for 0.5rem padding on each side */
+        margin: 0.5rem auto !important; /* Center with auto margin */
         padding: 0.75rem !important;
+        border-radius: 12px !important;
+        background-color: var(--canvas-vis-bg, #ffffff);
+        border: 1px solid var(--border-color, #e0e0e0);
     }
 
     .canvas-visualization canvas {
+        max-width: 100%;
+        height: auto;
         max-height: 300px !important;
+        display: block; /* Remove extra space below canvas */
     }
 
     /* ===== THINKING SECTION - MOBILE ===== */
     .thinking-section {
         font-size: 0.85rem !important;
+        padding: 0.75rem;
+        border-radius: 12px;
+        background-color: var(--thinking-bg, #fffbe6); /* Light yellow/cream for thinking box */
+        border: 1px solid var(--thinking-border, #ffe08a);
+        margin: 1rem 0;
     }
 
     .thinking-content {
         padding: 0.75rem !important;
         font-size: 0.8rem !important;
+        line-height: 1.4;
     }
 
     /* ===== HUMANIZE BADGE - MOBILE ===== */
@@ -536,19 +752,28 @@
     .codeclean-indicator {
         flex-direction: column !important;
         padding: 0.75rem !important;
+        border-radius: 12px;
+        background-color: var(--badge-bg, #e6f7ff); /* Light blue for badges */
+        border: 1px solid var(--badge-border, #91d5ff);
+        margin: 0.5rem 0;
+        align-items: center;
+        text-align: center;
     }
 
     .humanize-badge > div:first-child {
         width: 32px !important;
         height: 32px !important;
         margin-bottom: 0.5rem !important;
+        flex-shrink: 0;
     }
 
     /* ===== LISTS - BETTER SPACING ===== */
     .message-content ul,
     .message-content ol {
         margin-left: 1rem !important;
+        padding-left: 0.5rem; /* Add some padding for bullet/number */
         font-size: 0.9rem !important;
+        line-height: 1.6 !important;
     }
 
     .message-content li {
@@ -560,16 +785,19 @@
     .message-content h1 {
         font-size: 1.5rem !important;
         margin: 1rem 0 0.75rem !important;
+        line-height: 1.3;
     }
 
     .message-content h2 {
         font-size: 1.25rem !important;
         margin: 0.875rem 0 0.5rem !important;
+        line-height: 1.4;
     }
 
     .message-content h3 {
         font-size: 1.1rem !important;
         margin: 0.75rem 0 0.5rem !important;
+        line-height: 1.5;
     }
 
     /* ===== BLOCKQUOTES - MOBILE ===== */
@@ -577,6 +805,11 @@
         padding: 0.75rem !important;
         font-size: 0.9rem !important;
         margin: 0.75rem 0 !important;
+        line-height: 1.5;
+        border-left: 4px solid var(--blockquote-border, #ccc);
+        color: var(--blockquote-text, #555);
+        background-color: var(--blockquote-bg, #f9f9f9);
+        border-radius: 4px;
     }
 
     /* ===== IMAGES - RESPONSIVE ===== */
@@ -584,11 +817,16 @@
         max-width: 100% !important;
         height: auto !important;
         border-radius: 8px !important;
+        display: block; /* Remove extra space below image */
+        margin: 0.75rem auto; /* Center images */
     }
 
     .image-preview {
         max-width: 100% !important;
         max-height: 250px !important;
+        object-fit: contain; /* Ensure image fits without cropping */
+        border-radius: 8px;
+        border: 1px solid var(--border-color, #e0e0e0);
     }
 
     /* ===== CHAT LIST ITEMS - TOUCH FRIENDLY ===== */
@@ -596,12 +834,20 @@
         padding: 1rem !important;
         margin: 0.5rem !important;
         border-radius: 12px !important;
+        min-height: 60px; /* Ensure a decent touch target for the whole item */
+        background-color: var(--chat-list-item-bg, #ffffff);
+        border: 1px solid var(--border-color, #e0e0e0);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
     /* ===== SCROLL BEHAVIOR ===== */
     .chat-container,
     #mainToolView,
-    .sidebar {
+    .sidebar,
+    .modal-content,
+    .code-editor-panel,
+    .code-preview-panel,
+    .table-wrapper {
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
     }
@@ -610,29 +856,40 @@
     input,
     textarea,
     select {
-        font-size: 16px !important; /* Prevents iOS zoom */
+        font-size: 16px !important; /* Prevents iOS auto-zoom */
     }
 
     /* ===== PROGRESS INDICATORS - MOBILE ===== */
     .code-gen-progress {
         flex-direction: column !important;
         padding: 0.75rem !important;
+        border-radius: 12px;
+        background-color: var(--progress-bg, #e6f7ff);
+        border: 1px solid var(--progress-border, #91d5ff);
+        margin: 0.5rem 0;
+        align-items: center;
+        text-align: center;
     }
 
     .code-gen-progress .w-12 {
         width: 36px !important;
         height: 36px !important;
         margin-bottom: 0.5rem !important;
+        flex-shrink: 0;
     }
 
     #stage-badges {
         flex-wrap: wrap !important;
         gap: 0.25rem !important;
+        justify-content: center;
     }
 
     .badge-stage {
         font-size: 0.7rem !important;
         padding: 0.25rem 0.5rem !important;
+        border-radius: 4px;
+        background-color: var(--badge-stage-bg, #d9f7be);
+        color: var(--badge-stage-text, #389e08);
     }
 
     /* ===== METRICS CARDS - MOBILE ===== */
@@ -641,15 +898,27 @@
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 0.5rem !important;
     }
+    /* Specific override for single column on very small screens if needed */
+    @media (max-width: 360px) {
+        .grid.grid-cols-2,
+        .grid.grid-cols-4 {
+            grid-template-columns: 1fr !important;
+        }
+    }
 
     /* ===== SEARCH RESULTS - MOBILE ===== */
     .search-result-card {
         padding: 0.75rem !important;
         margin-bottom: 0.5rem !important;
+        border-radius: 12px;
+        background-color: var(--search-card-bg, #ffffff);
+        border: 1px solid var(--border-color, #e0e0e0);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
 
     .search-result-title {
         font-size: 0.9rem !important;
+        line-height: 1.4;
     }
 
     /* ===== IMAGE GRIDS - MOBILE ===== */
@@ -665,7 +934,13 @@
 
         .chat-container,
         #mainToolView {
-            padding-bottom: calc(200px + env(safe-area-inset-bottom)) !important;
+            padding-bottom: calc(160px + env(safe-area-inset-bottom)) !important; /* Adjust base padding as well */
+        }
+
+        .modal-content,
+        .attachment-dropdown {
+            /* Ensure modals and dropdowns don't go under the home indicator */
+            padding-bottom: env(safe-area-inset-bottom) !important;
         }
     }
 }
@@ -680,6 +955,13 @@
         font-size: 0.9rem !important;
         padding: 0.875rem !important;
     }
+
+    /* Further adjust user message bubble for small screens */
+    .flex.justify-end > div:last-child {
+        max-width: 90% !important; /* Maximize space for user messages */
+        padding: 0.75rem 0.875rem !important;
+    }
+
 
     .ai-generated-table {
         font-size: 0.75rem !important;
@@ -697,16 +979,34 @@
         width: 32px !important;
         height: 32px !important;
     }
+
+    /* Code buttons for very small screens */
+    .copy-code-btn,
+    .run-code-btn,
+    .edit-code-button {
+        padding: 0.3rem 0.6rem !important;
+        font-size: 0.7rem !important;
+    }
+    .edit-code-button { /* Adjust top for smaller buttons */
+        top: 3.7rem !important;
+    }
 }
 
 /* ===== LANDSCAPE MODE ADJUSTMENTS ===== */
+/* Adjustments for devices in landscape mode, especially phones */
 @media (max-width: 768px) and (orientation: landscape) {
-    .chat-container {
-        padding-bottom: 140px !important;
+    .chat-container,
+    #mainToolView {
+        padding-bottom: 120px !important; /* Less space needed for input in landscape */
+        padding-left: calc(1rem + env(safe-area-inset-left)) !important;
+        padding-right: calc(1rem + env(safe-area-inset-right)) !important;
     }
 
     .input-area {
         padding: 0.5rem 1rem !important;
+        padding-left: calc(0.5rem + env(safe-area-inset-left)) !important;
+        padding-right: calc(0.5rem + env(safe-area-inset-right)) !important;
+        padding-bottom: calc(0.5rem + env(safe-area-inset-bottom)) !important;
     }
 
     .flashcard-flip-container,
@@ -717,13 +1017,23 @@
     .camera-modal-content {
         height: 100vh !important;
     }
+
+    .sidebar {
+        width: 60% !important; /* Slightly narrower sidebar in landscape */
+        max-width: 280px;
+    }
+
+    .continue-generation-banner {
+        bottom: 100px !important; /* Adjust for smaller input area */
+    }
 }
 
 /* ===== PREVENT TEXT SELECTION ON DOUBLE TAP ===== */
 @media (max-width: 768px) {
     .tool-btn,
     .chat-list-item,
-    button {
+    button,
+    .message-content { /* Also prevent selection on message content */
         user-select: none;
         -webkit-user-select: none;
     }
@@ -731,13 +1041,19 @@
 
 /* ===== SMOOTH ANIMATIONS ===== */
 @media (max-width: 768px) {
+    /* Apply a default smooth transition for most elements */
     * {
+        transition-property: all;
         transition-duration: 0.2s;
+        transition-timing-function: ease-in-out;
     }
 
+    /* Specific, potentially longer transitions for major UI elements */
     .sidebar,
     .modal-backdrop,
-    .attachment-dropdown {
+    .modal-content,
+    .attachment-dropdown,
+    .artifact-panel {
         transition-duration: 0.3s;
     }
 }
