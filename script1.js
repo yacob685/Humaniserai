@@ -10258,3 +10258,29 @@ document.querySelectorAll('.tool-btn').forEach(btn => {
         }
     });
 });
+
+
+(function() {
+    if (window.innerWidth <= 768) {
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleSidebar');
+        
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(e) {
+            if (sidebar && sidebar.classList.contains('active')) {
+                if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
+        
+        // Auto-close sidebar when selecting a tool
+        document.querySelectorAll('.tool-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar?.classList.remove('active');
+                }
+            });
+        });
+    }
+})();
