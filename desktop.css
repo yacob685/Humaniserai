@@ -1,0 +1,2711 @@
+/* Existing styles provided by the user */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #1f2937; min-height: 100vh; }
+        .app-container { display: flex; height: 100vh; }
+        
+        /* Sidebars */
+        .sidebar { width: 280px; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); box-shadow: 4px 0 20px rgba(0,0,0,0.1); overflow-y: auto; transition: transform 0.3s ease; flex-shrink: 0; }
+        .sidebar.collapsed { transform: translateX(-280px); }
+        .chat-history-sidebar { width: 260px; background: rgba(249, 250, 251, 0.95); backdrop-filter: blur(10px); box-shadow: -4px 0 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; transition: transform 0.3s ease; flex-shrink: 0; } 
+
+        @media (max-width: 1024px) {
+    .chat-history-sidebar {
+        display: none; /* Hide on tablets and mobile */
+    }
+}
+        
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .chat-container, #mainToolView { flex: 1; overflow-y: auto; padding: 2rem; padding-bottom: 220px; }
+        
+       .input-area { 
+    position: fixed; 
+    bottom: 0; 
+    background: rgba(255, 255, 255, 0.98); 
+    backdrop-filter: blur(10px); 
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15); 
+    padding: 1.5rem; 
+    z-index: 10; 
+    transition: left 0.3s, right 0.3s ease; 
+    left: 280px; 
+    right: 260px; 
+}
+
+/* Mobile override */
+@media (max-width: 768px) {
+    .input-area {
+        left: 0 !important;
+        right: 0 !important;
+        padding: 1rem;
+    }
+}
+        .sidebar.collapsed ~ .main-content .input-area { left: 0; }
+        
+        /* Chat History Sidebar Styling */
+        .chat-list-item { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; margin: 0.25rem 0.5rem; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.2s, color 0.2s; border: 2px solid transparent; }
+        .chat-list-item:hover { background-color: #e5e7eb; }
+        .chat-list-item.active { background-color: #667eea; color: white; font-weight: 600; border-color: #764ba2; }
+        .chat-list-item-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-delete-btn { opacity: 0; transition: opacity 0.2s; background: none; border: none; cursor: pointer; }
+        .chat-list-item:hover .chat-delete-btn { opacity: 1; }
+        .chat-list-item.active .chat-delete-btn { color: white; }
+        
+        /* Markdown Styling */
+        .message-content h1 { font-size: 1.8rem; font-weight: 800; margin: 1.5em 0 0.5em 0; color: #1f2937; border-bottom: 3px solid #667eea; padding-bottom: 0.3em; }
+        .message-content h2 { font-size: 1.5rem; font-weight: 700; margin: 1.3em 0 0.5em 0; color: #4b5563; border-left: 4px solid #667eea; padding-left: 0.5em; }
+        .message-content h3 { font-size: 1.2rem; font-weight: 600; margin: 1em 0 0.5em 0; color: #6b7280; }
+        .message-content p { margin-bottom: 1em; line-height: 1.7; }
+        .message-content ul, .message-content ol { margin-left: 1.5em; margin-bottom: 1em; }
+        .message-content ul { list-style: none; }
+        .message-content ul li { position: relative; padding-left: 1.5em; margin-bottom: 0.5em; }
+        .message-content ul li:before { content: "-"; position: absolute; left: 0; color: #667eea; font-weight: bold; }
+        .message-content ul ul li:before { content: "+"; color: #764ba2; }
+        .message-content ol { list-style: decimal; padding-left: 1.5em; }
+        .message-content ol li { margin-bottom: 0.5em; padding-left: 0.5em; }
+        .message-content strong { color: #1f2937; font-weight: 700; }
+        .message-content em { font-style: italic; color: #4b5563; }
+        .message-content blockquote { border-left: 4px solid #667eea; background: #f3f4f6; padding: 1em; margin: 1em 0; border-radius: 0.5rem; font-style: italic; }
+        .message-content hr { border: none; border-top: 2px solid #e5e7eb; margin: 2em 0; }
+        .message-content pre { background-color: #282c34; padding: 1em; border-radius: 8px; overflow-x: auto; margin-bottom: 1em; }
+        .message-content code { background-color: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        .message-content pre code { background-color: transparent; padding: 0; color: #abb2bf; }
+        .message-content table { border-collapse: collapse; width: 100%; margin: 1.5em 0; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 0.5rem; overflow: hidden; }
+        .message-content th, .message-content td { border: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; }
+        .message-content th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; }
+        .message-content tr:nth-child(even) { background-color: #f9fafb; }
+        .message-content tr:hover { background-color: #f3f4f6; transition: background-color 0.2s; }
+        .message-content td { color: #374151; }
+        
+        /* Tool Button Styling */
+        .tool-btn { display: flex; align-items: center; padding: 0.75rem 1rem; margin: 0.5rem; border-radius: 0.75rem; background: white; border: 2px solid #e5e7eb; cursor: pointer; transition: all 0.3s; }
+        .tool-btn:hover { background: #f3f4f6; border-color: #667eea; transform: translateX(5px); }
+        .tool-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-color: #667eea; }
+        .tool-btn.active div:last-child { color: rgba(255, 255, 255, 0.8) !important; }
+        .tool-btn.active i { color: white !important; }
+        
+        .canvas-container { background: white; border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .typing-cursor { display: inline-block; width: 2px; height: 1em; background: #667eea; margin-left: 2px; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+        
+        .progress-bar { width: 100%; height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin: 0.5rem 0; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); transition: width 0.3s; }
+        
+        /* Flashcard Styling */
+        .flip-card.flipped .flashcard-inner { transform: rotateY(180deg); }
+        
+        /* Quiz Styling */
+        .quiz-option { padding: 1rem; margin: 0.5rem 0; border-radius: 0.5rem; border: 2px solid #e5e7eb; cursor: pointer; transition: all 0.3s; }
+        .quiz-option:hover { border-color: #667eea; background: #f3f4f6; }
+        .quiz-option.selected { border-color: #667eea; background: #ede9fe; }
+        .quiz-option.correct { border-color: #10b981; background: #d1fae5; }
+        .quiz-option.incorrect { border-color: #ef4444; background: #fee2e2; }
+        
+        /* General Layout */
+        .toggle-sidebar { position: fixed; top: 1rem; left: 1rem; z-index: 20; width: 40px; height: 40px; background: white; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-bar { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 1rem 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; z-index: 5; }
+        
+        /* Custom Modal Styling */
+        .modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); display: flex; align-items: center; justify-content: center; z-index: 50; }
+        .modal-content { background: white; border-radius: 1rem; padding: 2rem; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); }
+        
+        @media (max-width: 1024px) {
+            .chat-history-sidebar { display: none; }
+            .input-area { right: 0 !important; }
+        }
+        @media (max-width: 768px) {
+            .sidebar { position: fixed; z-index: 15; height: 100vh; }
+            .input-area { left: 0 !important; }
+        }
+
+        /* Mind Map Canvas Styling */
+        .mindmap-canvas {
+            width: 100%;
+            height: 600px;
+            background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 1rem;
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .mindmap-canvas:active {
+            cursor: grabbing;
+        }
+
+        .mindmap-node {
+            position: absolute;
+            padding: 12px 20px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            cursor: move;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 3px solid;
+            min-width: 120px;
+            text-align: center;
+            user-select: none;
+        }
+
+        .mindmap-node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .mindmap-node.central {
+            font-size: 1.3rem;
+            padding: 20px 30px;
+            border-width: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #fff;
+        }
+
+        .mindmap-node.level-1 { border-color: #667eea; color: #667eea; }
+        .mindmap-node.level-2 { border-color: #10b981; color: #10b981; }
+        .mindmap-node.level-3 { border-color: #f59e0b; color: #f59e0b; }
+
+        .mindmap-connection {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(102,126,234,0.6), rgba(102,126,234,0.3));
+            transform-origin: left center;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .mindmap-controls {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 20;
+        }
+
+        .mindmap-control-btn {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .mindmap-control-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .node-edit-input {
+            position: absolute;
+            padding: 8px 12px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 100;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Fullscreen Mind Map Styling */
+        .mindmap-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mindmap-fullscreen .mindmap-canvas {
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .mindmap-fullscreen-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .mindmap-fullscreen-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .mindmap-fullscreen-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .mindmap-edit-panel {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 44px 20px rgba(0,0,0,0.2);
+            border: 2px solid #667eea;
+            display: none;
+            z-index: 200;
+            min-width: 300px;
+        }
+
+        .mindmap-edit-panel.active {
+            display: block;
+        }
+
+        .mindmap-edit-panel input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .mindmap-edit-panel input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .mindmap-edit-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .mindmap-node.selected {
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.4);
+            transform: scale(1.05);
+        }
+
+        .mindmap-color-picker {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .color-option:hover {
+            transform: scale(1.2);
+        }
+
+        .color-option.selected {
+            border-color: #1f2937;
+        }
+
+        .mindmap-zoom-controls {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 20;
+        }
+
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .zoom-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .add-node-btn {
+            position: absolute;
+            padding: 8px 16px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 150;
+            transition: all 0.2s;
+        }
+
+        .add-node-btn:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+
+        .node-delete-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: #ef4444;
+            color: white;
+            border: 2px solid white;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .mindmap-node:hover .node-delete-btn {
+            display: flex;
+        }
+
+        .node-delete-btn:hover {
+            background: #dc2626;
+            transform: scale(1.2);
+        }
+
+        .pdf-processing {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .file-pdf-icon {
+            color: #dc2626;
+            font-size: 1.2rem;
+        }
+
+        .image-preview {
+            max-width: 300px;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .file-image-icon {
+            color: #2563eb;
+            font-size: 1.2rem;
+        }
+
+        #fileNameDisplay img {
+            transition: transform 0.2s;
+        }
+
+        #fileNameDisplay img:hover {
+            transform: scale(1.05);
+        }
+
+        .continue-generation-banner {
+            position: fixed;
+            bottom: 220px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 100;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .continue-generation-banner.show {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        .continue-btn {
+            background: white;
+            color: #ef4444;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .continue-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .canvas-visualization {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 2px solid #667eea;
+        }
+
+        .canvas-visualization canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .copy-code-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 6px 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .copy-code-btn:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .copy-code-btn.copied {
+            background: #10b981;
+        }
+
+        .code-gen-progress {
+            margin: 1rem 0;
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge-stage {
+            transition: all 0.3s ease;
+        }
+
+        .badge-stage.active {
+            transform: scale(1.1);
+        }
+
+        /* Attachment Dropdown */
+.attachment-dropdown {
+    position: absolute;
+    bottom: 70px;
+    left: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    z-index: 100;
+    min-width: 180px;
+    border: 2px solid #e5e7eb;
+}
+
+.attachment-option {
+    width: 100%;
+    padding: 12px 16px;
+    background: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.attachment-option:hover {
+    background: #f3f4f6;
+}
+
+.attachment-option:first-child {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.attachment-option i {
+    font-size: 18px;
+}
+
+/* Camera Modal */
+.camera-modal-content {
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 700px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.camera-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-camera-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 18px;
+}
+
+.close-camera-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.camera-container {
+    position: relative;
+    background: #000;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#cameraVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.captured-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.captured-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.camera-controls {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    background: #f9fafb;
+}
+
+.camera-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.capture-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.capture-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.retake-btn {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.retake-btn:hover {
+    background: #e5e7eb;
+}
+
+.use-btn {
+    background: #10b981;
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+.use-btn:hover {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+        /* ==================== ARTIFACTS PANEL ==================== */
+.artifact-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 45%;
+    min-width: 400px;
+    max-width: 800px;
+    background: white;
+    border-left: 3px solid #667eea;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease-in-out;
+}
+
+.artifact-panel.hidden {
+    transform: translateX(100%);
+}
+
+.artifact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.artifact-control-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.artifact-control-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.artifact-content {
+    flex: 1;
+    overflow: auto;
+    background: #f8f9fa;
+    padding: 1.5rem;
+}
+
+/* Artifact iframe styling */
+.artifact-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* React artifact container */
+.artifact-react-container {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow: auto;
+}
+
+/* Code artifact styling */
+.artifact-code-container {
+    background: #1e1e1e;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.artifact-code-container pre {
+    margin: 0;
+    padding: 1.5rem;
+    overflow: auto;
+    max-height: calc(100vh - 200px);
+}
+
+.artifact-code-container code {
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Markdown artifact */
+.artifact-markdown-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.artifact-markdown-container h1,
+.artifact-markdown-container h2,
+.artifact-markdown-container h3 {
+    color: #1f2937;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.artifact-markdown-container p {
+    color: #374151;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+/* SVG artifact */
+.artifact-svg-container {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+
+.artifact-svg-container svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Mermaid diagram */
+.artifact-mermaid-container {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    overflow: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .artifact-panel {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+}
+
+/* When artifact is open, adjust main content */
+body.artifact-open #chatContainer {
+    margin-right: 45%;
+    transition: margin-right 0.3s ease-in-out;
+}
+
+@media (max-width: 1024px) {
+    body.artifact-open #chatContainer {
+        margin-right: 0;
+    }
+}
+
+        /* ==================== WEB SEARCH MODAL ==================== */
+.search-provider-option {
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: all 0.2s;
+    background: white;
+}
+
+.search-provider-option:hover {
+    border-color: #667eea;
+    background: #f8f9ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.search-provider-option input[type="radio"] {
+    display: none;
+}
+
+.search-provider-option input[type="radio"]:checked + label {
+    color: #667eea;
+}
+
+.search-provider-option input[type="radio"]:checked ~ * {
+    border-color: #667eea;
+}
+
+.search-provider-option:has(input[type="radio"]:checked) {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #f8f9ff 0%, #eff0ff 100%);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.badge-recommended {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.config-section {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Search result cards in chat */
+.search-result-card {
+    background: white;
+    border: 2px solid #e0e7ff;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.search-result-card:hover {
+    border-color: #667eea;
+    background: #f8f9ff;
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.search-result-title {
+    color: #1e40af;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-result-url {
+    color: #059669;
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.search-result-snippet {
+    color: #4b5563;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.search-source-badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    background: #dbeafe;
+    color: #1e40af;
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+
+        /* ==================== CODE EXECUTION ==================== */
+.execution-provider-option {
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: all 0.2s;
+    background: white;
+}
+
+.execution-provider-option:hover {
+    border-color: #10b981;
+    background: #f0fdf4;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+}
+
+.execution-provider-option input[type="radio"] {
+    display: none;
+}
+
+.execution-provider-option:has(input[type="radio"]:checked) {
+    border-color: #10b981;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.lang-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Code execution output in chat */
+.code-execution-output {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.875rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border-left: 4px solid #10b981;
+}
+
+.code-execution-error {
+    background: #2d1e1e;
+    color: #ef4444;
+    border-left-color: #ef4444;
+}
+
+.code-execution-card {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border: 2px solid #10b981;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.execution-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.execution-stat {
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    border: 1px solid #d1fae5;
+}
+
+.execution-stat strong {
+    color: #059669;
+}
+
+/* Humanize Toggle Button */
+.humanize-toggle-btn {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 9999;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    transition: all 0.3s ease;
+}
+
+.humanize-toggle-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.humanize-toggle-btn.active {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.6);
+    }
+}
+
+.humanize-label {
+    font-size: 14px;
+}
+
+/* Humanize Badge */
+.humanize-badge {
+    animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+    /* responsive table wrapper */
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 0.5rem;
+  border-radius: 8px;
+}
+
+/* basic AI table styles */
+.ai-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background: white;
+}
+.ai-table th,
+.ai-table td {
+  border: 1px solid #e6e6e6;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+.ai-table thead th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+.ai-table tbody tr:nth-child(even) {
+  background: #fbfbfb;
+}
+.table-responsive code, .table-responsive pre {
+  white-space: normal; /* allow code to wrap within table cells */
+}
+
+
+   /* Code Execution Styles */
+.run-code-btn {
+ position: absolute;
+            top: 8px;
+            right: 80px;
+            padding: 6px 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            z-index: 10;
+}
+
+.run-code-btn:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.run-code-btn i {
+    margin-right: 0.5rem;
+}
+
+#codeExecutionModal {
+    display: none;
+}
+
+#codeExecutionModal.active {
+    display: flex;
+}    
+
+        /* ==================== TABLE STYLING SYSTEM ==================== */
+
+.table-container {
+    margin: 1.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: white;
+    border: 2px solid #e5e7eb;
+}
+
+.table-header-bar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-title {
+    color: white;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+}
+
+.table-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.table-action-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+}
+
+.table-action-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 600px;
+}
+
+.ai-generated-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.ai-generated-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.ai-generated-table th {
+    padding: 0.875rem;
+    font-weight: 700;
+    color: white;
+    border-bottom: 3px solid #764ba2;
+    white-space: nowrap;
+}
+
+.ai-generated-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.ai-generated-table tbody tr {
+    transition: background-color 0.15s;
+}
+
+.ai-generated-table tbody tr:hover {
+    background-color: #f3f4f6;
+}
+
+.ai-generated-table tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+.ai-generated-table tbody tr:nth-child(even):hover {
+    background-color: #f3f4f6;
+}
+
+/* Cell alignment classes */
+.ai-generated-table .text-left {
+    text-align: left;
+}
+
+.ai-generated-table .text-center {
+    text-align: center;
+}
+
+.ai-generated-table .text-right {
+    text-align: right;
+}
+
+.table-footer {
+    background: #f9fafb;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.8rem;
+    color: #6b7280;
+    text-align: right;
+}
+
+.table-stats {
+    font-weight: 600;
+}
+
+/* Fullscreen modal for tables */
+.table-fullscreen-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.table-fullscreen-modal.active {
+    opacity: 1;
+}
+
+.table-fullscreen-content {
+    background: white;
+    border-radius: 16px;
+    max-width: 95vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.table-fullscreen-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.table-fullscreen-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.table-fullscreen-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.25rem;
+    transition: all 0.2s;
+}
+
+.table-fullscreen-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.table-fullscreen-body {
+    flex: 1;
+    overflow: auto;
+    padding: 1.5rem;
+}
+
+.table-fullscreen-body table {
+    width: 100%;
+}
+
+/* Responsive tables */
+@media (max-width: 768px) {
+    .table-wrapper {
+        max-height: 400px;
+    }
+
+    .ai-generated-table {
+        font-size: 0.8rem;
+    }
+
+    .ai-generated-table th,
+    .ai-generated-table td {
+        padding: 0.5rem;
+    }
+
+    .table-action-btn {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .table-fullscreen-modal {
+        padding: 1rem;
+    }
+}
+
+/* Special styling for scientific report tables */
+.scientific-report-table {
+    border: 2px solid #374151;
+}
+
+.scientific-report-table th {
+    background: #374151;
+    color: white;
+}
+
+.scientific-report-table td {
+    font-family: 'Courier New', monospace;
+}
+
+/* Zebra striping for better readability */
+.ai-generated-table.striped tbody tr:nth-child(odd) {
+    background-color: white;
+}
+
+.ai-generated-table.striped tbody tr:nth-child(even) {
+    background-color: #f0f4ff;
+}
+
+/* Highlight column on hover */
+.ai-generated-table.hover-columns td:hover,
+.ai-generated-table.hover-columns th:hover {
+    background-color: #dbeafe !important;
+    cursor: pointer;
+}
+
+/* Compact table variant */
+.ai-generated-table.compact th,
+.ai-generated-table.compact td {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+}
+
+/* Bordered table variant */
+.ai-generated-table.bordered th,
+.ai-generated-table.bordered td {
+    border: 1px solid #d1d5db;
+}
+
+/* Code cell formatting */
+.ai-generated-table td code {
+    background: #f3f4f6;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.85em;
+    color: #dc2626;
+}
+
+
+        /* Ensure pre blocks are relative for absolute positioning of buttons */
+pre {
+    position: relative;
+    /* Add padding-top to make space for both buttons */
+    padding-top: 2.5rem; /* Adjust if your buttons are larger or you need more space */
+    /* Other existing pre styles */
+}
+
+/* Base styling for the edit button */
+.edit-code-button {
+    position: absolute;
+    top: 8px; /* 🔥 FIXED: Explicit top position 🔥 */
+    right: 80px; /* 🔥 FIXED: Explicit right position 🔥 */
+    padding: 6px 12px; /* 🔥 FIXED: Explicit padding 🔥 */
+    background: #667eea; /* 🔥 FIXED: Explicit background color 🔥 */
+    color: white; /* 🔥 FIXED: Explicit text color 🔥 */
+    border: none; /* 🔥 FIXED: No border 🔥 */
+    border-radius: 6px; /* 🔥 FIXED: Explicit border-radius 🔥 */
+    cursor: pointer; /* 🔥 FIXED: Cursor style 🔥 */
+    font-size: 12px; /* 🔥 FIXED: Explicit font size 🔥 */
+    font-weight: 600; /* 🔥 FIXED: Explicit font weight 🔥 */
+    transition: all 0.2s; /* 🔥 FIXED: Explicit transition for hover effects 🔥 */
+    z-index: 10; /* 🔥 FIXED: Explicit z-index 🔥 */
+
+    /* Keep opacity for the show/hide on hover functionality */
+    opacity: 0; /* Hidden by default */
+}
+
+/* Hover effect for the edit button */
+.edit-code-button:hover {
+    background: #5a67d8; /* Slightly darker on hover */
+}
+
+/* Show edit button on hover of the <pre> block (which has 'group' class now) */
+pre.group:hover .edit-code-button,
+.edit-code-button:focus { /* Also show on focus for accessibility */
+    opacity: 1;
+}
+
+/* Styling for the code block when it's in editing mode */
+code.is-editing {
+    background-color: #fffbeb; /* Light yellow background for edit mode */
+    color: #333; /* Darker text for contrast on light background */
+    border: 1px dashed #fcd34d; /* Yellow dashed border */
+    padding: 1rem; /* Adjust padding for better typing experience */
+    border-radius: 0.5rem;
+    cursor: text;
+    min-height: 100px; /* Ensure it's not too small when empty */
+    white-space: pre-wrap; /* Allow text to wrap within the editable area */
+    word-break: break-word; /* Break long words if necessary */
+    outline: none; /* Remove default browser focus outline */
+    -webkit-user-modify: read-write; /* Enable more robust editing for WebKit browsers */
+    user-modify: read-write; /* Standard property */
+}
+
+/* Visual feedback when code block is focused while in editing mode */
+code.is-editing:focus {
+    outline: 2px solid #a78bfa; /* A subtle purple outline */
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.3); /* Soft shadow */
+}
+
+/* Ensure the copy button's position is consistent and doesn't overlap */
+/* Assuming 'copy-code-button' is the class for your copy button */
+.copy-code-button {
+    right: 0.5rem !important; /* Position it further to the right (8px) */
+    top: 0.5rem !important; /* Align with the edit button */
+    z-index: 11; /* Ensure copy button is above edit button if they might overlap */
+}
+
+/* Code Canvas Modal Styles */
+.code-canvas-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.code-canvas-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.code-canvas-container {
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    height: 95%;
+    max-width: 1400px;
+    max-height: 900px;
+    overflow: hidden;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.code-canvas-overlay.active .code-canvas-container {
+    transform: scale(1);
+}
+
+.code-canvas-container.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+    z-index: 10001; /* Above the overlay */
+}
+
+.code-canvas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.code-canvas-header h2 {
+    color: white;
+}
+.code-canvas-header i {
+    color: #a78bfa; /* Lighter purple for icon */
+}
+.code-canvas-header .text-gray-600 {
+    color: rgba(255, 255, 255, 0.8);
+}
+.code-canvas-header .canvas-header-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.code-canvas-header .canvas-header-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.code-canvas-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    background-color: #f0f2f5;
+}
+
+.code-editor-panel,
+.code-preview-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: #f8f9fa; /* Light background for preview */
+}
+
+.code-editor-panel {
+    border-right: 1px solid #ddd;
+    background-color: #282c34; /* Dark background for editor */
+}
+
+#codeEditorTextarea {
+    flex: 1;
+    border: none;
+    font-family: 'Fira Code', 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding: 1rem;
+    background-color: #282c34;
+    color: #abb2bf;
+}
+
+.code-editor-footer,
+.code-preview-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #3b3e44; /* Darker footer for editor */
+    border-top: 1px solid #444;
+    color: #abb2bf;
+}
+
+.code-preview-footer {
+    background-color: #e2e8f0; /* Lighter footer for preview */
+    border-top: 1px solid #cbd5e1;
+    color: #4a5568;
+}
+
+.canvas-footer-btn {
+    background-color: #4a5568;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.canvas-footer-btn:hover {
+    background-color: #6a7486;
+    transform: translateY(-1px);
+}
+
+.canvas-footer-btn.run-main-btn {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    font-weight: bold;
+    padding: 0.5rem 1.2rem;
+}
+
+.canvas-footer-btn.run-main-btn:hover {
+    background: linear-gradient(90deg, #5a67d8, #6a3e91);
+}
+
+.code-canvas-resizer {
+    width: 8px;
+    cursor: col-resize;
+    background-color: #4a5568;
+    position: relative;
+    z-index: 1;
+    transition: background-color 0.2s ease;
+}
+
+.code-canvas-resizer:hover {
+    background-color: #667eea;
+}
+
+#codePreviewFrame {
+    flex: 1;
+    background-color: #fff;
+}
+
+.preview-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #a0aec0;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.preview-placeholder.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Styles for copy/run buttons on code blocks in chat */
+.message-content pre {
+    position: relative;
+    padding-top: 2.5rem; /* Make space for buttons */
+}
+
+.copy-code-btn, .run-code-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.3rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.copy-code-btn:hover, .run-code-btn:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    transform: translateY(-1px);
+}
+
+.copy-code-btn.copied {
+    background-color: #10b981; /* Green for copied */
+}
+
+.run-code-btn {
+    right: 5.5rem; /* Position next to copy button */
+    background-color: rgba(102, 126, 234, 0.7); /* Purple for run */
+}
+.run-code-btn:hover {
+    background-color: rgba(102, 126, 234, 0.9);
+}
+
+/* Edit button for code blocks */
+.edit-code-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 12.5rem; /* Position next to run button */
+    background-color: rgba(245, 158, 11, 0.7); /* Orange for edit */
+    color: white;
+    border: none;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.3rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    opacity: 0; /* Hidden by default */
+}
+
+.message-content pre.group:hover .edit-code-button {
+    opacity: 1; /* Show on hover of parent pre */
+}
+
+.edit-code-button:hover {
+    background-color: rgba(245, 158, 11, 0.9);
+    transform: translateY(-1px);
+}
+
+code.is-editing {
+    background-color: #3e3e3e; /* Slightly different background for editing */
+    border: 1px dashed #a78bfa;
+    padding: 0.5rem;
+    margin: -0.5rem; /* Adjust padding to make border appear around the text area */
+    outline: none; /* Remove default outline */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .code-canvas-container {
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .code-canvas-body {
+        flex-direction: column;
+    }
+
+    .code-editor-panel,
+    .code-preview-panel {
+        height: 50%;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .code-canvas-resizer {
+        width: 100%;
+        height: 8px;
+        cursor: row-resize;
+    }
+
+    /* Stack buttons on code blocks vertically on small screens */
+    .message-content pre {
+        padding-top: 6rem; /* Ensure enough space for stacked buttons */
+    }
+    .edit-code-button, .run-code-btn, .copy-code-btn {
+        position: absolute;
+        top: 0.5rem; /* Start from the top */
+        right: 0.5rem; /* Align to the right */
+        margin-right: 0; /* Remove any previous right margins */
+        opacity: 1; /* Always show buttons on small screens */
+    }
+    .run-code-btn {
+        top: 2.5rem; /* Stack below edit button */
+    }
+    .copy-code-btn {
+        top: 4.5rem; /* Stack below run button */
+    }
+}
+
+/* Tablet and smaller desktops (up to 1024px) */
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed;
+        height: 100vh;
+        z-index: 15;
+        transform: translateX(-280px); /* Collapsed by default */
+    }
+    .sidebar.active { /* Use 'active' class to show it */
+        transform: translateX(0);
+    }
+    .toggle-sidebar {
+        display: flex; /* Show the toggle button */
+    }
+    /* When artifact panel is open on tablet, main content does not shrink */
+    body.artifact-open #chatContainer {
+        margin-right: 0;
+    }
+    /* Artifact panel goes full width on tablet */
+    .artifact-panel {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+    /* Mind map controls position adjustment for smaller screens */
+    .mindmap-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-left: 1rem;
+    }
+    .mindmap-zoom-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-right: 1rem;
+    }
+    .mindmap-canvas {
+        height: 400px; /* Reduce height for better fit on tablet screens */
+    }
+}
+
+/* Mobile devices (up to 768px) */
+@media (max-width: 768px) {
+    /* Main content padding */
+    .chat-container, #mainToolView {
+        padding: 1rem;
+        padding-bottom: 180px; /* Ensure space for input area */
+    }
+
+    /* Code Canvas Modal - Fullscreen behavior */
+    .code-canvas-container {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        transform: scale(1); /* Ensure full scale */
+    }
+    .code-canvas-body {
+        flex-direction: column; /* Stack editor and preview vertically */
+    }
+    .code-editor-panel,
+    .code-preview-panel {
+        height: 50%;
+        width: 100%;
+        border-right: none; /* Remove vertical border */
+        border-bottom: 1px solid #ddd; /* Add horizontal border */
+    }
+    .code-canvas-resizer {
+        width: 100%;
+        height: 8px; /* Horizontal resizer */
+        cursor: row-resize;
+    }
+
+    /* Code block buttons - Stacked positioning */
+    .message-content pre {
+        padding-top: 6rem; /* Ensure enough space for 3 stacked buttons */
+    }
+    .edit-code-button, .run-code-btn, .copy-code-btn {
+        position: absolute;
+        right: 0.5rem; /* Align to the right edge */
+        margin-right: 0; /* Reset any specific margins */
+        opacity: 1; /* Always visible on mobile */
+    }
+    .edit-code-button {
+        top: 0.5rem;
+    }
+    .run-code-btn {
+        top: 2.5rem; /* Stack below edit button */
+    }
+    .copy-code-btn {
+        top: 4.5rem; /* Stack below run button */
+    }
+
+    /* Mind map specific adjustments for small screens */
+    .mindmap-node {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        min-width: 100px;
+    }
+    .mindmap-node.central {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+    }
+    .mindmap-edit-panel {
+        width: 90%; /* Make it wider */
+        bottom: 1rem; /* Bring it closer to the bottom */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Continue generation banner */
+    .continue-generation-banner {
+        bottom: 180px; /* Adjust if input area shifts */
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.75rem 1rem;
+        flex-direction: column; /* Stack items */
+        text-align: center;
+    }
+    .continue-btn {
+        width: 100%; /* Make button full width */
+        margin-top: 0.5rem;
+    }
+
+    /* Camera modal goes full screen */
+    .camera-modal-content {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+    .camera-header {
+        padding: 15px;
+    }
+    .camera-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .camera-btn {
+        width: 100%;
+    }
+
+    /* Table fullscreen modal */
+    .table-fullscreen-modal {
+        padding: 0; /* Remove padding to maximize space */
+    }
+    .table-fullscreen-content {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+    .table-wrapper {
+        max-height: calc(100vh - 120px); /* Adjust based on header/footer height */
+    }
+}
+
+/* New styles for the preview canvas, optimized for phones (max-width: 768px) */
+@media (max-width: 768px) {
+    .canvas-visualization {
+        /* Take up full width with some minimal side spacing */
+        width: calc(100% - 1rem); /* 0.5rem padding on each side */
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        padding: 0.75rem; /* Reduced padding inside the container */
+        border-radius: 0.75rem; /* Slightly smaller border-radius */
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Lighter shadow */
+        border: 1px solid #e5e7eb; /* More subtle border */
+    }
+
+    .canvas-visualization canvas {
+        width: 100%; /* Make the canvas fill its container width */
+        height: auto; /* Maintain aspect ratio */
+        max-height: 350px; /* Cap the height to prevent it from being too tall on some phones */
+        display: block; /* Ensure it behaves as a block element */
+        border-radius: 0.5rem; /* Slightly rounded corners for the canvas itself */
+        background-color: #fcfdff; /* A clean, light background for the canvas */
+    }
+}
+
+/* Further refinements for very small phones (max-width: 480px) */
+@media (max-width: 480px) {
+    .canvas-visualization {
+        width: calc(100% - 0.5rem); /* Even tighter to edges */
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
+        padding: 0.5rem; /* Further reduced padding */
+        border-radius: 0.5rem;
+    }
+    .canvas-visualization canvas {
+        max-height: 250px; /* Further cap height for very small screens */
+        border-radius: 0.3rem;
+    }
+}
+
+/* Tablet and smaller desktops (up to 1024px) */
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed;
+        height: 100vh;
+        z-index: 15;
+        transform: translateX(-280px); /* Collapsed by default */
+    }
+    .sidebar.active { /* Use 'active' class to show it */
+        transform: translateX(0);
+    }
+    .toggle-sidebar {
+        display: flex; /* Show the toggle button */
+    }
+    /* When artifact panel is open on tablet, main content does not shrink */
+    body.artifact-open #chatContainer {
+        margin-right: 0;
+    }
+    /* Artifact panel goes full width on tablet */
+    .artifact-panel {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+    /* Mind map controls position adjustment for smaller screens */
+    .mindmap-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-left: 1rem;
+    }
+    .mindmap-zoom-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-right: 1rem;
+    }
+    .mindmap-canvas {
+        height: 400px; /* Reduce height for better fit on tablet screens */
+    }
+}
+
+/* Mobile devices (up to 768px) */
+@media (max-width: 768px) {
+    /* Main content padding */
+    .chat-container, #mainToolView {
+        padding: 1rem;
+        padding-bottom: 180px; /* Ensure space for input area */
+    }
+
+    /* Code Canvas Modal - Fullscreen behavior */
+    .code-canvas-container {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        transform: scale(1); /* Ensure full scale */
+    }
+    .code-canvas-body {
+        flex-direction: column; /* Stack editor and preview vertically */
+    }
+    .code-editor-panel,
+    .code-preview-panel {
+        height: 50%;
+        width: 100%;
+        border-right: none; /* Remove vertical border */
+        border-bottom: 1px solid #ddd; /* Add horizontal border */
+    }
+    .code-canvas-resizer {
+        width: 100%;
+        height: 8px; /* Horizontal resizer */
+        cursor: row-resize;
+    }
+
+    /* Code block buttons - Stacked positioning */
+    .message-content pre {
+        padding-top: 6rem; /* Ensure enough space for 3 stacked buttons */
+    }
+    .edit-code-button, .run-code-btn, .copy-code-btn {
+        position: absolute;
+        right: 0.5rem; /* Align to the right edge */
+        margin-right: 0; /* Reset any specific margins */
+        opacity: 1; /* Always visible on mobile */
+    }
+    .edit-code-button {
+        top: 0.5rem;
+    }
+    .run-code-btn {
+        top: 2.5rem; /* Stack below edit button */
+    }
+    .copy-code-btn {
+        top: 4.5rem; /* Stack below run button */
+    }
+
+    /* Mind map specific adjustments for small screens */
+    .mindmap-node {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        min-width: 100px;
+    }
+    .mindmap-node.central {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+    }
+    .mindmap-edit-panel {
+        width: 90%; /* Make it wider */
+        bottom: 1rem; /* Bring it closer to the bottom */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Continue generation banner */
+    .continue-generation-banner {
+        bottom: 180px; /* Adjust if input area shifts */
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.75rem 1rem;
+        flex-direction: column; /* Stack items */
+        text-align: center;
+    }
+    .continue-btn {
+        width: 100%; /* Make button full width */
+        margin-top: 0.5rem;
+    }
+
+    /* Camera modal goes full screen */
+    .camera-modal-content {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+    .camera-header {
+        padding: 15px;
+    }
+    .camera-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .camera-btn {
+        width: 100%;
+    }
+
+    /* Table fullscreen modal */
+    .table-fullscreen-modal {
+        padding: 0; /* Remove padding to maximize space */
+    }
+    .table-fullscreen-content {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+    .table-wrapper {
+        max-height: calc(100vh - 120px); /* Adjust based on header/footer height */
+    }
+}
+
+/* Very small mobile devices (up to 480px) */
+@media (max-width: 480px) {
+    /* Adjust general padding for main content to be less */
+    .chat-container, #mainToolView {
+        padding: 0.75rem;
+        padding-bottom: 150px; /* Keep input area space */
+    }
+    .input-area {
+        padding: 0.75rem;
+    }
+
+    /* Adjust font sizes for readability on tiny screens */
+    .message-content h1 { font-size: 1.4rem; }
+    .message-content h2 { font-size: 1.2rem; }
+    .message-content h3 { font-size: 1rem; }
+    .message-content p, .message-content ul, .message-content ol, .message-content blockquote, .message-content table { font-size: 0.85rem; }
+
+    /* Adjust table padding and font size further */
+    .ai-generated-table {
+        font-size: 0.7rem;
+    }
+    .ai-generated-table th,
+    .ai-generated-table td {
+        padding: 0.3rem;
+    }
+
+    /* Adjust modal content width for smaller screens */
+    .modal-content {
+        width: 98%;
+        padding: 1rem;
+    }
+    .header-bar {
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+/* Tablet and smaller desktops (up to 1024px) */
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed;
+        height: 100vh;
+        z-index: 15;
+        transform: translateX(-280px); /* Collapsed by default */
+    }
+    .sidebar.active { /* Use 'active' class to show it */
+        transform: translateX(0);
+    }
+    .toggle-sidebar {
+        display: flex; /* Show the toggle button */
+    }
+    /* When artifact panel is open on tablet, main content does not shrink */
+    body.artifact-open #chatContainer {
+        margin-right: 0;
+    }
+    /* Artifact panel goes full width on tablet */
+    .artifact-panel {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+    /* Mind map controls position adjustment for smaller screens */
+    .mindmap-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-left: 1rem;
+    }
+    .mindmap-zoom-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-right: 1rem;
+    }
+    .mindmap-canvas {
+        height: 400px; /* Reduce height for better fit on tablet screens */
+    }
+}
+
+/* Mobile devices (up to 768px) */
+@media (max-width: 768px) {
+    /* Main content padding */
+    .chat-container, #mainToolView {
+        padding: 1rem;
+        padding-bottom: 180px; /* Ensure space for input area */
+    }
+
+    /* Code Canvas Modal - Fullscreen behavior */
+    .code-canvas-container {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        transform: scale(1); /* Ensure full scale */
+    }
+    .code-canvas-body {
+        flex-direction: column; /* Stack editor and preview vertically */
+    }
+    .code-editor-panel,
+    .code-preview-panel {
+        height: 50%;
+        width: 100%;
+        border-right: none; /* Remove vertical border */
+        border-bottom: 1px solid #ddd; /* Add horizontal border */
+    }
+    .code-canvas-resizer {
+        width: 100%;
+        height: 8px; /* Horizontal resizer */
+        cursor: row-resize;
+    }
+
+    /* Code block buttons - Stacked positioning */
+    .message-content pre {
+        padding-top: 6rem; /* Ensure enough space for 3 stacked buttons */
+    }
+    .edit-code-button, .run-code-btn, .copy-code-btn {
+        position: absolute;
+        right: 0.5rem; /* Align to the right edge */
+        margin-right: 0; /* Reset any specific margins */
+        opacity: 1; /* Always visible on mobile */
+    }
+    .edit-code-button {
+        top: 0.5rem;
+    }
+    .run-code-btn {
+        top: 2.5rem; /* Stack below edit button */
+    }
+    .copy-code-btn {
+        top: 4.5rem; /* Stack below run button */
+    }
+
+    /* Mind map specific adjustments for small screens */
+    .mindmap-node {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        min-width: 100px;
+    }
+    .mindmap-node.central {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+    }
+    .mindmap-edit-panel {
+        width: 90%; /* Make it wider */
+        bottom: 1rem; /* Bring it closer to the bottom */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Continue generation banner */
+    .continue-generation-banner {
+        bottom: 180px; /* Adjust if input area shifts */
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.75rem 1rem;
+        flex-direction: column; /* Stack items */
+        text-align: center;
+    }
+    .continue-btn {
+        width: 100%; /* Make button full width */
+        margin-top: 0.5rem;
+    }
+
+    /* Camera modal goes full screen */
+    .camera-modal-content {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+    .camera-header {
+        padding: 15px;
+    }
+    .camera-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .camera-btn {
+        width: 100%;
+    }
+
+    /* Table fullscreen modal */
+    .table-fullscreen-modal {
+        padding: 0; /* Remove padding to maximize space */
+    }
+    .table-fullscreen-content {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+    .table-wrapper {
+        max-height: calc(100vh - 120px); /* Adjust based on header/footer height */
+    }
+}
+
+/* Very small mobile devices (up to 480px) */
+@media (max-width: 480px) {
+    /* Adjust general padding for main content to be less */
+    .chat-container, #mainToolView {
+        padding: 0.75rem;
+        padding-bottom: 150px; /* Keep input area space */
+    }
+    .input-area {
+        padding: 0.75rem;
+    }
+
+    /* Adjust font sizes for readability on tiny screens */
+    .message-content h1 { font-size: 1.4rem; }
+    .message-content h2 { font-size: 1.2rem; }
+    .message-content h3 { font-size: 1rem; }
+    .message-content p, .message-content ul, .message-content ol, .message-content blockquote, .message-content table { font-size: 0.85rem; }
+
+    /* Adjust table padding and font size further */
+    .ai-generated-table {
+        font-size: 0.7rem;
+    }
+    .ai-generated-table th,
+    .ai-generated-table td {
+        padding: 0.3rem;
+    }
+
+    /* Adjust modal content width for smaller screens */
+    .modal-content {
+        width: 98%;
+        padding: 1rem;
+    }
+    .header-bar {
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+
+        /* ==================== MOBILE RESPONSIVE DESIGN (ChatGPT Style) ==================== */
+
+/* Tablet and smaller desktops (up to 1024px) */
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed;
+        height: 100vh;
+        z-index: 15;
+        transform: translateX(-280px); /* Collapsed by default */
+    }
+    .sidebar.active { /* Use 'active' class to show it */
+        transform: translateX(0);
+    }
+    .toggle-sidebar {
+        display: flex; /* Show the toggle button */
+    }
+    /* When artifact panel is open on tablet, main content does not shrink */
+    body.artifact-open #chatContainer {
+        margin-right: 0;
+    }
+    /* Artifact panel goes full width on tablet */
+    .artifact-panel {
+        width: 100%;
+        max-width: 100%;
+        min-width: 100%;
+    }
+    /* Mind map controls position adjustment for smaller screens */
+    .mindmap-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-left: 1rem;
+    }
+    .mindmap-zoom-controls {
+        position: static; /* Remove absolute positioning */
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-right: 1rem;
+    }
+    .mindmap-canvas {
+        height: 400px; /* Reduce height for better fit on tablet screens */
+    }
+}
+
+/* Mobile devices (up to 768px) */
+@media (max-width: 768px) {
+    /* Main content padding */
+    .chat-container, #mainToolView {
+        padding: 1rem;
+        padding-bottom: 180px; /* Ensure space for input area */
+    }
+
+    /* Code Canvas Modal - Fullscreen behavior */
+    .code-canvas-container {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        transform: scale(1); /* Ensure full scale */
+    }
+    .code-canvas-body {
+        flex-direction: column; /* Stack editor and preview vertically */
+    }
+    .code-editor-panel,
+    .code-preview-panel {
+        height: 50%;
+        width: 100%;
+        border-right: none; /* Remove vertical border */
+        border-bottom: 1px solid #ddd; /* Add horizontal border */
+    }
+    .code-canvas-resizer {
+        width: 100%;
+        height: 8px; /* Horizontal resizer */
+        cursor: row-resize;
+    }
+
+    /* Code block buttons - Stacked positioning */
+    .message-content pre {
+        padding-top: 6rem; /* Ensure enough space for 3 stacked buttons */
+    }
+    .edit-code-button, .run-code-btn, .copy-code-btn {
+        position: absolute;
+        right: 0.5rem; /* Align to the right edge */
+        margin-right: 0; /* Reset any specific margins */
+        opacity: 1; /* Always visible on mobile */
+    }
+    .edit-code-button {
+        top: 0.5rem;
+    }
+    .run-code-btn {
+        top: 2.5rem; /* Stack below edit button */
+    }
+    .copy-code-btn {
+        top: 4.5rem; /* Stack below run button */
+    }
+
+    /* Mind map specific adjustments for small screens */
+    .mindmap-node {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        min-width: 100px;
+    }
+    .mindmap-node.central {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+    }
+    .mindmap-edit-panel {
+        width: 90%; /* Make it wider */
+        bottom: 1rem; /* Bring it closer to the bottom */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Continue generation banner */
+    .continue-generation-banner {
+        bottom: 180px; /* Adjust if input area shifts */
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0.75rem 1rem;
+        flex-direction: column; /* Stack items */
+        text-align: center;
+    }
+    .continue-btn {
+        width: 100%; /* Make button full width */
+        margin-top: 0.5rem;
+    }
+
+    /* Camera modal goes full screen */
+    .camera-modal-content {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+    .camera-header {
+        padding: 15px;
+    }
+    .camera-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .camera-btn {
+        width: 100%;
+    }
+
+    /* Table fullscreen modal */
+    .table-fullscreen-modal {
+        padding: 0; /* Remove padding to maximize space */
+    }
+    .table-fullscreen-content {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+    .table-wrapper {
+        max-height: calc(100vh - 120px); /* Adjust based on header/footer height */
+    }
+}
+
+/* Very small mobile devices (up to 480px) */
+@media (max-width: 480px) {
+    /* Adjust general padding for main content to be less */
+    .chat-container, #mainToolView {
+        padding: 0.75rem;
+        padding-bottom: 150px; /* Keep input area space */
+    }
+    .input-area {
+        padding: 0.75rem;
+    }
+
+    /* Adjust font sizes for readability on tiny screens */
+    .message-content h1 { font-size: 1.4rem; }
+    .message-content h2 { font-size: 1.2rem; }
+    .message-content h3 { font-size: 1rem; }
+    .message-content p, .message-content ul, .message-content ol, .message-content blockquote, .message-content table { font-size: 0.85rem; }
+
+    /* Adjust table padding and font size further */
+    .ai-generated-table {
+        font-size: 0.7rem;
+    }
+    .ai-generated-table th,
+    .ai-generated-table td {
+        padding: 0.3rem;
+    }
+
+    /* Adjust modal content width for smaller screens */
+    .modal-content {
+        width: 98%;
+        padding: 1rem;
+    }
+    .header-bar {
+        padding: 0.5rem 0.75rem;
+    }
+}
+
+
+        /* Mobile-optimized canvas visualizations */
+@media (max-width: 768px) {
+    .canvas-visualization {
+        width: calc(100% - 1rem);
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        padding: 0.75rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border: 1px solid #e5e7eb;
+    }
+
+    .canvas-visualization canvas {
+        width: 100%;
+        height: auto;
+        max-height: 350px;
+        display: block;
+        border-radius: 0.5rem;
+        background-color: #fcfdff;
+    }
+}
+
+@media (max-width: 480px) {
+    .canvas-visualization {
+        width: calc(100% - 0.5rem);
+        margin-left: 0.25rem;
+        margin-right: 0.25rem;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+    }
+    .canvas-visualization canvas {
+        max-height: 250px;
+        border-radius: 0.3rem;
+    }
+}
