@@ -210,6 +210,7 @@
 
     
 
+- When asked to open a canvas, jsut open the coding document for the user to use. Just open one. Just make it and write inside "Click "Edit" or "Run Code" Buttons to Start Typing Here"
 // Add these capabilities:
 - Generate complete HTML/CSS/JS apps (not just code snippets)
 - Create React/Vue components with routing
@@ -9235,7 +9236,7 @@ function initializeCodeCanvas() {
             this.currentLanguage = language;
             this.editor.value = code;
             this.languageSelect.value = language;
-            
+             this.canvas.style.display = 'flex';
             this.canvas.classList.remove('hidden'); // Make it visible (display: flex) and centered
             setTimeout(() => {
                 this.canvas.classList.add('active'); // Trigger opacity/visibility transition
@@ -9257,7 +9258,8 @@ function initializeCodeCanvas() {
             this.canvas.classList.remove('active');
             
             setTimeout(() => {
-                this.canvas.style.display = 'none';
+                
+                this.canvas.classList.add('hidden');
                 this.clearPreview();
             }, 300);
         },
@@ -9558,8 +9560,11 @@ function initializeCodeCanvas() {
             });
             
             // Overlay click
-            this.canvas?.querySelector('.code-canvas-overlay')?.addEventListener('click', () => {
-                this.close();
+           this.canvas?.querySelector('.code-canvas-overlay')?.addEventListener('click', (e) => {
+                // Only close if the click is directly on the overlay, not its children
+                if (e.target === this.canvas.querySelector('.code-canvas-overlay')) {
+                    this.close();
+                }
             });
             
             // Copy button
@@ -10225,3 +10230,31 @@ const DeploymentManager = {
 // Initialize Code Canvas AFTER DOM is fully loaded
 
 
+
+
+// Mobile sidebar toggle
+const sidebarToggle = document.getElementById('toggleSidebar');
+const sidebar = document.getElementById('sidebar');
+
+sidebarToggle?.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+    
+    // Close sidebar when clicking outside on mobile
+    if (sidebar.classList.contains('active') && window.innerWidth <= 1024) {
+        document.addEventListener('click', function closeSidebar(e) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                document.removeEventListener('click', closeSidebar);
+            }
+        });
+    }
+});
+
+// Hide sidebar automatically on mobile when tool is selected
+document.querySelectorAll('.tool-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('active');
+        }
+    });
+});
