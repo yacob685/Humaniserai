@@ -3842,3 +3842,54 @@ code.is-editing {
 #openMultiFileRunnerBtn i {
     font-size: 1.25rem; /* text-xl */
 }
+
+
+
+/* Web Project Suggestion Animation */
+.web-project-suggestion {
+    animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Run Web Project Button (in file status) */
+#runWebProjectBtn {
+    transition: all 0.3s ease;
+}
+
+#runWebProjectBtn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+#runWebProjectBtn:active {
+    transform: scale(0.98);
+}
+
+/* Attachment Dropdown Run Project Option */
+.dropdown-option {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 0.5rem;
+}
+
+.dropdown-option:hover {
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    transform: translateX(4px);
+}
+
+.dropdown-option i {
+    font-size: 1.25rem;
+}
