@@ -195,6 +195,10 @@
                             <i class="fas fa-paperclip text-xl"></i>
                         </button>
 
+                        <button id="openMultiFileRunnerBtn" class="p-3 text-gray-500 hover:text-indigo-600 rounded-lg transition-all hover:bg-indigo-50" title="Multi-File Runner">
+    <i class="fas fa-play-circle text-xl"></i>
+</button>
+
 <button id="humanizeButton" class="text-gray-500 hover:text-green-600 p-2 rounded-lg mr-2 transition-colors" title="Humanize Text">
     <i class="fas fa-user-edit text-xl"></i>
 </button>
@@ -378,93 +382,196 @@
 </div>
 
     <!-- Code Preview Canvas Modal -->
+<!-- Code Preview Canvas (Enhanced with 3 panels) -->
+<!-- Code Preview Canvas (Enhanced with 3 panels) -->
 <div id="codePreviewCanvas" class="code-canvas-overlay hidden">
     <div class="code-canvas-container">
         <!-- Header -->
         <div class="code-canvas-header">
-            <div class="flex items-center gap-4">
-                <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-                    <i class="fas fa-code text-purple-600"></i> Code Canvas
-                </h2>
-                <span id="canvasSubtitle" class="text-sm text-gray-600">JavaScript Editor</span>
+            <div class="code-canvas-title">
+                <i class="fas fa-code text-2xl"></i>
+                <div>
+                    <h3 id="canvasTitle" class="text-xl font-bold">Code Canvas</h3>
+                    <!-- Removed the misplaced 'Upload Files' button from here -->
+                    <p id="canvasSubtitle" class="text-sm text-gray-400">JavaScript Editor</p>
+                    <p id="canvasChatLabel" class="text-xs text-purple-400 mt-1">
+                        <i class="fas fa-comments mr-1"></i>
+                        <span id="canvasChatName">Current Chat</span>
+                    </p>
+                </div>
             </div>
-            <div class="flex items-center gap-3">
-                <select id="canvasLanguageSelect" class="bg-gray-100 border border-gray-300 rounded-md px-3 py-1 text-sm focus:ring-purple-500 focus:border-purple-500">
-                    <option value="javascript">JavaScript</option>
-                    <option value="html">HTML</option>
-                    <option value="css">CSS</option>
-                    <option value="json">JSON</option>
-                    <option value="typescript">TypeScript</option>
-                    <option value="python">Python</option>
-                    <option value="java">Java</option>
-                    <option value="cpp">C++</option>
-                    <option value="csharp">C#</option>
-                    <option value="php">PHP</option>
-                    <option value="ruby">Ruby</option>
-                    <option value="go">Go</option>
-                    <option value="rust">Rust</option>
-                    <option value="swift">Swift</option>
-                    <option value="kotlin">Kotlin</option>
-                    <option value="sql">SQL</option>
-                    <option value="markdown">Markdown</option>
-                    <option value="xml">XML</option>
-                </select>
-                <button id="canvasFullscreenBtn" class="canvas-header-btn" title="Toggle Fullscreen">
+            
+            <div class="code-canvas-actions">
+                <button id="canvasFullscreenBtn" class="canvas-action-btn" title="Fullscreen">
                     <i class="fas fa-expand"></i>
                 </button>
-                <button id="canvasCloseBtn" class="canvas-header-btn" title="Close Canvas">
+                <button id="canvasCloseBtn" class="canvas-action-btn" title="Close">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Body: Editor and Preview Panels -->
+        <!-- Body with 3 panels -->
         <div class="code-canvas-body">
+            <!-- LEFT PANEL: Code Editor -->
             <div class="code-editor-panel">
-                <textarea id="codeEditorTextarea" class="w-full h-full p-4 font-mono text-sm resize-none outline-none bg-gray-900 text-gray-200"></textarea>
-                <div class="code-editor-footer">
-                    <span class="text-xs text-gray-500">Lines: <span id="editorLineCount">0</span> | Chars: <span id="editorCharCount">0</span></span>
-                    <div class="flex gap-2">
-                        <button id="clearEditorBtn" class="canvas-footer-btn" title="Clear Editor">
-                            <i class="fas fa-eraser"></i> Clear
+                <div class="panel-header">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-edit"></i>
+                        <span class="font-semibold">Code Editor</span>
+                    </div>
+                    <select id="canvasLanguageSelect" class="language-select">
+                        <option value="javascript">JavaScript</option>
+                        <option value="typescript">TypeScript</option>
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                        <option value="cpp">C++</option>
+                        <option value="csharp">C#</option>
+                        <option value="php">PHP</option>
+                        <option value="ruby">Ruby</option>
+                        <option value="go">Go</option>
+                        <option value="rust">Rust</option>
+                        <option value="swift">Swift</option>
+                        <option value="kotlin">Kotlin</option>
+                        <option value="sql">SQL</option>
+                        <option value="shell">Shell Script</option>
+                        <option value="json">JSON</option>
+                        <option value="xml">XML</option>
+                        <option value="markdown">Markdown</option>
+                        <option value="text">Plain Text</option>
+                    </select>
+                </div>
+                
+                <textarea id="codeEditorTextarea" 
+                          class="code-editor" 
+                          placeholder="// Write or paste your code here..."
+                          spellcheck="false"></textarea>
+                
+                <div class="panel-footer">
+                    <div class="editor-stats">
+                        <span><i class="fas fa-align-left mr-1"></i><span id="editorLineCount">0</span> lines</span>
+                        <span><i class="fas fa-font mr-1"></i><span id="editorCharCount">0</span> chars</span>
+                    </div>
+                    <div class="editor-actions">
+                        <button id="formatCodeBtn" class="footer-btn" title="Format Code">
+                            <i class="fas fa-magic"></i>
                         </button>
-                        <button id="formatCodeBtn" class="canvas-footer-btn" title="Format Code">
-                            <i class="fas fa-magic"></i> Format
+                        <button id="clearEditorBtn" class="footer-btn" title="Clear">
+                            <i class="fas fa-eraser"></i>
                         </button>
-                        <button id="canvasCopyBtn" class="canvas-footer-btn" title="Copy Code">
-                            <i class="fas fa-copy"></i> Copy
+                        <button id="canvasCopyBtn" class="footer-btn" title="Copy">
+                            <i class="fas fa-copy"></i>
                         </button>
-                        <button id="canvasDownloadBtn" class="canvas-footer-btn" title="Download Code">
-                            <i class="fas fa-download"></i> Download
+                        <button id="canvasDownloadBtn" class="footer-btn" title="Download">
+                            <i class="fas fa-download"></i>
                         </button>
-
-                        <button id="editorRunCodeBtn" class="canvas-footer-btn run-main-btn" title="Run Code in Preview">
+                        <!-- ADDED MISSING SAVE BUTTON HERE -->
+                        <button id="saveCurrentCodeBtn" class="footer-btn" title="Save Current Code">
+                            <i class="fas fa-save"></i>
+                        </button>
+                        <button id="editorRunCodeBtn" class="footer-btn primary" title="Run Code">
                             <i class="fas fa-play"></i> Run
                         </button>
                     </div>
                 </div>
             </div>
-            
-            <div id="canvasResizer" class="code-canvas-resizer"></div>
 
+            <!-- RESIZER 1 -->
+            <div id="canvasResizer1" class="canvas-resizer"></div>
+
+            <!-- MIDDLE PANEL: Live Preview -->
             <div class="code-preview-panel">
-                <div id="previewPlaceholder" class="preview-placeholder">
-                    <i class="fas fa-play text-6xl text-purple-300 mb-4"></i>
-                    <p class="text-xl font-semibold text-purple-600">Run code to see preview</p>
-                    <p class="text-gray-500 text-sm mt-2">Supports HTML, CSS, and JavaScript</p>
-                </div>
-                <iframe id="codePreviewFrame" class="w-full h-full bg-white border-0"></iframe>
-                <div class="code-preview-footer">
-                    <div class="flex gap-2">
-                        <button id="clearPreviewBtn" class="canvas-footer-btn" title="Clear Preview">
-                            <i class="fas fa-times"></i> Clear Preview
+                <div class="panel-header">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-desktop"></i>
+                        <span class="font-semibold">Live Preview</span>
+                    </div>
+                    <div class="preview-actions">
+                        <button id="refreshPreviewBtn" class="icon-btn" title="Refresh">
+                            <i class="fas fa-sync-alt"></i>
                         </button>
-                        <button id="refreshPreviewBtn" class="canvas-footer-btn" title="Refresh Preview">
-                            <i class="fas fa-sync-alt"></i> Refresh
+                        <button id="clearPreviewBtn" class="icon-btn" title="Clear">
+                            <i class="fas fa-trash"></i>
                         </button>
                     </div>
-                    <button id="canvasRunBtn" class="canvas-footer-btn run-main-btn" title="Run Code">
-                        <i class="fas fa-play"></i> Run Code
+                </div>
+                
+                <div class="preview-container">
+                    <iframe id="codePreviewFrame" 
+                            class="preview-frame"
+                            sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+                    
+                    <div id="previewPlaceholder" class="preview-placeholder">
+                        <i class="fas fa-desktop text-6xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-400 font-semibold">Click "Run" to preview</p>
+                        <p class="text-xs text-gray-500 mt-2">Your code output will appear here</p>
+                    </div>
+                </div>
+                
+                <div class="panel-footer">
+                    <div class="preview-info">
+                        <span class="text-xs text-gray-500">
+                            <i class="fas fa-shield-alt mr-1"></i>Sandboxed environment
+                        </span>
+                    </div>
+                    <button id="canvasRunBtn" class="footer-btn primary">
+                        <i class="fas fa-play mr-2"></i>Run Code
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESIZER 2 -->
+            <div id="canvasResizer2" class="canvas-resizer"></div>
+
+            <!-- RIGHT PANEL: Project Files (previously 'Saved Files') -->
+            <div id="canvasFileManager" class="code-files-panel">
+                <div class="panel-header">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-folder-open"></i>
+                        <span class="font-semibold">Project Files</span>
+                        <span id="canvasFileManagerCount" class="selected-badge">0</span>
+                    </div>
+                    <button id="canvasToggleFileManagerBtn" class="icon-btn" title="Toggle File Manager">
+                        <i class="fas fa-chevron-down transition-transform" id="canvasFileManagerChevron"></i>
+                    </button>
+                </div>
+                
+                <div class="files-container">
+                    <ul id="canvasFileList" class="files-list">
+                        <!-- Files will be rendered here dynamically by JavaScript -->
+                        <li id="canvasNoFiles" class="no-files-message">
+                            <i class="fas fa-file-code text-4xl text-gray-300 mb-3"></i>
+                            <p class="text-sm text-gray-400 font-semibold">No files in project yet</p>
+                            <p class="text-xs text-gray-500 mt-1">Upload files or generate code</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="panel-footer flex-col !items-stretch">
+                    <input type="file" id="canvasUploadFileInput" multiple class="hidden">
+                    <button id="canvasUploadBtn" 
+                            class="footer-btn primary w-full mb-2"
+                            title="Upload code files from your computer">
+                        <i class="fas fa-upload mr-2"></i>Upload New Files
+                    </button>
+                    <button id="canvasLoadAllToEditorBtn" class="footer-btn w-full mb-2" title="Load all project files into the editor">
+                        <i class="fas fa-file-alt mr-2"></i>Load All to Editor
+                    </button>
+                    <div class="flex gap-2 w-full mb-2">
+                        <button id="selectAllCanvasFiles" class="footer-btn flex-1" title="Select All for Preview">
+                            <i class="fas fa-check-double"></i> All
+                        </button>
+                        <button id="deselectAllCanvasFiles" class="footer-btn flex-1" title="Deselect All for Preview">
+                            <i class="fas fa-times"></i> None
+                        </button>
+                    </div>
+                    <button id="clearCanvasFiles" class="footer-btn w-full" title="Remove all files from project">
+                        <i class="fas fa-trash mr-2"></i>Clear All Files
+                    </button>
+                    <button id="runSelectedCanvasFiles" class="footer-btn primary w-full mt-2" disabled>
+                        <i class="fas fa-play mr-2"></i>Run Selected (<span id="canvasSelectedCount">0</span>)
                     </button>
                 </div>
             </div>
@@ -472,6 +579,7 @@
     </div>
 </div>
 
+    
 <!-- Keyframe animations for notifications -->
 <style>
     @keyframes slideIn {
