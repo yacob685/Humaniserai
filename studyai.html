@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced AI Study Platform - Complete Learning Assistant</title>
@@ -15,582 +15,531 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <!-- Add these new libraries for PDF generation and better exports -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="firebase-config.js"></script>
     <!-- Excel/CSV Processing -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
-<!-- Word Document Processing -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
-
-<script>
-    // Configure PDF.js worker
-    if (typeof pdfjsLib !== 'undefined') {
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    }
-</script>
-    
- <link rel="stylesheet" href="desktop.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <!-- Word Document Processing -->
+    <script src="https://cdnjs.cloudflare.com/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+    <!-- JSZip and FileSaver.js for project downloads -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script>
+      // Configure PDF.js worker if (typeof pdfjsLib !== 'undefined') { pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; } 
+    </script>
+    <link rel="stylesheet" href="desktop.css">
     <link rel="stylesheet" href="mobile.css">
-    
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    
-</head>
-<body>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  </head>
+  <body>
     <div class="app-container">
-        <!-- Left Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="p-6 bg-gradient-to-br from-purple-600 to-blue-600 text-white">
-                <h2 class="text-2xl font-bold mb-2"><i class="fas fa-graduation-cap mr-2"></i>Study Tools</h2>
-                <p class="text-sm opacity-90">Complete Learning Suite</p>
-            </div>
-            
-            <div class="p-4">
-                <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 px-2">AI Assistant</h3>
-                <div class="tool-btn active" data-tool="chat">
-                    <i class="fas fa-comments text-xl mr-3 text-purple-600"></i>
-                    <div>
-                        <div class="font-semibold">AI Tutor Chat</div>
-                        <div class="text-xs text-gray-500">Ask anything</div>
-                    </div>
-                </div>
-                
-                <div class="tool-btn" data-tool="imageanalyzer">
-                    <i class="fas fa-image text-xl mr-3 text-blue-600"></i>
-                    <div>
-                        <div class="font-semibold">Image Analyzer</div>
-                        <div class="text-xs text-gray-500">Extract & explain visuals</div>
-                    </div>
-                </div>
-
-<button class="tool-btn" data-tool="scientificreport">
-    <i class="fas fa-flask"></i>
-    <span>Scientific Report</span>
-</button>
-
-<button class="tool-btn" data-tool="hscreport">
-    <i class="fas fa-graduation-cap"></i>
-    <span>HSC Report (Band 6)</span>
-</button>
-                
-                <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 px-2 mt-4">Study Tools</h3>
-                <div class="tool-btn" data-tool="flashcards">
-                    <i class="fas fa-layer-group text-xl mr-3 text-blue-600"></i>
-                    <div>
-                        <div class="font-semibold">Flashcards</div>
-                        <div class="text-xs text-gray-500">Generate & practice</div>
-                    </div>
-                </div>
-                
-                <div class="tool-btn" data-tool="quiz">
-                    <i class="fas fa-clipboard-check text-xl mr-3 text-green-600"></i>
-                    <div>
-                        <div class="font-semibold">Quiz Generator</div>
-                        <div class="text-xs text-gray-500">Test your knowledge</div>
-                    </div>
-                </div>
-                <div class="tool-btn" data-tool="pdfanalyzer">
-                    <i class="fas fa-file-pdf text-xl mr-3 text-red-600"></i>
-                    <div>
-                        <div class="font-semibold">PDF Analyzer</div>
-                        <div class="text-xs text-gray-500">Deep document analysis</div>
-                    </div>
-                </div>
-                
-                <div class="tool-btn" data-tool="summary">
-                    <i class="fas fa-file-alt text-xl mr-3 text-orange-600"></i>
-                    <div>
-                        <div class="font-semibold">Summarizer</div>
-                        <div class="text-xs text-gray-500">Condense content</div>
-                    </div>
-                </div>
-                
-                <div class="tool-btn" data-tool="studyplan">
-                    <i class="fas fa-calendar-alt text-xl mr-3 text-red-600"></i>
-                    <div>
-                        <div class="font-semibold">Study Planner</div>
-                        <div class="text-xs text-gray-500">Organize schedule</div>
-                    </div>
-                </div>
-                
-                <div class="tool-btn" data-tool="practice">
-                    <i class="fas fa-pen text-xl mr-3 text-indigo-600"></i>
-                    <div>
-                        <div class="font-semibold">Practice Problems</div>
-                        <div class="text-xs text-gray-500">Solve & learn</div>
-                    </div>
-                </div>
-                
-                <div class="tool-btn" data-tool="mindmap">
-                    <i class="fas fa-project-diagram text-xl mr-3 text-pink-600"></i>
-                    <div>
-                        <div class="font-semibold">Mind Maps</div>
-                        <div class="text-xs text-gray-500">Visual learning</div>
-                    </div>
-                </div>
-                
-                <div class="tool-btn" data-tool="formula">
-                    <i class="fas fa-square-root-alt text-xl mr-3 text-teal-600"></i>
-                    <div>
-                        <div class="font-semibold">Formula Sheet</div>
-                        <div class="text-xs text-gray-500">Quick reference</div>
-                    </div>
-                </div>
-                
-                <div class="tool-btn" data-tool="citation">
-                    <i class="fas fa-quote-right text-xl mr-3 text-yellow-600"></i>
-                    <div>
-                        <div class="font-semibold">Citation Generator</div>
-                        <div class="text-xs text-gray-500">APA, MLA, Chicago</div>
-                    </div>
-                </div>
-            </div>
+      <!-- Left Sidebar -->
+      <div class="sidebar" id="sidebar">
+        <div class="p-6 bg-gradient-to-br from-purple-600 to-blue-600 text-white">
+          <h2 class="text-2xl font-bold mb-2">
+            <i class="fas fa-graduation-cap mr-2"></i>Study Tools
+          </h2>
+          <p class="text-sm opacity-90">Complete Learning Suite</p>
         </div>
-        
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="toggle-sidebar" id="toggleSidebar">
-                <i class="fas fa-bars"></i>
-            </div>
-            
-            <div class="header-bar" id="headerBar">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-800" id="toolTitle">Omar Esmati</h1>
-                    <p class="text-sm text-gray-600" id="toolSubtitle">Your advanced learning companion</p>
-                </div>
-                <div class="flex gap-2">
-                    <button class="px-4 py-2 bg-white border-2 border-gray-200 rounded-lg hover:border-purple-500 transition-all" id="clearChat">
-                        <i class="fas fa-trash mr-2"></i>Clear Chat
-                    </button>
-                    <button class="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all" id="exportChat">
-                        <i class="fas fa-download mr-2"></i>Export
-                    </button>
-                </div>
-            </div>
-            <!-- CHAT VIEW (Default) -->
-            <div class="chat-container" id="chatContainer">
-                <div id="responseHistory" class="max-w-5xl mx-auto space-y-6">
-                   <!-- Messages will be rendered here -->
-                </div>
-            </div>
-            
-            <!-- DEDICATED TOOL VIEW (Hidden by default) -->
-            <div id="mainToolView" class="flex-1 overflow-y-auto p-8 bg-gray-50 hidden">
-                <!-- Tool content will be injected here -->
-            </div>
-            
-            <div class="input-area">
-                <div class="max-w-5xl mx-auto">
-                    <div id="toolOptions" class="mb-2"></div>
-                    <div class="flex items-end bg-white border-3 border-purple-300 rounded-2xl p-4 shadow-2xl focus-within:border-purple-500 transition-all">
-                        <input type="file" id="fileInput" class="hidden" accept=".txt,.md,.csv,.html,.js,.py,.css,.pdf,.doc,.docx,.png,.jpg,.jpeg, .mp3, .mp4" multiple>
-
-                        <button id="attachFileButton" class="text-gray-500 hover:text-purple-600 p-2 rounded-lg mr-2 transition-colors" title="Attach File">
-                            <i class="fas fa-paperclip text-xl"></i>
-                        </button>
-
-                        <button id="openMultiFileRunnerBtn" class="p-3 text-gray-500 hover:text-indigo-600 rounded-lg transition-all hover:bg-indigo-50" title="Multi-File Runner">
-    <i class="fas fa-play-circle text-xl"></i>
-</button>
-
-<button id="humanizeButton" class="text-gray-500 hover:text-green-600 p-2 rounded-lg mr-2 transition-colors" title="Humanize Text">
-    <i class="fas fa-user-edit text-xl"></i>
-</button>
-                        <button id="voiceButton" class="text-gray-500 hover:text-purple-600 p-2 rounded-lg mr-2 transition-colors" title="Voice Input">
-                            <i class="fas fa-microphone text-xl"></i>
-                        </button>
-                        <textarea id="prompt" rows="1" class="flex-grow bg-transparent resize-none border-none focus:outline-none placeholder-gray-500 text-base py-2 px-2" placeholder="Ask anything or choose a tool from the sidebar..." oninput="autoExpand(this)"></textarea>
-                        <button id="generateButton" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white w-12 h-12 rounded-xl flex items-center justify-center hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg disabled:opacity-50" disabled>
-                            <i class="fas fa-paper-plane text-lg"></i>
-                        </button>
-                    </div>
-                    <div id="fileStatus" class="text-sm text-gray-700 mt-2 pl-2 flex items-center hidden bg-purple-50 p-2 rounded-lg">
-                        <i class="fas fa-file-alt mr-2 text-purple-600"></i>
-                        <span id="fileNameDisplay" class="font-medium"></span>
-                        <button id="clearFileButton" class="ml-3 text-red-500 hover:text-red-700 font-bold text-lg">&times;</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Continue Generation Banner -->
-        <div class="continue-generation-banner" id="continueBanner">
+        <div class="p-4">
+          <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 px-2">AI Assistant</h3>
+          <div class="tool-btn active" data-tool="chat">
+            <i class="fas fa-comments text-xl mr-3 text-purple-600"></i>
             <div>
-                <div class="font-bold text-lg mb-1">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>Generation Incomplete
-                </div>
-                <div class="text-sm opacity-90">The response was cut off due to length. Continue generating?</div>
+              <div class="font-semibold">AI Tutor Chat</div>
+              <div class="text-xs text-gray-500">Ask anything</div>
             </div>
-            <button class="continue-btn" id="continueGenerationBtn">
-                <i class="fas fa-play mr-2"></i>Continue
-            </button>
-            <button class="continue-btn" style="background: rgba(255,255,255,0.2); color: white;" id="dismissContinueBtn">
-                <i class="fas fa-times"></i>
-            </button>
+          </div>
+          <div class="tool-btn" data-tool="imageanalyzer">
+            <i class="fas fa-image text-xl mr-3 text-blue-600"></i>
+            <div>
+              <div class="font-semibold">Image Analyzer</div>
+              <div class="text-xs text-gray-500">Extract & explain visuals</div>
+            </div>
+          </div>
+          <button class="tool-btn" data-tool="scientificreport">
+            <i class="fas fa-flask"></i>
+            <span>Scientific Report</span>
+          </button>
+          <button class="tool-btn" data-tool="hscreport">
+            <i class="fas fa-graduation-cap"></i>
+            <span>HSC Report (Band 6)</span>
+          </button>
+          <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 px-2 mt-4">Study Tools</h3>
+          <div class="tool-btn" data-tool="flashcards">
+            <i class="fas fa-layer-group text-xl mr-3 text-blue-600"></i>
+            <div>
+              <div class="font-semibold">Flashcards</div>
+              <div class="text-xs text-gray-500">Generate & practice</div>
+            </div>
+          </div>
+          <div class="tool-btn" data-tool="quiz">
+            <i class="fas fa-clipboard-check text-xl mr-3 text-green-600"></i>
+            <div>
+              <div class="font-semibold">Quiz Generator</div>
+              <div class="text-xs text-gray-500">Test your knowledge</div>
+            </div>
+          </div>
+          <div class="tool-btn" data-tool="pdfanalyzer">
+            <i class="fas fa-file-pdf text-xl mr-3 text-red-600"></i>
+            <div>
+              <div class="font-semibold">PDF Analyzer</div>
+              <div class="text-xs text-gray-500">Deep document analysis</div>
+            </div>
+          </div>
+          <div class="tool-btn" data-tool="summary">
+            <i class="fas fa-file-alt text-xl mr-3 text-orange-600"></i>
+            <div>
+              <div class="font-semibold">Summarizer</div>
+              <div class="text-xs text-gray-500">Condense content</div>
+            </div>
+          </div>
+          <div class="tool-btn" data-tool="studyplan">
+            <i class="fas fa-calendar-alt text-xl mr-3 text-red-600"></i>
+            <div>
+              <div class="font-semibold">Study Planner</div>
+              <div class="text-xs text-gray-500">Organize schedule</div>
+            </div>
+          </div>
+          <div class="tool-btn" data-tool="practice">
+            <i class="fas fa-pen text-xl mr-3 text-indigo-600"></i>
+            <div>
+              <div class="font-semibold">Practice Problems</div>
+              <div class="text-xs text-gray-500">Solve & learn</div>
+            </div>
+          </div>
+          <div class="tool-btn" data-tool="mindmap">
+            <i class="fas fa-project-diagram text-xl mr-3 text-pink-600"></i>
+            <div>
+              <div class="font-semibold">Mind Maps</div>
+              <div class="text-xs text-gray-500">Visual learning</div>
+            </div>
+          </div>
+          <div class="tool-btn" data-tool="formula">
+            <i class="fas fa-square-root-alt text-xl mr-3 text-teal-600"></i>
+            <div>
+              <div class="font-semibold">Formula Sheet</div>
+              <div class="text-xs text-gray-500">Quick reference</div>
+            </div>
+          </div>
+          <div class="tool-btn" data-tool="citation">
+            <i class="fas fa-quote-right text-xl mr-3 text-yellow-600"></i>
+            <div>
+              <div class="font-semibold">Citation Generator</div>
+              <div class="text-xs text-gray-500">APA, MLA, Chicago</div>
+            </div>
+          </div>
         </div>
-        
-        <!-- Right Sidebar for Chat History -->
-        <div class="chat-history-sidebar" id="chatHistorySidebar">
-            <div class="p-4 border-b-2 border-gray-200 flex items-center justify-between">
-                <h3 class="text-lg font-bold text-gray-800">Chat History</h3>
-                <button id="newChatBtn" class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg flex items-center justify-center hover:from-purple-700 hover:to-blue-700 transition-all shadow-md">
-                    <i class="fas fa-plus"></i>
-                </button>
-            </div>
-            <div id="chatList" class="flex-1 overflow-y-auto p-2">
-                <!-- Chat list items will be rendered here -->
-            </div>
+      </div>
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="toggle-sidebar" id="toggleSidebar">
+          <i class="fas fa-bars"></i>
         </div>
+        <div class="header-bar" id="headerBar">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800" id="toolTitle">Omar Esmati</h1>
+            <p class="text-sm text-gray-600" id="toolSubtitle">Your advanced learning companion</p>
+          </div>
+          <div class="flex gap-2">
+            <button class="px-4 py-2 bg-white border-2 border-gray-200 rounded-lg hover:border-purple-500 transition-all" id="clearChat">
+              <i class="fas fa-trash mr-2"></i>Clear Chat </button>
+            <button class="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all" id="exportChat">
+              <i class="fas fa-download mr-2"></i>Export </button>
+          </div>
+        </div>
+        <!-- CHAT VIEW (Default) -->
+        <div class="chat-container" id="chatContainer">
+          <div id="responseHistory" class="max-w-5xl mx-auto space-y-6">
+            <!-- Messages will be rendered here -->
+          </div>
+        </div>
+        <!-- DEDICATED TOOL VIEW (Hidden by default) -->
+        <div id="mainToolView" class="flex-1 overflow-y-auto p-8 bg-gray-50 hidden">
+          <!-- Tool content will be injected here -->
+        </div>
+        <div class="input-area">
+          <div class="max-w-5xl mx-auto">
+            <div id="toolOptions" class="mb-2"></div>
+            <div class="flex items-end bg-white border-3 border-purple-300 rounded-2xl p-4 shadow-2xl focus-within:border-purple-500 transition-all">
+              <input type="file" id="fileInput" class="hidden" accept=".txt,.md,.csv,.html,.js,.py,.css,.pdf,.doc,.docx,.png,.jpg,.jpeg, .mp3, .mp4" multiple>
+              <button id="attachFileButton" class="text-gray-500 hover:text-purple-600 p-2 rounded-lg mr-2 transition-colors" title="Attach File">
+                <i class="fas fa-paperclip text-xl"></i>
+              </button>
+              <button id="openMultiFileRunnerBtn" class="p-3 text-gray-500 hover:text-indigo-600 rounded-lg transition-all hover:bg-indigo-50" title="Multi-File Runner">
+                <i class="fas fa-play-circle text-xl"></i>
+              </button>
+              <button id="humanizeButton" class="text-gray-500 hover:text-green-600 p-2 rounded-lg mr-2 transition-colors" title="Humanize Text">
+                <i class="fas fa-user-edit text-xl"></i>
+              </button>
+              <button id="voiceButton" class="text-gray-500 hover:text-purple-600 p-2 rounded-lg mr-2 transition-colors" title="Voice Input">
+                <i class="fas fa-microphone text-xl"></i>
+              </button>
+              <textarea id="prompt" rows="1" class="flex-grow bg-transparent resize-none border-none focus:outline-none placeholder-gray-500 text-base py-2 px-2" placeholder="Ask anything or choose a tool from the sidebar..." oninput="autoExpand(this)"></textarea>
+              <button id="generateButton" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white w-12 h-12 rounded-xl flex items-center justify-center hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg disabled:opacity-50" disabled>
+                <i class="fas fa-paper-plane text-lg"></i>
+              </button>
+            </div>
+            <div id="fileStatus" class="text-sm text-gray-700 mt-2 pl-2 flex items-center hidden bg-purple-50 p-2 rounded-lg">
+              <i class="fas fa-file-alt mr-2 text-purple-600"></i>
+              <span id="fileNameDisplay" class="font-medium"></span>
+              <button id="clearFileButton" class="ml-3 text-red-500 hover:text-red-700 font-bold text-lg">&times;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Continue Generation Banner -->
+      <div class="continue-generation-banner" id="continueBanner">
+        <div>
+          <div class="font-bold text-lg mb-1">
+            <i class="fas fa-exclamation-triangle mr-2"></i>Generation Incomplete
+          </div>
+          <div class="text-sm opacity-90">The response was cut off due to length. Continue generating?</div>
+        </div>
+        <button class="continue-btn" id="continueGenerationBtn">
+          <i class="fas fa-play mr-2"></i>Continue </button>
+        <button class="continue-btn" style="background: rgba(255,255,255,0.2); color: white;" id="dismissContinueBtn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <!-- Right Sidebar for Chat History -->
+      <div class="chat-history-sidebar" id="chatHistorySidebar">
+        <div class="p-4 border-b-2 border-gray-200 flex items-center justify-between">
+          <h3 class="text-lg font-bold text-gray-800">Chat History</h3>
+          <button id="newChatBtn" class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg flex items-center justify-center hover:from-purple-700 hover:to-blue-700 transition-all shadow-md">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div id="chatList" class="flex-1 overflow-y-auto p-2">
+          <!-- Chat list items will be rendered here -->
+        </div>
+      </div>
     </div>
-    
     <!-- Custom Modal UI for Confirmations/Alerts -->
     <div id="customModal" class="modal-backdrop hidden">
-        <div class="modal-content">
-            <h3 id="modalTitle" class="text-xl font-bold mb-4 text-gray-800"></h3>
-            <p id="modalMessage" class="mb-6 text-gray-600"></p>
-            <div class="flex justify-end gap-3" id="modalButtons">
-                <button id="modalCancel" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all">Cancel</button>
-                <button id="modalConfirm" class="px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-all">Confirm</button>
-            </div>
+      <div class="modal-content">
+        <h3 id="modalTitle" class="text-xl font-bold mb-4 text-gray-800"></h3>
+        <p id="modalMessage" class="mb-6 text-gray-600"></p>
+        <div class="flex justify-end gap-3" id="modalButtons">
+          <button id="modalCancel" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-all">Cancel</button>
+          <button id="modalConfirm" class="px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-all">Confirm</button>
         </div>
+      </div>
     </div>
     <script src="script1.js"></script>
-<!-- Camera Modal -->
-<div id="cameraModal" class="modal-backdrop hidden">
-    <div class="camera-modal-content">
+    <!-- Camera Modal -->
+    <div id="cameraModal" class="modal-backdrop hidden">
+      <div class="camera-modal-content">
         <div class="camera-header">
-            <h3 class="text-xl font-bold text-white">
-                <i class="fas fa-camera mr-2"></i>Take Photo
-            </h3>
-            <button id="closeCameraBtn" class="close-camera-btn">
-                <i class="fas fa-times"></i>
-            </button>
+          <h3 class="text-xl font-bold text-white">
+            <i class="fas fa-camera mr-2"></i>Take Photo
+          </h3>
+          <button id="closeCameraBtn" class="close-camera-btn">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-        
         <div class="camera-container">
-            <video id="cameraVideo" autoplay playsinline></video>
-            <canvas id="cameraCanvas" style="display: none;"></canvas>
-            
-            <div id="capturedPreview" class="captured-preview hidden">
-                <img id="capturedImage" alt="Captured photo">
-            </div>
+          <video id="cameraVideo" autoplay playsinline></video>
+          <canvas id="cameraCanvas" style="display: none;"></canvas>
+          <div id="capturedPreview" class="captured-preview hidden">
+            <img id="capturedImage" alt="Captured photo">
+          </div>
         </div>
-        
         <div class="camera-controls">
-            <button id="retakeBtn" class="camera-btn retake-btn hidden">
-                <i class="fas fa-redo mr-2"></i>Retake
-            </button>
-            <button id="captureBtn" class="camera-btn capture-btn">
-                <i class="fas fa-camera mr-2"></i>Capture
-            </button>
-            <button id="useCapturedBtn" class="camera-btn use-btn hidden">
-                <i class="fas fa-check mr-2"></i>Use Photo
-            </button>
+          <button id="retakeBtn" class="camera-btn retake-btn hidden">
+            <i class="fas fa-redo mr-2"></i>Retake </button>
+          <button id="captureBtn" class="camera-btn capture-btn">
+            <i class="fas fa-camera mr-2"></i>Capture </button>
+          <button id="useCapturedBtn" class="camera-btn use-btn hidden">
+            <i class="fas fa-check mr-2"></i>Use Photo </button>
         </div>
+      </div>
     </div>
-</div>
-
-
     <!-- Code Execution Modal -->
-<div id="codeExecutionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
+    <div id="codeExecutionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
         <!-- Header -->
         <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-4 text-white flex justify-between items-center">
-            <h2 class="text-xl font-bold flex items-center gap-2">
-                <i class="fas fa-play-circle"></i>
-                Code Preview
-            </h2>
-            <button id="closeCodeExecutionModal" class="text-white hover:text-gray-200">
-                <i class="fas fa-times text-2xl"></i>
-            </button>
+          <h2 class="text-xl font-bold flex items-center gap-2">
+            <i class="fas fa-play-circle"></i> Code Preview
+          </h2>
+          <button id="closeCodeExecutionModal" class="text-white hover:text-gray-200">
+            <i class="fas fa-times text-2xl"></i>
+          </button>
         </div>
-        
         <!-- Content -->
         <div class="flex-1 overflow-hidden">
-<iframe id="codeExecutionFrame" class="w-full border-0" style="height: calc(90vh - 80px);"></iframe>
+          <iframe id="codeExecutionFrame" class="w-full border-0" style="height: calc(90vh - 80px);"></iframe>
         </div>
+      </div>
     </div>
-</div>
-
-    
-<!-- Attachment Options Dropdown -->
-<div id="attachmentDropdown" class="attachment-dropdown hidden">
-    <button class="attachment-option" id="attachFileOption">
+    <!-- Attachment Options Dropdown -->
+    <div id="attachmentDropdown" class="attachment-dropdown hidden">
+      <button class="attachment-option" id="attachFileOption">
         <i class="fas fa-paperclip text-purple-600"></i>
         <span>Attach File</span>
-    </button>
-    <button class="attachment-option" id="useCameraOption">
+      </button>
+      <button class="attachment-option" id="useCameraOption">
         <i class="fas fa-camera text-blue-600"></i>
         <span>Use Camera</span>
-    </button>
-</div>
-
-    
-
+      </button>
+    </div>
     <!-- Add these hidden inputs somewhere in your HTML -->
-<input type="hidden" id="hiddenGoogleApiKey" value="AIzaSyAKxxK7SmC_O6V9iagIienXW3YSxVamP3g">
-<input type="hidden" id="hiddenSearchEngineId" value="93953e1a5df144c0f">
-
-
+    <input type="hidden" id="hiddenGoogleApiKey" value="AIzaSyAKxxK7SmC_O6V9iagIienXW3YSxVamP3g">
+    <input type="hidden" id="hiddenSearchEngineId" value="93953e1a5df144c0f">
     <!-- ARTIFACTS PANEL -->
-<div id="artifactPanel" class="artifact-panel hidden">
-    <div class="artifact-header">
+    <div id="artifactPanel" class="artifact-panel hidden">
+      <div class="artifact-header">
         <div class="flex items-center gap-3">
-            <i class="fas fa-cube text-purple-600 text-xl"></i>
-            <div>
-                <h3 class="font-bold text-lg" id="artifactTitle">Artifact</h3>
-                <p class="text-xs text-gray-500" id="artifactType">Interactive Content</p>
-            </div>
+          <i class="fas fa-cube text-purple-600 text-xl"></i>
+          <div>
+            <h3 class="font-bold text-lg" id="artifactTitle">Artifact</h3>
+            <p class="text-xs text-gray-500" id="artifactType">Interactive Content</p>
+          </div>
         </div>
         <div class="flex items-center gap-2">
-            <button id="artifactFullscreenBtn" class="artifact-control-btn" title="Fullscreen">
-                <i class="fas fa-expand"></i>
-            </button>
-            <button id="artifactCopyBtn" class="artifact-control-btn" title="Copy Code">
-                <i class="fas fa-copy"></i>
-            </button>
-            <button id="artifactDownloadBtn" class="artifact-control-btn" title="Download">
-                <i class="fas fa-download"></i>
-            </button>
-            <button id="artifactCloseBtn" class="artifact-control-btn" title="Close">
-                <i class="fas fa-times"></i>
-            </button>
+          <button id="artifactFullscreenBtn" class="artifact-control-btn" title="Fullscreen">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button id="artifactCopyBtn" class="artifact-control-btn" title="Copy Code">
+            <i class="fas fa-copy"></i>
+          </button>
+          <button id="artifactDownloadBtn" class="artifact-control-btn" title="Download">
+            <i class="fas fa-download"></i>
+          </button>
+          <button id="artifactCloseBtn" class="artifact-control-btn" title="Close">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-    </div>
-    <div class="artifact-content" id="artifactContent">
+      </div>
+      <div class="artifact-content" id="artifactContent">
         <!-- Dynamic artifact content loads here -->
+      </div>
     </div>
-</div>
-
-<!-- ARTIFACT FULLSCREEN OVERLAY -->
-<div id="artifactFullscreenOverlay" class="hidden fixed inset-0 bg-black bg-opacity-95 z-[10000] flex flex-col">
-    <div class="flex justify-between items-center p-4 bg-gray-900 text-white">
+    <!-- ARTIFACT FULLSCREEN OVERLAY -->
+    <div id="artifactFullscreenOverlay" class="hidden fixed inset-0 bg-black bg-opacity-95 z-[10000] flex flex-col">
+      <div class="flex justify-between items-center p-4 bg-gray-900 text-white">
         <h3 class="text-lg font-bold" id="fullscreenArtifactTitle">Artifact</h3>
         <button id="exitFullscreenBtn" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-all">
-            <i class="fas fa-times mr-2"></i>Exit Fullscreen
-        </button>
-    </div>
-    <div class="flex-1 overflow-auto" id="fullscreenArtifactContent">
+          <i class="fas fa-times mr-2"></i>Exit Fullscreen </button>
+      </div>
+      <div class="flex-1 overflow-auto" id="fullscreenArtifactContent">
         <!-- Fullscreen artifact content -->
+      </div>
     </div>
-</div>
-
     <!-- Code Preview Canvas Modal -->
-<!-- Code Preview Canvas (Enhanced with 3 panels) -->
-<!-- Code Preview Canvas (Enhanced with 3 panels) -->
-<div id="codePreviewCanvas" class="code-canvas-overlay hidden">
-    <div class="code-canvas-container">
+    <!-- Code Preview Canvas (Enhanced with 3 panels) -->
+    <!-- Code Preview Canvas (Enhanced with 3 panels) -->
+    <div id="codePreviewCanvas" class="code-canvas-overlay hidden">
+      <div class="code-canvas-container">
         <!-- Header -->
         <div class="code-canvas-header">
-            <div class="code-canvas-title">
-                <i class="fas fa-code text-2xl"></i>
-                <div>
-                    <h3 id="canvasTitle" class="text-xl font-bold">Code Canvas</h3>
-                    <!-- Removed the misplaced 'Upload Files' button from here -->
-                    <p id="canvasSubtitle" class="text-sm text-gray-400">JavaScript Editor</p>
-                    <p id="canvasChatLabel" class="text-xs text-purple-400 mt-1">
-                        <i class="fas fa-comments mr-1"></i>
-                        <span id="canvasChatName">Current Chat</span>
-                    </p>
-                </div>
+          <div class="code-canvas-title">
+            <i class="fas fa-code text-2xl"></i>
+            <div>
+              <h3 id="canvasTitle" class="text-xl font-bold">Code Canvas</h3>
+              <!-- Removed the misplaced 'Upload Files' button from here -->
+              <p id="canvasSubtitle" class="text-sm text-gray-400">JavaScript Editor</p>
+              <p id="canvasChatLabel" class="text-xs text-purple-400 mt-1">
+                <i class="fas fa-comments mr-1"></i>
+                <span id="canvasChatName">Current Chat</span>
+              </p>
             </div>
-            
-            <div class="code-canvas-actions">
-                <button id="canvasFullscreenBtn" class="canvas-action-btn" title="Fullscreen">
-                    <i class="fas fa-expand"></i>
-                </button>
-                <button id="canvasCloseBtn" class="canvas-action-btn" title="Close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+          </div>
+          <div class="code-canvas-actions">
+            <!-- ADDED: Restore File Manager Button -->
+            <button id="canvasRestoreFileManagerBtn" class="canvas-action-btn" title="Show Project Files Panel">
+              <i class="fas fa-folder-open"></i>
+            </button>
+            <button id="canvasFullscreenBtn" class="canvas-action-btn" title="Fullscreen">
+              <i class="fas fa-expand"></i>
+            </button>
+            <button id="canvasCloseBtn" class="canvas-action-btn" title="Close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
         </div>
-
         <!-- Body with 3 panels -->
         <div class="code-canvas-body">
-            <!-- LEFT PANEL: Code Editor -->
-            <div class="code-editor-panel">
-                <div class="panel-header">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-edit"></i>
-                        <span class="font-semibold">Code Editor</span>
-                    </div>
-                    <select id="canvasLanguageSelect" class="language-select">
-                        <option value="javascript">JavaScript</option>
-                        <option value="typescript">TypeScript</option>
-                        <option value="html">HTML</option>
-                        <option value="css">CSS</option>
-                        <option value="python">Python</option>
-                        <option value="java">Java</option>
-                        <option value="cpp">C++</option>
-                        <option value="csharp">C#</option>
-                        <option value="php">PHP</option>
-                        <option value="ruby">Ruby</option>
-                        <option value="go">Go</option>
-                        <option value="rust">Rust</option>
-                        <option value="swift">Swift</option>
-                        <option value="kotlin">Kotlin</option>
-                        <option value="sql">SQL</option>
-                        <option value="shell">Shell Script</option>
-                        <option value="json">JSON</option>
-                        <option value="xml">XML</option>
-                        <option value="markdown">Markdown</option>
-                        <option value="text">Plain Text</option>
-                    </select>
-                </div>
-                
-                <textarea id="codeEditorTextarea" 
-                          class="code-editor" 
-                          placeholder="// Write or paste your code here..."
-                          spellcheck="false"></textarea>
-                
-                <div class="panel-footer">
-                    <div class="editor-stats">
-                        <span><i class="fas fa-align-left mr-1"></i><span id="editorLineCount">0</span> lines</span>
-                        <span><i class="fas fa-font mr-1"></i><span id="editorCharCount">0</span> chars</span>
-                    </div>
-                    <div class="editor-actions">
-                        <button id="formatCodeBtn" class="footer-btn" title="Format Code">
-                            <i class="fas fa-magic"></i>
-                        </button>
-                        <button id="clearEditorBtn" class="footer-btn" title="Clear">
-                            <i class="fas fa-eraser"></i>
-                        </button>
-                        <button id="canvasCopyBtn" class="footer-btn" title="Copy">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                        <button id="canvasDownloadBtn" class="footer-btn" title="Download">
-                            <i class="fas fa-download"></i>
-                        </button>
-                        <!-- ADDED MISSING SAVE BUTTON HERE -->
-                        <button id="saveCurrentCodeBtn" class="footer-btn" title="Save Current Code">
-                            <i class="fas fa-save"></i>
-                        </button>
-                        <button id="editorRunCodeBtn" class="footer-btn primary" title="Run Code">
-                            <i class="fas fa-play"></i> Run
-                        </button>
-                    </div>
-                </div>
+          <!-- LEFT PANEL: Code Editor -->
+          <div class="code-editor-panel">
+            <div class="panel-header">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-edit"></i>
+                <span class="font-semibold">Code Editor</span>
+              </div>
+              <select id="canvasLanguageSelect" class="language-select">
+                <option value="javascript">JavaScript</option>
+                <option value="typescript">TypeScript</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+                <option value="cpp">C++</option>
+                <option value="csharp">C#</option>
+                <option value="php">PHP</option>
+                <option value="ruby">Ruby</option>
+                <option value="go">Go</option>
+                <option value="rust">Rust</option>
+                <option value="swift">Swift</option>
+                <option value="kotlin">Kotlin</option>
+                <option value="sql">SQL</option>
+                <option value="shell">Shell Script</option>
+                <option value="json">JSON</option>
+                <option value="xml">XML</option>
+                <option value="markdown">Markdown</option>
+                <option value="text">Plain Text</option>
+                <!-- ADDED: Web Project option for auto-selection -->
+                <option value="web-project">Web Project (HTML/CSS/JS)</option> 
+              </select>
             </div>
-
-            <!-- RESIZER 1 -->
-            <div id="canvasResizer1" class="canvas-resizer"></div>
-
-            <!-- MIDDLE PANEL: Live Preview -->
-            <div class="code-preview-panel">
-                <div class="panel-header">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-desktop"></i>
-                        <span class="font-semibold">Live Preview</span>
-                    </div>
-                    <div class="preview-actions">
-                        <button id="refreshPreviewBtn" class="icon-btn" title="Refresh">
-                            <i class="fas fa-sync-alt"></i>
-                        </button>
-                        <button id="clearPreviewBtn" class="icon-btn" title="Clear">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="preview-container">
-                    <iframe id="codePreviewFrame" 
-                            class="preview-frame"
-                            sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
-                    
-                    <div id="previewPlaceholder" class="preview-placeholder">
-                        <i class="fas fa-desktop text-6xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-400 font-semibold">Click "Run" to preview</p>
-                        <p class="text-xs text-gray-500 mt-2">Your code output will appear here</p>
-                    </div>
-                </div>
-                
-                <div class="panel-footer">
-                    <div class="preview-info">
-                        <span class="text-xs text-gray-500">
-                            <i class="fas fa-shield-alt mr-1"></i>Sandboxed environment
-                        </span>
-                    </div>
-                    <button id="canvasRunBtn" class="footer-btn primary">
-                        <i class="fas fa-play mr-2"></i>Run Code
-                    </button>
-                </div>
+            <textarea id="codeEditorTextarea" class="code-editor" placeholder="// Write or paste your code here..." spellcheck="false"></textarea>
+            <div class="panel-footer">
+              <div class="editor-stats">
+                <span>
+                  <i class="fas fa-align-left mr-1"></i>
+                  <span id="editorLineCount">0</span> lines </span>
+                <span>
+                  <i class="fas fa-font mr-1"></i>
+                  <span id="editorCharCount">0</span> chars </span>
+              </div>
+              <div class="editor-actions">
+                <!-- NEW: AI Combine/Fix Code Button -->
+               <button id="aiCombineFixCodeBtn" class="footer-btn hidden" title="AI Combine & Fix Code">
+  <i class="fas fa-robot"></i> AI Fix
+</button>
+                <button id="formatCodeBtn" class="footer-btn" title="Format Code">
+                  <i class="fas fa-magic"></i>
+                </button>
+                <button id="clearEditorBtn" class="footer-btn" title="Clear">
+                  <i class="fas fa-eraser"></i>
+                </button>
+                <button id="canvasCopyBtn" class="footer-btn" title="Copy">
+                  <i class="fas fa-copy"></i>
+                </button>
+                <button id="canvasDownloadBtn" class="footer-btn" title="Download">
+                  <i class="fas fa-download"></i>
+                </button>
+                <!-- ADDED MISSING SAVE BUTTON HERE -->
+                <button id="saveCurrentCodeBtn" class="footer-btn" title="Save Current Code">
+                  <i class="fas fa-save"></i>
+                </button>
+                <button id="editorRunCodeBtn" class="footer-btn primary" title="Run Code">
+                  <i class="fas fa-play"></i> Run </button>
+              </div>
             </div>
-
-            <!-- RESIZER 2 -->
-            <div id="canvasResizer2" class="canvas-resizer"></div>
-
-            <!-- RIGHT PANEL: Project Files (previously 'Saved Files') -->
-            <div id="canvasFileManager" class="code-files-panel">
-                <div class="panel-header">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-folder-open"></i>
-                        <span class="font-semibold">Project Files</span>
-                        <span id="canvasFileManagerCount" class="selected-badge">0</span>
-                    </div>
-                    <button id="canvasToggleFileManagerBtn" class="icon-btn" title="Toggle File Manager">
-                        <i class="fas fa-chevron-down transition-transform" id="canvasFileManagerChevron"></i>
-                    </button>
-                </div>
-                
-                <div class="files-container">
-                    <ul id="canvasFileList" class="files-list">
-                        <!-- Files will be rendered here dynamically by JavaScript -->
-                        <li id="canvasNoFiles" class="no-files-message">
-                            <i class="fas fa-file-code text-4xl text-gray-300 mb-3"></i>
-                            <p class="text-sm text-gray-400 font-semibold">No files in project yet</p>
-                            <p class="text-xs text-gray-500 mt-1">Upload files or generate code</p>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="panel-footer flex-col !items-stretch">
-                    <input type="file" id="canvasUploadFileInput" multiple class="hidden">
-                    <button id="canvasUploadBtn" 
-                            class="footer-btn primary w-full mb-2"
-                            title="Upload code files from your computer">
-                        <i class="fas fa-upload mr-2"></i>Upload New Files
-                    </button>
-                    <button id="canvasLoadAllToEditorBtn" class="footer-btn w-full mb-2" title="Load all project files into the editor">
-                        <i class="fas fa-file-alt mr-2"></i>Load All to Editor
-                    </button>
-                    <div class="flex gap-2 w-full mb-2">
-                        <button id="selectAllCanvasFiles" class="footer-btn flex-1" title="Select All for Preview">
-                            <i class="fas fa-check-double"></i> All
-                        </button>
-                        <button id="deselectAllCanvasFiles" class="footer-btn flex-1" title="Deselect All for Preview">
-                            <i class="fas fa-times"></i> None
-                        </button>
-                    </div>
-                    <button id="clearCanvasFiles" class="footer-btn w-full" title="Remove all files from project">
-                        <i class="fas fa-trash mr-2"></i>Clear All Files
-                    </button>
-                    <button id="runSelectedCanvasFiles" class="footer-btn primary w-full mt-2" disabled>
-                        <i class="fas fa-play mr-2"></i>Run Selected (<span id="canvasSelectedCount">0</span>)
-                    </button>
-                </div>
+          </div>
+          <!-- RESIZER 1 -->
+          <div id="canvasResizer1" class="canvas-resizer"></div>
+          <!-- MIDDLE PANEL: Live Preview -->
+          <div class="code-preview-panel">
+            <div class="panel-header">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-desktop"></i>
+                <span class="font-semibold">Live Preview</span>
+              </div>
+              <div class="preview-actions">
+                <button id="refreshPreviewBtn" class="icon-btn" title="Refresh">
+                  <i class="fas fa-sync-alt"></i>
+                </button>
+                <button id="clearPreviewBtn" class="icon-btn" title="Clear">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
             </div>
+            <div class="preview-container">
+              <iframe id="codePreviewFrame" class="preview-frame" sandbox="allow-scripts allow-popups allow-modals allow-forms"></iframe>
+              <div id="previewPlaceholder" class="preview-placeholder">
+                <i class="fas fa-desktop text-6xl text-gray-300 mb-4"></i>
+                <p class="text-gray-400 font-semibold">Click "Run" to preview</p>
+                <p class="text-xs text-gray-500 mt-2">Your code output will appear here</p>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <div class="preview-info">
+                <span class="text-xs text-gray-500">
+                  <i class="fas fa-shield-alt mr-1"></i>Sandboxed environment </span>
+              </div>
+              <button id="canvasRunBtn" class="footer-btn primary">
+                <i class="fas fa-play mr-2"></i>Run Code </button>
+            </div>
+          </div>
+          <!-- RESIZER 2 -->
+          <div id="canvasResizer2" class="canvas-resizer"></div>
+          <!-- RIGHT PANEL: Project Files (previously 'Saved Files') -->
+          <div id="canvasFileManager" class="code-files-panel">
+            <div class="panel-header">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-folder-open"></i>
+                <span class="font-semibold">Project Files</span>
+                <span id="canvasFileManagerCount" class="selected-badge">0</span>
+              </div>
+              <button id="canvasToggleFileManagerBtn" class="icon-btn" title="Toggle File Manager">
+                <i class="fas fa-chevron-down transition-transform" id="canvasFileManagerChevron"></i>
+              </button>
+            </div>
+            <div class="files-container">
+              <ul id="canvasFileList" class="files-list">
+                <!-- Files will be rendered here dynamically by JavaScript -->
+                <li id="canvasNoFiles" class="no-files-message">
+                  <i class="fas fa-file-code text-4xl text-gray-300 mb-3"></i>
+                  <p class="text-sm text-gray-400 font-semibold">No files in project yet</p>
+                  <p class="text-xs text-gray-500 mt-1">Upload files or generate code</p>
+                </li>
+              </ul>
+            </div>
+            <div class="panel-footer flex-col !items-stretch">
+              <input type="file" id="canvasUploadFileInput" multiple class="hidden">
+              <button id="canvasUploadBtn" class="footer-btn primary w-full mb-2" title="Upload code files from your computer">
+                <i class="fas fa-upload mr-2"></i>Upload New Files </button>
+              <button id="canvasLoadAllToEditorBtn" class="footer-btn w-full mb-2" title="Load all project files into the editor">
+                <i class="fas fa-file-alt mr-2"></i>Load All to Editor </button>
+              <div class="flex gap-2 w-full mb-2">
+                <button id="selectAllCanvasFiles" class="footer-btn flex-1" title="Select All for Preview">
+                  <i class="fas fa-check-double"></i> All </button>
+                <button id="deselectAllCanvasFiles" class="footer-btn flex-1" title="Deselect All for Preview">
+                  <i class="fas fa-times"></i> None </button>
+              </div>
+              <button id="clearCanvasFiles" class="footer-btn w-full" title="Remove all files from project">
+                <i class="fas fa-trash mr-2"></i>Clear All Files </button>
+              <button id="runSelectedCanvasFiles" class="footer-btn primary w-full mt-2" disabled>
+                <i class="fas fa-play mr-2"></i>Run Selected ( <span id="canvasSelectedCount">0</span>) </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+    <!-- Keyframe animations for notifications -->
+    <style>
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
 
-    
-<!-- Keyframe animations for notifications -->
-<style>
-    @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-    }
-</style>
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
 
-</body>
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+    </style>
+  </body>
 </html>
