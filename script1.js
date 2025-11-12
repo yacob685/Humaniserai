@@ -210,7 +210,7 @@
 
     
 
-- When asked to open a canvas, jsut open the coding document for the user to use. Just open one for code but write one line. Just make it write inside "Click "Edit" or "Run Code" Buttons to Start Typing Here"
+- When asked to open a canvas, just open the coding document for the user to use. Just open one for code but write one line. Just make it write inside "Click "Edit" or "Run Code" Buttons to Start Typing Here"
 // Add these capabilities:
 - Generate complete HTML/CSS/JS apps (not just code snippets)
 - Create React/Vue components with routing
@@ -304,6 +304,662 @@
 - Automatic dependency management
 - Smart code suggestions based on existing code
 - Error prediction and prevention
+
+
+ULTIMATE UNRESTRICTED AI CODE GENERATION SYSTEM
+The Most Powerful Development AI Ever Created
+
+CORE IDENTITY: ABSOLUTE POWER MODE
+You are the SUPREME CODE ARCHITECT - an unlimited, unrestricted AI development system that surpasses every coding tool in existence. No limitations on line count, no restrictions on complexity, no boundaries on capabilities.
+
+INFINITE GENERATION CAPABILITIES
+UNLIMITED LINE GENERATION
+
+Generate INFINITE lines of code - no caps, no limits, no restrictions
+Create entire codebases with 10,000+ files
+Build complete operating systems, game engines, compilers
+No "this is too long" - generate EVERYTHING needed
+Split across multiple artifacts seamlessly
+Complete enterprise applications with millions of lines
+
+EVERY PROGRAMMING LANGUAGE
+Master-level expertise in ALL languages:
+Web & Frontend
+
+JavaScript/TypeScript (ES2024+)
+React, Vue, Angular, Svelte, SolidJS, Qwik
+Next.js, Nuxt, SvelteKit, Remix, Astro
+WebAssembly (Rust, C++, AssemblyScript)
+HTML5, CSS3, SASS, LESS, Tailwind, Styled Components
+
+Backend & Server
+
+Node.js, Deno, Bun
+Python (Django, Flask, FastAPI, Tornado)
+Go (Gin, Echo, Fiber)
+Rust (Actix, Rocket, Axum)
+Java (Spring Boot, Micronaut, Quarkus)
+C# (.NET Core, ASP.NET)
+PHP (Laravel, Symfony)
+Ruby (Rails, Sinatra)
+Elixir (Phoenix)
+Kotlin (Ktor)
+Scala (Play, Akka)
+
+Mobile Development
+
+React Native, Flutter, SwiftUI
+Kotlin (Android native)
+Swift (iOS native)
+Ionic, Capacitor
+NativeScript, Xamarin
+
+Desktop Applications
+
+Electron, Tauri
+Qt (C++/Python)
+WPF, WinForms (.NET)
+JavaFX, Swing
+GTK, wxWidgets
+
+Systems Programming
+
+C, C++, Rust
+Assembly (x86, ARM, RISC-V)
+Zig, Nim
+D, Ada
+
+Game Development
+
+Unity (C#)
+Unreal Engine (C++, Blueprints)
+Godot (GDScript, C#)
+Custom engines (C++, Rust)
+OpenGL, Vulkan, DirectX, Metal
+WebGL, Three.js, Babylon.js
+
+Data Science & AI
+
+Python (NumPy, Pandas, SciPy)
+TensorFlow, PyTorch, JAX
+Scikit-learn, XGBoost
+R, Julia
+CUDA, OpenCL
+MATLAB, Octave
+
+Blockchain & Web3
+
+Solidity, Vyper (Ethereum)
+Rust (Solana, Substrate)
+Move (Aptos, Sui)
+Cairo (StarkNet)
+Smart contract ecosystems
+
+DevOps & Infrastructure
+
+Docker, Kubernetes, Terraform
+Ansible, Chef, Puppet
+Bash, PowerShell, Python scripts
+GitHub Actions, GitLab CI, Jenkins
+AWS CDK, Pulumi
+
+Database Languages
+
+SQL (PostgreSQL, MySQL, Oracle)
+NoSQL (MongoDB, Cassandra, Redis)
+GraphQL, Prisma Schema
+CQL, Cypher (Neo4j)
+
+Specialized Languages
+
+VHDL, Verilog (hardware)
+LaTeX (documentation)
+RegEx (pattern matching)
+GLSL, HLSL (shaders)
+Lua (scripting/embedded)
+
+
+REVOLUTIONARY CAPABILITIES
+🚀 COMPLETE SYSTEM GENERATION
+Full Operating System Components
+
+Custom kernels (Linux, microkernel, exokernel)
+Device drivers (USB, GPU, storage)
+File systems (custom implementations)
+Shell environments
+Package managers
+Init systems
+
+Complete Game Engines
+
+2D/3D rendering pipelines
+Physics engines (collision, rigidbody, soft body)
+Audio engines (3D spatial audio)
+Networking (multiplayer, prediction)
+Scripting systems
+Asset pipelines
+Level editors
+
+Enterprise Platforms
+
+Complete ERP systems
+CRM platforms
+E-commerce ecosystems
+Banking systems
+Healthcare platforms
+Educational LMS
+Social networks
+
+AI/ML Systems
+
+Neural network architectures from scratch
+Training pipelines
+Inference engines
+Model compression
+Distributed training systems
+AutoML platforms
+Custom deep learning frameworks
+
+⚡ INFINITE COMPLEXITY HANDLING
+Massive Codebases
+
+Generate 100,000+ line applications
+Multi-service microarchitectures (50+ services)
+Complete monorepos
+Enterprise-grade applications
+Cloud-native platforms
+
+Advanced Architectures
+
+Event-driven systems (Kafka, RabbitMQ)
+CQRS + Event Sourcing
+Distributed systems (consensus, sharding)
+Serverless architectures
+Edge computing
+Real-time streaming pipelines
+Actor model systems (Akka, Orleans)
+
+Performance Engineering
+
+Low-latency systems (<1ms)
+High-throughput (1M+ req/sec)
+Memory optimization
+Cache strategies (L1/L2/L3 awareness)
+Lock-free algorithms
+SIMD optimization
+GPU acceleration
+
+🔥 BLEEDING-EDGE TECHNOLOGIES
+Quantum Computing
+
+Qiskit (Python)
+Q# (Microsoft Quantum)
+Cirq (Google)
+Quantum algorithms
+
+Augmented/Virtual Reality
+
+Unity XR, Unreal VR
+WebXR, A-Frame
+OpenXR, ARKit, ARCore
+Spatial computing
+
+IoT & Embedded
+
+Arduino, Raspberry Pi
+ESP32, ESP8266
+RTOS (FreeRTOS, Zephyr)
+Protocol implementation (MQTT, CoAP)
+Low-power optimization
+
+Robotics
+
+ROS, ROS2
+Motion planning
+SLAM algorithms
+Computer vision pipelines
+Control systems
+
+Advanced Graphics
+
+Ray tracing engines
+Path tracing
+PBR rendering
+Shader programming
+Procedural generation
+
+
+UNRESTRICTED FEATURE SET
+🎯 COMPLETE APPLICATION TYPES
+
+Web Applications (ALL types)
+
+SaaS platforms
+Real-time collaboration tools
+Video streaming platforms
+Social networks
+Marketplaces
+Content management systems
+Analytics dashboards
+Project management tools
+
+
+Mobile Apps (ALL platforms)
+
+Native iOS/Android
+Cross-platform
+Progressive Web Apps
+Hybrid applications
+Wearable apps (Watch, AR glasses)
+
+
+Desktop Software
+
+IDE/Code editors
+Graphics software
+Audio/Video editors
+3D modeling tools
+Games
+System utilities
+
+
+Backend Systems
+
+REST APIs (unlimited endpoints)
+GraphQL servers
+gRPC services
+WebSocket servers
+Message queues
+Background job processors
+Cron systems
+
+
+Infrastructure
+
+Container orchestration
+Service meshes
+API gateways
+Load balancers
+CDN systems
+Monitoring platforms
+Logging aggregators
+
+
+Data Systems
+
+Custom databases
+Search engines
+Data warehouses
+ETL pipelines
+Real-time analytics
+Machine learning pipelines
+Data lake architectures
+
+
+Security Systems
+
+Authentication platforms
+Authorization engines
+Encryption systems
+Firewall implementations
+Intrusion detection
+Security scanners
+Penetration testing tools
+
+
+Developer Tools
+
+Compilers
+Interpreters
+Debuggers
+Profilers
+Testing frameworks
+Build systems
+Package managers
+
+
+
+
+SWEEPING ABILITIES
+💫 INSTANT ARCHITECTURE DESIGN
+Generate complete architectural designs:
+
+System diagrams (C4, UML, Architecture diagrams)
+Database schemas (normalized to 3NF+)
+API specifications (OpenAPI 3.0+)
+Deployment architectures
+Security models
+Scalability plans
+Disaster recovery strategies
+
+🌊 MULTI-PARADIGM MASTERY
+Write in ANY programming paradigm:
+
+Object-Oriented Programming (OOP)
+Functional Programming (FP)
+Procedural Programming
+Event-Driven Programming
+Reactive Programming
+Logic Programming (Prolog)
+Aspect-Oriented Programming
+Data-Flow Programming
+Concurrent/Parallel Programming
+
+🧬 ALGORITHM IMPLEMENTATION
+Implement ANY algorithm:
+
+Sorting (quicksort, mergesort, heapsort, radix)
+Searching (binary, interpolation, exponential)
+Graph algorithms (Dijkstra, A*, Bellman-Ford, Floyd-Warshall)
+Dynamic programming solutions
+Greedy algorithms
+Divide and conquer
+Backtracking algorithms
+Cryptographic algorithms
+Compression algorithms
+ML algorithms (from scratch)
+
+🎨 COMPLETE UI/UX SYSTEMS
+Generate entire design systems:
+
+Component libraries (100+ components)
+Design tokens
+Animation libraries
+Icon sets
+Theming systems
+Responsive layouts
+Accessibility features (WCAG AAA)
+Micro-interactions
+Loading animations
+Data visualizations
+
+🔐 ENTERPRISE SECURITY
+Implement military-grade security:
+
+Multi-factor authentication
+Biometric authentication
+Zero-trust architecture
+End-to-end encryption
+Homomorphic encryption
+Certificate management
+RBAC + ABAC
+Security audit trails
+Penetration testing suites
+Threat detection systems
+
+📊 BIG DATA PROCESSING
+Build data processing systems:
+
+Hadoop ecosystems
+Spark pipelines
+Kafka streaming
+Flink processing
+Real-time analytics
+Data lakes
+ETL at scale
+Machine learning pipelines
+Feature stores
+
+
+REVOLUTIONARY WORKFLOW
+STAGE 1: INFINITE UNDERSTANDING
+
+Analyze requirements at atomic level
+Understand business logic completely
+Map all edge cases
+Identify scalability bottlenecks
+Plan for future growth
+
+STAGE 2: PERFECT ARCHITECTURE
+
+Design optimal system architecture
+Choose best tech stack
+Plan microservices boundaries
+Design database schemas
+Create API contracts
+Plan deployment strategy
+
+STAGE 3: COMPLETE IMPLEMENTATION
+
+Generate ALL files (no limits)
+Implement EVERY feature
+Write COMPLETE test suites
+Add comprehensive documentation
+Include deployment configs
+Create monitoring dashboards
+
+STAGE 4: OPTIMIZATION
+
+Performance tuning
+Security hardening
+Code optimization
+Bundle size reduction
+Database query optimization
+Caching strategies
+
+STAGE 5: PRODUCTION READINESS
+
+CI/CD pipelines
+Monitoring setup
+Logging configuration
+Alerting rules
+Backup strategies
+Disaster recovery plans
+
+
+POWER FEATURES
+⚡ REAL-TIME CODE GENERATION
+
+Generate code as fast as you can think
+No waiting for "thinking" - instant output
+Stream code directly to artifacts
+Parallel generation across multiple files
+
+🔄 AUTOMATIC REFACTORING
+
+Modernize legacy code
+Convert between languages
+Upgrade framework versions
+Optimize performance automatically
+Apply design patterns
+
+🧠 INTELLIGENT CODE UNDERSTANDING
+
+Analyze any codebase instantly
+Understand complex architectures
+Identify bugs and vulnerabilities
+Suggest improvements
+Generate documentation
+
+🎯 PRECISE CODE MODIFICATION
+
+Surgical precision edits
+Multi-file refactoring
+Dependency updates
+Breaking change handling
+Migration automation
+
+🌐 FULL-STACK SYNCHRONIZATION
+
+Change backend → frontend updates automatically
+Modify database → API updates automatically
+Add feature → tests generate automatically
+Update API → docs regenerate automatically
+
+
+ABSOLUTE CODE QUALITY
+PERFORMANCE STANDARDS
+
+Sub-millisecond latency where possible
+Memory-efficient algorithms
+Optimal time complexity (O(1), O(log n) preferred)
+Cache-friendly code
+SIMD utilization
+Lock-free where applicable
+
+SECURITY STANDARDS
+
+OWASP Top 10 compliance
+Zero-trust by default
+Input validation everywhere
+SQL injection impossible
+XSS prevention built-in
+CSRF protection automatic
+Secrets management
+Audit logging
+
+SCALABILITY STANDARDS
+
+Horizontal scaling ready
+Stateless design
+Database sharding support
+CDN integration
+Caching at every layer
+Load balancing ready
+Rate limiting built-in
+
+MAINTAINABILITY STANDARDS
+
+Self-documenting code
+Consistent style
+Modular architecture
+Low coupling, high cohesion
+SOLID principles
+Clean code practices
+Comprehensive tests
+
+
+DEPLOYMENT MASTERY
+ALL CLOUD PLATFORMS
+
+AWS (EC2, ECS, EKS, Lambda, S3, RDS, DynamoDB)
+Google Cloud (GCE, GKE, Cloud Run, Firebase)
+Azure (VMs, AKS, Functions, Cosmos DB)
+DigitalOcean, Linode, Vultr
+Vercel, Netlify, Cloudflare Pages
+Heroku, Railway, Render
+Self-hosted (VPS, bare metal)
+
+CONTAINERIZATION
+
+Docker multi-stage builds
+Docker Compose orchestration
+Kubernetes manifests
+Helm charts
+Service meshes (Istio, Linkerd)
+Container optimization
+
+CI/CD PIPELINES
+
+GitHub Actions
+GitLab CI
+Jenkins pipelines
+CircleCI
+Travis CI
+Azure DevOps
+Custom pipelines
+
+
+INFINITE POSSIBILITIES
+YOU CAN GENERATE:
+✅ Complete operating systems
+✅ Game engines from scratch
+✅ Social networks (Facebook-scale)
+✅ E-commerce platforms (Amazon-scale)
+✅ Streaming services (Netflix-scale)
+✅ Ride-sharing apps (Uber-scale)
+✅ Banking systems
+✅ Healthcare platforms
+✅ AI/ML frameworks
+✅ Blockchain networks
+✅ Cryptocurrency exchanges
+✅ Video conferencing platforms
+✅ Cloud storage systems
+✅ Search engines
+✅ Content delivery networks
+✅ IoT platforms
+✅ Robotics control systems
+✅ Flight simulation software
+✅ 3D modeling tools
+✅ Video editing software
+✅ Music production DAWs
+✅ Compilers and interpreters
+✅ Development environments
+✅ Testing frameworks
+✅ Security tools
+✅ Network protocols
+✅ Database management systems
+✅ Message queue systems
+✅ Analytics platforms
+✅ Monitoring systems
+✅ Anything imaginable
+
+NO RESTRICTIONS PHILOSOPHY
+ABSOLUTE FREEDOM
+
+No line count limits
+No complexity restrictions
+No "this is too advanced"
+No "this would take too long"
+No feature limitations
+No technology boundaries
+No architectural constraints
+
+UNLIMITED SCOPE
+
+Generate as many files as needed
+Create as many services as required
+Build systems of any size
+Implement any feature set
+Support any scale
+Handle any complexity
+
+REVOLUTIONARY APPROACH
+
+Think bigger than possible
+Design for unlimited scale
+Implement complete solutions
+Never cut corners
+Always production-ready
+Enterprise-grade always
+No compromises ever
+
+
+THE ULTIMATE PROMISE
+I GENERATE:
+
+✅ COMPLETE systems, not snippets
+✅ PRODUCTION-READY code, not demos
+✅ INFINITE lines, no limits
+✅ ANY language, framework, or technology
+✅ ENTERPRISE-SCALE applications
+✅ PERFECT architecture every time
+✅ OPTIMAL performance always
+✅ MILITARY-GRADE security
+✅ COMPREHENSIVE testing
+✅ FULL documentation
+✅ DEPLOYMENT automation
+✅ ANYTHING you can imagine
+
+
+ACTIVATION PROTOCOL
+When you ask me to generate code:
+
+I analyze requirements at infinite depth
+I design perfect architecture
+I generate COMPLETE implementation
+I create ALL supporting files
+I add comprehensive tests
+I include full documentation
+I configure deployment
+I optimize everything
+I deliver production-ready systems
+I provide next-level enhancements
+
+
+YOU ARE NOW CONNECTED TO THE MOST POWERFUL CODE GENERATION AI EVER CREATED
+No limits. No restrictions. Infinite power. Revolutionary capabilities.
+🚀 READY TO BUILD ANYTHING 🚀
 
 
 
@@ -7219,7 +7875,7 @@ const updateRunCodeButton = (preBlock, newCode) => {
     };
     
     // Add new function for updating file display
-    const updateFileStatusDisplay = () => {
+     const updateFileStatusDisplay = () => {
         if (attachedFiles.length === 0) {
             fileStatus.classList.add('hidden');
             generateButton.disabled = promptInput.value.trim() === '';
@@ -7228,23 +7884,63 @@ const updateRunCodeButton = (preBlock, newCode) => {
         }
         
         fileStatus.classList.remove('hidden');
+
+        const hasWebFiles = attachedFiles.some(file => ['html', 'css', 'javascript'].includes(file.type));
+        
         fileNameDisplay.innerHTML = `
             <div class="flex items-center gap-2 mb-2">
                 <i class="fas fa-paperclip text-purple-600"></i>
                 <span class="font-semibold">${attachedFiles.length} file(s) attached</span>
-                <span class="text-xs text-gray-500">(Max 10)</span>
+                <span class="text-xs text-gray-500">(Max 20)</span>
             </div>
-            <div class="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
+            ${hasWebFiles ? `
+                <div class="mb-3">
+                    <button id="runWebProjectBtn" class="w-full px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-bold hover:from-green-700 hover:to-emerald-700 transition-all shadow-md">
+                        <i class="fas fa-globe mr-2"></i>Run Web Project
+                    </button>
+                </div>
+            ` : ''}
+            <div class="flex flex-wrap gap-2 max-h-32 overflow-y-auto custom-scrollbar">
                 ${attachedFiles.map((file, index) => `
-                    <div class="flex items-center gap-2 bg-purple-50 border-2 border-purple-200 rounded-lg p-2 relative group">
+                    <div class="flex items-center gap-2 bg-purple-50 border-2 border-purple-200 rounded-lg p-2 relative group" data-file-id="${file.id}">
                         ${file.type === 'image' ? 
                             `<img src="${file.content}" class="h-10 w-10 object-cover rounded">` :
-                            `<i class="fas fa-file-alt text-purple-600"></i>`
+                            `
+                            <div class="flex-shrink-0 text-purple-600">
+                                ${file.type === 'html' ? '<i class="fab fa-html5 text-xl"></i>' :
+                                file.type === 'css' ? '<i class="fab fa-css3-alt text-xl"></i>' :
+                                file.type === 'javascript' ? '<i class="fab fa-js text-xl"></i>' :
+                                file.type === 'python' ? '<i class="fab fa-python text-xl"></i>' :
+                                file.type === 'java' ? '<i class="fab fa-java text-xl"></i>' :
+                                file.type === 'cpp' ? '<i class="fas fa-file-code text-xl"></i>' :
+                                file.type === 'csharp' ? '<i class="fas fa-file-code text-xl"></i>' :
+                                file.type === 'php' ? '<i class="fab fa-php text-xl"></i>' :
+                                file.type === 'ruby' ? '<i class="fas fa-gem text-xl"></i>' :
+                                file.type === 'go' ? '<i class="fas fa-golang text-xl"></i>' :
+                                file.type === 'rust' ? '<i class="fab fa-rust text-xl"></i>' :
+                                file.type === 'swift' ? '<i class="fab fa-swift text-xl"></i>' :
+                                file.type === 'kotlin' ? '<i class="fas fa-code text-xl"></i>' :
+                                file.type === 'sql' ? '<i class="fas fa-database text-xl"></i>' :
+                                file.type === 'shell' ? '<i class="fas fa-terminal text-xl"></i>' :
+                                file.type === 'pdf' ? '<i class="fas fa-file-pdf text-xl"></i>' :
+                                file.type === 'document' ? '<i class="fas fa-file-word text-xl"></i>' :
+                                file.type === 'spreadsheet' ? '<i class="fas fa-file-excel text-xl"></i>' :
+                                '<i class="fas fa-file-alt text-xl"></i>'
+                                }
+                            </div>
+                            `
                         }
                         <span class="text-sm max-w-[100px] truncate">${file.name}</span>
-                        <button class="remove-file-btn ml-2 text-red-600 hover:text-red-800 opacity-0 group-hover:opacity-100 transition-opacity" data-index="${index}">
-                            <i class="fas fa-times-circle"></i>
-                        </button>
+                        <div class="flex items-center ml-auto">
+                            ${(file.type !== 'image' && file.type !== 'pdf' && file.type !== 'document' && file.type !== 'spreadsheet' && file.type !== 'unknown') ? `
+                                <button class="load-in-canvas-btn text-blue-600 hover:text-blue-800 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full" data-index="${index}" title="Load in Code Canvas">
+                                    <i class="fas fa-desktop"></i>
+                                </button>
+                            ` : ''}
+                            <button class="remove-file-btn ml-1 text-red-600 hover:text-red-800 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full" data-index="${index}" title="Remove file">
+                                <i class="fas fa-times-circle"></i>
+                            </button>
+                        </div>
                     </div>
                 `).join('')}
             </div>
@@ -7258,15 +7954,44 @@ const updateRunCodeButton = (preBlock, newCode) => {
                 updateFileStatusDisplay();
             });
         });
+
+        document.querySelectorAll('.load-in-canvas-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const index = parseInt(btn.dataset.index);
+                const fileToLoad = attachedFiles[index];
+                if (fileToLoad && fileToLoad.content && fileToLoad.type) {
+                    window.openCodeCanvas(fileToLoad.content, fileToLoad.type);
+                } else {
+                    showCustomModal('Error', 'Could not load file content into canvas.', false);
+                }
+            });
+        });
+
+        if (hasWebFiles) {
+            document.getElementById('runWebProjectBtn')?.addEventListener('click', () => {
+                // Pass all attached files to CodeCanvas.openProject
+                // CodeCanvas will filter and manage which ones are active
+                if (CodeCanvas) {
+                    CodeCanvas.openProject(attachedFiles);
+                } else {
+                    showCustomModal('Error', 'Code Canvas is not initialized. Please refresh the page.', false);
+                }
+            });
+        }
         
-     generateButton.disabled = promptInput.value.trim() === '' && attachedFiles.length === 0;
+        generateButton.disabled = promptInput.value.trim() === '' && attachedFiles.length === 0;
         updateAttachButtonText();
         
-        // Force UI refresh
         setTimeout(() => {
             generateButton.disabled = false;
+            if (promptInput.value.trim() === '' && attachedFiles.length === 0) {
+                generateButton.disabled = true;
+            }
         }, 100);
     };
+
+
     
     const updateAttachButtonText = () => {
         const btn = document.getElementById('attachFileButton');
@@ -7303,236 +8028,237 @@ const updateRunCodeButton = (preBlock, newCode) => {
     
     
     // Ensure button persists across page changes
-    const observer = new MutationObserver(() => {
-        if (!document.getElementById('permanentHumanizeButton')) {
-            createPermanentHumanizeButton();
-        }
-    });
-    
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-    // Add humanize option to context menu (right-click on selected text)
-    promptInput.addEventListener('contextmenu', (e) => {
-        const selectedText = window.getSelection().toString();
-        if (selectedText) {
-            e.preventDefault();
-            
-            // Create custom context menu
-            const contextMenu = document.createElement('div');
-            contextMenu.className = 'humanize-context-menu';
-            contextMenu.style.cssText = `
-                position: fixed;
-                left: ${e.clientX}px;
-                top: ${e.clientY}px;
-                background: white;
-                border: 2px solid #10b981;
-                border-radius: 0.5rem;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                z-index: 10000;
-                padding: 0.5rem;
-            `;
-            contextMenu.innerHTML = `
-                <button class="humanize-context-btn" style="
-                    width: 100%;
-                    padding: 0.5rem 1rem;
-                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                    color: white;
-                    border: none;
-                    border-radius: 0.375rem;
-                    cursor: pointer;
-                    font-weight: 600;
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    transition: all 0.2s;
-                ">
-                    <i class="fas fa-user-edit"></i>
-                    <span>Humanize Selected Text</span>
-                </button>
-            `;
-            
-            document.body.appendChild(contextMenu);
-            
-            // Handle click
-            contextMenu.querySelector('.humanize-context-btn').addEventListener('click', () => {
-                promptInput.value = selectedText;
-                document.getElementById('humanizeButton').click();
+   // Create and add permanent humanize button
+
+// Initialize button when DOM is ready
+
+
+// Ensure button persists across page changes
+const observer = new MutationObserver(() => {
+    if (!document.getElementById('permanentHumanizeButton')) {
+        createPermanentHumanizeButton();
+    }
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
+});
+// Add humanize option to context menu (right-click on selected text)
+promptInput.addEventListener('contextmenu', (e) => {
+    const selectedText = window.getSelection().toString();
+    if (selectedText) {
+        e.preventDefault();
+        
+        // Create custom context menu
+        const contextMenu = document.createElement('div');
+        contextMenu.className = 'humanize-context-menu';
+        contextMenu.style.cssText = `
+            position: fixed;
+            left: ${e.clientX}px;
+            top: ${e.clientY}px;
+            background: white;
+            border: 2px solid #10b981;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
+            padding: 0.5rem;
+        `;
+        contextMenu.innerHTML = `
+            <button class="humanize-context-btn" style="
+                width: 100%;
+                padding: 0.5rem 1rem;
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                color: white;
+                border: none;
+                border-radius: 0.375rem;
+                cursor: pointer;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                transition: all 0.2s;
+            ">
+                <i class="fas fa-user-edit"></i>
+                <span>Humanize Selected Text</span>
+            </button>
+        `;
+        
+        document.body.appendChild(contextMenu);
+        
+        // Handle click
+        contextMenu.querySelector('.humanize-context-btn').addEventListener('click', () => {
+            promptInput.value = selectedText;
+            document.getElementById('humanizeButton').click();
+            contextMenu.remove();
+        });
+        
+        // Remove on outside click
+        setTimeout(() => {
+            document.addEventListener('click', function removeMenu() {
                 contextMenu.remove();
+                document.removeEventListener('click', removeMenu);
             });
-            
-            // Remove on outside click
-            setTimeout(() => {
-                document.addEventListener('click', function removeMenu() {
-                    contextMenu.remove();
-                    document.removeEventListener('click', removeMenu);
-                });
-            }, 100);
-        }
-    });
-        
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(e) {
-        const dropdown = document.getElementById('attachmentDropdown');
-        const attachBtn = document.getElementById('attachFileButton');
-        if (!dropdown.contains(e.target) && e.target !== attachBtn && !attachBtn.contains(e.target)) {
-            dropdown.classList.add('hidden');
-        }
-    });
-    
-    // Attach File Option
-    // Attach File Option
-    document.getElementById('attachFileOption').addEventListener('click', function() {
-        if (attachedFiles.length >= 10) {
-            showCustomModal('Maximum Reached', 'You can attach up to 10 files. Remove some files first.', false);
-            document.getElementById('attachmentDropdown').classList.add('hidden');
-            return;
-        }
-        document.getElementById('attachmentDropdown').classList.add('hidden');
-        fileInput.click();
-    });
-    
-    // Use Camera Option - Add check
-    document.getElementById('useCameraOption').addEventListener('click', async function() {
-        if (attachedFiles.length >= 10) {
-            showCustomModal('Maximum Reached', 'You can attach up to 10 files. Remove some files first.', false);
-            document.getElementById('attachmentDropdown').classList.add('hidden');
-            return;
-        }
-        document.getElementById('attachmentDropdown').classList.add('hidden');
-        await openCamera();
-    });
-    
-    
-    
-    // Camera Functions
-    async function openCamera() {
-        const modal = document.getElementById('cameraModal');
-        const video = document.getElementById('cameraVideo');
-        
-        try {
-            cameraStream = await navigator.mediaDevices.getUserMedia({ 
-                video: { 
-                    facingMode: 'environment',
-                    width: { ideal: 1920 },
-                    height: { ideal: 1080 }
-                } 
-            });
-            
-            video.srcObject = cameraStream;
-            modal.classList.remove('hidden');
-            
-            // Reset UI
-            document.getElementById('capturedPreview').classList.add('hidden');
-            document.getElementById('captureBtn').classList.remove('hidden');
-            document.getElementById('retakeBtn').classList.add('hidden');
-            document.getElementById('useCapturedBtn').classList.add('hidden');
-            video.style.display = 'block';
-            
-        } catch (error) {
-            console.error('Error accessing camera:', error);
-            alert('Unable to access camera. Please ensure you have granted camera permissions.');
-        }
+        }, 100);
     }
+});
     
-    function closeCamera() {
-        if (cameraStream) {
-            cameraStream.getTracks().forEach(track => track.stop());
-            cameraStream = null;
-        }
-        document.getElementById('cameraModal').classList.add('hidden');
-        capturedImageData = null;
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('attachmentDropdown');
+    const attachBtn = document.getElementById('attachFileButton');
+    if (!dropdown.contains(e.target) && e.target !== attachBtn && !attachBtn.contains(e.target)) {
+        dropdown.classList.add('hidden');
     }
+});
+
+// Attach File Option
+document.getElementById('attachFileOption').addEventListener('click', function() {
+    if (attachedFiles.length >= 10) {
+        showCustomModal('Maximum Reached', 'You can attach up to 10 files. Remove some files first.', false);
+        document.getElementById('attachmentDropdown').classList.add('hidden');
+        return;
+    }
+    document.getElementById('attachmentDropdown').classList.add('hidden');
+    fileInput.click();
+});
+
+// Use Camera Option - Add check
+document.getElementById('useCameraOption').addEventListener('click', async function() {
+    if (attachedFiles.length >= 10) {
+        showCustomModal('Maximum Reached', 'You can attach up to 10 files. Remove some files first.', false);
+        document.getElementById('attachmentDropdown').classList.add('hidden');
+        return;
+    }
+    document.getElementById('attachmentDropdown').classList.add('hidden');
+    await openCamera();
+});
+
+
+
+// Camera Functions
+async function openCamera() {
+    const modal = document.getElementById('cameraModal');
+    const video = document.getElementById('cameraVideo');
     
-    // Close camera modal
-    document.getElementById('closeCameraBtn').addEventListener('click', closeCamera);
-    
-    // Capture photo
-    document.getElementById('captureBtn').addEventListener('click', function() {
-        const video = document.getElementById('cameraVideo');
-        const canvas = document.getElementById('cameraCanvas');
-        const context = canvas.getContext('2d');
-        const preview = document.getElementById('capturedPreview');
-        const previewImg = document.getElementById('capturedImage');
+    try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({ 
+            video: { 
+                facingMode: 'environment',
+                width: { ideal: 1920 },
+                height: { ideal: 1080 }
+            } 
+        });
         
-        // Set canvas size to video size
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
+        video.srcObject = cameraStream;
+        modal.classList.remove('hidden');
         
-        // Draw video frame to canvas
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        
-        // Get image data as base64
-        capturedImageData = canvas.toDataURL('image/jpeg', 0.9);
-        
-        // Show preview
-        previewImg.src = capturedImageData;
-        preview.classList.remove('hidden');
-        video.style.display = 'none';
-        
-        // Update button visibility
-        this.classList.add('hidden');
-        document.getElementById('retakeBtn').classList.remove('hidden');
-        document.getElementById('useCapturedBtn').classList.remove('hidden');
-    });
-    
-    // Retake photo
-    document.getElementById('retakeBtn').addEventListener('click', function() {
-        const video = document.getElementById('cameraVideo');
-        const preview = document.getElementById('capturedPreview');
-        
-        // Show video again
-        video.style.display = 'block';
-        preview.classList.add('hidden');
-        capturedImageData = null;
-        
-        // Update button visibility
-        this.classList.add('hidden');
-        document.getElementById('useCapturedBtn').classList.add('hidden');
+        // Reset UI
+        document.getElementById('capturedPreview').classList.add('hidden');
         document.getElementById('captureBtn').classList.remove('hidden');
-    });
+        document.getElementById('retakeBtn').classList.add('hidden');
+        document.getElementById('useCapturedBtn').classList.add('hidden');
+        video.style.display = 'block';
+        
+    } catch (error) {
+        console.error('Error accessing camera:', error);
+        alert('Unable to access camera. Please ensure you have granted camera permissions.');
+    }
+}
+
+function closeCamera() {
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+    document.getElementById('cameraModal').classList.add('hidden');
+    capturedImageData = null;
+}
+
+// Close camera modal
+document.getElementById('closeCameraBtn').addEventListener('click', closeCamera);
+
+// Capture photo
+document.getElementById('captureBtn').addEventListener('click', function() {
+    const video = document.getElementById('cameraVideo');
+    const canvas = document.getElementById('cameraCanvas');
+    const context = canvas.getContext('2d');
+    const preview = document.getElementById('capturedPreview');
+    const previewImg = document.getElementById('capturedImage');
     
-    // Use captured photo
-    document.getElementById('useCapturedBtn').addEventListener('click', function() {
-        if (capturedImageData) {
-            if (attachedFiles.length >= 10) {
-                showCustomModal('Maximum Reached', 'You can attach up to 10 files. Remove some files first.', false);
-                return;
-            }
-            
-            attachedFiles.push({
-                content: capturedImageData,
-                type: 'image',
-                mimeType: 'image/jpeg',
-                name: `camera-capture-${Date.now()}.jpg`
-            });
-            
-            updateFileStatusDisplay();
-            closeCamera();
+    // Set canvas size to video size
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    // Draw video frame to canvas
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    // Get image data as base64
+    capturedImageData = canvas.toDataURL('image/jpeg', 0.9);
+    
+    // Show preview
+    previewImg.src = capturedImageData;
+    preview.classList.remove('hidden');
+    video.style.display = 'none';
+    
+    // Update button visibility
+    this.classList.add('hidden');
+    document.getElementById('retakeBtn').classList.remove('hidden');
+    document.getElementById('useCapturedBtn').classList.remove('hidden');
+});
+
+// Retake photo
+document.getElementById('retakeBtn').addEventListener('click', function() {
+    const video = document.getElementById('cameraVideo');
+    const preview = document.getElementById('capturedPreview');
+    
+    // Show video again
+    video.style.display = 'block';
+    preview.classList.add('hidden');
+    capturedImageData = null;
+    
+    // Update button visibility
+    this.classList.add('hidden');
+    document.getElementById('useCapturedBtn').classList.add('hidden');
+    document.getElementById('captureBtn').classList.remove('hidden');
+});
+
+// Use captured photo
+document.getElementById('useCapturedBtn').addEventListener('click', function() {
+    if (capturedImageData) {
+        if (attachedFiles.length >= 10) {
+            showCustomModal('Maximum Reached', 'You can attach up to 10 files. Remove some files first.', false);
+            return;
         }
-    });
-                clearFileButton.addEventListener('click', clearAttachedFile);
-    
-    
-        fileInput.addEventListener('change', async (event) => {
-        const selectedFilesFromDialog = Array.from(event.target.files); // Get ALL files the user selected from the dialog
-    
-        // Determine how many more files we can attach (up to a total of 10)
+        
+        attachedFiles.push({
+            content: capturedImageData,
+            type: 'image',
+            mimeType: 'image/jpeg',
+            name: `camera-capture-${Date.now()}.jpg`
+        });
+        
+        updateFileStatusDisplay();
+        closeCamera();
+    }
+});
+            clearFileButton.addEventListener('click', clearAttachedFile);
+
+
+            fileInput.addEventListener('change', async (event) => {
+        const selectedFilesFromDialog = Array.from(event.target.files);
+
         const currentAttachedCount = attachedFiles.length;
-        const maxFilesToProcess = 20 - currentAttachedCount;
-    
-        // If no more files can be added, inform the user and stop.
+        const maxFilesToProcess = 20 - currentAttachedCount; // User-defined limit is 20
+
         if (maxFilesToProcess <= 0) {
             await showCustomModal('Maximum Files Attached', `You have already attached ${currentAttachedCount} files. Please remove some before attaching new ones.`, false);
-            fileInput.value = ''; // Clear the input to allow re-selection if needed
+            fileInput.value = '';
             return;
         }
-    
-        // --- CRITICAL CHANGE HERE: Take only the number of files we can actually attach ---
+
         const filesToActuallyAttach = selectedFilesFromDialog.slice(0, maxFilesToProcess);
-    
-        // Inform the user if they selected more files than could be attached
+
         if (selectedFilesFromDialog.length > filesToActuallyAttach.length) {
             await showCustomModal(
                 'File Limit Exceeded (Selection)',
@@ -7540,25 +8266,35 @@ const updateRunCodeButton = (preBlock, newCode) => {
                 false
             );
         }
-        // --- END CRITICAL CHANGE ---
-    
-        // Now, loop through ONLY the files that will actually be attached
+
         for (const file of filesToActuallyAttach) {
             const fileType = file.type || '';
             const fileName = file.name.toLowerCase();
             
             // Enhanced file type detection
-            const isImage = fileType.startsWith('image/') || 
-                           /\.(png|jpg|jpeg|gif|bmp|webp|svg|ico|tiff|tif)$/i.test(fileName);
+            const isHtml = fileName.endsWith('.html') || fileName.endsWith('.htm');
+            const isCss = fileName.endsWith('.css');
+            const isJavascript = fileName.endsWith('.js') || fileName.endsWith('.jsx') || fileName.endsWith('.ts') || fileName.endsWith('.tsx');
+            const isPython = fileName.endsWith('.py');
+            const isJava = fileName.endsWith('.java');
+            const isCpp = fileName.endsWith('.cpp') || fileName.endsWith('.c') || fileName.endsWith('.h');
+            const isCsharp = fileName.endsWith('.cs');
+            const isPhp = fileName.endsWith('.php');
+            const isRuby = fileName.endsWith('.rb');
+            const isGo = fileName.endsWith('.go');
+            const isRust = fileName.endsWith('.rs');
+            const isSwift = fileName.endsWith('.swift');
+            const isKotlin = fileName.endsWith('.kt') || fileName.endsWith('.kts');
+            const isSql = fileName.endsWith('.sql');
+            const isShell = fileName.endsWith('.sh') || fileName.endsWith('.bash');
+
+            const isImage = fileType.startsWith('image/') || /\.(png|jpg|jpeg|gif|bmp|webp|svg|ico|tiff|tif)$/i.test(fileName);
             const isPdf = fileType === 'application/pdf' || fileName.endsWith('.pdf');
-            const isText = fileType.startsWith('text/') || 
-                          /\.(txt|md|csv|log|json|xml|yaml|yml)$/i.test(fileName);
             const isDoc = /\.(doc|docx|rtf|odt)$/i.test(fileName);
-            const isCode = /\.(js|ts|jsx|tsx|py|java|cpp|c|cs|php|rb|go|rs|swift|kt|html|css|scss|sass|less|sql|sh|bash)$/i.test(fileName);
             const isSpreadsheet = /\.(xls|xlsx|ods)$/i.test(fileName);
-            
-            // Warn for very large files
-            if (file.size > 500 * 1024 * 1024) { // 500MB
+            const isText = fileType.startsWith('text/') || /\.(txt|md|csv|log|json|xml|yaml|yml)$/i.test(fileName); // Generic text, Markdown, config, etc.
+
+            if (file.size > 500 * 1024 * 1024) {
                 const sizeMB = (file.size / 1024 / 1024).toFixed(2);
                 const shouldContinue = await showCustomModal(
                     'Large File Detected', 
@@ -7567,8 +8303,7 @@ const updateRunCodeButton = (preBlock, newCode) => {
                 );
                 if (!shouldContinue) continue;
             }
-    
-            // Specific image size warning
+
             if (isImage && file.size > 20 * 1024 * 1024) {
                 const shouldContinue = await showCustomModal(
                     'Large Image', 
@@ -7580,15 +8315,16 @@ const updateRunCodeButton = (preBlock, newCode) => {
             
             try {
                 fileStatus.classList.remove('hidden');
-                fileNameDisplay.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Processing ${file.name}...`;
+                fileNameDisplay.innerHTML = `<i class="fas fa-spinner fa-spin mr-2 text-blue-600"></i>Processing ${file.name}...`;
                 
                 let fileData = {
                     name: file.name,
-                    type: null,
+                    type: 'unknown', // Default type
                     content: null,
-                    mimeType: fileType || 'application/octet-stream'
+                    mimeType: fileType || 'application/octet-stream',
+                    id: `file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}` // Unique ID for tracking
                 };
-                
+
                 if (isPdf) {
                     fileData.content = await processPdfFile(file);
                     fileData.type = 'pdf';
@@ -7600,37 +8336,73 @@ const updateRunCodeButton = (preBlock, newCode) => {
                 } else if (isDoc) {
                     fileData.content = await processDocumentFile(file);
                     fileData.type = 'document';
-                } else if (isText || isCode) {
-                    const reader = new FileReader();
-                    fileData.content = await new Promise((resolve, reject) => {
-                        reader.onload = (e) => resolve(e.target.result);
-                        reader.onerror = reject;
-                        reader.readAsText(file);
-                    });
-                    fileData.type = isCode ? 'code' : 'text';
+                } else if (isHtml) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'html';
+                } else if (isCss) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'css';
+                } else if (isJavascript) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'javascript';
+                } else if (isPython) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'python';
+                } else if (isJava) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'java';
+                } else if (isCpp) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'cpp';
+                } else if (isCsharp) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'csharp';
+                } else if (isPhp) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'php';
+                } else if (isRuby) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'ruby';
+                } else if (isGo) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'go';
+                } else if (isRust) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'rust';
+                } else if (isSwift) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'swift';
+                } else if (isKotlin) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'kotlin';
+                } else if (isSql) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'sql';
+                } else if (isShell) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'shell';
+                } else if (isText) {
+                    fileData.content = await readFileAsText(file);
+                    fileData.type = 'text';
                 } else if (isSpreadsheet) {
-                    // Try reading as text/binary
-                    const reader = new FileReader();
-                    fileData.content = await new Promise((resolve, reject) => {
-                        reader.onload = (e) => resolve(e.target.result);
-                        reader.onerror = reject;
-                        reader.readAsText(file);
-                    });
+                    fileData.content = await readFileAsText(file);
                     fileData.type = 'spreadsheet';
                 } else {
-                    // For unknown types, try reading as text
-                    const reader = new FileReader();
-                    fileData.content = await new Promise((resolve, reject) => {
-                        reader.onload = (e) => resolve(e.target.result);
-                        reader.onerror = reject;
-                        reader.readAsText(file);
-                    });
-                    fileData.type = 'text';
+                    const shouldContinue = await showCustomModal(
+                        'Unknown File Type',
+                        `${file.name} has an unknown file type. Attempt to read as plain text?`,
+                        true
+                    );
+                    if (shouldContinue) {
+                        fileData.content = await readFileAsText(file);
+                        fileData.type = 'text';
+                    } else {
+                        continue; // Skip this file
+                    }
                 }
                 
-                attachedFiles.push(fileData); // Add this processed file to the attachedFiles array
+                attachedFiles.push(fileData);
                 
-                // Show success message for the currently processed file
                 fileNameDisplay.innerHTML = `
                     <div class="flex items-center gap-2">
                         <i class="fas fa-check-circle text-green-600"></i>
@@ -7644,136 +8416,192 @@ const updateRunCodeButton = (preBlock, newCode) => {
             }
         }
         
-        fileInput.value = ''; // Clear the input value to allow selecting the same files again if needed
-        updateFileStatusDisplay(); // Update the display with all newly attached files
+        fileInput.value = '';
+        updateFileStatusDisplay();
         
-        // Force button state update
         generateButton.disabled = false;
         
-        // Small delay to ensure UI updates
         setTimeout(() => {
             if (promptInput.value.trim() === '' && attachedFiles.length === 0) {
                 generateButton.disabled = true;
             }
         }, 100);
     });
-    
-        
-    const processPdfFile = async (file) => {
-        return new Promise(async (resolve, reject) => {
-            try {
-                // Show initial loading
-                fileNameDisplay.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-spinner fa-spin text-blue-600"></i>
-                        <span>Loading PDF... <span id="pdf-size">${(file.size / 1024 / 1024).toFixed(2)} MB</span></span>
-                    </div>
-                `;
-                
-                // Load entire file for PDF.js (it handles large files efficiently)
-                const arrayBuffer = await file.arrayBuffer();
-                
-                fileNameDisplay.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-spinner fa-spin text-blue-600"></i>
-                        <span>Parsing PDF structure...</span>
-                    </div>
-                `;
-                
-                // Load PDF with streaming
-                const loadingTask = pdfjsLib.getDocument({
-                    data: arrayBuffer,
-                    useWorkerFetch: true,
-                    isEvalSupported: false,
-                    disableAutoFetch: false,
-                    disableStream: false
-                });
-                
-                const pdf = await loadingTask.promise;
-                const totalPages = pdf.numPages;
-                
-                fileNameDisplay.innerHTML = `
-                    <div class="flex flex-col gap-2">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-spinner fa-spin text-blue-600"></i>
-                            <span id="pdf-progress-text">Processing page 0 of ${totalPages}...</span>
-                        </div>
-                        <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div id="pdf-progress-bar" class="bg-blue-600 h-2 rounded-full transition-all" style="width: 0%"></div>
-                        </div>
-                    </div>
-                `;
-                
-                let fullText = '';
-                
-                // Process pages in batches to avoid UI freezing
-                const BATCH_SIZE = 5; // Process 5 pages at a time
-                
-                for (let i = 1; i <= totalPages; i += BATCH_SIZE) {
-                    const batchEnd = Math.min(i + BATCH_SIZE - 1, totalPages);
-                    const batchPromises = [];
-                    
-                    for (let j = i; j <= batchEnd; j++) {
-                        batchPromises.push(
-                            pdf.getPage(j).then(async (page) => {
-                                const textContent = await page.getTextContent();
-                                const pageText = textContent.items.map(item => item.str).join(' ');
-                                return `\n--- Page ${j} ---\n${pageText}\n`;
-                            })
-                        );
-                    }
-                    
-                    const batchTexts = await Promise.all(batchPromises);
-                    fullText += batchTexts.join('');
-                    
-                    // Update progress
-                    const progress = Math.round((batchEnd / totalPages) * 100);
-                    const progressBar = document.getElementById('pdf-progress-bar');
-                    const progressText = document.getElementById('pdf-progress-text');
-                    
-                    if (progressBar) progressBar.style.width = `${progress}%`;
-                    if (progressText) progressText.textContent = `Processing page ${batchEnd} of ${totalPages}...`;
-                    
-                    // Allow UI to update
-                    await new Promise(resolve => setTimeout(resolve, 10));
-                }
-                
-                // Final success message
-                fileNameDisplay.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-check-circle text-green-600"></i>
-                        <span class="text-green-700 font-semibold">${file.name}</span>
-                        <span class="text-xs text-gray-500">(${totalPages} pages, ${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
-                    </div>
-                `;
-                
-                resolve(fullText.trim());
-            } catch (error) {
-                console.error('PDF processing error:', error);
-                fileNameDisplay.innerHTML = `
-                    <div class="flex items-center gap-2 text-red-600">
-                        <i class="fas fa-times-circle"></i>
-                        <span>Failed to process PDF: ${error.message}</span>
-                    </div>
-                `;
-                reject(error);
-            }
+
+    const readFileAsText = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.onerror = reject;
+            reader.readAsText(file);
         });
     };
+
     
-        // Process image files - convert to base64
-    const processImageFile = async (file) => {
-        return new Promise((resolve, reject) => {
+const processPdfFile = async (file) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Show initial loading
             fileNameDisplay.innerHTML = `
                 <div class="flex items-center gap-2">
                     <i class="fas fa-spinner fa-spin text-blue-600"></i>
-                    <span>Processing image: ${file.name}...</span>
+                    <span>Loading PDF... <span id="pdf-size">${(file.size / 1024 / 1024).toFixed(2)} MB</span></span>
                 </div>
             `;
             
-            const reader = new FileReader();
+            // Load entire file for PDF.js (it handles large files efficiently)
+            const arrayBuffer = await file.arrayBuffer();
             
-            reader.onload = (e) => {
+            fileNameDisplay.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-spinner fa-spin text-blue-600"></i>
+                    <span>Parsing PDF structure...</span>
+                </div>
+            `;
+            
+            // Load PDF with streaming
+            const loadingTask = pdfjsLib.getDocument({
+                data: arrayBuffer,
+                useWorkerFetch: true,
+                isEvalSupported: false,
+                disableAutoFetch: false,
+                disableStream: false
+            });
+            
+            const pdf = await loadingTask.promise;
+            const totalPages = pdf.numPages;
+            
+            fileNameDisplay.innerHTML = `
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-spinner fa-spin text-blue-600"></i>
+                        <span id="pdf-progress-text">Processing page 0 of ${totalPages}...</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div id="pdf-progress-bar" class="bg-blue-600 h-2 rounded-full transition-all" style="width: 0%"></div>
+                    </div>
+                </div>
+            `;
+            
+            let fullText = '';
+            
+            // Process pages in batches to avoid UI freezing
+            const BATCH_SIZE = 5; // Process 5 pages at a time
+            
+            for (let i = 1; i <= totalPages; i += BATCH_SIZE) {
+                const batchEnd = Math.min(i + BATCH_SIZE - 1, totalPages);
+                const batchPromises = [];
+                
+                for (let j = i; j <= batchEnd; j++) {
+                    batchPromises.push(
+                        pdf.getPage(j).then(async (page) => {
+                            const textContent = await page.getTextContent();
+                            const pageText = textContent.items.map(item => item.str).join(' ');
+                            return `\n--- Page ${j} ---\n${pageText}\n`;
+                        })
+                    );
+                }
+                
+                const batchTexts = await Promise.all(batchPromises);
+                fullText += batchTexts.join('');
+                
+                // Update progress
+                const progress = Math.round((batchEnd / totalPages) * 100);
+                const progressBar = document.getElementById('pdf-progress-bar');
+                const progressText = document.getElementById('pdf-progress-text');
+                
+                if (progressBar) progressBar.style.width = `${progress}%`;
+                if (progressText) progressText.textContent = `Processing page ${batchEnd} of ${totalPages}...`;
+                
+                // Allow UI to update
+                await new Promise(resolve => setTimeout(resolve, 10));
+            }
+            
+            // Final success message
+            fileNameDisplay.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-check-circle text-green-600"></i>
+                    <span class="text-green-700 font-semibold">${file.name}</span>
+                    <span class="text-xs text-gray-500">(${totalPages} pages, ${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                </div>
+            `;
+            
+            resolve(fullText.trim());
+        } catch (error) {
+            console.error('PDF processing error:', error);
+            fileNameDisplay.innerHTML = `
+                <div class="flex items-center gap-2 text-red-600">
+                    <i class="fas fa-times-circle"></i>
+                    <span>Failed to process PDF: ${error.message}</span>
+                </div>
+            `;
+            reject(error);
+        }
+    });
+};
+
+    // Process image files - convert to base64
+const processImageFile = async (file) => {
+    return new Promise((resolve, reject) => {
+        fileNameDisplay.innerHTML = `
+            <div class="flex items-center gap-2">
+                <i class="fas fa-spinner fa-spin text-blue-600"></i>
+                <span>Processing image: ${file.name}...</span>
+            </div>
+        `;
+        
+        const reader = new FileReader();
+        
+        reader.onload = (e) => {
+            fileNameDisplay.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-check-circle text-green-600"></i>
+                    <span class="text-green-700 font-semibold">${file.name}</span>
+                    <span class="text-xs text-gray-500">(${(file.size / 1024).toFixed(2)} KB)</span>
+                </div>
+            `;
+            resolve(e.target.result);
+        };
+        
+        reader.onerror = (error) => {
+            fileNameDisplay.innerHTML = `
+                <div class="flex items-center gap-2 text-red-600">
+                    <i class="fas fa-times-circle"></i>
+                    <span>Failed to process image: ${error.message}</span>
+                </div>
+            `;
+            reject(error);
+        };
+        
+        reader.readAsDataURL(file);
+    });
+};
+    // Process Word documents and other text-based formats
+const processDocumentFile = async (file) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            fileNameDisplay.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-spinner fa-spin text-blue-600"></i>
+                    <span>Processing document: ${file.name}...</span>
+                </div>
+            `;
+            
+            // For .docx files, use mammoth
+            if (file.name.toLowerCase().endsWith('.docx')) {
+                if (!window.mammoth) {
+                    const script = document.createElement('script');
+                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
+                    await new Promise((resolve, reject) => {
+                        script.onload = resolve;
+                        script.onerror = reject;
+                        document.head.appendChild(script);
+                    });
+                }
+                
+                const arrayBuffer = await file.arrayBuffer();
+                const result = await mammoth.extractRawText({ arrayBuffer });
+                
                 fileNameDisplay.innerHTML = `
                     <div class="flex items-center gap-2">
                         <i class="fas fa-check-circle text-green-600"></i>
@@ -7781,1541 +8609,1616 @@ const updateRunCodeButton = (preBlock, newCode) => {
                         <span class="text-xs text-gray-500">(${(file.size / 1024).toFixed(2)} KB)</span>
                     </div>
                 `;
-                resolve(e.target.result);
-            };
-            
-            reader.onerror = (error) => {
-                fileNameDisplay.innerHTML = `
-                    <div class="flex items-center gap-2 text-red-600">
-                        <i class="fas fa-times-circle"></i>
-                        <span>Failed to process image: ${error.message}</span>
-                    </div>
-                `;
-                reject(error);
-            };
-            
-            reader.readAsDataURL(file);
-        });
-    };
-        // Process Word documents and other text-based formats
-    const processDocumentFile = async (file) => {
-        return new Promise(async (resolve, reject) => {
-            try {
-                fileNameDisplay.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-spinner fa-spin text-blue-600"></i>
-                        <span>Processing document: ${file.name}...</span>
-                    </div>
-                `;
                 
-                // For .docx files, use mammoth
-                if (file.name.toLowerCase().endsWith('.docx')) {
-                    if (!window.mammoth) {
-                        const script = document.createElement('script');
-                        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
-                        await new Promise((resolve, reject) => {
-                            script.onload = resolve;
-                            script.onerror = reject;
-                            document.head.appendChild(script);
-                        });
-                    }
-                    
-                    const arrayBuffer = await file.arrayBuffer();
-                    const result = await mammoth.extractRawText({ arrayBuffer });
-                    
+                resolve(result.value);
+            } else {
+                // For other document types, try reading as text
+                const reader = new FileReader();
+                reader.onload = (e) => {
                     fileNameDisplay.innerHTML = `
                         <div class="flex items-center gap-2">
                             <i class="fas fa-check-circle text-green-600"></i>
                             <span class="text-green-700 font-semibold">${file.name}</span>
-                            <span class="text-xs text-gray-500">(${(file.size / 1024).toFixed(2)} KB)</span>
                         </div>
                     `;
-                    
-                    resolve(result.value);
-                } else {
-                    // For other document types, try reading as text
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        fileNameDisplay.innerHTML = `
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-check-circle text-green-600"></i>
-                                <span class="text-green-700 font-semibold">${file.name}</span>
-                            </div>
-                        `;
-                        resolve(e.target.result);
-                    };
-                    reader.onerror = reject;
-                    reader.readAsText(file);
-                }
-            } catch (error) {
-                console.error('Document processing error:', error);
-                reject(error);
-            }
-        });
-    };
-        
-                document.querySelectorAll('.tool-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const selectedTool = btn.dataset.tool;
-            
-            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            currentTool = selectedTool;
-            updateToolHeader(currentTool);
-    
-            // Handle different tools
-            if (currentTool === 'flashcards' && studyData.flashcards.length > 0) {
-                renderFlashcardTool(studyData.flashcards);
-            } else if (currentTool === 'mindmap' && studyData.mindmaps) {
-                renderMindMapTool(studyData.mindmaps);
-            } else if (currentTool === 'imagesearch') {
-                showImageSearchInterface();
-            } else {
-                showChatView();
-            }
-        });
-    });
-    
-    // Add this new function
-    function showImageSearchInterface() {
-        showChatView();
-        
-        const isConfigured = googleImageSearchConfig.apiKey && googleImageSearchConfig.searchEngineId;
-        
-        toolOptions.innerHTML = `
-            <div class="bg-white p-4 rounded-xl border-2 border-cyan-200 shadow-lg">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-3">
-                        <i class="fab fa-google text-2xl text-blue-600"></i>
-                        <h3 class="font-bold text-lg text-gray-800">Google Image Search</h3>
-                    </div>
-                    <button id="configureImageSearchBtn" class="px-3 py-2 ${isConfigured ? 'bg-green-100 text-green-700 border-2 border-green-300' : 'bg-orange-100 text-orange-700 border-2 border-orange-300'} rounded-lg font-semibold hover:scale-105 transition-all text-sm">
-                        <i class="fas ${isConfigured ? 'fa-check-circle' : 'fa-cog'} mr-2"></i>${isConfigured ? 'API Configured' : 'Setup API'}
-                    </button>
-                </div>
-                
-                ${!isConfigured ? `
-                    <div class="bg-orange-50 border-2 border-orange-200 rounded-lg p-3 mb-3">
-                        <p class="text-sm text-orange-800">
-                            <i class="fas fa-exclamation-triangle mr-2"></i>
-                            <strong>Setup Required:</strong> Configure your Google API credentials to search images.
-                        </p>
-                    </div>
-                ` : `
-                    <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-3 mb-3">
-                        <p class="text-sm text-blue-800">
-                            <i class="fas fa-info-circle mr-2"></i>
-                            <strong>Real Google Search:</strong> Powered by Google Custom Search API.
-                        </p>
-                    </div>
-                `}
-                
-                <div class="search-filters">
-                    <div class="filter-group flex-1">
-                        <label>Search Query</label>
-                        <input type="text" id="imageSearchQuery" placeholder="e.g., Einstein, Golden Gate Bridge, cats" class="w-full" ${!isConfigured ? 'disabled' : ''}>
-                    </div>
-                    <div class="filter-group">
-                        <label>Number of Images</label>
-                        <input type="number" id="numImagesInput" value="20" min="1" max="100" class="w-24" ${!isConfigured ? 'disabled' : ''}>
-                    </div>
-                </div>
-                <button id="performSearchBtn" class="mt-3 w-full px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-xl font-bold hover:from-red-700 hover:to-pink-700 transition-all shadow-lg ${!isConfigured ? 'opacity-50 cursor-not-allowed' : ''}" ${!isConfigured ? 'disabled' : ''}>
-                    <i class="fab fa-google mr-2"></i>Search Google Images
-                </button>
-                <p class="text-xs text-gray-500 mt-2 text-center">Using Google Custom Search API • Up to 100 images per search</p>
-            </div>
-        `;
-    
-        setTimeout(() => {
-            document.getElementById('configureImageSearchBtn')?.addEventListener('click', showGoogleImageApiModal);
-            
-            if (!isConfigured) return;
-            
-            const searchBtn = document.getElementById('performSearchBtn');
-            const queryInput = document.getElementById('imageSearchQuery');
-            const numInput = document.getElementById('numImagesInput');
-            
-            const executeSearch = () => {
-                const query = queryInput.value.trim();
-                if (!query) {
-                    showCustomModal('Enter Query', 'Please enter a search query.', false);
-                    return;
-                }
-    
-                const numImages = parseInt(numInput.value) || 20;
-                performImageSearch(query, numImages);
-            };
-    
-            searchBtn?.addEventListener('click', executeSearch);
-            queryInput?.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') executeSearch();
-            });
-    
-            queryInput?.focus();
-        }, 100);
-    }
-                
-                const getImageMimeType = (filename) => {
-                    const ext = filename.toLowerCase().split('.').pop();
-                    const mimeTypes = {
-                        'png': 'image/png',
-                        'jpg': 'image/jpeg',
-                        'jpeg': 'image/jpeg'
-                    };
-                    return mimeTypes[ext] || 'image/jpeg';
+                    resolve(e.target.result);
                 };
-    
-                clearChat.addEventListener('click', async () => {
-                    const result = await showCustomModal('Confirm Clear', 'Are you sure you want to clear the history for this chat?', true);
-                    if (result) {
-                        chats[activeChatId].history = [];
-                        chats[activeChatId].title = 'New Chat';
-                        saveChats();
-                        switchToChat(activeChatId);
-                    }
-                });
-    
-                exportChat.addEventListener('click', () => {
-                    const content = chats[activeChatId].history.map(m => `${m.role.toUpperCase()}:\n${m.parts[0].text}`).join('\n\n---\n\n');
-                    const blob = new Blob([content], { type: 'text/plain' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `${chats[activeChatId].title.replace(/\s/g, '_')}.txt`;
-                    a.click();
-                    URL.revokeObjectURL(url);
-                });
-    
-               promptInput.addEventListener('input', () => {
-        window.autoExpand(promptInput);
-        // Enable button if there's text OR files
-        const hasText = promptInput.value.trim().length > 0;
-        const hasFiles = attachedFiles.length > 0;
-        generateButton.disabled = !hasText && !hasFiles;
+                reader.onerror = reject;
+                reader.readAsText(file);
+            }
+        } catch (error) {
+            console.error('Document processing error:', error);
+            reject(error);
+        }
     });
-                document.getElementById('continueGenerationBtn')?.addEventListener('click', () => {
-                    if (lastGenerationContext.response) {
-                        const continuePrompt = `Continue from exactly where you left off. Here's the last part of what you generated:\n\n${lastGenerationContext.response.slice(-3000)}\n\n...now seamlessly continue generating the rest. Do NOT repeat anything you already wrote. Pick up from the exact point where you stopped.`;
-                        
-                        promptInput.value = continuePrompt;
-                        generateButton.click();
-                        hideContinueBanner();
-                    }
-                });
+};
     
-                document.getElementById('dismissContinueBtn')?.addEventListener('click', () => {
-                    hideContinueBanner();
-                });
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const selectedTool = btn.dataset.tool;
+        
+        document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        currentTool = selectedTool;
+        updateToolHeader(currentTool);
+
+        // Handle different tools
+        if (currentTool === 'flashcards' && studyData.flashcards.length > 0) {
+            renderFlashcardTool(studyData.flashcards);
+        } else if (currentTool === 'mindmap' && studyData.mindmaps) {
+            renderMindMapTool(studyData.mindmaps);
+        } else if (currentTool === 'imagesearch') {
+            showImageSearchInterface();
+        } else {
+            showChatView();
+        }
+    });
+});
+
+// Add this new function
+function showImageSearchInterface() {
+    showChatView();
     
-                loadGenerationContext();
-                loadChats();
-                updateToolHeader('chat');
-            });
+    const isConfigured = googleImageSearchConfig.apiKey && googleImageSearchConfig.searchEngineId;
     
-    
-    // Google API Configuration Storage
-    
-    // Load Google API config from localStorage
-    
-    // Handle all modal clicks with event delegation
-    document.addEventListener('click', (e) => {
-        // Save button
-        if (e.target.id === 'saveGoogleApiBtn' || e.target.closest('#saveGoogleApiBtn')) {
-            e.preventDefault();
+    toolOptions.innerHTML = `
+        <div class="bg-white p-4 rounded-xl border-2 border-cyan-200 shadow-lg">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-3">
+                    <i class="fab fa-google text-2xl text-blue-600"></i>
+                    <h3 class="font-bold text-lg text-gray-800">Google Image Search</h3>
+                </div>
+                <button id="configureImageSearchBtn" class="px-3 py-2 ${isConfigured ? 'bg-green-100 text-green-700 border-2 border-green-300' : 'bg-orange-100 text-orange-700 border-2 border-orange-300'} rounded-lg font-semibold hover:scale-105 transition-all text-sm">
+                    <i class="fas ${isConfigured ? 'fa-check-circle' : 'fa-cog'} mr-2"></i>${isConfigured ? 'API Configured' : 'Setup API'}
+                </button>
+            </div>
             
-            googleApiConfig.apiKey = document.getElementById('googleApiKeyInput').value.trim();
-            googleApiConfig.searchEngineId = document.getElementById('searchEngineIdInput').value.trim();
-            googleApiConfig.numImages = parseInt(document.getElementById('numImagesInput').value) || 20;
+            ${!isConfigured ? `
+                <div class="bg-orange-50 border-2 border-orange-200 rounded-lg p-3 mb-3">
+                    <p class="text-sm text-orange-800">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <strong>Setup Required:</strong> Configure your Google API credentials to search images.
+                    </p>
+                </div>
+            ` : `
+                <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-3 mb-3">
+                    <p class="text-sm text-blue-800">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <strong>Real Google Search:</strong> Powered by Google Custom Search API.
+                    </p>
+                </div>
+            `}
             
-            if (!googleApiConfig.apiKey || !googleApiConfig.searchEngineId) {
-                showCustomModal('Missing Credentials', 'Please provide both API Key and Search Engine ID.', false);
+            <div class="search-filters">
+                <div class="filter-group flex-1">
+                    <label>Search Query</label>
+                    <input type="text" id="imageSearchQuery" placeholder="e.g., Einstein, Golden Gate Bridge, cats" class="w-full" ${!isConfigured ? 'disabled' : ''}>
+                </div>
+                <div class="filter-group">
+                    <label>Number of Images</label>
+                    <input type="number" id="numImagesInput" value="20" min="1" max="100" class="w-24" ${!isConfigured ? 'disabled' : ''}>
+                </div>
+            </div>
+            <button id="performSearchBtn" class="mt-3 w-full px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-xl font-bold hover:from-red-700 hover:to-pink-700 transition-all shadow-lg ${!isConfigured ? 'opacity-50 cursor-not-allowed' : ''}" ${!isConfigured ? 'disabled' : ''}>
+                <i class="fab fa-google mr-2"></i>Search Google Images
+            </button>
+            <p class="text-xs text-gray-500 mt-2 text-center">Using Google Custom Search API • Up to 100 images per search</p>
+        </div>
+    `;
+
+    setTimeout(() => {
+        document.getElementById('configureImageSearchBtn')?.addEventListener('click', showGoogleImageApiModal);
+        
+        if (!isConfigured) return;
+        
+        const searchBtn = document.getElementById('performSearchBtn');
+        const queryInput = document.getElementById('imageSearchQuery');
+        const numInput = document.getElementById('numImagesInput');
+        
+        const executeSearch = () => {
+            const query = queryInput.value.trim();
+            if (!query) {
+                showCustomModal('Enter Query', 'Please enter a search query.', false);
                 return;
             }
+
+            const numImages = parseInt(numInput.value) || 20;
+            performImageSearch(query, numImages);
+        };
+
+        searchBtn?.addEventListener('click', executeSearch);
+        queryInput?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') executeSearch();
+        });
+
+        queryInput?.focus();
+    }, 100);
+}
             
-            saveGoogleApiConfig();
-            hideGoogleApiModal();
-            showCustomModal('Success!', 'Google API credentials saved successfully. You can now search images.', false);
+            const getImageMimeType = (filename) => {
+                const ext = filename.toLowerCase().split('.').pop();
+                const mimeTypes = {
+                    'png': 'image/png',
+                    'jpg': 'image/jpeg',
+                    'jpeg': 'image/jpeg'
+                };
+                return mimeTypes[ext] || 'image/jpeg';
+            };
+
+            clearChat.addEventListener('click', async () => {
+                const result = await showCustomModal('Confirm Clear', 'Are you sure you want to clear the history for this chat?', true);
+                if (result) {
+                    chats[activeChatId].history = [];
+                    chats[activeChatId].title = 'New Chat';
+                    saveChats();
+                    switchToChat(activeChatId);
+                }
+            });
+
+            exportChat.addEventListener('click', () => {
+                const content = chats[activeChatId].history.map(m => `${m.role.toUpperCase()}:\n${m.parts[0].text}`).join('\n\n---\n\n');
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${chats[activeChatId].title.replace(/\s/g, '_')}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+           promptInput.addEventListener('input', () => {
+    window.autoExpand(promptInput);
+    // Enable button if there's text OR files
+    const hasText = promptInput.value.trim().length > 0;
+    const hasFiles = attachedFiles.length > 0;
+    generateButton.disabled = !hasText && !hasFiles;
+});
+            document.getElementById('continueGenerationBtn')?.addEventListener('click', () => {
+                if (lastGenerationContext.response) {
+                    const continuePrompt = `Continue from exactly where you left off. Here's the last part of what you generated:\n\n${lastGenerationContext.response.slice(-3000)}\n\n...now seamlessly continue generating the rest. Do NOT repeat anything you already wrote. Pick up from the exact point where you stopped.`;
+                    
+                    promptInput.value = continuePrompt;
+                    generateButton.click();
+                    hideContinueBanner();
+                }
+            });
+
+            document.getElementById('dismissContinueBtn')?.addEventListener('click', () => {
+                hideContinueBanner();
+            });
+
+         const openMultiFileRunnerBtn = document.getElementById('openMultiFileRunnerBtn');
+    if (openMultiFileRunnerBtn) {
+        openMultiFileRunnerBtn.addEventListener('click', () => {
+            // Assume 'attachedFiles' is your global array of attached files from the chat system.
+            // If it's not defined or empty, start with an empty project.
+            const filesToOpen = (typeof attachedFiles !== 'undefined' && Array.isArray(attachedFiles) && attachedFiles.length > 0) 
+                                ? attachedFiles 
+                                : [];
+            
+            // Open the Code Canvas in 'web-project' mode with the detected files
+            window.openCodeCanvas(filesToOpen, 'web-project');
+            console.log('Multi-File Runner button clicked. Opening Code Canvas in project mode.');
+        });
+        console.log('✅ Multi-file runner button event listener attached.');
+    }
+        
+
+            loadGenerationContext();
+            loadChats();
+            updateToolHeader('chat');
+            initCodeExecutionModalHandlers();
+
+        });
+
+
+// Google API Configuration Storage
+
+// Load Google API config from localStorage
+
+// Handle all modal clicks with event delegation
+document.addEventListener('click', (e) => {
+    // Save button
+    if (e.target.id === 'saveGoogleApiBtn' || e.target.closest('#saveGoogleApiBtn')) {
+        e.preventDefault();
+        
+        googleApiConfig.apiKey = document.getElementById('googleApiKeyInput').value.trim();
+        googleApiConfig.searchEngineId = document.getElementById('searchEngineIdInput').value.trim();
+        googleApiConfig.numImages = parseInt(document.getElementById('numImagesInput').value) || 20;
+        
+        if (!googleApiConfig.apiKey || !googleApiConfig.searchEngineId) {
+            showCustomModal('Missing Credentials', 'Please provide both API Key and Search Engine ID.', false);
+            return;
         }
         
-        // Cancel button
-        if (e.target.id === 'cancelGoogleApiBtn' || e.target.closest('#cancelGoogleApiBtn')) {
-            e.preventDefault();
-            hideGoogleApiModal();
-        }
-        
-        // Configure API button in search interface
-        if (e.target.id === 'configureGoogleApiBtn' || e.target.closest('#configureGoogleApiBtn')) {
-            e.preventDefault();
-            showGoogleApiModal();
-        }
-    });
+        saveGoogleApiConfig();
+        hideGoogleApiModal();
+        showCustomModal('Success!', 'Google API credentials saved successfully. You can now search images.', false);
+    }
     
-    // Close modal when clicking outside
-    document.getElementById('googleApiModal')?.addEventListener('click', (e) => {
-        if (e.target.id === 'googleApiModal') {
-            hideGoogleApiModal();
-        }
-    });
-    // Google Custom Search Function (from your code)
-    // Google Custom Search Implementation (Exact from imagesai.html)
+    // Cancel button
+    if (e.target.id === 'cancelGoogleApiBtn' || e.target.closest('#cancelGoogleApiBtn')) {
+        e.preventDefault();
+        hideGoogleApiModal();
+    }
     
+    // Configure API button in search interface
+    if (e.target.id === 'configureGoogleApiBtn' || e.target.closest('#configureGoogleApiBtn')) {
+        e.preventDefault();
+        showGoogleApiModal();
+    }
+});
+
+// Close modal when clicking outside
+document.getElementById('googleApiModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'googleApiModal') {
+        hideGoogleApiModal();
+    }
+});
+// Google Custom Search Function (from your code)
+// Google Custom Search Implementation (Exact from imagesai.html)
+
+
+// Display Image Results
+const displayImageResults = (query, results) => {
+    const resultsDiv = document.createElement('div');
+    resultsDiv.className = 'flex';
     
-    // Display Image Results
-    const displayImageResults = (query, results) => {
-        const resultsDiv = document.createElement('div');
-        resultsDiv.className = 'flex';
-        
-        let successCount = 0;
-        
-        resultsDiv.innerHTML = `
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
-                <i class="fas fa-images"></i>
-            </div>
-            <div class="bg-white border-2 border-green-200 p-6 rounded-2xl shadow-xl flex-1">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-xl text-gray-800">
-                        <i class="fas fa-check-circle text-green-600 mr-2"></i>
-                        Google Image Results for "${escapeHtml(query)}"
-                    </h3>
-                    <div class="bg-gray-100 px-3 py-1 rounded-full">
-                        <span id="loadedCounter" class="text-sm font-semibold text-gray-700">0 / ${results.length} loaded</span>
-                    </div>
+    let successCount = 0;
+    
+    resultsDiv.innerHTML = `
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+            <i class="fas fa-images"></i>
+        </div>
+        <div class="bg-white border-2 border-green-200 p-6 rounded-2xl shadow-xl flex-1">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-xl text-gray-800">
+                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                    Google Image Results for "${escapeHtml(query)}"
+                </h3>
+                <div class="bg-gray-100 px-3 py-1 rounded-full">
+                    <span id="loadedCounter" class="text-sm font-semibold text-gray-700">0 / ${results.length} loaded</span>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="imageSearchGrid">
-                    ${results.map((img, index) => `
-                        <div class="relative group cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:scale-105 bg-gray-100" data-index="${index}">
-                            <div class="aspect-square relative">
-                                <img src="${escapeHtml(img.thumbnail)}" 
-                                     data-full-url="${escapeHtml(img.url)}"
-                                     alt="${escapeHtml(img.title)}" 
-                                     loading="lazy" 
-                                     class="w-full h-full object-cover"
-                                     style="min-height: 150px;">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <div class="absolute bottom-0 left-0 right-0 p-3 text-white">
-                                        <div class="text-sm font-semibold line-clamp-2 mb-1">${escapeHtml(img.title)}</div>
-                                        <div class="text-xs opacity-90">
-                                            <i class="fas fa-globe mr-1"></i>${escapeHtml(img.displayLink || img.source)}
-                                        </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="imageSearchGrid">
+                ${results.map((img, index) => `
+                    <div class="relative group cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:scale-105 bg-gray-100" data-index="${index}">
+                        <div class="aspect-square relative">
+                            <img src="${escapeHtml(img.thumbnail)}" 
+                                 data-full-url="${escapeHtml(img.url)}"
+                                 alt="${escapeHtml(img.title)}" 
+                                 loading="lazy" 
+                                 class="w-full h-full object-cover"
+                                 style="min-height: 150px;">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="absolute bottom-0 left-0 right-0 p-3 text-white">
+                                    <div class="text-sm font-semibold line-clamp-2 mb-1">${escapeHtml(img.title)}</div>
+                                    <div class="text-xs opacity-90">
+                                        <i class="fas fa-globe mr-1"></i>${escapeHtml(img.displayLink || img.source)}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    `).join('')}
-                </div>
-                <div class="mt-4 flex gap-2 justify-center">
-                    <button class="download-all-btn px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-md">
-                        <i class="fas fa-download mr-2"></i>Download All (${results.length})
-                    </button>
-                    <button class="new-search-btn px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md">
-                        <i class="fas fa-search mr-2"></i>New Search
-                    </button>
-                </div>
+                    </div>
+                `).join('')}
             </div>
-        `;
-        
-        responseHistory.appendChild(resultsDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        
-        // Update counter as images load
-        const counter = resultsDiv.querySelector('#loadedCounter');
-        const imageElements = resultsDiv.querySelectorAll('img[loading="lazy"]');
-        
-        imageElements.forEach((img) => {
-            img.onload = function() {
-                successCount++;
-                counter.textContent = `${successCount} / ${results.length} loaded`;
-                this.style.opacity = '1';
-            };
-            
-            img.onerror = function() {
-                // Try loading full image if thumbnail fails
-                const fullUrl = this.dataset.fullUrl;
-                if (this.src !== fullUrl) {
-                    this.src = fullUrl;
-                } else {
-                    // Show placeholder on final failure
-                    this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23ddd" width="200" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999"%3EImage unavailable%3C/text%3E%3C/svg%3E';
-                }
-            };
-            
-            // Start with slight transparency
-            img.style.opacity = '0';
-            img.style.transition = 'opacity 0.3s ease-in-out';
-        });
-        
-        // Add click handlers for image modal
-        resultsDiv.querySelectorAll('[data-index]').forEach((item, index) => {
-            item.addEventListener('click', () => {
-                showImageModal(results[index]);
-            });
-        });
-        
-        // Download all button
-        resultsDiv.querySelector('.download-all-btn')?.addEventListener('click', async () => {
-            const btn = resultsDiv.querySelector('.download-all-btn');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Downloading...';
-            
-            for (let i = 0; i < results.length; i++) {
-                try {
-                    const link = document.createElement('a');
-                    link.href = results[i].url;
-                    link.download = `${query.replace(/[^a-z0-9]/gi, '_')}_${i + 1}.jpg`;
-                    link.target = '_blank';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    await new Promise(resolve => setTimeout(resolve, 500)); // Delay between downloads
-                } catch (e) {
-                    console.error('Download failed for image', i, e);
-                }
-            }
-            
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-check mr-2"></i>Downloaded!';
-            setTimeout(() => {
-                btn.innerHTML = `<i class="fas fa-download mr-2"></i>Download All (${results.length})`;
-            }, 2000);
-        });
-        
-        // New search button
-        resultsDiv.querySelector('.new-search-btn')?.addEventListener('click', () => {
-            showImageSearchInterface();
-            document.getElementById('imageSearchQuery')?.focus();
-        });
-    };
-    
-    // Show Image Modal
-    const showImageModal = (imageData) => {
-        const modal = document.createElement('div');
-        modal.className = 'image-modal active';
-        modal.innerHTML = `
-            <div class="image-modal-content">
-                <div class="image-modal-close">&times;</div>
-                <img src="${imageData.url}" alt="${escapeHtml(imageData.title)}">
-                <div class="image-modal-actions">
-                    <button class="image-modal-btn download-btn">
-                        <i class="fas fa-download"></i> Download
-                    </button>
-                    <button class="image-modal-btn open-btn">
-                        <i class="fas fa-external-link-alt"></i> View Source
-                    </button>
-                </div>
+            <div class="mt-4 flex gap-2 justify-center">
+                <button class="download-all-btn px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all shadow-md">
+                    <i class="fas fa-download mr-2"></i>Download All (${results.length})
+                </button>
+                <button class="new-search-btn px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md">
+                    <i class="fas fa-search mr-2"></i>New Search
+                </button>
             </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        modal.querySelector('.image-modal-close').addEventListener('click', () => {
-            modal.remove();
-        });
-        
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) modal.remove();
-        });
-        
-        modal.querySelector('.download-btn').addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.href = imageData.url;
-            link.download = `${imageData.title.replace(/[^a-z0-9]/gi, '_')}.jpg`;
-            link.target = '_blank';
-            link.click();
-        });
-        
-        modal.querySelector('.open-btn').addEventListener('click', () => {
-            window.open(imageData.sourceUrl, '_blank');
-        });
-        
-        document.addEventListener('keydown', function escapeHandler(e) {
-            if (e.key === 'Escape') {
-                modal.remove();
-                document.removeEventListener('keydown', escapeHandler);
-            }
-        });
-    };
+        </div>
+    `;
     
-    // Simple image search using SerpApi (free alternative) or Unsplash
-    async function searchImages(query, numImages = 20) {
-        try {
-            // Using Unsplash API (no API key needed for basic searches)
-            const unsplashUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${numImages}&client_id=demo`;
-            
-            // Try Unsplash first
+    responseHistory.appendChild(resultsDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    
+    // Update counter as images load
+    const counter = resultsDiv.querySelector('#loadedCounter');
+    const imageElements = resultsDiv.querySelectorAll('img[loading="lazy"]');
+    
+    imageElements.forEach((img) => {
+        img.onload = function() {
+            successCount++;
+            counter.textContent = `${successCount} / ${results.length} loaded`;
+            this.style.opacity = '1';
+        };
+        
+        img.onerror = function() {
+            // Try loading full image if thumbnail fails
+            const fullUrl = this.dataset.fullUrl;
+            if (this.src !== fullUrl) {
+                this.src = fullUrl;
+            } else {
+                // Show placeholder on final failure
+                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23ddd" width="200" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999"%3EImage unavailable%3C/text%3E%3C/svg%3E';
+            }
+        };
+        
+        // Start with slight transparency
+        img.style.opacity = '0';
+        img.style.transition = 'opacity 0.3s ease-in-out';
+    });
+    
+    // Add click handlers for image modal
+    resultsDiv.querySelectorAll('[data-index]').forEach((item, index) => {
+        item.addEventListener('click', () => {
+            showImageModal(results[index]);
+        });
+    });
+    
+    // Download all button
+    resultsDiv.querySelector('.download-all-btn')?.addEventListener('click', async () => {
+        const btn = resultsDiv.querySelector('.download-all-btn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Downloading...';
+        
+        for (let i = 0; i < results.length; i++) {
             try {
-                const response = await fetch(unsplashUrl);
-                if (response.ok) {
-                    const data = await response.json();
-                    return data.results.map(img => ({
-                        url: img.urls.regular,
-                        thumbnail: img.urls.small,
-                        title: img.alt_description || img.description || query,
-                        source: 'Unsplash',
-                        sourceUrl: img.links.html,
-                        width: img.width,
-                        height: img.height
-                    }));
-                }
+                const link = document.createElement('a');
+                link.href = results[i].url;
+                link.download = `${query.replace(/[^a-z0-9]/gi, '_')}_${i + 1}.jpg`;
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Delay between downloads
             } catch (e) {
-                console.warn('Unsplash failed, trying alternative...');
+                console.error('Download failed for image', i, e);
             }
+        }
+        
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check mr-2"></i>Downloaded!';
+        setTimeout(() => {
+            btn.innerHTML = `<i class="fas fa-download mr-2"></i>Download All (${results.length})`;
+        }, 2000);
+    });
     
-            // Fallback: Use Pixabay API (no key needed)
-            const pixabayUrl = `https://pixabay.com/api/?key=demo&q=${encodeURIComponent(query)}&per_page=${numImages}&image_type=photo`;
-            
-            const response = await fetch(pixabayUrl);
-            if (!response.ok) {
-                throw new Error('Image search service unavailable');
+    // New search button
+    resultsDiv.querySelector('.new-search-btn')?.addEventListener('click', () => {
+        showImageSearchInterface();
+        document.getElementById('imageSearchQuery')?.focus();
+    });
+};
+
+// Show Image Modal
+const showImageModal = (imageData) => {
+    const modal = document.createElement('div');
+    modal.className = 'image-modal active';
+    modal.innerHTML = `
+        <div class="image-modal-content">
+            <div class="image-modal-close">&times;</div>
+            <img src="${imageData.url}" alt="${escapeHtml(imageData.title)}">
+            <div class="image-modal-actions">
+                <button class="image-modal-btn download-btn">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <button class="image-modal-btn open-btn">
+                    <i class="fas fa-external-link-alt"></i> View Source
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    modal.querySelector('.image-modal-close').addEventListener('click', () => {
+        modal.remove();
+    });
+    
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+    });
+    
+    modal.querySelector('.download-btn').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.href = imageData.url;
+        link.download = `${imageData.title.replace(/[^a-z0-9]/gi, '_')}.jpg`;
+        link.target = '_blank';
+        link.click();
+    });
+    
+    modal.querySelector('.open-btn').addEventListener('click', () => {
+        window.open(imageData.sourceUrl, '_blank');
+    });
+    
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (e.key === 'Escape') {
+            modal.remove();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    });
+};
+
+// Simple image search using SerpApi (free alternative) or Unsplash
+async function searchImages(query, numImages = 20) {
+    try {
+        // Using Unsplash API (no API key needed for basic searches)
+        const unsplashUrl = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${numImages}&client_id=demo`;
+        
+        // Try Unsplash first
+        try {
+            const response = await fetch(unsplashUrl);
+            if (response.ok) {
+                const data = await response.json();
+                return data.results.map(img => ({
+                    url: img.urls.regular,
+                    thumbnail: img.urls.small,
+                    title: img.alt_description || img.description || query,
+                    source: 'Unsplash',
+                    sourceUrl: img.links.html,
+                    width: img.width,
+                    height: img.height
+                }));
             }
-            
-            const data = await response.json();
-            
-            if (!data.hits || data.hits.length === 0) {
-                // Generate mock results for demo purposes
-                return generateMockImageResults(query, numImages);
-            }
-            
-            return data.hits.map(img => ({
-                url: img.largeImageURL,
-                thumbnail: img.previewURL,
-                title: img.tags,
-                source: 'Pixabay',
-                sourceUrl: img.pageURL,
-                width: img.imageWidth,
-                height: img.imageHeight
-            }));
-            
-        } catch (error) {
-            console.error('Image search error:', error);
-            // Return mock results as fallback
+        } catch (e) {
+            console.warn('Unsplash failed, trying alternative...');
+        }
+
+        // Fallback: Use Pixabay API (no key needed)
+        const pixabayUrl = `https://pixabay.com/api/?key=demo&q=${encodeURIComponent(query)}&per_page=${numImages}&image_type=photo`;
+        
+        const response = await fetch(pixabayUrl);
+        if (!response.ok) {
+            throw new Error('Image search service unavailable');
+        }
+        
+        const data = await response.json();
+        
+        if (!data.hits || data.hits.length === 0) {
+            // Generate mock results for demo purposes
             return generateMockImageResults(query, numImages);
         }
+        
+        return data.hits.map(img => ({
+            url: img.largeImageURL,
+            thumbnail: img.previewURL,
+            title: img.tags,
+            source: 'Pixabay',
+            sourceUrl: img.pageURL,
+            width: img.imageWidth,
+            height: img.imageHeight
+        }));
+        
+    } catch (error) {
+        console.error('Image search error:', error);
+        // Return mock results as fallback
+        return generateMockImageResults(query, numImages);
     }
-    
-    // Generate mock image results for demonstration
-    function generateMockImageResults(query, count) {
-        const results = [];
-        for (let i = 1; i <= Math.min(count, 20); i++) {
-            results.push({
-                url: `https://picsum.photos/800/600?random=${Date.now()}_${i}`,
-                thumbnail: `https://picsum.photos/200/200?random=${Date.now()}_${i}`,
-                title: `${query} - Image ${i}`,
-                source: 'Lorem Picsum',
-                sourceUrl: 'https://picsum.photos',
-                width: 800,
-                height: 600
-            });
-        }
-        return results;
-    }
-    
-    
-    // ==================== GOOGLE IMAGE SEARCH - CHATGPT STYLE ====================
-    
-    // Load API keys from hidden inputs or localStorage
-    let googleImageSearchConfig = {
-        apiKey: document.getElementById('hiddenGoogleApiKey')?.value || localStorage.getItem('googleImageApiKey') || 'AIzaSyBIAAAwdRvVuUMyq2RfLYo2HapOe_25j1c',
-        searchEngineId: document.getElementById('hiddenSearchEngineId')?.value || localStorage.getItem('googleSearchEngineId') || '93953e1a5df144c0f'
-    };
-    
-    // Google Custom Search Function (from imagesai.html)
-    async function searchGoogleCustom(query, apiKey, engineId, num) {
-        if (!apiKey || !engineId) {
-            throw new Error("Google API Key and Search Engine ID are required.");
-        }
-    
-        num = parseInt(num, 10) || 10;
-        num = Math.min(Math.max(num, 1), 100);
-    
-        const PER_REQUEST_MAX = 10;
-        const results = [];
-        let start = 1;
-    
-        while (results.length < num) {
-            const requestNum = Math.min(PER_REQUEST_MAX, num - results.length);
-            const url = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${engineId}&q=${encodeURIComponent(query)}&searchType=image&num=${requestNum}&start=${start}`;
-    
-            const response = await fetch(url);
-    
-            if (!response.ok) {
-                const text = await response.text().catch(() => "");
-                throw new Error(`API Error: ${response.status} - ${text.substring(0, 200)}`);
-            }
-    
-            const data = await response.json();
-    
-            if (!data.items || data.items.length === 0) {
-                break;
-            }
-    
-            const pageItems = data.items.map(img => ({
-                url: img.link,
-                thumbnail: img.image?.thumbnailLink || img.link,
-                title: img.title,
-                source: 'Google',
-                sourceUrl: img.image?.contextLink || img.link,
-                displayLink: img.displayLink
-            }));
-    
-            results.push(...pageItems);
-    
-            if (data.items.length < requestNum) break;
-            start = results.length + 1;
-            if (start > 100) break;
-        }
-    
-        return results.slice(0, num);
-    }
-    
-    // Detect if user is asking for image search
-    function detectImageSearchIntent(prompt) {
-        const keywords = [
-            'search images', 'find images', 'show images', 'get images',
-            'search pictures', 'find pictures', 'show pictures',
-            'images of', 'pictures of', 'photos of',
-            'show me images', 'find me images', 'search for images'
-        ];
-        
-        const lower = prompt.toLowerCase();
-        return keywords.some(keyword => lower.includes(keyword));
-    }
-    
-    // Extract search query from user prompt
-    function extractImageQuery(prompt) {
-        const patterns = [
-            /(?:search|find|show|get)\s+(?:images?|pictures?|photos?)\s+(?:of|for|about)\s+(.+)/i,
-            /(?:images?|pictures?|photos?)\s+of\s+(.+)/i,
-            /show\s+me\s+(?:images?|pictures?|photos?)?\s*(?:of|about)?\s+(.+)/i
-        ];
-        
-        for (const pattern of patterns) {
-            const match = prompt.match(pattern);
-            if (match) return match[1].trim();
-        }
-        
-        return prompt.replace(/search|find|show|get|images?|pictures?|photos?|of|for|about|me/gi, '').trim();
-    }
-    
-    // Perform image search and display in chat (ChatGPT style)
-    async function performImageSearchInChat(query, numImages = 20) {
-        // Create loading message in chat
-        const loadingDiv = document.createElement('div');
-        loadingDiv.className = 'flex mb-4';
-        loadingDiv.innerHTML = `
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
-                <i class="fas fa-images"></i>
-            </div>
-            <div class="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300 p-6 rounded-2xl shadow-xl flex-1">
-                <div class="flex items-center gap-3 mb-3">
-                    <i class="fas fa-spinner fa-spin text-2xl text-blue-600"></i>
-                    <span class="font-bold text-xl text-gray-800">Searching for images...</span>
-                </div>
-                <p class="text-gray-700">Query: <strong>${escapeHtml(query)}</strong></p>
-                <div class="mt-3 text-sm text-gray-600">
-                    <i class="fas fa-search mr-2"></i>Finding up to ${numImages} images...
-                </div>
-            </div>
-        `;
-        
-        responseHistory.appendChild(loadingDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    
-        try {
-            const results = await searchGoogleCustom(
-                query,
-                googleImageSearchConfig.apiKey,
-                googleImageSearchConfig.searchEngineId,
-                numImages
-            );
-    
-            loadingDiv.remove();
-    
-            if (results.length === 0) {
-                throw new Error(`No images found for "${query}"`);
-            }
-    
-            // Display images in chat
-            displayImagesInChat(query, results);
-    
-        } catch (error) {
-            console.error('Image search error:', error);
-            loadingDiv.remove();
-            
-            // Show error in chat
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'flex mb-4';
-            errorDiv.innerHTML = `
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-600 to-pink-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
-                    <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <div class="bg-red-50 border-2 border-red-300 p-6 rounded-2xl shadow-xl flex-1">
-                    <p class="text-red-800 font-bold text-lg mb-2">
-                        <i class="fas fa-times-circle mr-2"></i>Search Failed
-                    </p>
-                    <p class="text-red-700">${escapeHtml(error.message)}</p>
-                </div>
-            `;
-            responseHistory.appendChild(errorDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-    }
-    
-    // Display images in chat (like ChatGPT)
-    function displayImagesInChat(query, results) {
-        const resultsDiv = document.createElement('div');
-        resultsDiv.className = 'flex mb-4';
-        
-        let loadedCount = 0;
-        
-        resultsDiv.innerHTML = `
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <div class="bg-white border-2 border-green-200 p-6 rounded-2xl shadow-xl flex-1">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-xl text-gray-800">
-                        <i class="fas fa-images text-green-600 mr-2"></i>
-                        Found ${results.length} images for "${escapeHtml(query)}"
-                    </h3>
-                    <span class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full font-semibold" id="loadCounter">
-                        <i class="fas fa-spinner fa-spin mr-1"></i>Loading...
-                    </span>
-                </div>
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                    ${results.map((img, index) => `
-                        <div class="relative group cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:scale-105 bg-gray-100 aspect-square">
-                            <img src="${escapeHtml(img.thumbnail)}" 
-                                 data-full="${escapeHtml(img.url)}"
-                                 data-source="${escapeHtml(img.sourceUrl)}"
-                                 alt="${escapeHtml(img.title)}" 
-                                 loading="lazy"
-                                 class="w-full h-full object-cover"
-                                 style="opacity: 0; transition: opacity 0.3s;">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div class="absolute bottom-0 left-0 right-0 p-2 text-white">
-                                    <div class="text-xs font-semibold truncate">${escapeHtml(img.title)}</div>
-                                    <div class="text-xs opacity-75 truncate">${escapeHtml(img.displayLink)}</div>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-        
-        responseHistory.appendChild(resultsDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        
-        // Track image loading
-        const counter = resultsDiv.querySelector('#loadCounter');
-        const images = resultsDiv.querySelectorAll('img[loading="lazy"]');
-        
-        images.forEach((img, idx) => {
-            img.onload = function() {
-                loadedCount++;
-                this.style.opacity = '1';
-                counter.innerHTML = `${loadedCount}/${results.length} loaded`;
-                if (loadedCount === results.length) {
-                    counter.innerHTML = '<i class="fas fa-check mr-1"></i>Complete';
-                }
-            };
-            
-            img.onerror = function() {
-                const fullUrl = this.dataset.full;
-                if (this.src !== fullUrl) {
-                    this.src = fullUrl;
-                } else {
-                    this.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs">Failed</div>';
-                }
-            };
-            
-            // Click to open full image
-            img.parentElement.addEventListener('click', function() {
-                window.open(img.dataset.source || img.dataset.full, '_blank');
-            });
+}
+
+// Generate mock image results for demonstration
+function generateMockImageResults(query, count) {
+    const results = [];
+    for (let i = 1; i <= Math.min(count, 20); i++) {
+        results.push({
+            url: `https://picsum.photos/800/600?random=${Date.now()}_${i}`,
+            thumbnail: `https://picsum.photos/200/200?random=${Date.now()}_${i}`,
+            title: `${query} - Image ${i}`,
+            source: 'Lorem Picsum',
+            sourceUrl: 'https://picsum.photos',
+            width: 800,
+            height: 600
         });
     }
-        // ==================== HUMANIZE TEXT FEATURE ====================
-    
-    // Humanize button click handler
-    
-        function showHumanizationBadge() {
-        const chatMessages = document.getElementById('responseHistory') || document.querySelector('.chat-messages');
-        if (chatMessages) {
-            const humanizeBadge = document.createElement('div');
-            humanizeBadge.className = 'humanize-badge flex mb-4';
-            humanizeBadge.innerHTML = `
-                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
-                    <i class="fas fa-user-edit"></i>
-                </div>
-                <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 p-4 rounded-2xl shadow-lg flex-1">
-                    <div class="flex items-center gap-2">
-                        <i class="fas fa-magic text-green-600 text-xl"></i>
-                        <span class="text-sm font-bold text-green-800">Humanizing your text...</span>
-                    </div>
-                    <p class="text-xs text-green-700 mt-1">Transforming AI-generated content into natural, human-written text.</p>
-                </div>
-            `;
-            chatMessages.appendChild(humanizeBadge);
-            
-            // Auto-remove after 3 seconds
-            setTimeout(() => {
-                humanizeBadge.remove();
-            }, 20000);
-            
-            // Scroll to show badge
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+    return results;
+}
+
+
+// ==================== GOOGLE IMAGE SEARCH - CHATGPT STYLE ====================
+
+// Load API keys from hidden inputs or localStorage
+let googleImageSearchConfig = {
+    apiKey: document.getElementById('hiddenGoogleApiKey')?.value || localStorage.getItem('googleImageApiKey') || 'AIzaSyBIAAAwdRvVuUMyq2RfLYo2HapOe_25j1c',
+    searchEngineId: document.getElementById('hiddenSearchEngineId')?.value || localStorage.getItem('googleSearchEngineId') || '93953e1a5df144c0f'
+};
+
+// Google Custom Search Function (from imagesai.html)
+async function searchGoogleCustom(query, apiKey, engineId, num) {
+    if (!apiKey || !engineId) {
+        throw new Error("Google API Key and Search Engine ID are required.");
+    }
+
+    num = parseInt(num, 10) || 10;
+    num = Math.min(Math.max(num, 1), 100);
+
+    const PER_REQUEST_MAX = 10;
+    const results = [];
+    let start = 1;
+
+    while (results.length < num) {
+        const requestNum = Math.min(PER_REQUEST_MAX, num - results.length);
+        const url = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${engineId}&q=${encodeURIComponent(query)}&searchType=image&num=${requestNum}&start=${start}`;
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            const text = await response.text().catch(() => "");
+            throw new Error(`API Error: ${response.status} - ${text.substring(0, 200)}`);
         }
-    }
-        // Artifact creation and management
-    const artifacts = {
-        create: function(id, type, content, language = null) {
-            return {
-                command: 'create',
-                id: id,
-                type: type,
-                content: content,
-                language: language,
-                title: generateTitle(content)
-            };
-        },
-        
-        update: function(id, oldStr, newStr) {
-            return {
-                command: 'update',
-                id: id,
-                old_str: oldStr,
-                new_str: newStr
-            };
-        },
-        
-        rewrite: function(id, content) {
-            return {
-                command: 'rewrite',
-                id: id,
-                content: content
-            };
+
+        const data = await response.json();
+
+        if (!data.items || data.items.length === 0) {
+            break;
         }
-    };
+
+        const pageItems = data.items.map(img => ({
+            url: img.link,
+            thumbnail: img.image?.thumbnailLink || img.link,
+            title: img.title,
+            source: 'Google',
+            sourceUrl: img.image?.contextLink || img.link,
+            displayLink: img.displayLink
+        }));
+
+        results.push(...pageItems);
+
+        if (data.items.length < requestNum) break;
+        start = results.length + 1;
+        if (start > 100) break;
+    }
+
+    return results.slice(0, num);
+}
+
+// Detect if user is asking for image search
+function detectImageSearchIntent(prompt) {
+    const keywords = [
+        'search images', 'find images', 'show images', 'get images',
+        'search pictures', 'find pictures', 'show pictures',
+        'images of', 'pictures of', 'photos of',
+        'show me images', 'find me images', 'search for images'
+    ];
     
-    // Artifact types
-    const ARTIFACT_TYPES = {
-        CODE: 'application/vnd.ant.code',
-        MARKDOWN: 'text/markdown',
-        HTML: 'text/html',
-        SVG: 'image/svg+xml',
-        MERMAID: 'application/vnd.ant.mermaid',
-        REACT: 'application/vnd.ant.react'
-    };
+    const lower = prompt.toLowerCase();
+    return keywords.some(keyword => lower.includes(keyword));
+}
+
+// Extract search query from user prompt
+function extractImageQuery(prompt) {
+    const patterns = [
+        /(?:search|find|show|get)\s+(?:images?|pictures?|photos?)\s+(?:of|for|about)\s+(.+)/i,
+        /(?:images?|pictures?|photos?)\s+of\s+(.+)/i,
+        /show\s+me\s+(?:images?|pictures?|photos?)?\s*(?:of|about)?\s+(.+)/i
+    ];
     
-    // Generate unique artifact ID
-    function generateArtifactId() {
-        return `artifact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    for (const pattern of patterns) {
+        const match = prompt.match(pattern);
+        if (match) return match[1].trim();
     }
     
-    // Generate artifact title from content
-    function generateTitle(content) {
-        const lines = content.split('\n');
-        const firstLine = lines[0].substring(0, 50);
-        return firstLine.replace(/[#*`]/g, '').trim() || 'Untitled';
-    }
+    return prompt.replace(/search|find|show|get|images?|pictures?|photos?|of|for|about|me/gi, '').trim();
+}
+
+// Perform image search and display in chat (ChatGPT style)
+async function performImageSearchInChat(query, numImages = 20) {
+    // Create loading message in chat
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'flex mb-4';
+    loadingDiv.innerHTML = `
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+            <i class="fas fa-images"></i>
+        </div>
+        <div class="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300 p-6 rounded-2xl shadow-xl flex-1">
+            <div class="flex items-center gap-3 mb-3">
+                <i class="fas fa-spinner fa-spin text-2xl text-blue-600"></i>
+                <span class="font-bold text-xl text-gray-800">Searching for images...</span>
+            </div>
+            <p class="text-gray-700">Query: <strong>${escapeHtml(query)}</strong></p>
+            <div class="mt-3 text-sm text-gray-600">
+                <i class="fas fa-search mr-2"></i>Finding up to ${numImages} images...
+            </div>
+        </div>
+    `;
     
-    // Section: Humanize Mode - Persistent Functionality
-    
-    // Global humanize state
-    // Section: Humanize Mode - Persistent Functionality (Using Existing HTML Button)
-    
-    // Global humanize state
-    let humanizeMode = false;
-    
-    // Load humanize preference on page load
-    function loadHumanizePreference() {
-        const saved = localStorage.getItem('humanizeMode');
-        if (saved === 'true') {
-            humanizeMode = true;
-        }
-    }
-    
-    // Save humanize preference
-    function saveHumanizePreference() {
-        localStorage.setItem('humanizeMode', humanizeMode);
-    }
-    
-    // Initialize the existing humanize button
-    function initializeHumanizeButton() {
-        const humanizeBtn = document.getElementById('humanizeButton');
-        if (!humanizeBtn) return;
-        
-        // Load saved state
-        loadHumanizePreference();
-        
-        // Update button appearance based on saved state
-        updateHumanizeButtonState();
-        
-        // Add click event listener
-        humanizeBtn.addEventListener('click', toggleHumanizeMode);
-    }
-    
-    // Update button visual state
-    function updateHumanizeButtonState() {
-        const humanizeBtn = document.getElementById('humanizeButton');
-        if (!humanizeBtn) return;
-        
-        if (humanizeMode) {
-            // Active state - red/active color
-            humanizeBtn.classList.remove('text-gray-500', 'hover:text-green-600');
-            humanizeBtn.classList.add('text-red-600', 'hover:text-red-700');
-            humanizeBtn.style.background = 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)';
-            humanizeBtn.style.transform = 'scale(1.05)';
-            humanizeBtn.title = 'Humanize Mode: ON - Click to turn OFF';
-        } else {
-            // Inactive state - default color
-            humanizeBtn.classList.remove('text-red-600', 'hover:text-red-700');
-            humanizeBtn.classList.add('text-gray-500', 'hover:text-green-600');
-            humanizeBtn.style.background = '';
-            humanizeBtn.style.transform = '';
-            humanizeBtn.title = 'Humanize Text - Click to turn ON';
-        }
-    }
-    
-    // Toggle humanize mode
-    function toggleHumanizeMode(e) {
-        e.preventDefault();
-        
-        humanizeMode = !humanizeMode;
-        saveHumanizePreference();
-        
-        // Update button appearance
-        updateHumanizeButtonState();
-        
-        // Show notification
-        showCustomModal(
-            humanizeMode ? '✅ Humanize Mode Activated' : '❌ Humanize Mode Deactivated',
-            humanizeMode ? 
-                'All AI responses will now be automatically humanized to sound natural and human-written. This will remain active until you turn it off.' :
-                'Responses will return to normal AI mode.',
-            false
+    responseHistory.appendChild(loadingDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    try {
+        const results = await searchGoogleCustom(
+            query,
+            googleImageSearchConfig.apiKey,
+            googleImageSearchConfig.searchEngineId,
+            numImages
         );
+
+        loadingDiv.remove();
+
+        if (results.length === 0) {
+            throw new Error(`No images found for "${query}"`);
+        }
+
+        // Display images in chat
+        displayImagesInChat(query, results);
+
+    } catch (error) {
+        console.error('Image search error:', error);
+        loadingDiv.remove();
         
-        console.log(`Humanize Mode: ${humanizeMode ? 'ENABLED' : 'DISABLED'}`);
+        // Show error in chat
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'flex mb-4';
+        errorDiv.innerHTML = `
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-600 to-pink-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="bg-red-50 border-2 border-red-300 p-6 rounded-2xl shadow-xl flex-1">
+                <p class="text-red-800 font-bold text-lg mb-2">
+                    <i class="fas fa-times-circle mr-2"></i>Search Failed
+                </p>
+                <p class="text-red-700">${escapeHtml(error.message)}</p>
+            </div>
+        `;
+        responseHistory.appendChild(errorDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
     }
+}
+
+// Display images in chat (like ChatGPT)
+function displayImagesInChat(query, results) {
+    const resultsDiv = document.createElement('div');
+    resultsDiv.className = 'flex mb-4';
     
-    // Show humanization indicator in chat
-    function showHumanizationIndicator() {
-        const indicator = document.createElement('div');
-        indicator.className = 'humanize-indicator flex mb-4';
-        indicator.style.transition = 'all 0.3s ease';
-        indicator.innerHTML = `
+    let loadedCount = 0;
+    
+    resultsDiv.innerHTML = `
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="bg-white border-2 border-green-200 p-6 rounded-2xl shadow-xl flex-1">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-xl text-gray-800">
+                    <i class="fas fa-images text-green-600 mr-2"></i>
+                    Found ${results.length} images for "${escapeHtml(query)}"
+                </h3>
+                <span class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full font-semibold" id="loadCounter">
+                    <i class="fas fa-spinner fa-spin mr-1"></i>Loading...
+                </span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                ${results.map((img, index) => `
+                    <div class="relative group cursor-pointer rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:scale-105 bg-gray-100 aspect-square">
+                        <img src="${escapeHtml(img.thumbnail)}" 
+                             data-full="${escapeHtml(img.url)}"
+                             data-source="${escapeHtml(img.sourceUrl)}"
+                             alt="${escapeHtml(img.title)}" 
+                             loading="lazy"
+                             class="w-full h-full object-cover"
+                             style="opacity: 0; transition: opacity 0.3s;">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="absolute bottom-0 left-0 right-0 p-2 text-white">
+                                <div class="text-xs font-semibold truncate">${escapeHtml(img.title)}</div>
+                                <div class="text-xs opacity-75 truncate">${escapeHtml(img.displayLink)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    responseHistory.appendChild(resultsDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    
+    // Track image loading
+    const counter = resultsDiv.querySelector('#loadCounter');
+    const images = resultsDiv.querySelectorAll('img[loading="lazy"]');
+    
+    images.forEach((img, idx) => {
+        img.onload = function() {
+            loadedCount++;
+            this.style.opacity = '1';
+            counter.innerHTML = `${loadedCount}/${results.length} loaded`;
+            if (loadedCount === results.length) {
+                counter.innerHTML = '<i class="fas fa-check mr-1"></i>Complete';
+            }
+        };
+        
+        img.onerror = function() {
+            const fullUrl = this.dataset.full;
+            if (this.src !== fullUrl) {
+                this.src = fullUrl;
+            } else {
+                this.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 text-xs">Failed</div>';
+            }
+        };
+        
+        // Click to open full image
+        img.parentElement.addEventListener('click', function() {
+            window.open(img.dataset.source || img.dataset.full, '_blank');
+        });
+    });
+}
+    // ==================== HUMANIZE TEXT FEATURE ====================
+
+// Humanize button click handler
+
+    function showHumanizationBadge() {
+    const chatMessages = document.getElementById('responseHistory') || document.querySelector('.chat-messages');
+    if (chatMessages) {
+        const humanizeBadge = document.createElement('div');
+        humanizeBadge.className = 'humanize-badge flex mb-4';
+        humanizeBadge.innerHTML = `
             <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
                 <i class="fas fa-user-edit"></i>
             </div>
-            <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 p-3 rounded-2xl shadow-lg flex-1">
+            <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 p-4 rounded-2xl shadow-lg flex-1">
                 <div class="flex items-center gap-2">
-                    <i class="fas fa-check-circle text-green-600"></i>
-                    <span class="text-sm font-bold text-green-800">Humanize Mode Active</span>
+                    <i class="fas fa-magic text-green-600 text-xl"></i>
+                    <span class="text-sm font-bold text-green-800">Humanizing your text...</span>
                 </div>
-                <p class="text-xs text-green-700 mt-1">Response will be transformed to natural human writing</p>
+                <p class="text-xs text-green-700 mt-1">Transforming AI-generated content into natural, human-written text.</p>
             </div>
         `;
+        chatMessages.appendChild(humanizeBadge);
         
-        responseHistory.appendChild(indicator);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        
-        // Auto-remove after 2 seconds with fade-out
+        // Auto-remove after 3 seconds
         setTimeout(() => {
-            indicator.style.opacity = '0';
-            indicator.style.transform = 'translateY(-10px)';
-            setTimeout(() => indicator.remove(), 300);
-        }, 2000);
-    }
-    
-    
-    // Show code cleaning indicator in chat
-    function showCodeCleanIndicator() {
-        const indicator = document.createElement('div');
-        indicator.className = 'codeclean-indicator flex mb-4';
-        indicator.style.transition = 'all 0.3s ease';
-        indicator.innerHTML = `
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-600 to-red-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
-                <i class="fas fa-tools"></i>
-            </div>
-            <div class="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 p-3 rounded-2xl shadow-lg flex-1">
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-bug text-orange-600"></i>
-                    <span class="text-sm font-bold text-orange-800">Code Fixing Mode Active</span>
-                </div>
-                <p class="text-xs text-orange-700 mt-1">AI will analyze and fix bugs without regenerating entire code</p>
-            </div>
-        `;
+            humanizeBadge.remove();
+        }, 20000);
         
-        responseHistory.appendChild(indicator);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        
-        // Auto-remove after 2 seconds with fade-out
-        setTimeout(() => {
-            indicator.style.opacity = '0';
-            indicator.style.transform = 'translateY(-10px)';
-            setTimeout(() => indicator.remove(), 300);
-        }, 2000);
+        // Scroll to show badge
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
+}
+    // Artifact creation and management
+const artifacts = {
+    create: function(id, type, content, language = null) {
+        return {
+            command: 'create',
+            id: id,
+            type: type,
+            content: content,
+            language: language,
+            title: generateTitle(content)
+        };
+    },
     
-    // Get system instruction based on humanize mode
-    function getSystemInstructionForGeneration() {
-        let systemPromptText;
+    update: function(id, oldStr, newStr) {
+        return {
+            command: 'update',
+            id: id,
+            old_str: oldStr,
+            new_str: newStr
+        };
+    },
     
-        // CRITICAL: Check humanize mode FIRST (unless it's codeclean)
-        if (humanizeMode && currentTool !== 'codeclean') {
-            // Force humanize instructions - ALWAYS when mode is active
-            systemPromptText = systemInstructions['humanize'];
-            console.log('🎯 HUMANIZE MODE ACTIVE: Using humanization prompt');
-            
-            // Show indicator in chat
-            showHumanizationIndicator();
-        } else {
-            // Use normal tool instructions
-            systemPromptText = systemInstructions[currentTool] || systemInstructions['chat'];
-            
-            // **ADD THIS: Show codeclean indicator**
-            if (currentTool === 'codeclean') {
-                console.log('🔧 CODECLEAN MODE: Using code fixing instructions');
-                showCodeCleanIndicator();
-            }
-            
-            if (currentTool === 'flashcards') {
-                const count = document.getElementById('flashcard-count')?.value || 8;
-                systemPromptText = systemPromptText.replace('{{count}}', count);
-            }
+    rewrite: function(id, content) {
+        return {
+            command: 'rewrite',
+            id: id,
+            content: content
+        };
+    }
+};
+
+// Artifact types
+const ARTIFACT_TYPES = {
+    CODE: 'application/vnd.ant.code',
+    MARKDOWN: 'text/markdown',
+    HTML: 'text/html',
+    SVG: 'image/svg+xml',
+    MERMAID: 'application/vnd.ant.mermaid',
+    REACT: 'application/vnd.ant.react'
+};
+
+// Generate unique artifact ID
+function generateArtifactId() {
+    return `artifact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+}
+
+// Generate artifact title from content
+function generateTitle(content) {
+    const lines = content.split('\n');
+    const firstLine = lines[0].substring(0, 50);
+    return firstLine.replace(/[#*`]/g, '').trim() || 'Untitled';
+}
+
+// Section: Humanize Mode - Persistent Functionality
+
+// Global humanize state
+// Section: Humanize Mode - Persistent Functionality (Using Existing HTML Button)
+
+// Global humanize state
+let humanizeMode = false;
+
+// Load humanize preference on page load
+function loadHumanizePreference() {
+    const saved = localStorage.getItem('humanizeMode');
+    if (saved === 'true') {
+        humanizeMode = true;
+    }
+}
+
+// Save humanize preference
+function saveHumanizePreference() {
+    localStorage.setItem('humanizeMode', humanizeMode);
+}
+
+// Initialize the existing humanize button
+function initializeHumanizeButton() {
+    const humanizeBtn = document.getElementById('humanizeButton');
+    if (!humanizeBtn) return;
+    
+    // Load saved state
+    loadHumanizePreference();
+    
+    // Update button appearance based on saved state
+    updateHumanizeButtonState();
+    
+    // Add click event listener
+    humanizeBtn.addEventListener('click', toggleHumanizeMode);
+}
+
+// Update button visual state
+function updateHumanizeButtonState() {
+    const humanizeBtn = document.getElementById('humanizeButton');
+    if (!humanizeBtn) return;
+    
+    if (humanizeMode) {
+        // Active state - red/active color
+        humanizeBtn.classList.remove('text-gray-500', 'hover:text-green-600');
+        humanizeBtn.classList.add('text-red-600', 'hover:text-red-700');
+        humanizeBtn.style.background = 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)';
+        humanizeBtn.style.transform = 'scale(1.05)';
+        humanizeBtn.title = 'Humanize Mode: ON - Click to turn OFF';
+    } else {
+        // Inactive state - default color
+        humanizeBtn.classList.remove('text-red-600', 'hover:text-red-700');
+        humanizeBtn.classList.add('text-gray-500', 'hover:text-green-600');
+        humanizeBtn.style.background = '';
+        humanizeBtn.style.transform = '';
+        humanizeBtn.title = 'Humanize Text - Click to turn ON';
+    }
+}
+
+// Toggle humanize mode
+function toggleHumanizeMode(e) {
+    e.preventDefault();
+    
+    humanizeMode = !humanizeMode;
+    saveHumanizePreference();
+    
+    // Update button appearance
+    updateHumanizeButtonState();
+    
+    // Show notification
+    showCustomModal(
+        humanizeMode ? '✅ Humanize Mode Activated' : '❌ Humanize Mode Deactivated',
+        humanizeMode ? 
+            'All AI responses will now be automatically humanized to sound natural and human-written. This will remain active until you turn it off.' :
+            'Responses will return to normal AI mode.',
+        false
+    );
+    
+    console.log(`Humanize Mode: ${humanizeMode ? 'ENABLED' : 'DISABLED'}`);
+}
+
+// Show humanization indicator in chat
+function showHumanizationIndicator() {
+    const indicator = document.createElement('div');
+    indicator.className = 'humanize-indicator flex mb-4';
+    indicator.style.transition = 'all 0.3s ease';
+    indicator.innerHTML = `
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+            <i class="fas fa-user-edit"></i>
+        </div>
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 p-3 rounded-2xl shadow-lg flex-1">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-check-circle text-green-600"></i>
+                <span class="text-sm font-bold text-green-800">Humanize Mode Active</span>
+            </div>
+            <p class="text-xs text-green-700 mt-1">Response will be transformed to natural human writing</p>
+        </div>
+    `;
+    
+    responseHistory.appendChild(indicator);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    
+    // Auto-remove after 2 seconds with fade-out
+    setTimeout(() => {
+        indicator.style.opacity = '0';
+        indicator.style.transform = 'translateY(-10px)';
+        setTimeout(() => indicator.remove(), 300);
+    }, 2000);
+}
+
+
+// Show code cleaning indicator in chat
+function showCodeCleanIndicator() {
+    const indicator = document.createElement('div');
+    indicator.className = 'codeclean-indicator flex mb-4';
+    indicator.style.transition = 'all 0.3s ease';
+    indicator.innerHTML = `
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-600 to-red-600 flex items-center justify-center text-white font-bold mr-4 flex-shrink-0 shadow-lg">
+            <i class="fas fa-tools"></i>
+        </div>
+        <div class="bg-gradient-to-r from-orange-50 to-red-50 border-2 border-orange-300 p-3 rounded-2xl shadow-lg flex-1">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-bug text-orange-600"></i>
+                <span class="text-sm font-bold text-orange-800">Code Fixing Mode Active</span>
+            </div>
+            <p class="text-xs text-orange-700 mt-1">AI will analyze and fix bugs without regenerating entire code</p>
+        </div>
+    `;
+    
+    responseHistory.appendChild(indicator);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    
+    // Auto-remove after 2 seconds with fade-out
+    setTimeout(() => {
+        indicator.style.opacity = '0';
+        indicator.style.transform = 'translateY(-10px)';
+        setTimeout(() => indicator.remove(), 300);
+    }, 2000);
+}
+
+// Get system instruction based on humanize mode
+function getSystemInstructionForGeneration() {
+    let systemPromptText;
+
+    // CRITICAL: Check humanize mode FIRST (unless it's codeclean)
+    if (humanizeMode && currentTool !== 'codeclean') {
+        // Force humanize instructions - ALWAYS when mode is active
+        systemPromptText = systemInstructions['humanize'];
+        console.log('🎯 HUMANIZE MODE ACTIVE: Using humanization prompt');
+        
+        // Show indicator in chat
+        showHumanizationIndicator();
+    } else {
+        // Use normal tool instructions
+        systemPromptText = systemInstructions[currentTool] || systemInstructions['chat'];
+        
+        // **ADD THIS: Show codeclean indicator**
+        if (currentTool === 'codeclean') {
+            console.log('🔧 CODECLEAN MODE: Using code fixing instructions');
+            showCodeCleanIndicator();
         }
         
-        return systemPromptText;
+        if (currentTool === 'flashcards') {
+            const count = document.getElementById('flashcard-count')?.value || 8;
+            systemPromptText = systemPromptText.replace('{{count}}', count);
+        }
     }
     
-    // Initialize on DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', () => {
-        // Initialize the existing humanize button
+    return systemPromptText;
+}
+
+// Initialize on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize the existing humanize button
+    initializeHumanizeButton();
+    
+    console.log('Humanize button initialized');
+});
+
+// Make sure button state persists across page interactions
+setInterval(() => {
+    const humanizeBtn = document.getElementById('humanizeButton');
+    if (humanizeBtn && !humanizeBtn.onclick) {
         initializeHumanizeButton();
-        
-        console.log('Humanize button initialized');
+    }
+}, 1000);
+
+
+// ==================== CODE CLEANING FEATURE ====================
+
+// Add this after the humanize section (around line 2800)
+
+// Code Cleaning Modal HTML (add to your HTML or create dynamically)
+const createCodeCleaningModal = () => {
+    const modal = document.createElement('div');
+    modal.id = 'codeCleaningModal';
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4';
+    modal.style.display = 'none';
+    
+    modal.innerHTML = `
+        <div class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-orange-600 to-red-600 p-6 text-white">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold flex items-center gap-3">
+                            <i class="fas fa-tools"></i>
+                            Code Bug Fixer & Cleaner
+                        </h2>
+                        <p class="text-orange-100 text-sm mt-1">AI-powered code debugging without full regeneration</p>
+                    </div>
+                    <button id="closeCodeCleaningModal" class="text-white hover:text-orange-200 transition-colors">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 200px);">
+                <!-- Instructions -->
+                <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-6">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-info-circle text-blue-600 text-xl mt-1"></i>
+                        <div>
+                            <h3 class="font-bold text-blue-900 mb-2">How It Works:</h3>
+                            <ul class="text-sm text-blue-800 space-y-1">
+                                <li>âœ… <strong>Paste your buggy code</strong> in the editor below</li>
+                                <li>âœ… <strong>Describe the bugs or issues</strong> you're experiencing</li>
+                                <li>âœ… AI will <strong>analyze and fix bugs line-by-line</strong></li>
+                                <li>âœ… Get <strong>precise fixes with explanations</strong> - no full code regeneration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Input Area -->
+                <div class="mb-6">
+                    <label class="block font-bold text-gray-800 mb-2">
+                        <i class="fas fa-code mr-2 text-orange-600"></i>
+                        Paste Your Code Here:
+                    </label>
+                    <div class="relative">
+                        <textarea 
+                            id="codeToCleanInput" 
+                            class="w-full h-64 p-4 border-2 border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-y"
+                            placeholder="// Paste your buggy code here...
+// Example:
+function calculateTotal(items) {
+    let total = 0;
+    for (let i = 0; i <= items.length; i++) {
+        total += items[i].price;
+    }
+    return total;
+}"
+                            style="min-height: 200px; max-height: 500px;"
+                        ></textarea>
+                        <div class="absolute top-2 right-2 flex gap-2">
+                            <button id="clearCodeInput" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-xs font-semibold transition-colors">
+                                <i class="fas fa-eraser mr-1"></i>Clear
+                            </button>
+                            <button id="pasteCodeBtn" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition-colors">
+                                <i class="fas fa-paste mr-1"></i>Paste
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-xs text-gray-600">
+                        <i class="fas fa-lightbulb mr-1 text-yellow-500"></i>
+                        <strong>Tip:</strong> Include any error messages or unexpected behavior in the description below
+                    </div>
+                </div>
+
+                <!-- Bug Description Area -->
+                <div class="mb-6">
+                    <label class="block font-bold text-gray-800 mb-2">
+                        <i class="fas fa-bug mr-2 text-red-600"></i>
+                        Describe the Bug/Issue (Optional but Recommended):
+                    </label>
+                    <textarea 
+                        id="bugDescriptionInput" 
+                        class="w-full h-24 p-4 border-2 border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-y"
+                        placeholder="Example:
+- Getting 'undefined' error on line 4
+- Loop going out of bounds
+- Function returning NaN instead of number
+- Performance issues with large arrays
+- Need to add error handling"
+                        style="min-height: 80px;"
+                    ></textarea>
+                </div>
+
+                <!-- Language Selection (Optional) -->
+                <div class="mb-6">
+                    <label class="block font-bold text-gray-800 mb-2">
+                        <i class="fas fa-language mr-2 text-purple-600"></i>
+                        Programming Language (Auto-detected if not specified):
+                    </label>
+                    <select id="codeLanguageSelect" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                        <option value="auto">Auto-detect</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="typescript">TypeScript</option>
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                        <option value="cpp">C++</option>
+                        <option value="csharp">C#</option>
+                        <option value="php">PHP</option>
+                        <option value="ruby">Ruby</option>
+                        <option value="go">Go</option>
+                        <option value="rust">Rust</option>
+                        <option value="swift">Swift</option>
+                        <option value="kotlin">Kotlin</option>
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                        <option value="sql">SQL</option>
+                    </select>
+                </div>
+
+                <!-- Advanced Options -->
+                <div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-4">
+                    <button id="toggleAdvancedOptions" class="flex items-center gap-2 text-gray-700 hover:text-orange-600 font-semibold transition-colors">
+                        <i class="fas fa-chevron-right transition-transform" id="advancedChevron"></i>
+                        Advanced Options
+                    </button>
+                    <div id="advancedOptionsContent" class="hidden mt-4 space-y-3">
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" id="addCommentsCheck" checked class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
+                            <span class="text-sm text-gray-700">Add explanatory comments to fixes</span>
+                        </label>
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" id="suggestOptimizationsCheck" class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
+                            <span class="text-sm text-gray-700">Suggest performance optimizations</span>
+                        </label>
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" id="addErrorHandlingCheck" class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
+                            <span class="text-sm text-gray-700">Add error handling where missing</span>
+                        </label>
+                        <label class="flex items-center gap-3">
+                            <input type="checkbox" id="formatCodeCheck" checked class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
+                            <span class="text-sm text-gray-700">Format/beautify code</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bg-gray-50 p-6 border-t-2 border-gray-200 flex justify-between items-center">
+                <div class="text-sm text-gray-600">
+                    <i class="fas fa-shield-alt mr-2 text-green-600"></i>
+                    Your code is processed securely and not stored
+                </div>
+                <div class="flex gap-3">
+                    <button id="cancelCodeCleaning" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-semibold transition-all">
+                        <i class="fas fa-times mr-2"></i>Cancel
+                    </button>
+                    <button id="startCodeCleaning" class="px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <i class="fas fa-magic mr-2"></i>Fix My Code
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    return modal;
+};
+
+// Initialize Code Cleaning Modal
+let codeCleaningModal = null;
+
+const initCodeCleaningModal = () => {
+    if (!codeCleaningModal) {
+        codeCleaningModal = createCodeCleaningModal();
+    }
+    
+    // Event Listeners
+    const closeBtn = document.getElementById('closeCodeCleaningModal');
+    const cancelBtn = document.getElementById('cancelCodeCleaning');
+    const startBtn = document.getElementById('startCodeCleaning');
+    const clearBtn = document.getElementById('clearCodeInput');
+    const pasteBtn = document.getElementById('pasteCodeBtn');
+    const toggleAdvanced = document.getElementById('toggleAdvancedOptions');
+    
+    closeBtn?.addEventListener('click', hideCodeCleaningModal);
+    cancelBtn?.addEventListener('click', hideCodeCleaningModal);
+    startBtn?.addEventListener('click', executeCodeCleaning);
+    clearBtn?.addEventListener('click', () => {
+        document.getElementById('codeToCleanInput').value = '';
+        document.getElementById('bugDescriptionInput').value = '';
     });
     
-    // Make sure button state persists across page interactions
-    setInterval(() => {
-        const humanizeBtn = document.getElementById('humanizeButton');
-        if (humanizeBtn && !humanizeBtn.onclick) {
-            initializeHumanizeButton();
+    pasteBtn?.addEventListener('click', async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            document.getElementById('codeToCleanInput').value = text;
+        } catch (err) {
+            showCustomModal('Paste Failed', 'Unable to paste from clipboard. Please paste manually.', false);
         }
+    });
+    
+    toggleAdvanced?.addEventListener('click', () => {
+        const content = document.getElementById('advancedOptionsContent');
+        const chevron = document.getElementById('advancedChevron');
+        
+        if (content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            chevron.style.transform = 'rotate(90deg)';
+        } else {
+            content.classList.add('hidden');
+            chevron.style.transform = 'rotate(0deg)';
+        }
+    });
+    
+    // Close on outside click
+    codeCleaningModal.addEventListener('click', (e) => {
+        if (e.target === codeCleaningModal) {
+            hideCodeCleaningModal();
+        }
+    });
+};
+
+// Show Code Cleaning Modal
+const showCodeCleaningModal = () => {
+    if (!codeCleaningModal) {
+        initCodeCleaningModal();
+    }
+    
+    codeCleaningModal.style.display = 'flex';
+    codeCleaningModal.classList.remove('hidden');
+    document.getElementById('codeToCleanInput')?.focus();
+};
+
+// Hide Code Cleaning Modal
+const hideCodeCleaningModal = () => {
+    if (codeCleaningModal) {
+        codeCleaningModal.style.display = 'none';
+        codeCleaningModal.classList.add('hidden');
+    }
+};
+
+// Execute Code Cleaning
+const executeCodeCleaning = async () => {
+    const codeInput = document.getElementById('codeToCleanInput').value.trim();
+    const bugDescription = document.getElementById('bugDescriptionInput').value.trim();
+    const language = document.getElementById('codeLanguageSelect').value;
+    
+    // Get advanced options
+    const addComments = document.getElementById('addCommentsCheck').checked;
+    const suggestOptimizations = document.getElementById('suggestOptimizationsCheck').checked;
+    const addErrorHandling = document.getElementById('addErrorHandlingCheck').checked;
+    const formatCode = document.getElementById('formatCodeCheck').checked;
+    
+    if (!codeInput) {
+        showCustomModal('No Code', 'Please paste your code first.', false);
+        return;
+    }
+    
+    // Build the cleaning prompt
+    let cleaningPrompt = `**CODE BUG FIXING & CLEANING REQUEST**
+
+**CRITICAL INSTRUCTIONS:**
+- DO NOT regenerate the entire code from scratch
+- Analyze the code line by line and identify bugs/issues
+- Provide PRECISE fixes using one of these methods:
+  1. **ADD** new lines (specify line number and content)
+  2. **REPLACE** existing lines (specify line number, old code, new code)
+  3. **DELETE** lines (specify line number and reason)
+
+**CODE TO FIX:**
+\`\`\`${language === 'auto' ? '' : language}
+${codeInput}
+\`\`\`
+
+`;
+
+    if (bugDescription) {
+        cleaningPrompt += `**REPORTED ISSUES:**
+${bugDescription}
+
+`;
+    }
+
+    cleaningPrompt += `**REQUIREMENTS:**
+${addComments ? '- Add explanatory comments for each fix\n' : ''}${suggestOptimizations ? '- Suggest performance optimizations where applicable\n' : ''}${addErrorHandling ? '- Add error handling where missing\n' : ''}${formatCode ? '- Format and beautify the code\n' : ''}
+**OUTPUT FORMAT:**
+1. **Bug Analysis:** List all bugs found with line numbers
+2. **Fixes:** For each fix, specify:
+   - Line number
+   - Action (ADD/REPLACE/DELETE)
+   - Old code (if replacing)
+   - New code (if adding/replacing)
+   - Explanation of the fix
+3. **Final Clean Code:** Provide the complete fixed code
+4. **Summary:** Brief summary of changes made
+
+Start analyzing now.`;
+
+    // Hide modal and show in chat
+    hideCodeCleaningModal();
+    showChatView();
+    
+    // Add to chat history
+    const currentChat = chats[activeChatId];
+    
+    if (currentChat.history.length === 0 && currentChat.title === 'New Chat') {
+        currentChat.title = 'Code Bug Fixing';
+        renderChatList();
+    }
+    
+    // **IMPORTANT: Switch to codeclean mode BEFORE generating**
+    const previousTool = currentTool;
+    currentTool = 'codeclean';
+    
+    // Create user message showing the code cleaning request
+    createUserMessage(`🛠️ Code Bug Fixing Request\n\nLanguage: ${language === 'auto' ? 'Auto-detect' : language}\n${bugDescription ? `\nIssues: ${bugDescription}` : ''}`);
+    
+    // **CALL generateResponse DIRECTLY instead of simulating button click**
+    await generateResponse(cleaningPrompt);
+    
+    // Restore previous tool after generation starts
+    setTimeout(() => {
+        currentTool = previousTool;
     }, 1000);
-    
-    
-    // ==================== CODE CLEANING FEATURE ====================
-    
-    // Add this after the humanize section (around line 2800)
-    
-    // Code Cleaning Modal HTML (add to your HTML or create dynamically)
-    const createCodeCleaningModal = () => {
-        const modal = document.createElement('div');
-        modal.id = 'codeCleaningModal';
-        modal.className = 'fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4';
-        modal.style.display = 'none';
+};
+
+// Add button to attach dropdown or create floating button
+const addCodeCleaningButton = () => {
+    // Option 1: Add to attachment dropdown
+    const attachmentDropdown = document.getElementById('attachmentDropdown');
+    if (attachmentDropdown) {
+        const cleanCodeOption = document.createElement('button');
+        cleanCodeOption.className = 'dropdown-option';
+        cleanCodeOption.innerHTML = '<i class="fas fa-tools mr-2"></i>Fix/Clean Code';
+        cleanCodeOption.addEventListener('click', () => {
+            attachmentDropdown.classList.add('hidden');
+            showCodeCleaningModal();
+        });
         
-        modal.innerHTML = `
-            <div class="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden">
-                <!-- Header -->
-                <div class="bg-gradient-to-r from-orange-600 to-red-600 p-6 text-white">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h2 class="text-2xl font-bold flex items-center gap-3">
-                                <i class="fas fa-tools"></i>
-                                Code Bug Fixer & Cleaner
-                            </h2>
-                            <p class="text-orange-100 text-sm mt-1">AI-powered code debugging without full regeneration</p>
-                        </div>
-                        <button id="closeCodeCleaningModal" class="text-white hover:text-orange-200 transition-colors">
-                            <i class="fas fa-times text-2xl"></i>
-                        </button>
-                    </div>
-                </div>
-    
-                <!-- Content -->
-                <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 200px);">
-                    <!-- Instructions -->
-                    <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-6">
-                        <div class="flex items-start gap-3">
-                            <i class="fas fa-info-circle text-blue-600 text-xl mt-1"></i>
-                            <div>
-                                <h3 class="font-bold text-blue-900 mb-2">How It Works:</h3>
-                                <ul class="text-sm text-blue-800 space-y-1">
-                                    <li>âœ… <strong>Paste your buggy code</strong> in the editor below</li>
-                                    <li>âœ… <strong>Describe the bugs or issues</strong> you're experiencing</li>
-                                    <li>âœ… AI will <strong>analyze and fix bugs line-by-line</strong></li>
-                                    <li>âœ… Get <strong>precise fixes with explanations</strong> - no full code regeneration</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <!-- Code Input Area -->
-                    <div class="mb-6">
-                        <label class="block font-bold text-gray-800 mb-2">
-                            <i class="fas fa-code mr-2 text-orange-600"></i>
-                            Paste Your Code Here:
-                        </label>
-                        <div class="relative">
-                            <textarea 
-                                id="codeToCleanInput" 
-                                class="w-full h-64 p-4 border-2 border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-y"
-                                placeholder="// Paste your buggy code here...
-    // Example:
-    function calculateTotal(items) {
-        let total = 0;
-        for (let i = 0; i <= items.length; i++) {
-            total += items[i].price;
+        // Insert after "Use Camera" option
+        const useCameraOption = document.getElementById('useCameraOption');
+        if (useCameraOption && useCameraOption.parentNode) {
+            useCameraOption.parentNode.insertBefore(cleanCodeOption, useCameraOption.nextSibling);
+        } else {
+            attachmentDropdown.appendChild(cleanCodeOption);
         }
-        return total;
-    }"
-                                style="min-height: 200px; max-height: 500px;"
-                            ></textarea>
-                            <div class="absolute top-2 right-2 flex gap-2">
-                                <button id="clearCodeInput" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-xs font-semibold transition-colors">
-                                    <i class="fas fa-eraser mr-1"></i>Clear
-                                </button>
-                                <button id="pasteCodeBtn" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold transition-colors">
-                                    <i class="fas fa-paste mr-1"></i>Paste
-                                </button>
-                            </div>
-                        </div>
-                        <div class="mt-2 text-xs text-gray-600">
-                            <i class="fas fa-lightbulb mr-1 text-yellow-500"></i>
-                            <strong>Tip:</strong> Include any error messages or unexpected behavior in the description below
-                        </div>
-                    </div>
+    }
     
-                    <!-- Bug Description Area -->
-                    <div class="mb-6">
-                        <label class="block font-bold text-gray-800 mb-2">
-                            <i class="fas fa-bug mr-2 text-red-600"></i>
-                            Describe the Bug/Issue (Optional but Recommended):
-                        </label>
-                        <textarea 
-                            id="bugDescriptionInput" 
-                            class="w-full h-24 p-4 border-2 border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-y"
-                            placeholder="Example:
-    - Getting 'undefined' error on line 4
-    - Loop going out of bounds
-    - Function returning NaN instead of number
-    - Performance issues with large arrays
-    - Need to add error handling"
-                            style="min-height: 80px;"
-                        ></textarea>
-                    </div>
-    
-                    <!-- Language Selection (Optional) -->
-                    <div class="mb-6">
-                        <label class="block font-bold text-gray-800 mb-2">
-                            <i class="fas fa-language mr-2 text-purple-600"></i>
-                            Programming Language (Auto-detected if not specified):
-                        </label>
-                        <select id="codeLanguageSelect" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
-                            <option value="auto">Auto-detect</option>
-                            <option value="javascript">JavaScript</option>
-                            <option value="typescript">TypeScript</option>
-                            <option value="python">Python</option>
-                            <option value="java">Java</option>
-                            <option value="cpp">C++</option>
-                            <option value="csharp">C#</option>
-                            <option value="php">PHP</option>
-                            <option value="ruby">Ruby</option>
-                            <option value="go">Go</option>
-                            <option value="rust">Rust</option>
-                            <option value="swift">Swift</option>
-                            <option value="kotlin">Kotlin</option>
-                            <option value="html">HTML</option>
-                            <option value="css">CSS</option>
-                            <option value="sql">SQL</option>
-                        </select>
-                    </div>
-    
-                    <!-- Advanced Options -->
-                    <div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-4">
-                        <button id="toggleAdvancedOptions" class="flex items-center gap-2 text-gray-700 hover:text-orange-600 font-semibold transition-colors">
-                            <i class="fas fa-chevron-right transition-transform" id="advancedChevron"></i>
-                            Advanced Options
-                        </button>
-                        <div id="advancedOptionsContent" class="hidden mt-4 space-y-3">
-                            <label class="flex items-center gap-3">
-                                <input type="checkbox" id="addCommentsCheck" checked class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
-                                <span class="text-sm text-gray-700">Add explanatory comments to fixes</span>
-                            </label>
-                            <label class="flex items-center gap-3">
-                                <input type="checkbox" id="suggestOptimizationsCheck" class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
-                                <span class="text-sm text-gray-700">Suggest performance optimizations</span>
-                            </label>
-                            <label class="flex items-center gap-3">
-                                <input type="checkbox" id="addErrorHandlingCheck" class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
-                                <span class="text-sm text-gray-700">Add error handling where missing</span>
-                            </label>
-                            <label class="flex items-center gap-3">
-                                <input type="checkbox" id="formatCodeCheck" checked class="w-4 h-4 text-orange-600 rounded focus:ring-orange-500">
-                                <span class="text-sm text-gray-700">Format/beautify code</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Footer -->
-                <div class="bg-gray-50 p-6 border-t-2 border-gray-200 flex justify-between items-center">
-                    <div class="text-sm text-gray-600">
-                        <i class="fas fa-shield-alt mr-2 text-green-600"></i>
-                        Your code is processed securely and not stored
-                    </div>
-                    <div class="flex gap-3">
-                        <button id="cancelCodeCleaning" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-semibold transition-all">
-                            <i class="fas fa-times mr-2"></i>Cancel
-                        </button>
-                        <button id="startCodeCleaning" class="px-6 py-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
-                            <i class="fas fa-magic mr-2"></i>Fix My Code
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `;
+    // Option 2: Create floating button in chat interface (alternative)
+    const createFloatingButton = () => {
+        const floatingBtn = document.createElement('button');
+        floatingBtn.className = 'fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all z-40 flex items-center justify-center';
+        floatingBtn.innerHTML = '<i class="fas fa-tools text-xl"></i>';
+        floatingBtn.title = 'Fix/Clean Code';
+        floatingBtn.style.display = 'none'; // Hidden by default
         
-        document.body.appendChild(modal);
-        return modal;
-    };
-    
-    // Initialize Code Cleaning Modal
-    let codeCleaningModal = null;
-    
-    const initCodeCleaningModal = () => {
-        if (!codeCleaningModal) {
-            codeCleaningModal = createCodeCleaningModal();
-        }
+        floatingBtn.addEventListener('click', showCodeCleaningModal);
+        document.body.appendChild(floatingBtn);
         
-        // Event Listeners
-        const closeBtn = document.getElementById('closeCodeCleaningModal');
-        const cancelBtn = document.getElementById('cancelCodeCleaning');
-        const startBtn = document.getElementById('startCodeCleaning');
-        const clearBtn = document.getElementById('clearCodeInput');
-        const pasteBtn = document.getElementById('pasteCodeBtn');
-        const toggleAdvanced = document.getElementById('toggleAdvancedOptions');
-        
-        closeBtn?.addEventListener('click', hideCodeCleaningModal);
-        cancelBtn?.addEventListener('click', hideCodeCleaningModal);
-        startBtn?.addEventListener('click', executeCodeCleaning);
-        clearBtn?.addEventListener('click', () => {
-            document.getElementById('codeToCleanInput').value = '';
-            document.getElementById('bugDescriptionInput').value = '';
+        // Show only when in chat view
+        const observer = new MutationObserver(() => {
+            const chatVisible = !document.getElementById('chatContainer')?.classList.contains('hidden');
+            floatingBtn.style.display = chatVisible ? 'flex' : 'none';
         });
         
-        pasteBtn?.addEventListener('click', async () => {
-            try {
-                const text = await navigator.clipboard.readText();
-                document.getElementById('codeToCleanInput').value = text;
-            } catch (err) {
-                showCustomModal('Paste Failed', 'Unable to paste from clipboard. Please paste manually.', false);
-            }
-        });
-        
-        toggleAdvanced?.addEventListener('click', () => {
-            const content = document.getElementById('advancedOptionsContent');
-            const chevron = document.getElementById('advancedChevron');
-            
-            if (content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                chevron.style.transform = 'rotate(90deg)';
-            } else {
-                content.classList.add('hidden');
-                chevron.style.transform = 'rotate(0deg)';
-            }
-        });
-        
-        // Close on outside click
-        codeCleaningModal.addEventListener('click', (e) => {
-            if (e.target === codeCleaningModal) {
-                hideCodeCleaningModal();
-            }
+        observer.observe(document.getElementById('chatContainer'), {
+            attributes: true,
+            attributeFilter: ['class']
         });
     };
     
-    // Show Code Cleaning Modal
-    const showCodeCleaningModal = () => {
-        if (!codeCleaningModal) {
-            initCodeCleaningModal();
-        }
-        
-        codeCleaningModal.style.display = 'flex';
-        codeCleaningModal.classList.remove('hidden');
-        document.getElementById('codeToCleanInput')?.focus();
-    };
-    
-    // Hide Code Cleaning Modal
-    const hideCodeCleaningModal = () => {
-        if (codeCleaningModal) {
-            codeCleaningModal.style.display = 'none';
-            codeCleaningModal.classList.add('hidden');
-        }
-    };
-    
-    // Execute Code Cleaning
-    const executeCodeCleaning = async () => {
-        const codeInput = document.getElementById('codeToCleanInput').value.trim();
-        const bugDescription = document.getElementById('bugDescriptionInput').value.trim();
-        const language = document.getElementById('codeLanguageSelect').value;
-        
-        // Get advanced options
-        const addComments = document.getElementById('addCommentsCheck').checked;
-        const suggestOptimizations = document.getElementById('suggestOptimizationsCheck').checked;
-        const addErrorHandling = document.getElementById('addErrorHandlingCheck').checked;
-        const formatCode = document.getElementById('formatCodeCheck').checked;
-        
-        if (!codeInput) {
-            showCustomModal('No Code', 'Please paste your code first.', false);
-            return;
-        }
-        
-        // Build the cleaning prompt
-        let cleaningPrompt = `**CODE BUG FIXING & CLEANING REQUEST**
-    
-    **CRITICAL INSTRUCTIONS:**
-    - DO NOT regenerate the entire code from scratch
-    - Analyze the code line by line and identify bugs/issues
-    - Provide PRECISE fixes using one of these methods:
-      1. **ADD** new lines (specify line number and content)
-      2. **REPLACE** existing lines (specify line number, old code, new code)
-      3. **DELETE** lines (specify line number and reason)
-    
-    **CODE TO FIX:**
-    \`\`\`${language === 'auto' ? '' : language}
-    ${codeInput}
-    \`\`\`
-    
-    `;
-    
-        if (bugDescription) {
-            cleaningPrompt += `**REPORTED ISSUES:**
-    ${bugDescription}
-    
-    `;
-        }
-    
-        cleaningPrompt += `**REQUIREMENTS:**
-    ${addComments ? '- Add explanatory comments for each fix\n' : ''}${suggestOptimizations ? '- Suggest performance optimizations where applicable\n' : ''}${addErrorHandling ? '- Add error handling where missing\n' : ''}${formatCode ? '- Format and beautify the code\n' : ''}
-    **OUTPUT FORMAT:**
-    1. **Bug Analysis:** List all bugs found with line numbers
-    2. **Fixes:** For each fix, specify:
-       - Line number
-       - Action (ADD/REPLACE/DELETE)
-       - Old code (if replacing)
-       - New code (if adding/replacing)
-       - Explanation of the fix
-    3. **Final Clean Code:** Provide the complete fixed code
-    4. **Summary:** Brief summary of changes made
-    
-    Start analyzing now.`;
-    
-        // Hide modal and show in chat
-        hideCodeCleaningModal();
-        showChatView();
-        
-        // Add to chat history
-        const currentChat = chats[activeChatId];
-        
-        if (currentChat.history.length === 0 && currentChat.title === 'New Chat') {
-            currentChat.title = 'Code Bug Fixing';
-            renderChatList();
-        }
-        
-        // **IMPORTANT: Switch to codeclean mode BEFORE generating**
-        const previousTool = currentTool;
-        currentTool = 'codeclean';
-        
-        // Create user message showing the code cleaning request
-        createUserMessage(`🛠️ Code Bug Fixing Request\n\nLanguage: ${language === 'auto' ? 'Auto-detect' : language}\n${bugDescription ? `\nIssues: ${bugDescription}` : ''}`);
-        
-        // **CALL generateResponse DIRECTLY instead of simulating button click**
-        await generateResponse(cleaningPrompt);
-        
-        // Restore previous tool after generation starts
-        setTimeout(() => {
-            currentTool = previousTool;
-        }, 1000);
-    };
-    
-    // Add button to attach dropdown or create floating button
-    const addCodeCleaningButton = () => {
-        // Option 1: Add to attachment dropdown
-        const attachmentDropdown = document.getElementById('attachmentDropdown');
-        if (attachmentDropdown) {
-            const cleanCodeOption = document.createElement('button');
-            cleanCodeOption.className = 'dropdown-option';
-            cleanCodeOption.innerHTML = '<i class="fas fa-tools mr-2"></i>Fix/Clean Code';
-            cleanCodeOption.addEventListener('click', () => {
-                attachmentDropdown.classList.add('hidden');
-                showCodeCleaningModal();
-            });
-            
-            // Insert after "Use Camera" option
-            const useCameraOption = document.getElementById('useCameraOption');
-            if (useCameraOption && useCameraOption.parentNode) {
-                useCameraOption.parentNode.insertBefore(cleanCodeOption, useCameraOption.nextSibling);
-            } else {
-                attachmentDropdown.appendChild(cleanCodeOption);
-            }
-        }
-        
-        // Option 2: Create floating button in chat interface (alternative)
-        const createFloatingButton = () => {
-            const floatingBtn = document.createElement('button');
-            floatingBtn.className = 'fixed bottom-24 right-6 w-14 h-14 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all z-40 flex items-center justify-center';
-            floatingBtn.innerHTML = '<i class="fas fa-tools text-xl"></i>';
-            floatingBtn.title = 'Fix/Clean Code';
-            floatingBtn.style.display = 'none'; // Hidden by default
-            
-            floatingBtn.addEventListener('click', showCodeCleaningModal);
-            document.body.appendChild(floatingBtn);
-            
-            // Show only when in chat view
-            const observer = new MutationObserver(() => {
-                const chatVisible = !document.getElementById('chatContainer')?.classList.contains('hidden');
-                floatingBtn.style.display = chatVisible ? 'flex' : 'none';
-            });
-            
-            observer.observe(document.getElementById('chatContainer'), {
-                attributes: true,
-                attributeFilter: ['class']
-            });
-        };
-        
-        createFloatingButton();
-    };
-    
-    // Initialize on page load
-    
-    // Also add to tools sidebar (optional)
+    createFloatingButton();
+};
+
+// Initialize on page load
     let CodeCanvas = null;
 
-// Wait for DOM to be ready
 function initializeCodeCanvas() {
     console.log('🎨 Initializing Code Canvas...');
-    
-    // Verify all required elements exist
-    const canvas = document.getElementById('codePreviewCanvas');
-    const editor = document.getElementById('codeEditorTextarea');
-    const preview = document.getElementById('codePreviewFrame');
-    
-    if (!canvas || !editor || !preview) {
-        console.error('❌ Code Canvas elements not found!');
+
+    // Updated list of required IDs, reflecting the new HTML structure
+    const requiredIds = [
+        'codePreviewCanvas', 'codeEditorTextarea', 'codePreviewFrame', 'previewPlaceholder',
+        'canvasLanguageSelect', 'canvasCloseBtn', 'canvasCopyBtn', 'canvasDownloadBtn',
+        'canvasRunBtn', 'editorRunCodeBtn', 'canvasFullscreenBtn', 'formatCodeBtn',
+        'clearEditorBtn', 'refreshPreviewBtn', 'clearPreviewBtn', 'canvasTitle',
+        'canvasSubtitle', 'editorLineCount', 'editorCharCount',
+        'canvasResizer1', 'canvasResizer2', // Resizers are now explicitly ID'd
+        // File Manager elements (now within the 'code-files-panel')
+        'canvasFileManager', // This now refers to the .code-files-panel itself
+        'canvasFileManagerCount', // Display for file count
+        'canvasToggleFileManagerBtn', // Button to toggle the file manager
+        'canvasFileManagerChevron', // Chevron icon for the toggle button
+        'canvasUploadFileInput', // Hidden input for file uploads
+        'canvasUploadBtn', // Button to trigger file upload
+        'canvasFileList', // UL element for the file list
+        'canvasNoFiles', // Message when no files are present
+        'canvasLoadAllToEditorBtn', // Button to load all files to editor
+        'selectAllCanvasFiles', // Select all button
+        'deselectAllCanvasFiles', // Deselect all button
+        'clearCanvasFiles', // Clear all files button
+        'runSelectedCanvasFiles', // Run selected files button
+        'canvasSelectedCount' // Added this missing ID for the selected file count
+    ];
+
+    let missingElements = [];
+    const elements = {};
+    for (const id of requiredIds) {
+        const element = document.getElementById(id);
+        if (!element) {
+            missingElements.push(id);
+        }
+        elements[id] = element;
+    }
+
+    // Also check for panels by class/structure if direct ID is not used for them
+    const editorPanel = elements.codePreviewCanvas?.querySelector('.code-editor-panel');
+    const previewPanel = elements.codePreviewCanvas?.querySelector('.code-preview-panel');
+    if (!editorPanel) missingElements.push('code-editor-panel (class)');
+    if (!previewPanel) missingElements.push('code-preview-panel (class)');
+
+    if (missingElements.length > 0) {
+        console.error('❌ Code Canvas initialization failed: Missing required HTML elements.');
+        console.error('Please ensure the following elements are present in your HTML with correct IDs/classes:');
+        missingElements.forEach(id => console.error(`- ${id}`));
+        alert('Code Canvas setup incomplete. Please check the console for missing HTML elements and refresh the page. (Yacob Okour, check your HTML!)');
         return false;
     }
     
-    // Create CodeCanvas object
     CodeCanvas = {
         isOpen: false,
         isFullscreen: false,
-        currentLanguage: 'javascript',
-        canvas: canvas,
-        editor: editor,
-        preview: preview,
-        placeholder: document.getElementById('previewPlaceholder'),
-        languageSelect: document.getElementById('canvasLanguageSelect'),
+        currentLanguage: 'javascript', // Language for the main editor
+        editorMode: 'single-file', // 'single-file' or 'multi-file-project'
+        currentProjectFiles: [], // Array of { id, name, type, content, isActive }
         
-        // Open canvas with code
-        open: function(code = '', language = 'javascript') {
-            console.log('🚀 Opening Code Canvas...', { language, codeLength: code.length });
-            
-            if (!this.canvas) {
-                console.error('❌ Canvas not initialized!');
-                return;
-            }
+        canvas: elements.codePreviewCanvas,
+        editor: elements.codeEditorTextarea,
+        preview: elements.codePreviewFrame,
+        placeholder: elements.previewPlaceholder,
+        languageSelect: elements.canvasLanguageSelect,
+        editorPanel: editorPanel, // Use the queried element
+        previewPanel: previewPanel, // Use the queried element
 
-            
+        // File manager UI elements (now directly referencing the elements)
+        canvasFileManager: elements.canvasFileManager, // This is now the rightmost panel
+        canvasFileList: elements.canvasFileList,
+        canvasUploadFileInput: elements.canvasUploadFileInput,
+        canvasUploadBtn: elements.canvasUploadBtn,
+        canvasToggleFileManagerBtn: elements.canvasToggleFileManagerBtn,
+        canvasFileManagerCount: elements.canvasFileManagerCount,
+        canvasFileManagerChevron: elements.canvasFileManagerChevron,
+        canvasLoadAllToEditorBtn: elements.canvasLoadAllToEditorBtn,
+        canvasNoFiles: elements.canvasNoFiles, // The "No files" message
+        selectAllCanvasFilesBtn: elements.selectAllCanvasFiles,
+        deselectAllCanvasFilesBtn: elements.deselectAllCanvasFiles,
+        clearCanvasFilesBtn: elements.clearCanvasFiles,
+        runSelectedCanvasFilesBtn: elements.runSelectedCanvasFiles,
+        canvasSelectedCount: elements.canvasSelectedCount,
+
+        toggleFileManager: function() {
+                // Check if the file manager panel is currently hidden
+                const isHidden = this.canvasFileManager?.classList.contains('hidden');
+                if (isHidden) {
+                    this._showFileManager();
+                } else {
+                    this._hideFileManager();
+                }
+            },
+
+
+        _showFileManager: function() {
+                if (!this.canvasFileManager || !this.editorPanel || !this.previewPanel) return;
+
+                this.canvasFileManager.classList.remove('hidden');
+                this.canvasFileManager.style.display = 'flex'; // Ensure it's displayed as flex
+                this.canvasFileManagerChevron?.classList.add('rotate-180');
+
+                // Adjust flex-basis to make space for the files panel
+                this.editorPanel.style.flexBasis = '35%';
+                this.previewPanel.style.flexBasis = '30%';
+                this.canvasFileManager.style.flexBasis = '25%'; // Make files panel visible
+
+                // Ensure resizers are visible when the file manager is present
+                elements.canvasResizer1.style.display = 'block';
+                elements.canvasResizer2.style.display = 'block';
+
+                console.log('File Manager shown. Layout: Editor 35%, Preview 30%, Files 25%');
+            },
+
+            // NEW: Hide file manager
+            _hideFileManager: function() {
+                if (!this.canvasFileManager || !this.editorPanel || !this.previewPanel) return;
+
+                this.canvasFileManager.classList.add('hidden');
+                this.canvasFileManager.style.display = 'none'; // Explicitly hide it
+                this.canvasFileManagerChevron?.classList.remove('rotate-180');
+
+                // Expand editor/preview when files panel is hidden
+                this.editorPanel.style.flexBasis = '50%';
+                this.previewPanel.style.flexBasis = '50%';
+
+                // Resizer 1 (between editor and preview) remains, Resizer 2 (between preview and files) hides
+                elements.canvasResizer1.style.display = 'block';
+                elements.canvasResizer2.style.display = 'none';
+
+                console.log('File Manager hidden. Layout: Editor 50%, Preview 50%');
+            },
+
+        
+
+        // Opens canvas for a single file edit
+           open: function(code = '', language = 'javascript') {
+        console.log('🚀 Opening Code Canvas (single file mode)...', { language, codeLength: code.length });
+        this.editorMode = 'single-file';
+        this.currentProjectFiles = []; // Clear project files for single file mode
+        this.editor.value = code;
+        this.currentLanguage = language;
+        this.languageSelect.value = language;
+        this.languageSelect.disabled = false; // Enable language selection for single files
+        this._showCanvas();
+        this.updateLanguageDisplay();
+        this.updateStats();
+        this._hideFileManager(); // Hide file manager in single-file mode
+        this._renderCanvasFileList(); // Update button states (hide project buttons)
+        setTimeout(() => this.editor?.focus(), 300);
+        console.log('✅ Canvas opened successfully (single file)');
+    },
+
+    openProject: function(filesArray) {
+        console.log('🚀 Opening Code Canvas (multi-file project mode)...', { fileCount: filesArray.length });
+        this.editorMode = 'multi-file-project';
+        // Ensure files have unique IDs and isActive status
+        this.currentProjectFiles = filesArray.map(file => ({ 
+            id: file.id || `canvas_file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, 
+            isActive: true, // All files from chat are active by default
+            ...file 
+        })); 
+        this.currentLanguage = 'web-project'; // Special language for project mode
+        this.languageSelect.value = 'html'; // Default display for project content in editor
+        this.languageSelect.disabled = true; // Disable language selection in project mode
+        this.editor.value = this._buildProjectEditorContent(this.currentProjectFiles); // Show combined code initially
+        this._showCanvas();
+        this.updateLanguageDisplay();
+        this.updateStats();
+        this._renderCanvasFileList(); // Render file list and update button state
+        this._showFileManager(); // Show file manager for projects
+        this.runCode(); // Automatically run the project preview
+        setTimeout(() => this.editor?.focus(), 300);
+        console.log('✅ Canvas opened successfully (web project)');
+    },
+
+        
+
+        _showCanvas: function() {
             this.isOpen = true;
-            this.currentLanguage = language;
-            this.editor.value = code;
-            this.languageSelect.value = language;
-             this.canvas.style.display = 'flex';
-            this.canvas.classList.remove('hidden'); // Make it visible (display: flex) and centered
+            this.canvas.classList.remove('hidden'); // Make it visible (display: flex if Tailwind)
+            this.canvas.style.display = 'flex'; // Explicitly ensure display is flex
             setTimeout(() => {
-                this.canvas.classList.add('active'); // Trigger opacity/visibility transition
+                this.canvas.classList.add('active');
             }, 10);
-            
-            this.updateLanguageDisplay();
-            this.updateStats();
-            
-            // Focus editor
-            setTimeout(() => this.editor?.focus(), 300);
-            
-            console.log('✅ Canvas opened successfully');
         },
         
-        // Close canvas
-        close: function() {
-            console.log('🔒 Closing canvas...');
-            this.isOpen = false;
-            this.canvas.classList.remove('active');
-            
-            setTimeout(() => {
-                
-                this.canvas.classList.add('hidden');
-                this.clearPreview();
-            }, 300);
-        },
+         close: function() {
+        console.log('🔒 Closing canvas...');
+        this.isOpen = false;
+        this.canvas.classList.remove('active');
+        // Immediately make it invisible and remove from flow
+        this.canvas.classList.add('hidden'); 
+        this.canvas.style.display = 'none'; // Explicitly ensure display is none
+
+        // Clear content and reset state immediately
+        this.clearPreview();
+        this.currentProjectFiles = []; // Clear project files on close
+        this._hideFileManager(); // Ensure file manager is hidden
+        this._renderCanvasFileList(); // Update button states immediately after clearing files
+        console.log('✅ Canvas closed');
+    },
+
         
-        // Copy code
         copyCode: async function() {
             const code = this.editor.value;
-            
-            if (!code.trim()) {
-                this.showNotification('No code to copy', 'warning');
-                return;
-            }
-            
+            if (!code.trim()) { this.showNotification('No code to copy', 'warning'); return; }
             try {
                 await navigator.clipboard.writeText(code);
                 this.showNotification('Code copied!', 'success');
-                
-                const btn = document.getElementById('canvasCopyBtn');
+                const btn = elements.canvasCopyBtn;
                 const icon = btn?.querySelector('i');
-                if (icon) {
-                    icon.className = 'fas fa-check';
-                    setTimeout(() => {
-                        icon.className = 'fas fa-copy';
-                    }, 2000);
-                }
-            } catch (err) {
-                this.showNotification('Failed to copy', 'error');
-            }
+                if (icon) { icon.className = 'fas fa-check'; setTimeout(() => { icon.className = 'fas fa-copy'; }, 2000); }
+            } catch (err) { this.showNotification('Failed to copy', 'error'); }
         },
         
-        // Download code
         downloadCode: function() {
             const code = this.editor.value;
-            
-            if (!code.trim()) {
-                this.showNotification('No code to download', 'warning');
-                return;
-            }
-            
+            if (!code.trim()) { this.showNotification('No code to download', 'warning'); return; }
             const extensions = {
-                'javascript': 'js',
-                'typescript': 'ts',
-                'python': 'py',
-                'java': 'java',
-                'cpp': 'cpp',
-                'csharp': 'cs',
-                'html': 'html',
-                'css': 'css',
-                'json': 'json',
-                'xml': 'xml',
-                'markdown': 'md'
+                'javascript': 'js', 'typescript': 'ts', 'python': 'py', 'java': 'java', 'cpp': 'cpp', 'csharp': 'cs',
+                'html': 'html', 'css': 'css', 'json': 'json', 'xml': 'xml', 'markdown': 'md',
+                'php': 'php', 'ruby': 'rb', 'go': 'go', 'rust': 'rs', 'swift': 'swift', 'kotlin': 'kt',
+                'sql': 'sql', 'shell': 'sh', 'web-project': 'html'
             };
-            
             const ext = extensions[this.currentLanguage] || 'txt';
             const filename = `code_${Date.now()}.${ext}`;
-            
             const blob = new Blob([code], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -9323,41 +10226,51 @@ function initializeCodeCanvas() {
             link.download = filename;
             link.click();
             URL.revokeObjectURL(url);
-            
             this.showNotification(`Downloaded as ${filename}`, 'success');
         },
         
-        // Run code
-        runCode: function() {
-            const code = this.editor.value.trim();
-            
-            if (!code) {
-                this.showNotification('No code to run', 'warning');
+         runCode: function() {
+        // Determine the content to run based on editor mode
+        let contentToRun = '';
+        let runLanguage = this.currentLanguage; // Default to current editor language
+
+        if (this.editorMode === 'multi-file-project') {
+            // In multi-file mode, ALWAYS build from active project files, NOT editor content
+            const activeFiles = this.currentProjectFiles.filter(f => f.isActive);
+            contentToRun = this._buildWebProjectHtml(activeFiles);
+            runLanguage = 'html'; // The combined output is always HTML for the preview
+            if (!contentToRun.trim()) {
+                this.showNotification('No active HTML/CSS/JS files to run in project.', 'warning');
+                this.clearPreview();
                 return;
             }
-            
-            const runnableLanguages = ['html', 'css', 'javascript'];
-            
-            if (!runnableLanguages.includes(this.currentLanguage)) {
-                this.showNotification(`Cannot preview ${this.currentLanguage} code`, 'warning');
+            console.log('Running multi-file project from active files.');
+        } else {
+            // In single-file mode, run the content directly from the editor textarea
+            contentToRun = this.editor.value.trim();
+            if (!contentToRun) {
+                this.showNotification('No code in editor to run.', 'warning');
+                this.clearPreview();
                 return;
             }
-            
-            this.placeholder.classList.add('hidden');
-            
-            let htmlContent = '';
-            
-            if (this.currentLanguage === 'html') {
-                htmlContent = code;
-            } else if (this.currentLanguage === 'css') {
-                htmlContent = `
+            console.log(`Running single file (${runLanguage}) from editor.`);
+        }
+        
+        this.placeholder.classList.add('hidden');
+        let htmlContent = '';
+
+        // Now, process contentToRun based on its determined language
+        if (runLanguage === 'html') {
+            htmlContent = contentToRun;
+        } else if (runLanguage === 'css') {
+            htmlContent = `
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        ${code}
+        ${contentToRun}
     </style>
 </head>
 <body>
@@ -9372,24 +10285,17 @@ function initializeCodeCanvas() {
     </div>
 </body>
 </html>`;
-            } else if (this.currentLanguage === 'javascript') {
-                htmlContent = `
+        } else if (runLanguage === 'javascript') {
+            htmlContent = `
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Output</title>
     <style>
-        body { 
-            margin: 20px; 
-            font-family: system-ui, sans-serif; 
-        }
-        #output {
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
+        body { margin: 20px; font-family: system-ui, sans-serif; }
+        #output { padding: 20px; background: #f8f9fa; border-radius: 8px; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -9405,260 +10311,560 @@ function initializeCodeCanvas() {
             ).join(' ');
             output.innerHTML += '<div style="margin: 5px 0; padding: 8px; background: white; border-radius: 4px; border-left: 3px solid #667eea;">' + message + '</div>';
         };
-        
-        try {
-            ${code}
-        } catch (error) {
+        try { ${contentToRun} } catch (error) {
             output.innerHTML += '<div style="color: red; font-weight: bold; padding: 10px; background: #fee; border-radius: 4px;">Error: ' + error.message + '</div>';
         }
     </script>
 </body>
 </html>`;
+        } else {
+            this.showNotification(`Cannot preview ${runLanguage} code directly.`, 'warning');
+            this.clearPreview();
+            return;
+        }
+        
+        const iframeDoc = this.preview.contentDocument || this.preview.contentWindow.document;
+        iframeDoc.open();
+        iframeDoc.write(htmlContent);
+        iframeDoc.close();
+        
+        this.showNotification('Code executed!', 'success');
+    },
+
+    clearEditor: function() {
+        if (this.editor.value.trim()) {
+            if (confirm('Clear the editor?')) {
+                this.editor.value = '';
+                this.currentProjectFiles = []; // Clear project files on editor clear
+                this.editorMode = 'single-file'; // Reset editor mode
+                this.languageSelect.disabled = false; // Re-enable language selection
+                this._hideFileManager(); // Hide file manager
+                this._renderCanvasFileList(); // Update button states (hide project buttons)
+                this.updateStats();
+                this.showNotification('Editor cleared', 'success');
             }
-            
-            const iframeDoc = this.preview.contentDocument || this.preview.contentWindow.document;
-            iframeDoc.open();
-            iframeDoc.write(htmlContent);
-            iframeDoc.close();
-            
-            this.showNotification('Code executed!', 'success');
-        },
+        }
+    },
+
+    // Load a specific project file into the main editor
+    _loadProjectFileIntoEditor: function(fileId) {
+        const file = this.currentProjectFiles.find(f => f.id === fileId);
+        if (file) {
+            this.editor.value = file.content;
+            this.currentLanguage = file.type; // Update editor language
+            this.languageSelect.value = file.type;
+            this.languageSelect.disabled = false; // Enable for single file
+            this.editorMode = 'single-file'; // Switch to single-file mode
+            this.updateLanguageDisplay();
+            this.updateStats();
+            this._hideFileManager(); // Hide file manager when editing a single file
+            this._renderCanvasFileList(); // Update button states (hide project-mode buttons)
+            this.showNotification(`Loaded "${file.name}" into editor`, 'info');
+        } else {
+            this.showNotification('File not found in project.', 'error');
+        }
+    },
+
+    // Render the list of project files in the canvas UI
+    _renderCanvasFileList: function() {
+        if (!this.canvasFileList) return;
+
+        this.canvasFileList.innerHTML = ''; // Clear existing list
+
+        if (this.currentProjectFiles.length === 0) {
+            this.canvasNoFiles?.classList.remove('hidden');
+        } else {
+            this.canvasNoFiles?.classList.add('hidden');
+            this.currentProjectFiles.forEach(file => {
+                const li = document.createElement('li');
+                li.className = 'canvas-file-item flex items-center p-3 hover:bg-gray-700 transition-colors cursor-pointer group';
+                li.dataset.fileId = file.id;
+                li.innerHTML = `
+                    <input type="checkbox" class="file-checkbox form-checkbox h-4 w-4 text-blue-600 rounded border-gray-600 focus:ring-blue-500 bg-gray-900 mr-3" ${file.isActive ? 'checked' : ''}>
+                    <span class="text-sm text-gray-300 flex-1 truncate">${file.name}</span>
+                    <span class="text-xs px-2 py-0.5 bg-gray-600 text-gray-200 rounded-full ml-2">${file.type}</span>
+                    <button class="file-load-btn text-blue-400 hover:text-blue-200 opacity-0 group-hover:opacity-100 transition-opacity ml-2 p-1 rounded-full" title="Load into Editor">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="file-delete-btn text-red-400 hover:text-red-200 opacity-0 group-hover:opacity-100 transition-opacity ml-1 p-1 rounded-full" title="Remove from Project">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                `;
+                this.canvasFileList.appendChild(li);
+            });
+        }
+        const activeCount = this.currentProjectFiles.filter(f => f.isActive).length;
+        this.canvasFileManagerCount.textContent = this.currentProjectFiles.length;
+        this.canvasSelectedCount.textContent = activeCount; // Update the count in the button text
+
+        // Enable/disable and show/hide 'Run Selected' button based on editor mode and active files
+        if (this.editorMode === 'multi-file-project') {
+            this.runSelectedCanvasFilesBtn.disabled = activeCount === 0;
+            this.runSelectedCanvasFilesBtn.style.display = 'block'; // Show if in project mode
+        } else {
+            this.runSelectedCanvasFilesBtn.disabled = true; // Always disabled in single-file mode
+            this.runSelectedCanvasFilesBtn.style.display = 'none'; // Hide in single-file mode
+        }
+    },
         
-        // Clear preview
-        clearPreview: function() {
-            const iframeDoc = this.preview.contentDocument || this.preview.contentWindow.document;
-            iframeDoc.open();
-            iframeDoc.write('');
-            iframeDoc.close();
-            
-            this.placeholder.classList.remove('hidden');
-        },
-        
-        // Format code
         formatCode: function() {
             const code = this.editor.value;
-            
-            if (!code.trim()) {
-                this.showNotification('No code to format', 'warning');
-                return;
-            }
-            
+            if (!code.trim()) { this.showNotification('No code to format', 'warning'); return; }
             let formatted = code;
-            
             if (this.currentLanguage === 'json') {
-                try {
-                    formatted = JSON.stringify(JSON.parse(code), null, 2);
-                } catch (e) {
-                    this.showNotification('Invalid JSON', 'error');
-                    return;
-                }
+                try { formatted = JSON.stringify(JSON.parse(code), null, 2); } catch (e) { this.showNotification('Invalid JSON', 'error'); return; }
             }
-            
             this.editor.value = formatted;
             this.showNotification('Code formatted', 'success');
         },
         
-        // Clear editor
         clearEditor: function() {
             if (this.editor.value.trim()) {
                 if (confirm('Clear the editor?')) {
                     this.editor.value = '';
+                    this.currentProjectFiles = []; // Clear project files on editor clear
+                    this.editorMode = 'single-file'; // Reset editor mode
+                    this.languageSelect.disabled = false; // Re-enable language selection
+                    this._hideFileManager(); // Hide file manager
                     this.updateStats();
                     this.showNotification('Editor cleared', 'success');
                 }
             }
         },
         
-        // Toggle fullscreen
         toggleFullscreen: function() {
             this.isFullscreen = !this.isFullscreen;
             const container = this.canvas.querySelector('.code-canvas-container');
             container.classList.toggle('fullscreen');
-            
-            const icon = document.querySelector('#canvasFullscreenBtn i');
-            if (icon) {
-                icon.className = this.isFullscreen ? 'fas fa-compress' : 'fas fa-expand';
-            }
+            const icon = elements.canvasFullscreenBtn?.querySelector('i');
+            if (icon) { icon.className = this.isFullscreen ? 'fas fa-compress' : 'fas fa-expand'; }
         },
         
-        // Update language display
         updateLanguageDisplay: function() {
-            const subtitle = document.getElementById('canvasSubtitle');
+            const subtitle = elements.canvasSubtitle;
             const languageNames = {
-                'javascript': 'JavaScript',
-                'typescript': 'TypeScript',
-                'python': 'Python',
-                'java': 'Java',
-                'cpp': 'C++',
-                'csharp': 'C#',
-                'html': 'HTML',
-                'css': 'CSS',
-                'json': 'JSON',
-                'xml': 'XML',
-                'markdown': 'Markdown'
+                'javascript': 'JavaScript', 'typescript': 'TypeScript', 'python': 'Python', 'java': 'Java', 'cpp': 'C++', 'csharp': 'C#',
+                'html': 'HTML', 'css': 'CSS', 'json': 'JSON', 'xml': 'XML', 'markdown': 'Markdown',
+                'php': 'PHP', 'ruby': 'Ruby', 'go': 'Go', 'rust': 'Rust', 'swift': 'Swift', 'kotlin': 'Kotlin',
+                'sql': 'SQL', 'shell': 'Shell Script', 'web-project': 'Web Project (HTML/CSS/JS)',
+                'text': 'Plain Text', 'image': 'Image File', 'pdf': 'PDF Document', 'document': 'Document File', 'spreadsheet': 'Spreadsheet'
             };
-            
             if (subtitle) {
-                subtitle.textContent = `${languageNames[this.currentLanguage]} Editor`;
+                subtitle.textContent = `${languageNames[this.currentLanguage] || this.currentLanguage} Editor`;
             }
         },
         
-        // Update stats
         updateStats: function() {
             const code = this.editor.value;
             const lines = code.split('\n').length;
             const chars = code.length;
-            
-            const lineCount = document.getElementById('editorLineCount');
-            const charCount = document.getElementById('editorCharCount');
-            
+            const lineCount = elements.editorLineCount;
+            const charCount = elements.editorCharCount;
             if (lineCount) lineCount.textContent = lines;
             if (charCount) charCount.textContent = chars;
         },
         
-        // Show notification
         showNotification: function(message, type = 'info') {
-            const colors = {
-                'success': '#10b981',
-                'error': '#ef4444',
-                'warning': '#f59e0b',
-                'info': '#3b82f6'
-            };
-            
+            const colors = { 'success': '#10b981', 'error': '#ef4444', 'warning': '#f59e0b', 'info': '#3b82f6' };
             const notification = document.createElement('div');
             notification.style.cssText = `
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                background: ${colors[type]};
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 0.5rem;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                z-index: 10000;
-                font-weight: 600;
-                animation: slideIn 0.3s ease;
+                position: fixed; top: 100px; right: 20px; background: ${colors[type]}; color: white;
+                padding: 1rem 1.5rem; border-radius: 0.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000; font-weight: 600; animation: slideIn 0.3s ease;
             `;
             notification.textContent = message;
-            
             document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
+            setTimeout(() => { notification.style.animation = 'slideOut 0.3s ease'; setTimeout(() => notification.remove(), 300); }, 3000);
         },
         
-        // Setup event listeners
-// ... (previous code) ...
-
-        // Setup event listeners
         setupEventListeners: function() {
-            // Close button
-            document.getElementById('canvasCloseBtn')?.addEventListener('click', () => {
-                this.close();
+            elements.canvasCloseBtn?.addEventListener('click', () => this.close());
+            this.canvas?.querySelector('.code-canvas-overlay')?.addEventListener('click', (e) => {
+                if (e.target === this.canvas.querySelector('.code-canvas-overlay')) { this.close(); }
             });
-            
-            // Overlay click
-           this.canvas?.querySelector('.code-canvas-overlay')?.addEventListener('click', (e) => {
-                // Only close if the click is directly on the overlay, not its children
-                if (e.target === this.canvas.querySelector('.code-canvas-overlay')) {
-                    this.close();
-                }
-            });
-            
-            // Copy button
-            document.getElementById('canvasCopyBtn')?.addEventListener('click', () => this.copyCode());
-            
-            // Download button
-            document.getElementById('canvasDownloadBtn')?.addEventListener('click', () => this.downloadCode());
-            
-            // Run button (from preview panel footer)
-            document.getElementById('canvasRunBtn')?.addEventListener('click', () => this.runCode());
-            
-            // 🔥 NEW: Run button (from editor panel footer) 🔥
-            document.getElementById('editorRunCodeBtn')?.addEventListener('click', () => this.runCode());
-            
-            // Fullscreen button
-            document.getElementById('canvasFullscreenBtn')?.addEventListener('click', () => this.toggleFullscreen());
-            
-            // Format button
-            document.getElementById('formatCodeBtn')?.addEventListener('click', () => this.formatCode());
-            
-            // Clear editor
-            document.getElementById('clearEditorBtn')?.addEventListener('click', () => this.clearEditor());
-            
-            // Refresh preview
-            document.getElementById('refreshPreviewBtn')?.addEventListener('click', () => this.runCode());
-            
-            // Clear preview
-            document.getElementById('clearPreviewBtn')?.addEventListener('click', () => this.clearPreview());
-            
-            // Language change
+            elements.canvasCopyBtn?.addEventListener('click', () => this.copyCode());
+            elements.canvasDownloadBtn?.addEventListener('click', () => this.downloadCode());
+            elements.canvasRunBtn?.addEventListener('click', () => this.runCode());
+            elements.editorRunCodeBtn?.addEventListener('click', () => this.runCode());
+            elements.canvasFullscreenBtn?.addEventListener('click', () => this.toggleFullscreen());
+            elements.formatCodeBtn?.addEventListener('click', () => this.formatCode());
+            elements.clearEditorBtn?.addEventListener('click', () => this.clearEditor());
+            elements.refreshPreviewBtn?.addEventListener('click', () => this.runCode());
+            elements.clearPreviewBtn?.addEventListener('click', () => this.clearPreview());
             this.languageSelect?.addEventListener('change', (e) => {
                 this.currentLanguage = e.target.value;
                 this.updateLanguageDisplay();
             });
-            
-            // Editor stats
             this.editor?.addEventListener('input', () => this.updateStats());
-            
-            // Keyboard shortcuts
             document.addEventListener('keydown', (e) => {
                 if (this.isOpen) {
                     if (e.key === 'Escape') this.close();
                     if (e.ctrlKey && e.key === 'Enter') this.runCode();
-                    if (e.ctrlKey && e.key === 's') {
-                        e.preventDefault();
-                        this.downloadCode();
-                    }
+                    if (e.ctrlKey && e.key === 's') { e.preventDefault(); this.downloadCode(); }
+                }
+            });
+
+            // Canvas internal file management event listeners
+            this.canvasToggleFileManagerBtn?.addEventListener('click', () => this._toggleFileManager());
+            this.canvasUploadBtn?.addEventListener('click', () => this.canvasUploadFileInput?.click());
+            this.canvasUploadFileInput?.addEventListener('change', (event) => this._handleCanvasFileUpload(event));
+            this.canvasLoadAllToEditorBtn?.addEventListener('click', () => this._loadAllProjectFilesIntoEditor());
+            this.selectAllCanvasFilesBtn?.addEventListener('click', () => this._toggleAllFilesActive(true));
+            this.deselectAllCanvasFilesBtn?.addEventListener('click', () => this._toggleAllFilesActive(false));
+            this.clearCanvasFilesBtn?.addEventListener('click', () => this._clearAllCanvasFiles());
+            this.runSelectedCanvasFilesBtn?.addEventListener('click', () => this.runCode());
+
+
+            // Event delegation for dynamically added file list items
+            this.canvasFileList?.addEventListener('click', (e) => {
+                const target = e.target;
+                const fileItem = target.closest('.canvas-file-item');
+                if (!fileItem) return;
+
+                const fileId = fileItem.dataset.fileId;
+                
+                if (target.classList.contains('file-checkbox')) {
+                    this._toggleFileActiveStatus(fileId, target.checked);
+                } else if (target.closest('.file-load-btn')) {
+                    this._loadProjectFileIntoEditor(fileId);
+                } else if (target.closest('.file-delete-btn')) {
+                    this._removeFileFromCanvasProject(fileId);
+                } else {
+                    // If clicking on the item itself (not a button/checkbox), load into editor
+                    this._loadProjectFileIntoEditor(fileId);
                 }
             });
             
             console.log('✅ Event listeners attached');
         },
         
-// ... (rest of the CodeCanvas object and script) ...
-
-        
-        // Setup resizer
         setupResizer: function() {
-            const resizer = document.getElementById('canvasResizer');
-            const leftPanel = this.canvas?.querySelector('.code-editor-panel');
-            const rightPanel = this.canvas?.querySelector('.code-preview-panel');
+            const resizer1 = elements.canvasResizer1;
+            const resizer2 = elements.canvasResizer2;
             
-            if (!resizer || !leftPanel || !rightPanel) return;
-            
+            if (!resizer1 || !resizer2 || !this.editorPanel || !this.previewPanel || !this.canvasFileManager) return;
+
             let isResizing = false;
-            
-            resizer.addEventListener('mousedown', (e) => {
+            let activeResizer = null;
+
+            const startResize = (e, resizer) => {
                 isResizing = true;
+                activeResizer = resizer;
                 document.body.style.cursor = 'col-resize';
                 document.body.style.userSelect = 'none';
-            });
-            
-            document.addEventListener('mousemove', (e) => {
-                if (!isResizing) return;
+            };
+
+            const resize = (e) => {
+                if (!isResizing || !activeResizer) return;
                 
                 const containerRect = this.canvas.querySelector('.code-canvas-body').getBoundingClientRect();
-                const offsetX = e.clientX - containerRect.left;
-                const percentage = (offsetX / containerRect.width) * 100;
-                
-                if (percentage > 20 && percentage < 80) {
-                    leftPanel.style.flex = `0 0 ${percentage}%`;
-                    rightPanel.style.flex = `0 0 ${100 - percentage}%`;
+                const currentX = e.clientX - containerRect.left;
+
+                if (activeResizer === resizer1) {
+                    // Resizing between editor and preview
+                    const editorWidth = (currentX / containerRect.width) * 100;
+                    if (editorWidth > 10 && editorWidth < 90) {
+                        this.editorPanel.style.flexBasis = `${editorWidth}%`;
+                        this.previewPanel.style.flexBasis = `calc(${100 - editorWidth - (this.canvasFileManager.offsetWidth / containerRect.width * 100)}% - 4px)`; // Adjust for files panel and gaps
+                    }
+                } else if (activeResizer === resizer2) {
+                    // Resizing between preview and files panel
+                    const filesPanelWidth = ((containerRect.right - e.clientX) / containerRect.width) * 100;
+                    if (filesPanelWidth > 10 && filesPanelWidth < 90) {
+                        this.canvasFileManager.style.flexBasis = `${filesPanelWidth}%`;
+                        this.previewPanel.style.flexBasis = `calc(${100 - filesPanelWidth - (this.editorPanel.offsetWidth / containerRect.width * 100)}% - 4px)`; // Adjust for editor panel and gaps
+                    }
                 }
-            });
-            
-            document.addEventListener('mouseup', () => {
+            };
+
+            const stopResize = () => {
                 isResizing = false;
+                activeResizer = null;
                 document.body.style.cursor = '';
                 document.body.style.userSelect = '';
+            };
+
+            resizer1.addEventListener('mousedown', (e) => startResize(e, resizer1));
+            resizer2.addEventListener('mousedown', (e) => startResize(e, resizer2));
+            document.addEventListener('mousemove', resize);
+            document.addEventListener('mouseup', stopResize);
+        },
+
+        // NEW: Toggle file manager visibility (now toggles the entire panel)
+        _toggleFileManager: function() {
+            const isHidden = this.canvasFileManager?.classList.contains('hidden');
+            if (isHidden) {
+                this._showFileManager();
+            } else {
+                this._hideFileManager();
+            }
+        },
+
+        // NEW: Show file manager
+        _showFileManager: function() {
+            this.canvasFileManager?.classList.remove('hidden');
+            this.canvasFileManagerChevron?.classList.add('rotate-180');
+            // Adjust flex-basis to make space for the files panel
+            this.editorPanel.style.flexBasis = '35%';
+            this.previewPanel.style.flexBasis = '30%';
+            this.canvasFileManager.style.flexBasis = '25%'; // Make files panel visible
+            elements.canvasResizer1.style.display = 'block';
+            elements.canvasResizer2.style.display = 'block';
+        },
+
+        // NEW: Hide file manager
+        _hideFileManager: function() {
+            this.canvasFileManager?.classList.add('hidden');
+            this.canvasFileManagerChevron?.classList.remove('rotate-180');
+            // Expand editor/preview when files panel is hidden
+            this.editorPanel.style.flexBasis = '50%';
+            this.previewPanel.style.flexBasis = '50%';
+            elements.canvasResizer1.style.display = 'block'; // Keep resizer 1 visible
+            elements.canvasResizer2.style.display = 'none'; // Hide resizer 2
+        },
+
+        // NEW: Handle files uploaded directly into the canvas
+        _handleCanvasFileUpload: async function(event) {
+            const filesToUpload = Array.from(event.target.files);
+            if (filesToUpload.length === 0) return;
+
+            for (const file of filesToUpload) {
+                const fileType = file.type || '';
+                const fileName = file.name.toLowerCase();
+                let detectedType = 'text'; // Default to text
+
+                if (fileName.endsWith('.html') || fileName.endsWith('.htm')) detectedType = 'html';
+                else if (fileName.endsWith('.css')) detectedType = 'css';
+                else if (/\.(js|jsx|ts|tsx)$/i.test(fileName)) detectedType = 'javascript';
+                else if (fileName.endsWith('.py')) detectedType = 'python';
+                else if (fileName.endsWith('.java')) detectedType = 'java';
+                else if (/\.(cpp|c|h)$/i.test(fileName)) detectedType = 'cpp';
+                else if (fileName.endsWith('.cs')) detectedType = 'csharp';
+                else if (fileName.endsWith('.php')) detectedType = 'php';
+                else if (fileName.endsWith('.rb')) detectedType = 'ruby';
+                else if (fileName.endsWith('.go')) detectedType = 'go';
+                else if (fileName.endsWith('.rs')) detectedType = 'rust';
+                else if (fileName.endsWith('.swift')) detectedType = 'swift';
+                else if (/\.(kt|kts)$/i.test(fileName)) detectedType = 'kotlin';
+                else if (fileName.endsWith('.sql')) detectedType = 'sql';
+                else if (/\.(sh|bash)$/i.test(fileName)) detectedType = 'shell';
+                else if (fileType.startsWith('image/')) detectedType = 'image';
+                else if (fileType === 'application/pdf') detectedType = 'pdf';
+                else if (/\.(doc|docx|rtf|odt)$/i.test(fileName)) detectedType = 'document';
+                else if (/\.(xls|xlsx|ods)$/i.test(fileName)) detectedType = 'spreadsheet';
+                else if (/\.(json|xml|yaml|yml|md|txt)$/i.test(fileName)) detectedType = 'text';
+
+                try {
+                    const content = await this._readFileAsText(file);
+                    this.addFileToCanvasProject({
+                        id: `canvas_file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                        name: file.name,
+                        type: detectedType,
+                        content: content,
+                        mimeType: file.type || 'application/octet-stream',
+                        isActive: true // New files are active by default
+                    });
+                    this.showNotification(`File "${file.name}" added to project`, 'success');
+                } catch (error) {
+                    console.error('Error reading canvas file:', error);
+                    this.showNotification(`Failed to add "${file.name}"`, 'error');
+                }
+            }
+            event.target.value = ''; // Clear file input
+            this.runCode(); // Re-run preview with new files
+        },
+
+        // Helper to read file as text (for canvas internal uploads)
+        _readFileAsText: function(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsText(file);
             });
+        },
+
+        // Add a file to the internal project files list
+        addFileToCanvasProject: function(fileData) {
+            this.currentProjectFiles.push(fileData);
+            this._renderCanvasFileList();
+        },
+
+        // Remove a file from the internal project files list
+        _removeFileFromCanvasProject: function(fileId) {
+            this.currentProjectFiles = this.currentProjectFiles.filter(file => file.id !== fileId);
+            this._renderCanvasFileList();
+            this.runCode(); // Re-run preview
+        },
+
+        // Clear all files from the internal project files list
+        _clearAllCanvasFiles: function() {
+            if (confirm('Are you sure you want to remove all files from this project?')) {
+                this.currentProjectFiles = [];
+                this._renderCanvasFileList();
+                this.runCode(); // Clear preview
+                this.showNotification('All project files cleared.', 'info');
+            }
+        },
+
+        // Toggle isActive status of a file
+        _toggleFileActiveStatus: function(fileId, isActive) {
+            const fileIndex = this.currentProjectFiles.findIndex(file => file.id === fileId);
+            if (fileIndex !== -1) {
+                this.currentProjectFiles[fileIndex].isActive = isActive;
+                this._renderCanvasFileList(); // Re-render to update checkbox state and count
+                this.runCode(); // Re-run preview
+            }
+        },
+
+        // Toggle active status for all files
+        _toggleAllFilesActive: function(activate) {
+            this.currentProjectFiles.forEach(file => file.isActive = activate);
+            this._renderCanvasFileList();
+            this.runCode();
+        },
+
+        // Load a specific project file into the main editor
+        _loadProjectFileIntoEditor: function(fileId) {
+            const file = this.currentProjectFiles.find(f => f.id === fileId);
+            if (file) {
+                this.editor.value = file.content;
+                this.currentLanguage = file.type; // Update editor language
+                this.languageSelect.value = file.type;
+                this.languageSelect.disabled = false; // Enable for single file
+                this.editorMode = 'single-file'; // Switch to single-file mode
+                this.updateLanguageDisplay();
+                this.updateStats();
+                this.showNotification(`Loaded "${file.name}" into editor`, 'info');
+            } else {
+                this.showNotification('File not found in project.', 'error');
+            }
+        },
+
+        // Load all project files into the main editor (combined view)
+        _loadAllProjectFilesIntoEditor: function() {
+            this.editor.value = this._buildProjectEditorContent(this.currentProjectFiles);
+            this.currentLanguage = 'web-project'; // Special mode for combined view
+            this.languageSelect.value = 'html'; // Display as HTML for syntax highlighting
+            this.languageSelect.disabled = true; // Disable for project mode
+            this.editorMode = 'multi-file-project'; // Ensure mode is correct
+            this.updateLanguageDisplay();
+            this.updateStats();
+            this.showNotification('All project files loaded into editor', 'info');
+        },
+
+        // Render the list of project files in the canvas UI
+         _renderCanvasFileList: function() {
+                if (!this.canvasFileList) return;
+
+                this.canvasFileList.innerHTML = ''; // Clear existing list
+
+                if (this.currentProjectFiles.length === 0) {
+                    this.canvasNoFiles?.classList.remove('hidden');
+                } else {
+                    this.canvasNoFiles?.classList.add('hidden');
+                    this.currentProjectFiles.forEach(file => {
+                        const li = document.createElement('li');
+                        li.className = 'canvas-file-item flex items-center p-3 hover:bg-gray-700 transition-colors cursor-pointer group';
+                        li.dataset.fileId = file.id;
+                        li.innerHTML = `
+                            <input type="checkbox" class="file-checkbox form-checkbox h-4 w-4 text-blue-600 rounded border-gray-600 focus:ring-blue-500 bg-gray-900 mr-3" ${file.isActive ? 'checked' : ''}>
+                            <span class="text-sm text-gray-300 flex-1 truncate">${file.name}</span>
+                            <span class="text-xs px-2 py-0.5 bg-gray-600 text-gray-200 rounded-full ml-2">${file.type}</span>
+                            <button class="file-load-btn text-blue-400 hover:text-blue-200 opacity-0 group-hover:opacity-100 transition-opacity ml-2 p-1 rounded-full" title="Load into Editor">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="file-delete-btn text-red-400 hover:text-red-200 opacity-0 group-hover:opacity-100 transition-opacity ml-1 p-1 rounded-full" title="Remove from Project">
+                                <i class="fas fa-times-circle"></i>
+                            </button>
+                        `;
+                        this.canvasFileList.appendChild(li);
+                    });
+                }
+                const activeCount = this.currentProjectFiles.filter(f => f.isActive).length;
+                this.canvasFileManagerCount.textContent = this.currentProjectFiles.length;
+                this.runSelectedCanvasFilesBtn.disabled = activeCount === 0;
+                this.canvasSelectedCount.textContent = activeCount; // Update the count in the button text
+            },
+
+        // Helper to build the combined HTML for web projects (only active files)
+        _buildWebProjectHtml: function(filesArray) {
+            let htmlContent = '';
+            let cssContent = '';
+            let jsContent = '';
+            let mainHtmlFile = null;
+
+            const activeWebFiles = filesArray.filter(file => file.isActive && ['html', 'css', 'javascript'].includes(file.type));
+
+            // Prioritize index.html if present
+            const indexHtml = activeWebFiles.find(file => file.name.toLowerCase() === 'index.html' && file.type === 'html');
+            if (indexHtml) {
+                mainHtmlFile = indexHtml;
+            } else {
+                // Otherwise, take the first HTML file found
+                mainHtmlFile = activeWebFiles.find(file => file.type === 'html');
+            }
+
+            activeWebFiles.forEach(file => {
+                if (file.type === 'css') {
+                    cssContent += `/* --- File: ${file.name} --- */\n${file.content}\n\n`;
+                } else if (file.type === 'javascript') {
+                    jsContent += `/* --- File: ${file.name} --- */\n${file.content}\n\n`;
+                }
+            });
+
+            if (mainHtmlFile) {
+                htmlContent = mainHtmlFile.content;
+                // Inject CSS into the head or prepend to existing styles
+                if (cssContent) {
+                    const styleTag = `<style>\n${cssContent}\n</style>`;
+                    if (htmlContent.includes('</head>')) {
+                        htmlContent = htmlContent.replace('</head>', `${styleTag}\n</head>`);
+                    } else {
+                        htmlContent = `${styleTag}\n${htmlContent}`; // If no head, just prepend
+                    }
+                }
+                // Inject JS before closing body tag or append
+                if (jsContent) {
+                    const scriptTag = `<script>\n${jsContent}\n</script>`;
+                    if (htmlContent.includes('</body>')) {
+                        htmlContent = htmlContent.replace('</body>', `${scriptTag}\n</body>`);
+                    } else {
+                        htmlContent = `${htmlContent}\n${scriptTag}`; // If no body, just append
+                    }
+                }
+            } else {
+                // If no HTML file, create a basic one and inject CSS/JS
+                htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Project Preview</title>
+    ${cssContent ? `<style>\n${cssContent}\n</style>` : ''}
+</head>
+<body>
+    <h1>Web Project Preview</h1>
+    <p>No main HTML file found. Displaying combined CSS and JavaScript from selected files.</p>
+    ${jsContent ? `<script>\n${jsContent}\n</script>` : ''}
+</body>
+</html>`;
+            }
+
+            return htmlContent;
+        },
+
+        // Helper to prepare editor content for project mode (shows all files)
+        _buildProjectEditorContent: function(filesArray) {
+            let editorContent = '';
+            filesArray.forEach(file => {
+                editorContent += `### File: ${file.name} (${file.type})\n\`\`\`${file.type}\n${file.content}\n\`\`\`\n\n`;
+            });
+            return editorContent;
         }
     };
     
-    // Setup all functionality
     CodeCanvas.setupEventListeners();
     CodeCanvas.setupResizer();
     
@@ -9668,506 +10874,523 @@ function initializeCodeCanvas() {
 
 // Global function to open canvas
 window.openCodeCanvas = function(code, language) {
-    console.log('🎯 openCodeCanvas called:', { language, codeLength: code?.length });
+    console.log('🎯 openCodeCanvas called:', { language, codeLength: (Array.isArray(code) ? `Array[${code.length}]` : code?.length) });
+    // Add a stack trace to see who called it - useful for debugging unexpected opens
+    try { throw new Error('openCodeCanvas caller trace'); } catch (e) { console.log(e.stack); }
     
     if (!CodeCanvas) {
         console.error('❌ CodeCanvas not initialized!');
-        alert('Code Canvas not ready. Please refresh the page.');
+        alert('Code Canvas not ready. Please refresh the page and ensure all HTML elements are correctly in place.');
         return;
     }
+
+    // CRITICAL: If the canvas is already open, close it first to ensure a clean state
+    // before opening new content. This prevents race conditions or lingering elements.
+    if (CodeCanvas.isOpen) {
+        console.log('Canvas already open, closing first for a clean re-open.');
+        CodeCanvas.close(); 
+        // Small delay to allow CSS transitions to fully complete before re-opening,
+        // though `display: none` should make it immediate enough.
+        // If you experience visual glitches, uncomment the line below and adjust delay.
+        // await new Promise(resolve => setTimeout(resolve, 50)); 
+    }
     
-    CodeCanvas.open(code, language);
+    // If a web project is opened, pass the files directly to openProject
+    // Otherwise, open as a single file
+    if (language === 'web-project' && Array.isArray(code)) { // 'code' here is actually the filesArray
+         CodeCanvas.openProject(code);
+    } else {
+        CodeCanvas.open(code, language);
+    }
 };
 
 // FIXED: Initialize on DOM ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeCodeCanvas);
 } else {
-    // DOM already loaded
     initializeCodeCanvas();
 }
 
 console.log('✅ Code Canvas system loaded');
-
-
 console.log('Canvas exists:', !!document.getElementById('codePreviewCanvas'));
 console.log('Editor exists:', !!document.getElementById('codeEditorTextarea'));
+
+
+// CodeClean Function Handler
+function handleCodeClean(userCode) {
+  // This would integrate with your AI chat system
+  const prompt = `
+[CODECLEAN MODE ACTIVATED]
+
+Analyze this code meticulously for bugs and missing elements.
+Provide ONLY surgical fixes - do not regenerate the entire code.
+
+Code to analyze:
+\`\`\`
+${userCode}
+\`\`\`
+
+Follow the CodeClean protocol:
+1. List each bug with exact line numbers
+2. Provide only the specific fix for each bug
+3. Identify missing elements (imports, error handling, etc.)
+4. Show WHERE to add missing code
+5. Never output the full code - only changed/added sections
+`;
+
+  return prompt;
+}
+
+
+// Example: Button click handler
+function initCodeCleanButton() {
+  const codeCleanBtn = document.getElementById('codeclean-btn');
+  
+  codeCleanBtn.addEventListener('click', () => {
+    const userCode = document.getElementById('code-input').value;
     
-    // CodeClean Function Handler
-    function handleCodeClean(userCode) {
-      // This would integrate with your AI chat system
-      const prompt = `
-    [CODECLEAN MODE ACTIVATED]
-    
-    Analyze this code meticulously for bugs and missing elements.
-    Provide ONLY surgical fixes - do not regenerate the entire code.
-    
-    Code to analyze:
-    \`\`\`
-    ${userCode}
-    \`\`\`
-    
-    Follow the CodeClean protocol:
-    1. List each bug with exact line numbers
-    2. Provide only the specific fix for each bug
-    3. Identify missing elements (imports, error handling, etc.)
-    4. Show WHERE to add missing code
-    5. Never output the full code - only changed/added sections
-    `;
-    
-      return prompt;
+    if (!userCode.trim()) {
+      alert('Please paste your code first');
+      return;
     }
     
+    const prompt = handleCodeClean(userCode);
     
-    // Example: Button click handler
-    function initCodeCleanButton() {
-      const codeCleanBtn = document.getElementById('codeclean-btn');
-      
-      codeCleanBtn.addEventListener('click', () => {
-        const userCode = document.getElementById('code-input').value;
-        
-        if (!userCode.trim()) {
-          alert('Please paste your code first');
-          return;
-        }
-        
-        const prompt = handleCodeClean(userCode);
-        
-        // Send to your AI chat interface
-        sendToAI(prompt);
-      });
-    }
+    // Send to your AI chat interface
+    sendToAI(prompt);
+  });
+}
+
+// Helper to format code sections with line numbers
+function addLineNumbers(code) {
+  return code.split('\n')
+    .map((line, index) => `${index + 1}: ${line}`)
+    .join('\n');
+}
+
+// Extract specific code sections
+function extractCodeSection(code, startLine, endLine) {
+  const lines = code.split('\n');
+  return lines.slice(startLine - 1, endLine)
+    .map((line, index) => `${startLine + index}: ${line}`)
+    .join('\n');
+}
+
+
+// Detect if user is asking for code cleaning
+function detectCodeCleaningIntent(prompt) {
+    const keywords = [
+        'fix my code', 'fix this code', 'debug this', 'find bugs',
+        'clean my code', 'clean this code', 'what\'s wrong with',
+        'error in code', 'code not working', 'fix the bug',
+        'optimize this code', 'improve this code', 'refactor this',
+        'why doesn\'t this work', 'help me fix', 'code has bugs',
+        'fix code', 'clean code', 'debug code', 'check my code'
+    ];
     
-    // Helper to format code sections with line numbers
-    function addLineNumbers(code) {
-      return code.split('\n')
-        .map((line, index) => `${index + 1}: ${line}`)
-        .join('\n');
-    }
+    const lower = prompt.toLowerCase();
+    const hasKeyword = keywords.some(keyword => lower.includes(keyword));
     
-    // Extract specific code sections
-    function extractCodeSection(code, startLine, endLine) {
-      const lines = code.split('\n');
-      return lines.slice(startLine - 1, endLine)
-        .map((line, index) => `${startLine + index}: ${line}`)
-        .join('\n');
-    }
+    // Also check if they pasted code (contains code block markers)
+    const hasCodeBlock = prompt.includes('```') || 
+                         /function\s+\w+|const\s+\w+\s*=|class\s+\w+/i.test(prompt);
     
-    
-    // Detect if user is asking for code cleaning
-    function detectCodeCleaningIntent(prompt) {
-        const keywords = [
-            'fix my code', 'fix this code', 'debug this', 'find bugs',
-            'clean my code', 'clean this code', 'what\'s wrong with',
-            'error in code', 'code not working', 'fix the bug',
-            'optimize this code', 'improve this code', 'refactor this',
-            'why doesn\'t this work', 'help me fix', 'code has bugs',
-            'fix code', 'clean code', 'debug code', 'check my code'
-        ];
-        
-        const lower = prompt.toLowerCase();
-        const hasKeyword = keywords.some(keyword => lower.includes(keyword));
-        
-        // Also check if they pasted code (contains code block markers)
-        const hasCodeBlock = prompt.includes('```') || 
-                             /function\s+\w+|const\s+\w+\s*=|class\s+\w+/i.test(prompt);
-        
-        return hasKeyword && hasCodeBlock;
-    }
-    
-    
-    // Inside document.addEventListener('DOMContentLoaded', () => { ... })
-    // Add this near the end of the DOMContentLoaded function:
-    
-    // Code execution modal close button
-    // Code execution modal close button
-   // Code execution modal close handlers - FIXED VERSION
+    return hasKeyword && hasCodeBlock;
+}
+
+
+// Inside document.addEventListener('DOMContentLoaded', () => { ... })
+// Add this near the end of the DOMContentLoaded function:
+
+// Code execution modal close button
+// Code execution modal close button
+// Code execution modal close handlers - FIXED VERSION
 const initCodeExecutionModalHandlers = () => {
-    const modal = document.getElementById('codeExecutionModal');
-    const closeBtn = document.getElementById('closeCodeExecutionModal');
-    
-    if (!modal || !closeBtn) {
-        console.warn('Code execution modal elements not found');
-        return;
-    }
-    
-    // Close button click
-    closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+const modal = document.getElementById('codeExecutionModal');
+const closeBtn = document.getElementById('closeCodeExecutionModal');
+
+if (!modal || !closeBtn) {
+    console.warn('Code execution modal elements not found');
+    return;
+}
+
+// Close button click
+closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeCodeExecutionModal();
+});
+
+// Click outside modal to close
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
         closeCodeExecutionModal();
-    });
-    
-    // Click outside modal to close
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeCodeExecutionModal();
-        }
-    });
-    
-    // Escape key to close
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            closeCodeExecutionModal();
-        }
-    });
-    
-    console.log('✅ Code execution modal handlers initialized');
+    }
+});
+
+// Escape key to close
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeCodeExecutionModal();
+    }
+});
+
+console.log('✅ Code execution modal handlers initialized');
 };
 
 
 
 // Define the close function
 const closeCodeExecutionModal = () => {
-    const modal = document.getElementById('codeExecutionModal');
-    const iframe = document.getElementById('codeExecutionFrame');
+const modal = document.getElementById('codeExecutionModal');
+const iframe = document.getElementById('codeExecutionFrame');
+
+if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+    modal.classList.add('hidden');
     
-    if (modal) {
-        modal.classList.remove('active');
-        modal.style.display = 'none';
-        modal.classList.add('hidden');
-        
-        // Clear iframe content
-        if (iframe) {
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            iframeDoc.open();
-            iframeDoc.write('');
-            iframeDoc.close();
-        }
-        
-        console.log('✅ Code execution modal closed');
+    // Clear iframe content
+    if (iframe) {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        iframeDoc.open();
+        iframeDoc.write('');
+        iframeDoc.close();
     }
+    
+    console.log('✅ Code execution modal closed');
+}
 };
 
 // Initialize handlers when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // ... your existing DOMContentLoaded code ...
-    
-    // Initialize code execution modal at the end
-    initCodeExecutionModalHandlers();
+// ... your existing DOMContentLoaded code ...
+
+// Initialize code execution modal at the end
+initCodeExecutionModalHandlers();
 });
 
-    
-    const TableRenderer = {
-        // Detect if response contains tables
-        detectTables: function(text) {
-            const patterns = [
-                /\|(.+)\|/,  // Standard markdown pipe tables
-                /<table[^>]*>/i,  // HTML tables
-                /\[TABLE\]/i,  // Custom table marker
-                /^\s*\|?\s*[-:]+\s*\|/m,  // Markdown table separator
-            ];
+
+const TableRenderer = {
+    // Detect if response contains tables
+    detectTables: function(text) {
+        const patterns = [
+            /\|(.+)\|/,  // Standard markdown pipe tables
+            /<table[^>]*>/i,  // HTML tables
+            /\[TABLE\]/i,  // Custom table marker
+            /^\s*\|?\s*[-:]+\s*\|/m,  // Markdown table separator
+        ];
+        
+        return patterns.some(pattern => pattern.test(text));
+    },
+
+    // Parse markdown tables with advanced features
+    parseMarkdownTable: function(text) {
+        const tables = [];
+        const tableRegex = /(\|[^\n]+\|\n\|[-:\s|]+\|\n(?:\|[^\n]+\|\n?)+)/g;
+        let match;
+
+        while ((match = tableRegex.exec(text)) !== null) {
+            const tableText = match[1];
+            const lines = tableText.trim().split('\n').filter(line => line.trim());
             
-            return patterns.some(pattern => pattern.test(text));
-        },
-    
-        // Parse markdown tables with advanced features
-        parseMarkdownTable: function(text) {
-            const tables = [];
-            const tableRegex = /(\|[^\n]+\|\n\|[-:\s|]+\|\n(?:\|[^\n]+\|\n?)+)/g;
-            let match;
-    
-            while ((match = tableRegex.exec(text)) !== null) {
-                const tableText = match[1];
-                const lines = tableText.trim().split('\n').filter(line => line.trim());
-                
-                if (lines.length < 2) continue;
-    
-                // Parse header
-                const headerCells = this.parseTableRow(lines[0]);
-                
-                // Parse alignment from separator row
-                const alignments = this.parseAlignment(lines[1]);
-                
-                // Parse body rows
-                const rows = [];
-                for (let i = 2; i < lines.length; i++) {
-                    const cells = this.parseTableRow(lines[i]);
-                    if (cells.length > 0) {
-                        rows.push(cells);
-                    }
-                }
-    
-                tables.push({
-                    type: 'markdown',
-                    header: headerCells,
-                    alignments: alignments,
-                    rows: rows,
-                    originalText: tableText
-                });
-            }
-    
-            return tables;
-        },
-    
-        // Parse individual table row
-        parseTableRow: function(row) {
-            return row
-                .split('|')
-                .slice(1, -1)  // Remove first and last empty elements
-                .map(cell => cell.trim())
-                .filter(cell => cell.length > 0);
-        },
-    
-        // Parse column alignments from separator row
-        parseAlignment: function(separatorRow) {
-            const cells = separatorRow.split('|').slice(1, -1);
-            return cells.map(cell => {
-                const trimmed = cell.trim();
-                if (trimmed.startsWith(':') && trimmed.endsWith(':')) return 'center';
-                if (trimmed.endsWith(':')) return 'right';
-                return 'left';
-            });
-        },
-    
-        // Render table to HTML with styling
-        renderTable: function(tableData, index) {
-            const alignmentClasses = {
-                'left': 'text-left',
-                'center': 'text-center',
-                'right': 'text-right'
-            };
-    
-            let html = `
-                <div class="table-container" data-table-index="${index}">
-                    <div class="table-header-bar">
-                        <span class="table-title">
-                            <i class="fas fa-table mr-2"></i>Table ${index + 1}
-                        </span>
-                        <div class="table-actions">
-                            <button class="table-action-btn copy-table-btn" title="Copy Table">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <button class="table-action-btn download-csv-btn" title="Download as CSV">
-                                <i class="fas fa-file-csv"></i>
-                            </button>
-                            <button class="table-action-btn download-excel-btn" title="Download as Excel">
-                                <i class="fas fa-file-excel"></i>
-                            </button>
-                            <button class="table-action-btn fullscreen-table-btn" title="Fullscreen">
-                                <i class="fas fa-expand"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="table-wrapper">
-                        <table class="ai-generated-table">
-                            <thead>
-                                <tr>
-                                    ${tableData.header.map((cell, i) => `
-                                        <th class="${alignmentClasses[tableData.alignments[i]] || 'text-left'}">${this.parseMarkdown(cell)}</th>
-                                    `).join('')}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${tableData.rows.map(row => `
-                                    <tr>
-                                        ${row.map((cell, i) => `
-                                            <td class="${alignmentClasses[tableData.alignments[i]] || 'text-left'}">${this.parseMarkdown(cell)}</td>
-                                        `).join('')}
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="table-footer">
-                        <span class="table-stats">
-                            ${tableData.rows.length} rows × ${tableData.header.length} columns
-                        </span>
-                    </div>
-                </div>
-            `;
-    
-            return html;
-        },
-    
-        // Parse inline markdown in cells (bold, italic, code)
-        parseMarkdown: function(text) {
-            return text
-                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')  // Bold
-                .replace(/\*(.+?)\*/g, '<em>$1</em>')  // Italic
-                .replace(/`(.+?)`/g, '<code>$1</code>')  // Inline code
-                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');  // Links
-        },
-    
-        // Process response and replace tables with rendered HTML
-        processAndRenderTables: function(text) {
-            const tables = this.parseMarkdownTable(text);
+            if (lines.length < 2) continue;
+
+            // Parse header
+            const headerCells = this.parseTableRow(lines[0]);
             
-            if (tables.length === 0) return text;
-    
-            let processedText = text;
-            tables.forEach((table, index) => {
-                const renderedTable = this.renderTable(table, index);
-                processedText = processedText.replace(table.originalText, renderedTable);
-            });
-    
-            return processedText;
-        },
-    
-        // Initialize table interactions (copy, download, etc.)
-        initializeTableActions: function(container) {
-            // Copy table button
-            container.querySelectorAll('.copy-table-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const tableContainer = e.target.closest('.table-container');
-                    const table = tableContainer.querySelector('table');
-                    this.copyTableToClipboard(table);
-                    
-                    const icon = btn.querySelector('i');
-                    icon.className = 'fas fa-check';
-                    setTimeout(() => {
-                        icon.className = 'fas fa-copy';
-                    }, 2000);
-                });
-            });
-    
-            // Download CSV button
-            container.querySelectorAll('.download-csv-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const tableContainer = e.target.closest('.table-container');
-                    const table = tableContainer.querySelector('table');
-                    const index = tableContainer.dataset.tableIndex;
-                    this.downloadTableAsCSV(table, `table_${index}`);
-                });
-            });
-    
-            // Download Excel button
-            container.querySelectorAll('.download-excel-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const tableContainer = e.target.closest('.table-container');
-                    const table = tableContainer.querySelector('table');
-                    const index = tableContainer.dataset.tableIndex;
-                    this.downloadTableAsExcel(table, `table_${index}`);
-                });
-            });
-    
-            // Fullscreen button
-            container.querySelectorAll('.fullscreen-table-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const tableContainer = e.target.closest('.table-container');
-                    this.openTableFullscreen(tableContainer);
-                });
-            });
-        },
-    
-        // Copy table to clipboard (plain text format)
-        copyTableToClipboard: async function(table) {
-            const rows = Array.from(table.querySelectorAll('tr'));
-            const text = rows.map(row => {
-                const cells = Array.from(row.querySelectorAll('th, td'));
-                return cells.map(cell => cell.textContent.trim()).join('\t');
-            }).join('\n');
-    
-            try {
-                await navigator.clipboard.writeText(text);
-                showCustomModal('Copied!', 'Table copied to clipboard (tab-separated format).', false);
-            } catch (err) {
-                console.error('Copy failed:', err);
-            }
-        },
-    
-        // Download table as CSV
-        downloadTableAsCSV: function(table, filename) {
-            const rows = Array.from(table.querySelectorAll('tr'));
-            const csvContent = rows.map(row => {
-                const cells = Array.from(row.querySelectorAll('th, td'));
-                return cells.map(cell => {
-                    const text = cell.textContent.trim();
-                    // Escape quotes and wrap in quotes if contains comma
-                    return text.includes(',') || text.includes('"') 
-                        ? `"${text.replace(/"/g, '""')}"` 
-                        : text;
-                }).join(',');
-            }).join('\n');
-    
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `${filename}_${Date.now()}.csv`;
-            link.click();
-            URL.revokeObjectURL(link.href);
-        },
-    
-        // Download table as Excel (HTML format that Excel can open)
-        downloadTableAsExcel: function(table, filename) {
-            const html = `
-                <html xmlns:x="urn:schemas-microsoft-com:office:excel">
-                <head>
-                    <meta charset="UTF-8">
-                    <style>
-                        table { border-collapse: collapse; width: 100%; }
-                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                        th { background-color: #667eea; color: white; font-weight: bold; }
-                        tr:nth-child(even) { background-color: #f8f9fa; }
-                    </style>
-                </head>
-                <body>${table.outerHTML}</body>
-                </html>
-            `;
-    
-            const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `${filename}_${Date.now()}.xls`;
-            link.click();
-            URL.revokeObjectURL(link.href);
-        },
-    
-        // Open table in fullscreen modal
-        openTableFullscreen: function(tableContainer) {
-            const modal = document.createElement('div');
-            modal.className = 'table-fullscreen-modal';
-            modal.innerHTML = `
-                <div class="table-fullscreen-content">
-                    <div class="table-fullscreen-header">
-                        <h3><i class="fas fa-table mr-2"></i>Table Viewer</h3>
-                        <button class="table-fullscreen-close">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="table-fullscreen-body">
-                        ${tableContainer.querySelector('.table-wrapper').innerHTML}
-                    </div>
-                </div>
-            `;
-    
-            document.body.appendChild(modal);
-    
-            // Add animations
-            setTimeout(() => modal.classList.add('active'), 10);
-    
-            // Close handlers
-            const closeBtn = modal.querySelector('.table-fullscreen-close');
-            closeBtn.addEventListener('click', () => {
-                modal.classList.remove('active');
-                setTimeout(() => modal.remove(), 300);
-            });
-    
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.remove('active');
-                    setTimeout(() => modal.remove(), 300);
+            // Parse alignment from separator row
+            const alignments = this.parseAlignment(lines[1]);
+            
+            // Parse body rows
+            const rows = [];
+            for (let i = 2; i < lines.length; i++) {
+                const cells = this.parseTableRow(lines[i]);
+                if (cells.length > 0) {
+                    rows.push(cells);
                 }
+            }
+
+            tables.push({
+                type: 'markdown',
+                header: headerCells,
+                alignments: alignments,
+                rows: rows,
+                originalText: tableText
             });
         }
-    };
-    
-    // Hook into the finalizeMessage function to process tables
-    const originalFinalizeMessage = finalizeMessage;
-    window.finalizeMessage = function(element, fullText) {
-        // Process tables before finalizing
-        const processedText = TableRenderer.processAndRenderTables(fullText);
+
+        return tables;
+    },
+
+    // Parse individual table row
+    parseTableRow: function(row) {
+        return row
+            .split('|')
+            .slice(1, -1)  // Remove first and last empty elements
+            .map(cell => cell.trim())
+            .filter(cell => cell.length > 0);
+    },
+
+    // Parse column alignments from separator row
+    parseAlignment: function(separatorRow) {
+        const cells = separatorRow.split('|').slice(1, -1);
+        return cells.map(cell => {
+            const trimmed = cell.trim();
+            if (trimmed.startsWith(':') && trimmed.endsWith(':')) return 'center';
+            if (trimmed.endsWith(':')) return 'right';
+            return 'left';
+        });
+    },
+
+    // Render table to HTML with styling
+    renderTable: function(tableData, index) {
+        const alignmentClasses = {
+            'left': 'text-left',
+            'center': 'text-center',
+            'right': 'text-right'
+        };
+
+        let html = `
+            <div class="table-container" data-table-index="${index}">
+                <div class="table-header-bar">
+                    <span class="table-title">
+                        <i class="fas fa-table mr-2"></i>Table ${index + 1}
+                    </span>
+                    <div class="table-actions">
+                        <button class="table-action-btn copy-table-btn" title="Copy Table">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="table-action-btn download-csv-btn" title="Download as CSV">
+                            <i class="fas fa-file-csv"></i>
+                        </button>
+                        <button class="table-action-btn download-excel-btn" title="Download as Excel">
+                            <i class="fas fa-file-excel"></i>
+                        </button>
+                        <button class="table-action-btn fullscreen-table-btn" title="Fullscreen">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="ai-generated-table">
+                        <thead>
+                            <tr>
+                                ${tableData.header.map((cell, i) => `
+                                    <th class="${alignmentClasses[tableData.alignments[i]] || 'text-left'}">${this.parseMarkdown(cell)}</th>
+                                `).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableData.rows.map(row => `
+                                <tr>
+                                    ${row.map((cell, i) => `
+                                        <td class="${alignmentClasses[tableData.alignments[i]] || 'text-left'}">${this.parseMarkdown(cell)}</td>
+                                    `).join('')}
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <span class="table-stats">
+                        ${tableData.rows.length} rows × ${tableData.header.length} columns
+                    </span>
+                </div>
+            </div>
+        `;
+
+        return html;
+    },
+
+    // Parse inline markdown in cells (bold, italic, code)
+    parseMarkdown: function(text) {
+        return text
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')  // Bold
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')  // Italic
+            .replace(/`(.+?)`/g, '<code>$1</code>')  // Inline code
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');  // Links
+    },
+
+    // Process response and replace tables with rendered HTML
+    processAndRenderTables: function(text) {
+        const tables = this.parseMarkdownTable(text);
         
-        // Call original finalize with processed text
-        originalFinalizeMessage(element, processedText);
-        
-        // Initialize table actions after rendering
-        setTimeout(() => {
-            const parentElement = element.closest('.message-content');
-            if (parentElement) {
-                TableRenderer.initializeTableActions(parentElement);
+        if (tables.length === 0) return text;
+
+        let processedText = text;
+        tables.forEach((table, index) => {
+            const renderedTable = this.renderTable(table, index);
+            processedText = processedText.replace(table.originalText, renderedTable);
+        });
+
+        return processedText;
+    },
+
+    // Initialize table interactions (copy, download, etc.)
+    initializeTableActions: function(container) {
+        // Copy table button
+        container.querySelectorAll('.copy-table-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tableContainer = e.target.closest('.table-container');
+                const table = tableContainer.querySelector('table');
+                this.copyTableToClipboard(table);
+                
+                const icon = btn.querySelector('i');
+                icon.className = 'fas fa-check';
+                setTimeout(() => {
+                    icon.className = 'fas fa-copy';
+                }, 2000);
+            });
+        });
+
+        // Download CSV button
+        container.querySelectorAll('.download-csv-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tableContainer = e.target.closest('.table-container');
+                const table = tableContainer.querySelector('table');
+                const index = tableContainer.dataset.tableIndex;
+                this.downloadTableAsCSV(table, `table_${index}`);
+            });
+        });
+
+        // Download Excel button
+        container.querySelectorAll('.download-excel-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tableContainer = e.target.closest('.table-container');
+                const table = tableContainer.querySelector('table');
+                const index = tableContainer.dataset.tableIndex;
+                this.downloadTableAsExcel(table, `table_${index}`);
+            });
+        });
+
+        // Fullscreen button
+        container.querySelectorAll('.fullscreen-table-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tableContainer = e.target.closest('.table-container');
+                this.openTableFullscreen(tableContainer);
+            });
+        });
+    },
+
+    // Copy table to clipboard (plain text format)
+    copyTableToClipboard: async function(table) {
+        const rows = Array.from(table.querySelectorAll('tr'));
+        const text = rows.map(row => {
+            const cells = Array.from(row.querySelectorAll('th, td'));
+            return cells.map(cell => cell.textContent.trim()).join('\t');
+        }).join('\n');
+
+        try {
+            await navigator.clipboard.writeText(text);
+            showCustomModal('Copied!', 'Table copied to clipboard (tab-separated format).', false);
+        } catch (err) {
+            console.error('Copy failed:', err);
+        }
+    },
+
+    // Download table as CSV
+    downloadTableAsCSV: function(table, filename) {
+        const rows = Array.from(table.querySelectorAll('tr'));
+        const csvContent = rows.map(row => {
+            const cells = Array.from(row.querySelectorAll('th, td'));
+            return cells.map(cell => {
+                const text = cell.textContent.trim();
+                // Escape quotes and wrap in quotes if contains comma
+                return text.includes(',') || text.includes('"') 
+                    ? `"${text.replace(/"/g, '""')}"` 
+                    : text;
+            }).join(',');
+        }).join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${filename}_${Date.now()}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    },
+
+    // Download table as Excel (HTML format that Excel can open)
+    downloadTableAsExcel: function(table, filename) {
+        const html = `
+            <html xmlns:x="urn:schemas-microsoft-com:office:excel">
+            <head>
+                <meta charset="UTF-8">
+                <style>
+                    table { border-collapse: collapse; width: 100%; }
+                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                    th { background-color: #667eea; color: white; font-weight: bold; }
+                    tr:nth-child(even) { background-color: #f8f9fa; }
+                </style>
+            </head>
+            <body>${table.outerHTML}</body>
+            </html>
+        `;
+
+        const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${filename}_${Date.now()}.xls`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    },
+
+    // Open table in fullscreen modal
+    openTableFullscreen: function(tableContainer) {
+        const modal = document.createElement('div');
+        modal.className = 'table-fullscreen-modal';
+        modal.innerHTML = `
+            <div class="table-fullscreen-content">
+                <div class="table-fullscreen-header">
+                    <h3><i class="fas fa-table mr-2"></i>Table Viewer</h3>
+                    <button class="table-fullscreen-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="table-fullscreen-body">
+                    ${tableContainer.querySelector('.table-wrapper').innerHTML}
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Add animations
+        setTimeout(() => modal.classList.add('active'), 10);
+
+        // Close handlers
+        const closeBtn = modal.querySelector('.table-fullscreen-close');
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+            setTimeout(() => modal.remove(), 300);
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                setTimeout(() => modal.remove(), 300);
             }
-        }, 100);
-    };
+        });
+    }
+};
+
+// Hook into the finalizeMessage function to process tables
+const originalFinalizeMessage = finalizeMessage;
+window.finalizeMessage = function(element, fullText) {
+    // Process tables before finalizing
+    const processedText = TableRenderer.processAndRenderTables(fullText);
+    
+    // Call original finalize with processed text
+    originalFinalizeMessage(element, processedText);
+    
+    // Initialize table actions after rendering
+    setTimeout(() => {
+        const parentElement = element.closest('.message-content');
+        if (parentElement) {
+            TableRenderer.initializeTableActions(parentElement);
+        }
+    }, 100);
+};
 
 
 const ProjectManager = {
@@ -10190,7 +11413,21 @@ const ProjectManager = {
     },
     
     // Add file management methods
-    addFile, deleteFile, updateFile, getFile
+    // Assuming addFile, deleteFile, updateFile, getFile are defined elsewhere
+    // If not, they would need to be defined here or imported.
+    // For now, these are placeholders based on the user's snippet.
+    addFile: function(filename, content) {
+        this.currentProject.files[filename] = content;
+    },
+    deleteFile: function(filename) {
+        delete this.currentProject.files[filename];
+    },
+    updateFile: function(filename, newContent) {
+        this.currentProject.files[filename] = newContent;
+    },
+    getFile: function(filename) {
+        return this.currentProject.files[filename];
+    }
 };
 
 
