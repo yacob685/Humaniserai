@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoVault - Client-Side App</title>
+<style>:root {
+    --primary-color: #6a0dad; /* Dark Purple */
+    --secondary-color: #9b59b6; /* Medium Purple */
+    --accent-color: #e0b0ff; /* Light Purple */
+    --text-color: #333;
+    --background-color: #f4f4f4;
+    --card-background: #ffffff;
+    --border-color: #ddd;
+    --error-color: #e74c3c;
+    --success-color: #2ecc71;
+    --info-color: #3498db;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding-top: 20px;
+}
+
+#app-container {
+    background-color: var(--card-background);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    padding: 30px;
+    box-sizing: border-box;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header {
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+
+header h1 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 2.5em;
+}
+
+#main-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#main-nav button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#main-nav button:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+#main-nav button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background-color: #fdfdfd;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+section.hidden {
+    display: none;
+}
+
+section.active {
+    display: block;
+}
+
+h2, h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.auth-forms {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.auth-form {
+    flex: 1;
+    min-width: 280px;
+    max-width: 350px;
+    padding: 25px;
+    border: 1px solid var(--accent-color);
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.auth-form.hidden {
+    display: none;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 12px 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+.auth-form button[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.auth-form button[type="submit"]:hover:not(:disabled) {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.auth-form button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.auth-form p {
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+
+.auth-form a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-form a:hover {
+    text-decoration: underline;
+}
+
+.warning-text {
+    color: var(--error-color);
+    font-size: 0.9em;
+    margin-top: 25px;
+    padding: 15px;
+    border: 1px solid var(--error-color);
+    background-color: rgba(231, 76, 60, 0.05);
+    border-radius: 8px;
+    text-align: left;
+}
+
+.dashboard-actions {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.dashboard-actions button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.dashboard-actions button:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+#camera-interface {
+    margin-top: 20px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+#video {
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    background-color: #000;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#canvas {
+    display: none; /* Canvas is hidden, used for processing */
+}
+
+.camera-controls, #photo-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.camera-controls button, #photo-actions button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.camera-controls button:hover:not(:disabled), #photo-actions button:hover:not(:disabled) {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.camera-controls button:disabled, #photo-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#photo-preview {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#camera-status, #gallery-status, #modal-message, .send-status, #import-url-status {
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+#photo-gallery {
+    margin-top: 20px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+#gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.gallery-item {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    position: relative;
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.gallery-item:hover {
+    transform: translateY(-3px);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 150px; /* Fixed height for consistent grid */
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-item .actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    gap: 5px;
+    background-color: #f8f8f8;
+}
+
+.gallery-item .actions button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex-grow: 1;
+}
+
+.gallery-item .actions button.delete-btn {
+    background-color: var(--error-color);
+}
+
+.gallery-item .actions button:hover {
+    filter: brightness(1.1);
+}
+
+/* Modal Styles */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: var(--card-background);
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    text-align: left;
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #333;
+    text-decoration: none;
+}
+
+#export-section button, #import-section button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 15px;
+    width: auto;
+}
+
+#export-section button:hover:not(:disabled), #import-section button:hover:not(:disabled) {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+#import-file-input {
+    margin-top: 15px;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    width: calc(100% - 16px);
+    box-sizing: border-box;
+}
+
+/* Send Photo Modal Specific Styles */
+#send-photo-modal .modal-content {
+    max-width: 600px;
+}
+
+#send-photo-preview {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.send-options {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.send-options h4 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#recipient-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+#send-locally-btn, #generate-link-btn {
+    background-color: var(--info-color);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#send-locally-btn:hover:not(:disabled), #generate-link-btn:hover:not(:disabled) {
+    background-color: #2980b9; /* Darker info color */
+    transform: translateY(-2px);
+}
+
+#send-locally-btn:disabled, #generate-link-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#shareable-link-output {
+    width: calc(100% - 20px);
+    height: 100px;
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.9em;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+#qr-code-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#qr-code-img {
+    max-width: 150px;
+    height: auto;
+    border: 1px solid var(--border-color);
+    margin-top: 10px;
+}
+
+/* Import URL Modal Specific Styles */
+#import-url-modal .modal-content {
+    max-width: 450px;
+    text-align: center;
+}
+
+#import-url-input {
+    width: calc(100% - 20px);
+    padding: 12px 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+#import-url-submit-btn {
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#import-url-submit-btn:hover:not(:disabled) {
+    background-color: #27ae60; /* Darker success color */
+    transform: translateY(-2px);
+}
+
+#import-url-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.success-message {
+    color: var(--success-color);
+}
+
+.error-message {
+    color: var(--error-color);
+}
+
+.info-message {
+    color: var(--info-color);
+}
+
+@media (max-width: 600px) {
+    #app-container {
+        padding: 20px;
+        width: 95%;
+    }
+    header h1 {
+        font-size: 2em;
+    }
+    .auth-form {
+        min-width: unset;
+        width: 100%;
+    }
+    .auth-forms {
+        flex-direction: column;
+        gap: 15px;
+    }
+    #main-nav button, .dashboard-actions button, .camera-controls button, #photo-actions button,
+    #send-locally-btn, #generate-link-btn, #import-url-submit-btn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .gallery-item .actions {
+        flex-direction: column;
+    }
+    .gallery-item .actions button {
+        width: 100%;
+    }
+}
+</style>
+</head>
+<body>
+    <div id="app-container">
+        <header>
+            <h1>PhotoVault</h1>
+            <nav id="main-nav">
+                <button id="logout-btn" class="hidden">Logout</button>
+                <button id="export-data-btn" class="hidden">Export Data</button>
+                <button id="import-data-btn" class="hidden">Import Data</button>
+            </nav>
+        </header>
+
+        <!-- Login/Registration Screen -->
+        <section id="auth-screen" class="active">
+            <h2>Welcome to PhotoVault</h2>
+            <div class="auth-forms">
+                <form id="login-form" class="auth-form active">
+                    <h3>Login</h3>
+                    <input type="text" id="login-username" placeholder="Username" required>
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                    <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+                </form>
+
+                <form id="register-form" class="auth-form hidden">
+                    <h3>Register</h3>
+                    <input type="text" id="register-username" placeholder="Username" required>
+                    <input type="password" id="register-password" placeholder="Password" required>
+                    <input type="password" id="register-confirm-password" placeholder="Confirm Password" required>
+                    <button type="submit">Register</button>
+                    <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
+                </form>
+            </div>
+            <p class="warning-text">
+                <strong>Important Security Notice:</strong> This app stores all data, including your password hash, directly in your browser's local storage/IndexedDB. This is NOT secure for sensitive data and is only for demonstration purposes. Do not use real passwords or store highly sensitive photos.
+            </p>
+            <p class="warning-text">
+                <strong>Cross-Device Sync Notice:</strong> This app does NOT automatically sync data across devices. The "Export Data" and "Import Data" features allow manual transfer. The "Send Locally" feature only works on the current device. The "Shareable Link" feature requires manual sharing and importing.
+            </p>
+        </section>
+
+        <!-- Dashboard Screen -->
+        <section id="dashboard-screen" class="hidden">
+            <h2>Your Photo Gallery</h2>
+            <p>Welcome, <span id="current-user-display"></span>!</p>
+            
+            <div class="dashboard-actions">
+                <button id="start-camera-btn">Take New Photo</button>
+                <button id="view-gallery-btn">View All Photos</button>
+                <button id="import-url-btn">Import Photo from URL</button>
+            </div>
+
+            <!-- Camera Interface -->
+            <div id="camera-interface" class="hidden">
+                <h3>Camera View</h3>
+                <video id="video" autoplay playsinline></video>
+                <canvas id="canvas" class="hidden"></canvas>
+                <div class="camera-controls">
+                    <button id="capture-btn" disabled>Capture Photo</button>
+                    <button id="stop-camera-btn">Stop Camera</button>
+                </div>
+                <img id="photo-preview" class="hidden" alt="Captured Photo Preview">
+                <div id="photo-actions" class="hidden">
+                    <button id="save-photo-btn">Save Photo</button>
+                    <button id="retake-photo-btn">Retake</button>
+                </div>
+                <p id="camera-status"></p>
+            </div>
+
+            <!-- Photo Gallery -->
+            <div id="photo-gallery" class="hidden">
+                <h3>My Photos</h3>
+                <div id="gallery-grid">
+                    <!-- Photos will be loaded here -->
+                </div>
+                <p id="gallery-status">No photos saved yet.</p>
+            </div>
+        </section>
+
+        <!-- Data Transfer Modals -->
+        <div id="data-transfer-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h3 id="modal-title"></h3>
+                <div id="export-section" class="hidden">
+                    <p>Click the button below to download your PhotoVault data. This file contains all your user accounts and photos. Keep it safe!</p>
+                    <button id="download-data-btn">Download Data</button>
+                </div>
+                <div id="import-section" class="hidden">
+                    <p>Upload your PhotoVault data file (.json) to restore your accounts and photos.</p>
+                    <input type="file" id="import-file-input" accept=".json">
+                    <button id="upload-data-btn" disabled>Upload & Import</button>
+                    <p class="warning-text"><strong>Warning:</strong> Importing data will overwrite existing data for matching usernames and add new users/photos. Proceed with caution.</p>
+                </div>
+                <p id="modal-message"></p>
+            </div>
+        </div>
+
+        <!-- Send Photo Modal -->
+        <div id="send-photo-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h3>Send Photo</h3>
+                <img id="send-photo-preview" alt="Photo to send">
+                <p class="send-status"></p>
+
+                <div class="send-options">
+                    <h4>Send to another user on THIS device:</h4>
+                    <select id="recipient-select">
+                        <option value="">Select a user</option>
+                    </select>
+                    <button id="send-locally-btn" disabled>Send Locally</button>
+                    <p class="warning-text"><strong>"Send Locally" Warning:</strong> This photo will only appear for the selected user if they log in on *this specific device*. It does NOT transfer across different devices.</p>
+                </div>
+
+                <div class="send-options">
+                    <h4>Generate Shareable Link (Manual Cross-Device Transfer):</h4>
+                    <button id="generate-link-btn">Generate Shareable Link</button>
+                    <textarea id="shareable-link-output" readonly class="hidden" placeholder="Shareable Data URL will appear here"></textarea>
+                    <div id="qr-code-container" class="hidden">
+                        <p>Scan this QR code or copy the link to share:</p>
+                        <img id="qr-code-img" alt="QR Code" class="hidden">
+                    </div>
+                    <p class="warning-text"><strong>"Shareable Link" Warning:</strong> This link contains the full image data. Share it manually with the recipient, who can then use the "Import Photo from URL" feature to add it to their gallery on *any device*. This is NOT an automatic transfer.</p>
+                    <p class="warning-text"><strong>Data URL Size Warning:</strong> Very large images may result in extremely long links/dense QR codes which might not scan well or cause browser issues.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Photo from URL Modal -->
+        <div id="import-url-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h3>Import Photo from URL</h3>
+                <p>Paste a Data URL (e.g., from a shared link) to import a photo into your gallery.</p>
+                <input type="url" id="import-url-input" placeholder="Paste Data URL here (data:image/jpeg;base64,...)">
+                <button id="import-url-submit-btn" disabled>Import Photo</button>
+                <p id="import-url-status"></p>
+                <p class="warning-text"><strong>Security Warning:</strong> Only import Data URLs from trusted sources. Maliciously crafted URLs could potentially lead to browser instability or other issues.</p>
+            </div>
+        </div>
+
+    </div>
+    <script>// --- Utility Functions ---
+
+/**
+ * Generates a UUID (Universally Unique Identifier).
+ * @returns {string} A new UUID.
+ */
+const uuidv4 = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0,
+            v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+};
+
+/**
+ * Hashes a password using SHA-256 for basic client-side protection.
+ * IMPORTANT: This is NOT secure for sensitive data as the hashing mechanism is exposed.
+ * @param {string} password - The plain-text password.
+ * @returns {Promise<string>} A promise that resolves with the SHA-256 hash.
+ */
+const hashPassword = async (password) => {
+    const textEncoder = new TextEncoder();
+    const data = textEncoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashedPassword;
+};
+
+/**
+ * Displays a message in a specified DOM element.
+ * @param {HTMLElement} element - The DOM element to display the message in.
+ * @param {string} message - The message text.
+ * @param {string} type - 'success', 'error', or 'info' for styling.
+ */
+const displayMessage = (element, message, type) => {
+    element.textContent = message;
+    element.className = ''; // Clear previous classes
+    if (type === 'success') {
+        element.classList.add('success-message');
+    } else if (type === 'error') {
+        element.classList.add('error-message');
+    } else if (type === 'info') {
+        element.classList.add('info-message');
+    }
+    setTimeout(() => {
+        element.textContent = '';
+        element.className = '';
+    }, 5000);
+};
+
+// --- DOM Elements ---
+const authScreen = document.getElementById('auth-screen');
+const loginForm = document.getElementById('login-form');
+const registerForm = document.getElementById('register-form');
+const showRegisterLink = document.getElementById('show-register');
+const showLoginLink = document.getElementById('show-login');
+
+const loginUsernameInput = document.getElementById('login-username');
+const loginPasswordInput = document.getElementById('login-password');
+const registerUsernameInput = document.getElementById('register-username');
+const registerPasswordInput = document.getElementById('register-password');
+const registerConfirmPasswordInput = document.getElementById('register-confirm-password');
+
+const dashboardScreen = document.getElementById('dashboard-screen');
+const currentUserDisplay = document.getElementById('current-user-display');
+const logoutBtn = document.getElementById('logout-btn');
+const exportDataBtn = document.getElementById('export-data-btn');
+const importDataBtn = document.getElementById('import-data-btn');
+
+const startCameraBtn = document.getElementById('start-camera-btn');
+const viewGalleryBtn = document.getElementById('view-gallery-btn');
+const importUrlBtn = document.getElementById('import-url-btn'); // New button
+
+const cameraInterface = document.getElementById('camera-interface');
+const videoElement = document.getElementById('video');
+const canvasElement = document.getElementById('canvas');
+const captureBtn = document.getElementById('capture-btn');
+const stopCameraBtn = document.getElementById('stop-camera-btn');
+const photoPreview = document.getElementById('photo-preview');
+const photoActions = document.getElementById('photo-actions');
+const savePhotoBtn = document.getElementById('save-photo-btn');
+const retakePhotoBtn = document.getElementById('retake-photo-btn');
+const cameraStatus = document.getElementById('camera-status');
+
+const photoGallery = document.getElementById('photo-gallery');
+const galleryGrid = document.getElementById('gallery-grid');
+const galleryStatus = document.getElementById('gallery-status');
+
+const dataTransferModal = document.getElementById('data-transfer-modal');
+const modalTitle = document.getElementById('modal-title');
+const exportSection = document.getElementById('export-section');
+const downloadDataBtn = document.getElementById('download-data-btn');
+const importSection = document.getElementById('import-section');
+const importFileInput = document.getElementById('import-file-input');
+const uploadDataBtn = document.getElementById('upload-data-btn');
+const closeModalBtn = dataTransferModal.querySelector('.close-button');
+const modalMessage = document.getElementById('modal-message');
+
+// New Send Photo Modal Elements
+const sendPhotoModal = document.getElementById('send-photo-modal');
+const sendPhotoPreview = document.getElementById('send-photo-preview');
+const recipientSelect = document.getElementById('recipient-select');
+const sendLocallyBtn = document.getElementById('send-locally-btn');
+const generateLinkBtn = document.getElementById('generate-link-btn');
+const shareableLinkOutput = document.getElementById('shareable-link-output');
+const qrCodeContainer = document.getElementById('qr-code-container');
+const qrCodeImg = document.getElementById('qr-code-img');
+const sendPhotoModalCloseBtn = sendPhotoModal.querySelector('.close-button');
+const sendStatus = sendPhotoModal.querySelector('.send-status');
+
+// New Import Photo from URL Modal Elements
+const importUrlModal = document.getElementById('import-url-modal');
+const importUrlInput = document.getElementById('import-url-input');
+const importUrlSubmitBtn = document.getElementById('import-url-submit-btn');
+const importUrlStatus = document.getElementById('import-url-status');
+const importUrlModalCloseBtn = importUrlModal.querySelector('.close-button');
+
+
+let currentStream;
+let currentCapturedPhotoDataUrl = '';
+let currentUserId = null;
+let currentPhotoToSendId = null; // Store ID of photo being sent
+
+// --- IndexedDB Configuration ---
+const DB_NAME = 'PhotoVaultDB';
+const DB_VERSION = 1;
+const STORE_NAME = 'photos';
+
+let db;
+
+/**
+ * Initializes IndexedDB.
+ * @returns {Promise<IDBDatabase>} A promise that resolves with the database instance.
+ */
+const initIndexedDB = () => {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+        request.onerror = (event) => {
+            console.error('IndexedDB error:', event.target.errorCode);
+            reject('IndexedDB error');
+        };
+
+        request.onupgradeneeded = (event) => {
+            const dbInstance = event.target.result;
+            if (!dbInstance.objectStoreNames.contains(STORE_NAME)) {
+                const objectStore = dbInstance.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                objectStore.createIndex('userId', 'userId', { unique: false });
+            }
+        };
+
+        request.onsuccess = (event) => {
+            db = event.target.result;
+            resolve(db);
+        };
+    });
+};
+
+/**
+ * Adds a photo to IndexedDB.
+ * @param {Object} photo - The photo object to add.
+ * @returns {Promise<void>}
+ */
+const addPhotoToDB = (photo) => {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([STORE_NAME], 'readwrite');
+        const objectStore = transaction.objectStore(STORE_NAME);
+        const request = objectStore.add(photo);
+
+        request.onsuccess = () => resolve();
+        request.onerror = (event) => reject(event.target.error);
+    });
+};
+
+/**
+ * Puts (adds or updates) a photo to IndexedDB.
+ * Used for importing or sending where an ID might already exist.
+ * @param {Object} photo - The photo object to put.
+ * @returns {Promise<void>}
+ */
+const putPhotoToDB = (photo) => {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([STORE_NAME], 'readwrite');
+        const objectStore = transaction.objectStore(STORE_NAME);
+        const request = objectStore.put(photo);
+
+        request.onsuccess = () => resolve();
+        request.onerror = (event) => reject(event.target.error);
+    });
+};
+
+/**
+ * Retrieves a single photo by its ID from IndexedDB.
+ * @param {string} photoId - The ID of the photo.
+ * @returns {Promise<Object|undefined>} A promise that resolves with the photo object or undefined if not found.
+ */
+const getPhotoByIdFromDB = (photoId) => {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([STORE_NAME], 'readonly');
+        const objectStore = transaction.objectStore(STORE_NAME);
+        const request = objectStore.get(photoId);
+
+        request.onsuccess = (event) => resolve(event.target.result);
+        request.onerror = (event) => reject(event.target.error);
+    });
+};
+
+/**
+ * Retrieves all photos for a specific user from IndexedDB.
+ * @param {string} userId - The ID of the user.
+ * @returns {Promise<Array<Object>>} A promise that resolves with an array of photo objects.
+ */
+const getPhotosFromDB = (userId) => {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([STORE_NAME], 'readonly');
+        const objectStore = transaction.objectStore(STORE_NAME);
+        const index = objectStore.index('userId');
+        const request = index.getAll(userId);
+
+        request.onsuccess = (event) => resolve(event.target.result);
+        request.onerror = (event) => reject(event.target.error);
+    });
+};
+
+/**
+ * Retrieves all photos from IndexedDB (for export).
+ * @returns {Promise<Array<Object>>} A promise that resolves with an array of all photo objects.
+ */
+const getAllPhotosFromDB = () => {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([STORE_NAME], 'readonly');
+        const objectStore = transaction.objectStore(STORE_NAME);
+        const request = objectStore.getAll();
+
+        request.onsuccess = (event) => resolve(event.target.result);
+        request.onerror = (event) => reject(event.target.error);
+    });
+};
+
+/**
+ * Deletes a photo from IndexedDB.
+ * @param {string} photoId - The ID of the photo to delete.
+ * @returns {Promise<void>}
+ */
+const deletePhotoFromDB = (photoId) => {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([STORE_NAME], 'readwrite');
+        const objectStore = transaction.objectStore(STORE_NAME);
+        const request = objectStore.delete(photoId);
+
+        request.onsuccess = () => resolve();
+        request.onerror = (event) => reject(event.target.error);
+    });
+};
+
+/**
+ * Imports multiple photos into IndexedDB.
+ * @param {Array<Object>} photos - An array of photo objects to add.
+ * @returns {Promise<void>}
+ */
+const importPhotosToDB = (photos) => {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([STORE_NAME], 'readwrite');
+        const objectStore = transaction.objectStore(STORE_NAME);
+        let count = 0;
+
+        for (const photo of photos) {
+            const request = objectStore.put(photo); // Use put to overwrite if ID exists
+            request.onsuccess = () => {
+                count++;
+                if (count === photos.length) resolve();
+            };
+            request.onerror = (event) => reject(event.target.error);
+        }
+        if (photos.length === 0) resolve();
+    });
+};
+
+
+// --- User Management ---
+
+/**
+ * Retrieves all user accounts from localStorage.
+ * @returns {Object} An object mapping usernames to hashed passwords.
+ */
+const getUsers = () => {
+    const usersJson = localStorage.getItem('users');
+    return usersJson ? JSON.parse(usersJson) : {};
+};
+
+/**
+ * Saves the user accounts object to localStorage.
+ * @param {Object} users - The object mapping usernames to hashed passwords.
+ */
+const saveUsers = (users) => {
+    localStorage.setItem('users', JSON.stringify(users));
+};
+
+/**
+ * Retrieves usernames of all users except the current one.
+ * @returns {Array<string>} An array of other usernames.
+ */
+const getOtherUsers = () => {
+    const users = getUsers();
+    const allUsernames = Object.keys(users);
+    return allUsernames.filter(username => username !== currentUserId);
+};
+
+/**
+ * Registers a new user.
+ * @param {string} username - The username.
+ * @param {string} password - The plain-text password.
+ * @returns {Promise<boolean>} True if registration is successful, false otherwise.
+ */
+const registerUser = async (username, password) => {
+    const users = getUsers();
+    if (users[username]) {
+        displayMessage(registerForm.querySelector('p:last-of-type'), 'Username already exists.', 'error');
+        return false;
+    }
+
+    const hashedPassword = await hashPassword(password);
+    users[username] = hashedPassword;
+    saveUsers(users);
+    displayMessage(registerForm.querySelector('p:last-of-type'), 'Registration successful! Please login.', 'success');
+    return true;
+};
+
+/**
+ * Logs in a user.
+ * @param {string} username - The username.
+ * @param {string} password - The plain-text password.
+ * @returns {Promise<boolean>} True if login is successful, false otherwise.
+ */
+const loginUser = async (username, password) => {
+    const users = getUsers();
+    const storedHashedPassword = users[username];
+
+    if (!storedHashedPassword) {
+        displayMessage(loginForm.querySelector('p:last-of-type'), 'Invalid username or password.', 'error');
+        return false;
+    }
+
+    const hashedPassword = await hashPassword(password);
+    if (hashedPassword === storedHashedPassword) {
+        sessionStorage.setItem('currentUserId', username); // Using username as ID for simplicity
+        currentUserId = username;
+        displayMessage(loginForm.querySelector('p:last-of-type'), 'Login successful!', 'success');
+        return true;
+    } else {
+        displayMessage(loginForm.querySelector('p:last-of-type'), 'Invalid username or password.', 'error');
+        return false;
+    }
+};
+
+/**
+ * Logs out the current user.
+ */
+const logoutUser = () => {
+    sessionStorage.removeItem('currentUserId');
+    currentUserId = null;
+    updateUI();
+};
+
+/**
+ * Gets the currently logged-in user's ID.
+ * @returns {string|null} The username (ID) of the current user, or null if not logged in.
+ */
+const getCurrentUser = () => {
+    return sessionStorage.getItem('currentUserId');
+};
+
+// --- Camera Functions ---
+
+/**
+ * Starts the device camera and displays the stream in the video element.
+ */
+const startCamera = async () => {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        videoElement.srcObject = stream;
+        currentStream = stream;
+        videoElement.classList.remove('hidden');
+        photoPreview.classList.add('hidden');
+        photoActions.classList.add('hidden');
+        captureBtn.disabled = false;
+        displayMessage(cameraStatus, 'Camera started.', 'success');
+    } catch (err) {
+        console.error('Error accessing camera:', err);
+        displayMessage(cameraStatus, 'Could not access camera. Please ensure permissions are granted.', 'error');
+        captureBtn.disabled = true;
+    }
+};
+
+/**
+ * Stops the camera stream.
+ */
+const stopCamera = () => {
+    if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
+        videoElement.srcObject = null;
+    }
+    videoElement.classList.add('hidden');
+    captureBtn.disabled = true;
+    photoPreview.classList.add('hidden');
+    photoActions.classList.add('hidden');
+    displayMessage(cameraStatus, 'Camera stopped.', 'info');
+};
+
+/**
+ * Captures a photo from the video stream, resizes it, and displays a preview.
+ */
+const takePhoto = () => {
+    if (!currentStream) {
+        displayMessage(cameraStatus, 'Camera not active.', 'error');
+        return;
+    }
+
+    canvasElement.width = videoElement.videoWidth;
+    canvasElement.height = videoElement.videoHeight;
+    const context = canvasElement.getContext('2d');
+    context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+
+    const originalDataUrl = canvasElement.toDataURL('image/jpeg', 0.9); // Capture at good quality
+
+    // Resize image for storage efficiency and faster display
+    resizeImage(originalDataUrl, 1280, 720, (resizedDataUrl) => {
+        currentCapturedPhotoDataUrl = resizedDataUrl;
+        photoPreview.src = currentCapturedPhotoDataUrl;
+        photoPreview.classList.remove('hidden');
+        photoActions.classList.remove('hidden');
+        videoElement.classList.add('hidden'); // Hide video, show preview
+        captureBtn.disabled = true;
+        displayMessage(cameraStatus, 'Photo captured. Save or Retake.', 'info');
+    });
+};
+
+/**
+ * Resizes an image data URL to fit within specified max dimensions while maintaining aspect ratio.
+ * @param {string} dataUrl - The original image data URL.
+ * @param {number} maxWidth - Maximum width for the resized image.
+ * @param {number} maxHeight - Maximum height for the resized image.
+ * @param {function(string): void} callback - Callback function with the resized data URL.
+ */
+const resizeImage = (dataUrl, maxWidth, maxHeight, callback) => {
+    const img = new Image();
+    img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        // Calculate new dimensions to fit within maxWidth/maxHeight
+        if (width > maxWidth) {
+            height = height * (maxWidth / width);
+            width = maxWidth;
+        }
+        if (height > maxHeight) {
+            width = width * (maxHeight / height);
+            height = maxHeight;
+        }
+
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = width;
+        tempCanvas.height = height;
+        const ctx = tempCanvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        callback(tempCanvas.toDataURL('image/jpeg', 0.8)); // Save as JPEG with 80% quality
+    };
+    img.src = dataUrl;
+};
+
+// --- Photo Management ---
+
+/**
+ * Saves the currently captured photo to IndexedDB.
+ */
+const savePhoto = async () => {
+    if (!currentCapturedPhotoDataUrl || !currentUserId) {
+        displayMessage(cameraStatus, 'No photo to save or user not logged in.', 'error');
+        return;
+    }
+
+    // Create a thumbnail for faster gallery loading
+    resizeImage(currentCapturedPhotoDataUrl, 200, 200, async (thumbnailDataUrl) => {
+        const photo = {
+            id: uuidv4(),
+            userId: currentUserId,
+            dataUrl: currentCapturedPhotoDataUrl,
+            thumbnailUrl: thumbnailDataUrl,
+            timestamp: Date.now(),
+        };
+
+        try {
+            await addPhotoToDB(photo);
+            displayMessage(cameraStatus, 'Photo saved successfully!', 'success');
+            currentCapturedPhotoDataUrl = ''; // Clear captured photo
+            photoPreview.classList.add('hidden');
+            photoActions.classList.add('hidden');
+            stopCamera(); // Stop camera after saving
+            renderGallery(); // Refresh gallery
+            showGallery(); // Show gallery after saving
+        } catch (error) {
+            console.error('Error saving photo:', error);
+            displayMessage(cameraStatus, 'Error saving photo.', 'error');
+        }
+    });
+};
+
+/**
+ * Renders the photo gallery for the current user.
+ */
+const renderGallery = async () => {
+    if (!currentUserId) {
+        galleryGrid.innerHTML = '';
+        galleryStatus.textContent = 'Please log in to view your photos.';
+        return;
+    }
+
+    try {
+        const photos = await getPhotosFromDB(currentUserId);
+        galleryGrid.innerHTML = ''; // Clear previous photos
+
+        if (photos.length === 0) {
+            galleryStatus.textContent = 'No photos saved yet.';
+        } else {
+            galleryStatus.textContent = '';
+            photos.sort((a, b) => b.timestamp - a.timestamp); // Sort newest first
+            photos.forEach(photo => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `
+                    <img src="${photo.thumbnailUrl}" alt="Photo">
+                    <div class="actions">
+                        <button class="send-btn" data-id="${photo.id}">Send</button>
+                        <button class="delete-btn" data-id="${photo.id}">&times;</button>
+                    </div>
+                `;
+                galleryItem.querySelector('.delete-btn').addEventListener('click', () => deletePhoto(photo.id));
+                galleryItem.querySelector('.send-btn').addEventListener('click', () => openSendPhotoModal(photo.id));
+                galleryGrid.appendChild(galleryItem);
+            });
+        }
+    } catch (error) {
+        console.error('Error rendering gallery:', error);
+        galleryStatus.textContent = 'Error loading photos.';
+    }
+};
+
+/**
+ * Deletes a photo and refreshes the gallery.
+ * @param {string} photoId - The ID of the photo to delete.
+ */
+const deletePhoto = async (photoId) => {
+    if (!confirm('Are you sure you want to delete this photo?')) {
+        return;
+    }
+    try {
+        await deletePhotoFromDB(photoId);
+        displayMessage(galleryStatus, 'Photo deleted successfully!', 'success');
+        renderGallery(); // Refresh gallery
+    } catch (error) {
+        console.error('Error deleting photo:', error);
+        displayMessage(galleryStatus, 'Error deleting photo.', 'error');
+    }
+};
+
+/**
+ * Imports a photo from a data URL into the current user's gallery.
+ * @param {string} dataUrl - The data URL of the image.
+ */
+const importPhotoFromUrl = async (dataUrl) => {
+    if (!currentUserId) {
+        displayMessage(importUrlStatus, 'Please log in to import photos.', 'error');
+        return;
+    }
+    if (!dataUrl.startsWith('data:image/')) {
+        displayMessage(importUrlStatus, 'Invalid Data URL format. Must be an image data URL.', 'error');
+        return;
+    }
+
+    // Basic size check (Data URLs can be very large and potentially crash browser)
+    const MAX_DATA_URL_LENGTH = 10 * 1024 * 1024; // 10MB approx
+    if (dataUrl.length > MAX_DATA_URL_LENGTH) {
+        displayMessage(importUrlStatus, 'Image data is too large. Max 10MB allowed for import.', 'error');
+        return;
+    }
+
+    displayMessage(importUrlStatus, 'Importing photo...', 'info');
+
+    resizeImage(dataUrl, 1280, 720, async (resizedDataUrl) => {
+        resizeImage(resizedDataUrl, 200, 200, async (thumbnailDataUrl) => {
+            const photo = {
+                id: uuidv4(), // Generate new ID to avoid conflicts
+                userId: currentUserId,
+                dataUrl: resizedDataUrl,
+                thumbnailUrl: thumbnailDataUrl,
+                timestamp: Date.now(),
+            };
+
+            try {
+                await addPhotoToDB(photo);
+                displayMessage(importUrlStatus, 'Photo imported successfully!', 'success');
+                importUrlInput.value = '';
+                importUrlSubmitBtn.disabled = true;
+                renderGallery();
+                showGallery();
+                importUrlModal.classList.add('hidden');
+            } catch (error) {
+                console.error('Error importing photo from URL:', error);
+                displayMessage(importUrlStatus, 'Error importing photo.', 'error');
+            }
+        });
+    });
+};
+
+
+// --- UI Management ---
+
+/**
+ * Updates the UI based on the current user's login status.
+ */
+const updateUI = () => {
+    currentUserId = getCurrentUser();
+
+    if (currentUserId) {
+        authScreen.classList.add('hidden');
+        dashboardScreen.classList.remove('hidden');
+        logoutBtn.classList.remove('hidden');
+        exportDataBtn.classList.remove('hidden');
+        importDataBtn.classList.remove('hidden');
+        importUrlBtn.classList.remove('hidden'); // Show new button
+        currentUserDisplay.textContent = currentUserId;
+        showGallery(); // Default to gallery view on login
+    } else {
+        authScreen.classList.remove('hidden');
+        dashboardScreen.classList.add('hidden');
+        logoutBtn.classList.add('hidden');
+        exportDataBtn.classList.add('hidden');
+        importDataBtn.classList.add('hidden');
+        importUrlBtn.classList.add('hidden'); // Hide new button
+        cameraInterface.classList.add('hidden');
+        photoGallery.classList.add('hidden');
+        stopCamera(); // Ensure camera is off when logged out
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+    }
+};
+
+/**
+ * Shows the camera interface and starts the camera.
+ */
+const showCamera = () => {
+    photoGallery.classList.add('hidden');
+    cameraInterface.classList.remove('hidden');
+    startCamera();
+};
+
+/**
+ * Shows the photo gallery and renders photos.
+ */
+const showGallery = () => {
+    cameraInterface.classList.add('hidden');
+    photoGallery.classList.remove('hidden');
+    stopCamera(); // Ensure camera is off when viewing gallery
+    renderGallery();
+};
+
+// --- Data Export/Import ---
+
+/**
+ * Exports all user data and photos into a downloadable JSON file.
+ */
+const exportData = async () => {
+    modalTitle.textContent = 'Export PhotoVault Data';
+    exportSection.classList.remove('hidden');
+    importSection.classList.add('hidden');
+    dataTransferModal.classList.remove('hidden');
+    modalMessage.textContent = '';
+
+    const users = getUsers();
+    const photos = await getAllPhotosFromDB();
+
+    const dataToExport = {
+        users: users,
+        photos: photos,
+        exportedAt: new Date().toISOString(),
+        description: 'PhotoVault Client-Side Data Export (users and photos)',
+        warning: 'This file contains sensitive data (hashed passwords, all photos). Keep it secure!',
+    };
+
+    const dataStr = JSON.stringify(dataToExport, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    downloadDataBtn.onclick = () => {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `photovault_export_${Date.now()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        displayMessage(modalMessage, 'Data download initiated.', 'success');
+    };
+};
+
+/**
+ * Handles importing data from a JSON file.
+ */
+const importData = () => {
+    modalTitle.textContent = 'Import PhotoVault Data';
+    exportSection.classList.add('hidden');
+    importSection.classList.remove('hidden');
+    dataTransferModal.classList.remove('hidden');
+    modalMessage.textContent = '';
+    importFileInput.value = ''; // Clear previous file selection
+    uploadDataBtn.disabled = true;
+
+    importFileInput.onchange = () => {
+        if (importFileInput.files.length > 0) {
+            uploadDataBtn.disabled = false;
+        } else {
+            uploadDataBtn.disabled = true;
+        }
+    };
+
+    uploadDataBtn.onclick = async () => {
+        const file = importFileInput.files[0];
+        if (!file) {
+            displayMessage(modalMessage, 'Please select a file to import.', 'error');
+            return;
+        }
+
+        try {
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+
+                    if (!importedData.users || !importedData.photos) {
+                        throw new Error('Invalid PhotoVault data file format.');
+                    }
+
+                    // Confirm overwrite/merge
+                    if (!confirm('Importing data will MERGE new users/photos and OVERWRITE existing ones with matching IDs. Are you sure you want to proceed?')) {
+                        displayMessage(modalMessage, 'Import cancelled.', 'info');
+                        return;
+                    }
+
+                    // Update users in localStorage
+                    const existingUsers = getUsers();
+                    const mergedUsers = { ...existingUsers, ...importedData.users };
+                    saveUsers(mergedUsers);
+
+                    // Update photos in IndexedDB
+                    await importPhotosToDB(importedData.photos); // Uses .put() to overwrite by ID
+
+                    displayMessage(modalMessage, 'Data imported successfully! You may need to re-login.', 'success');
+                    // Force logout to clear session and re-render UI
+                    logoutUser();
+                    dataTransferModal.classList.add('hidden');
+                } catch (parseError) {
+                    console.error('Error parsing imported data:', parseError);
+                    displayMessage(modalMessage, `Invalid data file: ${parseError.message}`, 'error');
+                }
+            };
+            reader.readAsText(file);
+        } catch (error) {
+            console.error('Error reading file:', error);
+            displayMessage(modalMessage, 'Failed to read file.', 'error');
+        }
+    };
+};
+
+// --- Send Photo Functionality ---
+
+/**
+ * Opens the modal for sending a photo.
+ * @param {string} photoId - The ID of the photo to send.
+ */
+const openSendPhotoModal = async (photoId) => {
+    currentPhotoToSendId = photoId;
+    sendStatus.textContent = ''; // Clear previous messages
+    shareableLinkOutput.classList.add('hidden');
+    qrCodeContainer.classList.add('hidden');
+    qrCodeImg.src = '';
+
+    const photo = await getPhotoByIdFromDB(photoId);
+    if (!photo) {
+        displayMessage(sendStatus, 'Photo not found.', 'error');
+        return;
+    }
+
+    sendPhotoPreview.src = photo.thumbnailUrl;
+
+    // Populate recipient dropdown
+    const otherUsers = getOtherUsers();
+    recipientSelect.innerHTML = '<option value="">Select a user</option>'; // Reset
+    if (otherUsers.length === 0) {
+        recipientSelect.innerHTML += '<option value="" disabled>No other users registered on this device</option>';
+        sendLocallyBtn.disabled = true;
+    } else {
+        otherUsers.forEach(username => {
+            const option = document.createElement('option');
+            option.value = username;
+            option.textContent = username;
+            recipientSelect.appendChild(option);
+        });
+        sendLocallyBtn.disabled = false;
+    }
+
+    sendPhotoModal.classList.remove('hidden');
+};
+
+/**
+ * Sends the current photo to another user on the same device.
+ */
+const sendPhotoLocally = async () => {
+    const recipientUsername = recipientSelect.value;
+    if (!currentPhotoToSendId || !recipientUsername) {
+        displayMessage(sendStatus, 'Please select a recipient.', 'error');
+        return;
+    }
+
+    displayMessage(sendStatus, `Sending photo to ${recipientUsername}...`, 'info');
+
+    try {
+        const originalPhoto = await getPhotoByIdFromDB(currentPhotoToSendId);
+        if (!originalPhoto) {
+            throw new Error('Original photo not found.');
+        }
+
+        // Create a new photo object for the recipient
+        const photoForRecipient = {
+            ...originalPhoto,
+            id: uuidv4(), // Generate a new ID to avoid conflicts in IndexedDB
+            userId: recipientUsername,
+            timestamp: Date.now(), // Update timestamp to reflect "sent" time
+        };
+
+        await addPhotoToDB(photoForRecipient);
+        displayMessage(sendStatus, `Photo sent locally to ${recipientUsername} successfully!`, 'success');
+        sendPhotoModal.classList.add('hidden');
+        currentPhotoToSendId = null; // Clear photo being sent
+    } catch (error) {
+        console.error('Error sending photo locally:', error);
+        displayMessage(sendStatus, 'Error sending photo locally.', 'error');
+    }
+};
+
+/**
+ * Generates and displays a shareable Data URL and QR code for the current photo.
+ */
+const generateShareableLink = async () => {
+    if (!currentPhotoToSendId) {
+        displayMessage(sendStatus, 'No photo selected for sharing.', 'error');
+        return;
+    }
+
+    displayMessage(sendStatus, 'Generating shareable link...', 'info');
+
+    try {
+        const photo = await getPhotoByIdFromDB(currentPhotoToSendId);
+        if (!photo || !photo.dataUrl) {
+            throw new Error('Photo data not available.');
+        }
+
+        const dataUrl = photo.dataUrl;
+        shareableLinkOutput.value = dataUrl;
+        shareableLinkOutput.classList.remove('hidden');
+
+        // Check if Data URL is too long for practical QR code generation
+        const QR_CODE_MAX_CHARS = 2000; // Common practical limit for QR code data
+        if (dataUrl.length > QR_CODE_MAX_CHARS) {
+            displayMessage(sendStatus, `Warning: Data URL is very long (${dataUrl.length} chars). QR code might be too dense or fail to generate. Consider resizing the original photo if possible.`, 'error');
+            qrCodeContainer.classList.add('hidden');
+        } else {
+            // Use a public API to generate QR code (client-side, no backend needed)
+            const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(dataUrl)}`;
+            qrCodeImg.src = qrCodeApiUrl;
+            qrCodeContainer.classList.remove('hidden');
+            qrCodeImg.classList.remove('hidden');
+            displayMessage(sendStatus, 'Shareable link and QR code generated!', 'success');
+        }
+    } catch (error) {
+        console.error('Error generating shareable link:', error);
+        displayMessage(sendStatus, 'Error generating shareable link.', 'error');
+    }
+};
+
+// --- Event Listeners ---
+document.addEventListener('DOMContentLoaded', async () => {
+    await initIndexedDB();
+    updateUI();
+});
+
+showRegisterLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginForm.classList.add('hidden');
+    registerForm.classList.remove('hidden');
+    registerForm.querySelector('p:last-of-type').textContent = ''; // Clear messages
+});
+
+showLoginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    registerForm.classList.add('hidden');
+    loginForm.classList.remove('hidden');
+    loginForm.querySelector('p:last-of-type').textContent = ''; // Clear messages
+});
+
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = loginUsernameInput.value.trim();
+    const password = loginPasswordInput.value;
+    if (await loginUser(username, password)) {
+        updateUI();
+        loginUsernameInput.value = '';
+        loginPasswordInput.value = '';
+    }
+});
+
+registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = registerUsernameInput.value.trim();
+    const password = registerPasswordInput.value;
+    const confirmPassword = registerConfirmPasswordInput.value;
+
+    if (!username || !password || !confirmPassword) {
+        displayMessage(registerForm.querySelector('p:last-of-type'), 'All fields are required.', 'error');
+        return;
+    }
+    if (password !== confirmPassword) {
+        displayMessage(registerForm.querySelector('p:last-of-type'), 'Passwords do not match.', 'error');
+        return;
+    }
+    if (password.length < 6) {
+        displayMessage(registerForm.querySelector('p:last-of-type'), 'Password must be at least 6 characters long.', 'error');
+        return;
+    }
+
+    if (await registerUser(username, password)) {
+        registerUsernameInput.value = '';
+        registerPasswordInput.value = '';
+        registerConfirmPasswordInput.value = '';
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+    }
+});
+
+logoutBtn.addEventListener('click', logoutUser);
+exportDataBtn.addEventListener('click', exportData);
+importDataBtn.addEventListener('click', importData);
+
+startCameraBtn.addEventListener('click', showCamera);
+viewGalleryBtn.addEventListener('click', showGallery);
+importUrlBtn.addEventListener('click', () => { // New button listener
+    importUrlModal.classList.remove('hidden');
+    importUrlStatus.textContent = '';
+    importUrlInput.value = '';
+    importUrlSubmitBtn.disabled = true;
+});
+
+captureBtn.addEventListener('click', takePhoto);
+stopCameraBtn.addEventListener('click', stopCamera);
+savePhotoBtn.addEventListener('click', savePhoto);
+retakePhotoBtn.addEventListener('click', () => {
+    photoPreview.classList.add('hidden');
+    photoActions.classList.add('hidden');
+    videoElement.classList.remove('hidden'); // Show video again
+    captureBtn.disabled = false;
+    currentCapturedPhotoDataUrl = '';
+    displayMessage(cameraStatus, 'Retaking photo...', 'info');
+});
+
+// Close general data transfer modal
+closeModalBtn.addEventListener('click', () => {
+    dataTransferModal.classList.add('hidden');
+});
+
+// Close send photo modal
+sendPhotoModalCloseBtn.addEventListener('click', () => {
+    sendPhotoModal.classList.add('hidden');
+    currentPhotoToSendId = null;
+});
+
+// Close import URL modal
+importUrlModalCloseBtn.addEventListener('click', () => {
+    importUrlModal.classList.add('hidden');
+    importUrlInput.value = '';
+    importUrlSubmitBtn.disabled = true;
+});
+
+
+// Close modals if user clicks outside of them
+window.addEventListener('click', (event) => {
+    if (event.target === dataTransferModal) {
+        dataTransferModal.classList.add('hidden');
+    }
+    if (event.target === sendPhotoModal) {
+        sendPhotoModal.classList.add('hidden');
+        currentPhotoToSendId = null;
+    }
+    if (event.target === importUrlModal) {
+        importUrlModal.classList.add('hidden');
+        importUrlInput.value = '';
+        importUrlSubmitBtn.disabled = true;
+    }
+});
+
+// Send Photo Modal Listeners
+recipientSelect.addEventListener('change', () => {
+    sendLocallyBtn.disabled = recipientSelect.value === '';
+});
+sendLocallyBtn.addEventListener('click', sendPhotoLocally);
+generateLinkBtn.addEventListener('click', generateShareableLink);
+
+// Import URL Modal Listeners
+importUrlInput.addEventListener('input', () => {
+    importUrlSubmitBtn.disabled = importUrlInput.value.trim() === '';
+});
+importUrlSubmitBtn.addEventListener('click', () => {
+    importPhotoFromUrl(importUrlInput.value.trim());
+});
+</script>
+</body>
+</html>
